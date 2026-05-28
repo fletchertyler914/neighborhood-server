@@ -1,13 +1,48 @@
 # Neighborhood Minecraft Server
 
-A self-hosted, crossplay Minecraft server (Java + Bedrock) you can run on any
-machine with Docker. LAN access works out of the box. External access uses
-[playit.gg](https://playit.gg) so you never touch your router.
+> **Self-hosted, free, crossplay Minecraft server with a magical AI agent
+> that runs *locally*.**  Talk to the world in plain English from
+> Minecraft chat — `/agent build me a small cabin` — and watch it happen.
+> All tools, all builds, all routing run on your own machine. No cloud
+> required (but optional cloud fallback is supported).
+>
+> Status: experimental, working great on a single Mac mini. License: MIT.
+> OSS-friendly bootstrap (`make bootstrap`) lands in this repo.
+
+## What you get
+
+- A Paper Minecraft server (Java + Bedrock crossplay via Geyser+Floodgate)
+- An in-game `/agent <prompt>` command backed by a local LLM (Ollama)
+- 60 typed tools the agent can call — `build_platform`, `build_house_at_player`,
+  `fawe_cyl_at_player`, `summon_entity`, etc. — same registry that drives
+  the Cursor MCP integration
+- A 101-template `.schem` corpus with hybrid (lexical + semantic + policy)
+  ranking so natural prompts ("a place for chickens to live") map to the
+  right schematic
+- An eval harness (19 strict spec cases, 26 NL smoke prompts, live world
+  validation) that ships with a baseline so regressions show up as PR diffs
+- Audit log, Prometheus `/metrics`, deep `/health`, RCON-coordinated backups
+
+## 30-second start
+
+```bash
+git clone <this repo> neighborhood-server
+cd neighborhood-server
+make bootstrap            # detects deps, generates secrets/.env
+make up                   # boots Paper + agent + sidecars
+make plugin && make seed  # build the in-game plugin and pre-build all schematics
+# Join the server, type /agent build me a hollow stone cylinder around me radius 6
+```
+
+`make help` lists every target. Read on for the full setup story.
+
+## Stack at a glance
 
 - **Server**: Paper 26.1.2 (Java 25) via [`itzg/minecraft-server`](https://docker-minecraft-server.readthedocs.io/)
 - **Crossplay**: GeyserMC + Floodgate (Bedrock players join with their Xbox account)
 - **External access**: official `playit-agent` sidecar (free tier supports Java + Bedrock)
 - **Backups**: `itzg/mc-backup` sidecar, RCON-coordinated, every 2h, 14-day retention
+- **Agent**: FastAPI orchestrator (`mc-agent`) → Ollama → typed tools → RCON
 
 ## Why playit.gg (and not something else)?
 
@@ -329,9 +364,9 @@ details, weights, and the latest production-validation snapshot.
 
 - Tool contracts: single registry in `agent/tool_registry.py` (schema, dispatch, MCP stay in sync)
 - Kitchen-sink dev loop: [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md)
-- Tool integration: `AGENT_LIVE_TOOL_PLAYER=firecrab93 ./scripts/live-tool-tests.sh` directly executes tools on Paper and probes blocks with RCON
+- Tool integration: `make live-tools` (auto-detects an online player) or `AGENT_LIVE_TOOL_PLAYER=<name> ./scripts/live-tool-tests.sh`
 - One-command validation: `./scripts/validate-all.sh` (add `RUN_LIVE=1` / `RUN_FULL_WORLD=1` for live gates)
-- Real `/agent` NL smoke: `AGENT_SMOKE_PLAYER=firecrab93 ./scripts/agent-smoke.sh`
+- Real `/agent` NL smoke: `make smoke` (auto-detects player) or `AGENT_SMOKE_PLAYER=<name> ./scripts/agent-smoke.sh`
 - Eval harness: `./scripts/eval.sh spec` (live dry-run) and `./scripts/eval.sh world` (sandbox mutations)
 - Export: `./scripts/export-dataset.sh` → JSONL for review / fine-tuning
 - Feedback training data: `python3 -m agent.training feedback --sft-out ... --dpo-out ...`

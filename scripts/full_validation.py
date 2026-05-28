@@ -15,13 +15,30 @@ Layout (flat world, surface y=-60):
 from __future__ import annotations
 
 import json
+import os
+import re
 import time
 from dataclasses import dataclass
 
 from agent.templates import catalog as template_catalog
 from agent.tools import _rcon, paste_template_at_player, summon_entity, clear_box
 
-PLAYER = "firecrab93"
+
+def _detect_online_player() -> str:
+    raw = _rcon("list", timeout=10) or ""
+    match = re.search(r"online:?\s*(.+)$", raw)
+    if not match:
+        return ""
+    first = match.group(1).split(",")[0].strip()
+    return first
+
+
+PLAYER = os.environ.get("AGENT_VALIDATION_PLAYER") or _detect_online_player()
+if not PLAYER:
+    raise SystemExit(
+        "no online player detected. Join the server (Java or Bedrock) and re-run, "
+        "or set AGENT_VALIDATION_PLAYER=<name> explicitly."
+    )
 GRID_ORIGIN = (200, -60, 200)
 COL_STRIDE = 36
 ROW_STRIDE = 64

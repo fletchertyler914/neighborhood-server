@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Neighborhood Minecraft Server contributors
+Copyright (c) 2026 Tyler Fletcher and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Notes:
+- The bundled Paper / Geyser / Floodgate / FastAsyncWorldEdit / playit / Ollama
+  components remain under their respective upstream licenses. This MIT grant
+  covers only the originally-authored content of this repository: the
+  orchestrator, tools, evaluation harness, schematic corpus metadata,
+  prompts, scripts, and documentation. Schematic .schem files are released
+  under CC-BY-4.0 by default unless their per-template metadata says
+  otherwise (see `agent/templates/catalog.json`).

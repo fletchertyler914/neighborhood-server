@@ -5,6 +5,35 @@ All notable changes to this experimental neighborhood-server stack are documente
 ## [Unreleased]
 
 ### Added
+- `must_call_any` OR-group assertion primitive for spec eval (accepts multiple
+  equally-good tool answers)
+- Shape-word router in orchestrator: "cylinder" overrides template-first routing
+  and rewrites misrouted castle/house calls to `fawe_cyl_at_player`
+- `fawe_cyl_at_player(hollow=True)` — uses FAWE `//cyl -h` for hollow forts
+- `scripts/bootstrap.sh` — one-shot fresh-clone setup (secrets, .env, dep checks)
+- `Makefile` — `make bootstrap|up|seed|smoke|eval|live-tools|health|metrics`
+- `scripts/_detect_player.sh` — auto-detect first online player for smoke/live tests
+- MIT `LICENSE`, polished `docs/PUBLIC_QUICKSTART.md`, README quickstart banner
+
+### Changed
+- System prompt: critical word-routing table at top; cylinder vs castle disambiguation
+- Spec eval cases relaxed to semantic correctness (FAWE sphere wrapper OR
+  `fawe_as_player`; house via template OR parametric builder)
+- Strict baseline regenerated: **19/19 spec cases pass** on `qwen2.5:7b-instruct`
+  (verified stable over 3 consecutive runs)
+- `paste_template_at_player` returns structured error with suggestions when
+  template id can't be resolved (e.g. hallucinated "sand fort")
+- `agent-smoke.sh`, `live-tool-tests.sh`, `full_validation.py` auto-detect
+  online player instead of hardcoding a username
+- CONTRIBUTING.md updated with Makefile workflow and PR checklist
+
+### Validated (e2e)
+- `make test` — 129/129
+- `make smoke` — 26/26 NL prompts through live LLM
+- `make eval` — 19/19 spec, 0 regressions vs baseline
+- `make live-tools` — 20/20 RCON integration tests
+
+### Added (prior hardening pass)
 - Orchestrator package layout (`agent/orchestrator/`) with deep `/health` and `/metrics`
 - Tools package layout (`agent/tools/`) with submodule boundaries for incremental split
 - Confirm tokens bound to player, prompt, tool, args, and 60s TTL

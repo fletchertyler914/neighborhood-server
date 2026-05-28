@@ -7,7 +7,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-PLAYER="${AGENT_SMOKE_PLAYER:-firecrab93}"
+PLAYER="${AGENT_SMOKE_PLAYER:-$(./scripts/_detect_player.sh 2>/dev/null || true)}"
+if [[ -z "$PLAYER" ]]; then
+  echo "ERROR: no online player detected. Join the server, or set AGENT_SMOKE_PLAYER=<name>." >&2
+  exit 1
+fi
+echo "agent-smoke: player=$PLAYER"
 BASE_X="${AGENT_SMOKE_X:-2000}"
 BASE_Y="${AGENT_SMOKE_Y:--60}"
 BASE_Z="${AGENT_SMOKE_Z:-2000}"
@@ -25,7 +30,9 @@ import urllib.request
 
 base = "http://127.0.0.1:8787/v1/jobs"
 token = os.environ.get("AGENT_API_TOKEN", "")
-player = os.environ.get("AGENT_SMOKE_PLAYER", "firecrab93")
+player = os.environ.get("AGENT_SMOKE_PLAYER", "")
+if not player:
+    raise SystemExit("AGENT_SMOKE_PLAYER not set; the wrapper script should always set it")
 base_x = float(os.environ.get("AGENT_SMOKE_X", "2000"))
 base_y = float(os.environ.get("AGENT_SMOKE_Y", "-60"))
 base_z = float(os.environ.get("AGENT_SMOKE_Z", "2000"))
