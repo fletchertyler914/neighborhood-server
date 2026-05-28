@@ -1,0 +1,70 @@
+---
+description: How to drive the Minecraft server - MCP first, scripts next, raw docker last
+alwaysApply: true
+---
+
+# Driving the Minecraft Server
+
+When the user asks for in-game actions (build something, op a player,
+teleport, set time/weather, run a command), use this priority order.
+
+## 1. Shared tool core — MCP and `/agent`
+
+All in-world actions go through `agent/tools.py` (guardrailed RCON via
+`docker exec mc-lan rcon-cli`). Two entry points use the same code:
+
+- **Cursor**: `minecraft-builder` MCP (`mcp/minecraft_build_mcp.py`)
+- **In-game**: `/agent <prompt>` → Paper plugin → host orchestrator → Ollama/cloud
+
+Always prefer typed tools for in-world actions:
+
+- Inspection: `server_status`, `preflight`, `list_players`,
+  `get_player_position`, `get_player_dimension`
+- Admin: `op_player`, `say`, `teleport_player`, `set_gamemode`, `set_time`,
+  `set_weather`, `give_haste`, `backup_now`, `run_command` (escape hatch)
+- Building: `fill_box`, `clear_box`, `build_platform`, `build_sphere`,
+  `build_cylinder`, `build_spiral_staircase`
+- FAWE: `fawe_as_player`, `fawe_sphere_at_player`, `mine_shaft_at_player`
+
+### Guardrails (don't bypass without asking)
+
+- `fill_box` / shape builders cap at **200,000** blocks
+- generated commands cap at **20,000**
+- Raw `run_command` is the escape hatch — prefer typed tools
+
+### Bedrock vs Java names
+
+Bedrock players show up via Floodgate with a leading `.`. When the user
+says "lunar", confirm whether they mean `.LunarLicense582` (Bedrock) or a
+Java handle. The dot is part of the name in commands.
+
+## 2. Shell wrappers — for terminal work
+
+When working from the host shell, use the project scripts instead of
+hand-writing `docker exec`:
+
+- `./mc.sh status | list | logs | console | backup`
+- `./mc.sh op <name>` / `./mc.sh deop <name>`
+- `./op.sh <name> [name...]` — bulk op
+- `./mc.sh say "<message>"`
+- `./mc.sh gamemode <mode> <player>`
+- `./mc.sh cmd "<rcon command>"` — escape hatch
+
+## 3. Raw `docker exec` — last resort
+
+Only fall back to `docker exec -i mc-lan rcon-cli "<cmd>"` if neither MCP
+nor the scripts can express what's needed.
+
+## Building patterns
+
+- Rectangular volumes → `fill_box` (`mode: replace|keep|hollow|outline`)
+- Spheres / domes → `build_sphere` (`hollow: true` for shells)
+- Towers / wells → `build_cylinder`
+- Stairs → `build_spiral_staircase`
+- Selections, copy/paste, `//regen`, brushes, schematics →
+  `fawe_as_player` so the operation runs with that player's selection
+- For absolute coordinates from console, vanilla `/fill` and `/setblock`
+  via `run_command` is fine
+
+Before any large or destructive op (clearing, replacing, regen), restate
+the coordinates and approximate block count back to the user.

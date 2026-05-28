@@ -1,0 +1,52 @@
+---
+description: Safety, secrets, and don't-touch list for the Minecraft stack
+alwaysApply: true
+---
+
+# Safety / Don'ts
+
+## Secrets
+
+- `secrets/rcon_password` — never echo, never paste into commit messages,
+  never embed in `.cursor/mcp.json`. The MCP and `mc.sh` deliberately use
+  `docker exec` so the password stays in the container's secret mount.
+- `.env` holds `PLAYIT_SECRET_KEY` — same rules. Both files are in
+  `.gitignore`; keep them there.
+
+## Networking
+
+- Do **not** add `25575:25575` to `docker-compose.yml`. RCON must remain
+  unpublished. Anything that needs RCON should `docker exec` into `mc-lan`.
+- Don't change `network_mode: host` on the `playit` service — it needs it
+  to forward UDP cleanly to Geyser.
+- The agent orchestrator binds `127.0.0.1:8787` only — never publish it on
+  playit or `0.0.0.0`. Plugin reaches it via `host.docker.internal`.
+
+## JVM
+
+- `USE_MEOWICE_FLAGS: 'false'` is intentional on aarch64 + Java 25
+  (JDK-8359378). Use the existing ZGC `JVM_XX_OPTS`. Only re-enable
+  MeowIce flags after confirming a Temurin patch.
+
+## Builds
+
+- Respect the MCP guardrails (200k blocks, 20k commands). If a request is
+  bigger, propose splitting it or using FAWE chunk operations instead of
+  silently raising `MINECRAFT_MCP_MAX_BLOCKS` / `MINECRAFT_MCP_MAX_COMMANDS`.
+- Before destructive ops (`clear_box`, `//set air`, `//regen`, large
+  `fill_box` with `mode: replace`), confirm coordinates and rough volume
+  with the user.
+- Don't TP players or set their gamemode without it being asked for.
+
+## Whitelist / public exposure
+
+- Whitelist is currently OFF. If the user wants to share the playit
+  address publicly, set `ENFORCE_WHITELIST=true` in compose and populate
+  `WHITELIST:` first, then restart.
+
+## World data
+
+- `data/` and `backups/` are bind mounts — don't `rm -rf` them. To wipe
+  a world, stop the stack, move `data/world*` aside, then start.
+- Use `./mc.sh backup` (or let the `mc-backup` sidecar run) before any
+  risky world-altering operation.

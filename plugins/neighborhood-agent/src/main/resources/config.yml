@@ -1,0 +1,5 @@
+# Compose-managed orchestrator service.
+orchestrator-url: http://mc-agent:8787
+api-token: env:AGENT_API_TOKEN
+# Max seconds to wait for the agent job
+job-timeout-seconds: 90

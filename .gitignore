@@ -1,0 +1,7 @@
+.env
+secrets/
+data/
+backups/
+agent/.venv/
+plugins/neighborhood-agent/build/
+plugins/neighborhood-agent/.gradle/

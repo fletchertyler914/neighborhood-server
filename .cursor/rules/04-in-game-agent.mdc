@@ -1,0 +1,61 @@
+---
+description: In-game /agent command, orchestrator, and local/cloud model routing
+alwaysApply: true
+---
+
+# In-Game `/agent` Command
+
+Players with `neighborhood.agent` (default: OP) run:
+
+```text
+/agent <prompt>
+/agent confirm <token> <prompt>
+```
+
+## Architecture
+
+1. **Paper plugin** `NeighborhoodAgent` in `mc-lan` POSTs to host orchestrator.
+2. **Orchestrator** Compose service `mc-agent` (private network, no host port).
+3. **Models**: local Ollama first (default `qwen2.5:7b-instruct`); bounded
+   `qwen3:8b` fallback; cloud fallback if `OPENAI_API_KEY` is set.
+4. **Tools**: same `agent/tools.py` as Cursor MCP — never duplicate logic in Java.
+5. **Smart context** (per request): `agent/context.py` injects online players,
+   time of day, player facing, and recent agent actions; `agent/retrieval.py`
+   pulls relevant chunks from `agent/knowledge/{blocks,fawe,patterns}.md`.
+6. **Thinking-mode models** (qwen3, deepseek-r1, qwq) get `/no_think`,
+   `think: false`, and short local timeouts — required for valid tool-call JSON.
+
+## When helping with `/agent`
+
+- Start/rebuild with `docker compose up -d --build mc-agent`.
+- If player sees "Agent offline", check `docker compose ps mc-agent` and
+  `docker compose logs mc-agent`.
+- Keep `data/plugins/NeighborhoodAgent/config.yml` as
+  `orchestrator-url: http://mc-agent:8787` and `api-token: env:AGENT_API_TOKEN`.
+- Bedrock names use leading `.` in all tool `player` args.
+- Destructive ops require `/agent confirm <token> ...` — do not bypass.
+- Prefer `fawe_*` and `build_*` tools over raw `run_command`.
+- For regen/large clears: `backup_now` first, then act.
+- When extending Minecraft knowledge, edit `agent/knowledge/*.md` — the
+  retrieval index reloads on orchestrator restart.
+
+## Recommended models (Ollama)
+
+| Model | RAM | Notes |
+| --- | --- | --- |
+| `qwen2.5:7b-instruct` (default) | ~5 GB | Reliable fast path on this host |
+| `qwen3:8b` (fallback) | ~5 GB | Smarter in theory, but bounded by timeout |
+| `llama3.1:8b` | ~5.5 GB | Solid baseline, no thinking-mode quirks |
+| `qwen3:14b` / `qwen2.5:14b` | ~9 GB | Better multi-tool reasoning |
+| Avoid | — | MoE / elastic models — fragment multi-step tool chains |
+
+## Host commands
+
+```bash
+docker compose up -d --build mc-agent
+docker compose ps mc-agent
+docker compose logs -f mc-agent
+./scripts/build-plugin.sh     # build + install plugin JAR
+```
+
+Do not publish `mc-agent` ports. It should stay private on the Compose network.

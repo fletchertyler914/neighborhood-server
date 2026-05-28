@@ -1,0 +1,10 @@
+.env
+secrets/
+data/
+backups/
+agent/.venv/
+agent/__pycache__/
+agent/**/__pycache__/
+plugins/neighborhood-agent/build/
+plugins/neighborhood-agent/.gradle/
+.pytest_cache/

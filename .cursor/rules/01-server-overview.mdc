@@ -1,0 +1,52 @@
+---
+description: Neighborhood Minecraft server - stack, container names, key files
+alwaysApply: true
+---
+
+# Neighborhood Minecraft Server
+
+Self-hosted crossplay Minecraft server defined by `docker-compose.yml`.
+
+## Stack
+
+- **Server**: Paper `26.1.2` on Java 25 via `itzg/minecraft-server:java25`
+- **Container name**: `mc-lan` (used by `docker exec`, MCP, scripts)
+- **Crossplay**: GeyserMC + Floodgate. Bedrock players appear with a leading
+  `.` (Floodgate prefix), e.g. `.LunarLicense582`. Always include the dot.
+- **Building plugin**: FastAsyncWorldEdit (FAWE) `2.15.1`
+- **External access**: `playit-agent` sidecar (`playit-agent` container).
+  Tunnels: Java TCP 25565, Bedrock UDP 19132.
+- **Backups**: `itzg/mc-backup` sidecar (`mc-backup`), every 2h, 14d retention,
+  RCON-coordinated `save-off`/`save-on`.
+- **GC**: Generational ZGC. `USE_MEOWICE_FLAGS=false` on purpose
+  (JDK-8359378 G1 barrier crash on aarch64 + Java 25). Don't re-enable
+  without confirming a Temurin fix.
+
+## Server defaults (creative-mode friends server)
+
+- `MODE=creative`, `FORCE_GAMEMODE=true`, `ALLOW_FLIGHT=true`,
+  `SPAWN_PROTECTION=0`
+- `ONLINE_MODE=true`, `ENFORCE_SECURE_PROFILE=false`
+- Whitelist OFF (anyone with the playit address can join)
+- OPS list in compose is re-applied via `EXISTING_OPS_FILE: MERGE`,
+  manually opped players persist across restarts
+
+## Files in this workspace
+
+- `docker-compose.yml` — the whole stack
+- `secrets/rcon_password` — RCON password (Docker secret, gitignored)
+- `.env` — `PLAYIT_SECRET_KEY`, `AGENT_API_TOKEN`, Ollama/cloud vars (gitignored)
+- `agent/tools.py` — shared guardrailed RCON tools (MCP + `/agent`)
+- `agent/orchestrator.py` — host HTTP agent (`./scripts/agent.sh start`)
+- `mcp/minecraft_build_mcp.py` — thin Cursor MCP adapter
+- `.cursor/mcp.json` — registers `minecraft-builder`
+- `plugins/neighborhood-agent/` — Paper `/agent` plugin source
+- `mc.sh`, `op.sh`, `scripts/agent.sh`, `scripts/build-plugin.sh`
+- `data/` — world (gitignored)
+- `backups/` — mc-backup archives (gitignored)
+
+## Ports
+
+- `25565/tcp` published — Java
+- `19132/udp` published — Bedrock (Geyser)
+- `25575/tcp` **NOT published** — RCON, internal only by design
