@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import FrozenSet
 
 MCP_CORE_VERSION = "1.0.0"
-TOOLS_VERSION_EXPECTED = "2.6.0"
+TOOLS_VERSION_EXPECTED = "2.8.0"
 
 # --- Capability tiers -------------------------------------------------------
 

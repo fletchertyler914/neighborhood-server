@@ -59,6 +59,9 @@ def normalize_arguments(name: str, arguments: dict[str, Any]) -> dict[str, Any]:
         if key not in out and key not in arguments:
             pass  # validation will catch
     if schema.get("additionalProperties") is False:
+        extra = set(arguments) - set(out)
+        if extra:
+            raise SchemaValidationError(f"unknown properties: {sorted(extra)}")
         return out
     for key, val in arguments.items():
         if key not in out:

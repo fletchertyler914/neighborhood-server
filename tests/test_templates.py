@@ -107,13 +107,13 @@ def test_paste_template_falls_back_when_no_schematic():
         "summon_entity": lambda *_a, **_kw: mob_result,
     }
     with patch(
-        "agent.tools.template_catalog.schematic_available_on_server",
+        "agent.tools._monolith.template_catalog.schematic_available_on_server",
         return_value=False,
     ), patch(
-        "agent.tools.template_catalog.ensure_schematic_on_server",
+        "agent.tools._monolith.template_catalog.ensure_schematic_on_server",
         return_value=False,
     ), patch(
-        "agent.tools._player_facing",
+        "agent.tools._monolith._player_facing",
         return_value=facing,
     ), patch.dict("agent.tools.TOOL_DISPATCH", stubs):
         result = paste_template_at_player("firecrab93", "chicken_coop_small")

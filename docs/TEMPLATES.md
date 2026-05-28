@@ -72,7 +72,7 @@ After a build, `/agent good` or `/agent bad <why>` copies routing fields from
 the audit log into `data/agent-feedback.jsonl`. Export SFT/DPO pairs with:
 
 ```bash
-python -m agent.training.feedback  # or project script if present
+python -m agent.training feedback --format sft --out datasets/sft.jsonl
 ```
 
 Routing fields in `meta` help fine-tune template vs parametric tool choice.

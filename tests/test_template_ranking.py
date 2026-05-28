@@ -69,6 +69,19 @@ def test_catalog_has_100_plus_templates():
     assert len(list(tc.iter_templates())) >= 100
 
 
+def test_catalog_category_minimums():
+    from collections import Counter
+
+    from agent.templates import catalog as tc
+
+    counts = Counter(m.category for m in tc.iter_templates())
+    assert counts.get("house", 0) >= 12
+    assert counts.get("farm", 0) >= 6
+    assert counts.get("fortress", 0) >= 4
+    assert counts.get("infrastructure", 0) >= 4
+    assert counts.get("decoration", 0) >= 4
+
+
 def test_ranking_deterministic_repeat():
     from agent.templates.ranking import resolve_template
 

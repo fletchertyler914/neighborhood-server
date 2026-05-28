@@ -28,7 +28,7 @@ from pydantic import BaseModel
 
 from agent.job import JobRequest, build_user_message
 
-_REPO = Path(__file__).resolve().parents[1]
+_REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
@@ -42,12 +42,15 @@ from agent.feedback import (
     record_feedback,
     remember_last_job,
 )
+from agent.confirm_tokens import consume_confirm_token, issue_confirm_token
+from agent.job_store import JobStore
 from agent.safety import (
     MAX_AGENT_STEPS,
     append_audit,
+    audit_log_path,
     check_cooldown,
-    is_destructive_tool,
     new_confirm_token,
+    requires_confirmation,
     utc_now_iso,
     AuditEntry,
 )
@@ -62,7 +65,14 @@ from agent.routing_context import (
 from agent.schema import TOOL_SCHEMAS
 from agent.templates import catalog as template_catalog
 
-API_TOKEN = os.environ.get("AGENT_API_TOKEN", "dev-change-me")
+EVAL_MODE = os.environ.get("AGENT_EVAL_MODE", "").strip() not in ("", "0", "false", "False")
+_API_TOKEN_RAW = os.environ.get("AGENT_API_TOKEN", "").strip()
+if not _API_TOKEN_RAW and not EVAL_MODE:
+    raise RuntimeError(
+        "AGENT_API_TOKEN must be set when AGENT_EVAL_MODE is off "
+        "(use dev-change-me only for local eval)"
+    )
+API_TOKEN = _API_TOKEN_RAW or "dev-change-me"
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
 OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3:8b")
 OLLAMA_FALLBACK_MODEL = os.environ.get("OLLAMA_FALLBACK_MODEL", "qwen2.5:7b-instruct")
@@ -75,7 +85,6 @@ OLLAMA_NUM_CTX = int(os.environ.get("OLLAMA_NUM_CTX", "4096"))
 OLLAMA_NUM_PREDICT = int(os.environ.get("OLLAMA_NUM_PREDICT", "512"))
 BIND_HOST = os.environ.get("AGENT_BIND_HOST", "127.0.0.1")
 BIND_PORT = int(os.environ.get("AGENT_BIND_PORT", "8787"))
-EVAL_MODE = os.environ.get("AGENT_EVAL_MODE", "").strip() not in ("", "0", "false", "False")
 EVAL_MODEL = os.environ.get("AGENT_EVAL_MODEL", "").strip()
 EVAL_DISABLE_RETRIEVAL = os.environ.get("AGENT_EVAL_DISABLE_RETRIEVAL", "").strip() not in (
     "",
@@ -106,10 +115,6 @@ SYSTEM_PROMPT = (_REPO / "agent" / "prompts" / "system.md").read_text(encoding="
 
 app = FastAPI(title="Neighborhood Minecraft Agent", version="1.0.0")
 
-# Pending destructive confirmations: token -> expires never (single-use consumed)
-_pending_confirms: dict[str, str] = {}
-
-
 class JobStatus(str, Enum):
     queued = "queued"
     running = "running"
@@ -139,7 +144,7 @@ class Job:
     tool_calls: list[dict[str, Any]] = field(default_factory=list)
 
 
-_jobs: dict[str, Job] = {}
+_jobs = JobStore[Job]()
 
 
 def _auth(authorization: str | None = Header(default=None)) -> None:
@@ -988,20 +993,35 @@ async def _run_agent_loop(job: Job) -> None:
                     rec.original_tool = original_name
                     rec.rewrite_applied = True
 
-                if is_destructive_tool(name, args):
+                if requires_confirmation(name, args):
                     token = req.confirm_token
-                    if not token or token not in _pending_confirms:
+                    if not token or not consume_confirm_token(
+                        token=token,
+                        player=req.player,
+                        prompt=req.prompt,
+                        tool=name,
+                        arguments=args,
+                    ):
                         new_tok = new_confirm_token()
-                        _pending_confirms[new_tok] = req.prompt
+                        issue_confirm_token(
+                            player=req.player,
+                            prompt=req.prompt,
+                            tool=name,
+                            arguments=args,
+                            token=new_tok,
+                        )
                         job.status = JobStatus.done
                         job.message = (
                             f"Destructive action blocked. Confirm with: "
                             f"/agent confirm {new_tok} {req.prompt}"
                         )
                         return
-                    del _pending_confirms[token]
 
-                result = T.execute_tool(name, args, dry_run=req.dry_run)
+                import asyncio
+
+                result = await asyncio.to_thread(
+                    T.execute_tool, name, args, dry_run=req.dry_run
+                )
                 job.tool_calls.append(
                     {"name": name, "arguments": args, "result": result.to_dict()}
                 )
@@ -1031,17 +1051,38 @@ async def _run_agent_loop(job: Job) -> None:
 
 
 async def _process_job(job_id: str) -> None:
-    job = _jobs[job_id]
+    import logging
+    import time
+
+    from agent.metrics import inc, observe
+
+    log = logging.getLogger("neighborhood.agent.job")
+    job = _jobs.get(job_id)
+    if job is None:
+        return
     job.status = JobStatus.running
     start_job(job_id)
     set_current_job(job_id)
     routing_meta: dict[str, Any] = {}
+    t0 = time.monotonic()
+    log.info(
+        "job_start",
+        extra={
+            "job_id": job_id,
+            "player": job.request.player,
+            "dry_run": job.request.dry_run,
+        },
+    )
     try:
         await _run_agent_loop(job)
     except Exception as e:
         job.status = JobStatus.failed
         job.message = str(e)
+        inc("jobs_total", labels={"status": "failed"})
+    else:
+        inc("jobs_total", labels={"status": job.status.value})
     finally:
+        observe("job_latency_seconds", time.monotonic() - t0)
         rec = finish_job(job_id)
         set_current_job(None)
         if rec:
@@ -1079,14 +1120,53 @@ async def _process_job(job_id: str) -> None:
 
 
 @app.get("/health")
-async def health() -> dict[str, str]:
+async def health() -> dict[str, Any]:
     from agent.tool_registry import TOOLS_SCHEMA_VERSION, TOOLS_VERSION
+    from agent.templates import catalog as _tc
 
+    import asyncio
+
+    deps: dict[str, Any] = {}
+    try:
+        await asyncio.to_thread(T.preflight)
+        deps["rcon"] = "ok"
+    except Exception as exc:
+        deps["rcon"] = f"error: {exc}"
+    try:
+        async with httpx.AsyncClient(timeout=3.0) as client:
+            r = await client.get(f"{OLLAMA_BASE}/api/tags")
+            deps["ollama"] = "ok" if r.status_code == 200 else f"http_{r.status_code}"
+    except Exception as exc:
+        deps["ollama"] = f"error: {exc}"
+    audit_path = audit_log_path()
+    try:
+        audit_path.parent.mkdir(parents=True, exist_ok=True)
+        with audit_path.open("a", encoding="utf-8"):
+            pass
+        deps["audit_writable"] = "ok"
+    except Exception as exc:
+        deps["audit_writable"] = f"error: {exc}"
+    deps["template_count"] = len(list(_tc.iter_templates()))
+    overall = (
+        "ok"
+        if deps.get("rcon") == "ok" and deps.get("audit_writable") == "ok"
+        else "degraded"
+    )
     return {
-        "status": "ok",
+        "status": overall,
         "tools_version": TOOLS_VERSION,
         "tools_schema_version": str(TOOLS_SCHEMA_VERSION),
+        "dependencies": deps,
     }
+
+
+@app.get("/metrics")
+async def metrics() -> Any:
+    from fastapi.responses import PlainTextResponse
+
+    from agent.metrics import prometheus_text
+
+    return PlainTextResponse(prometheus_text(), media_type="text/plain; version=0.0.4")
 
 
 @app.get("/capabilities")
@@ -1117,12 +1197,7 @@ async def create_job(req: JobRequest) -> JobResponse:
     if parsed is not None:
         return _handle_rating_job(req, parsed)
 
-    if not _is_eval_request(req):
-        cooldown_msg = check_cooldown(req.uuid)
-        if cooldown_msg:
-            raise HTTPException(429, cooldown_msg)
-
-    # /agent confirm <token> <prompt>
+    # /agent confirm <token> <prompt> — parse before cooldown
     prompt = req.prompt.strip()
     if prompt.lower().startswith("confirm "):
         parts = prompt.split(maxsplit=2)
@@ -1130,9 +1205,14 @@ async def create_job(req: JobRequest) -> JobResponse:
             req.confirm_token = parts[1]
             req.prompt = parts[2]
 
+    if not _is_eval_request(req):
+        cooldown_msg = check_cooldown(req.uuid)
+        if cooldown_msg:
+            raise HTTPException(429, cooldown_msg)
+
     job_id = str(uuid.uuid4())
     job = Job(id=job_id, request=req)
-    _jobs[job_id] = job
+    _jobs.set(job_id, job)
 
     await _process_job(job_id)
 

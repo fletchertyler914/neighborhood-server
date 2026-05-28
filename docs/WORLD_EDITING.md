@@ -41,7 +41,7 @@ Prefer **typed MCP tools** over raw `fawe_as_player` / `run_command`.
 | `paste_template_at_player` | Schematic paste (fallback if no `.schem`) |
 | `create_template_from_selection` | Save selection to catalog |
 
-55 gold/community templates in `agent/templates/catalog.json`. Prompt aliases resolve via `infer_template_from_prompt`.
+See `agent/templates/catalog.json` for the current template count (101 verified schematics as of tools 2.8.0). Prompt aliases resolve via the hybrid ranker (`docs/TEMPLATE_RANKING.md`).
 
 ## FAWE typed primitives
 

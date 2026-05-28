@@ -118,7 +118,20 @@ def ingest_pack(pack_dir: Path, *, source_id: str) -> dict[str, Any]:
     out_dir = _INGESTED / source_id
     out_dir.mkdir(parents=True, exist_ok=True)
     shutil.copy2(manifest_path, out_dir / "pack.json")
-    return {"ok": True, "merged": n, "pack_id": manifest.pack_id}
+    schem_src = pack_dir / "schematics"
+    schem_dst = _TEMPLATES_DIR / "schematics"
+    schem_dst.mkdir(parents=True, exist_ok=True)
+    schem_copied = 0
+    if schem_src.is_dir():
+        for path in sorted(schem_src.glob("*.schem")):
+            shutil.copy2(path, schem_dst / path.name)
+            schem_copied += 1
+    return {
+        "ok": True,
+        "merged": n,
+        "pack_id": manifest.pack_id,
+        "schematics_copied": schem_copied,
+    }
 
 
 def generate_attribution(path: Path | None = None) -> Path:
@@ -153,6 +166,11 @@ def main() -> None:
         help="Ingest all packs under agent/templates/packs/ for enabled sources",
     )
     parser.add_argument("--pack-dir", type=Path, help="Ingest a template pack directory")
+    parser.add_argument(
+        "--allow-untrusted",
+        action="store_true",
+        help="Allow --pack-dir for sources not enabled in sources.yaml",
+    )
     parser.add_argument("--source-id", type=str, default="")
     parser.add_argument("--attribution", action="store_true")
     args = parser.parse_args()
@@ -167,6 +185,12 @@ def main() -> None:
             print(json.dumps(row, indent=2))
     if args.pack_dir:
         sid = args.source_id or args.pack_dir.name
+        enabled = {s["source_id"] for s in load_sources() if s.get("enabled")}
+        if sid not in enabled and not args.allow_untrusted:
+            raise SystemExit(
+                f"source_id {sid!r} is not enabled in sources.yaml; "
+                "pass --allow-untrusted to ingest ad-hoc packs"
+            )
         print(json.dumps(ingest_pack(args.pack_dir, source_id=sid), indent=2))
     if args.attribution:
         p = generate_attribution()

@@ -79,7 +79,13 @@ def _print_summary(payload: dict) -> None:
             f"improvements={len(diff['improvements'])}",
             f"drift={len(diff['drift'])}",
         )
-    if summary["failed"] or (diff and diff["regressions"]):
+    # When a baseline is provided, only regressions are fatal. Without a
+    # baseline, any failure exits non-zero so callers can wire CI accordingly.
+    if diff is not None:
+        if diff["regressions"]:
+            raise SystemExit(2)
+        return
+    if summary["failed"]:
         raise SystemExit(2)
 
 

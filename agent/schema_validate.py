@@ -58,6 +58,8 @@ def validate_against_schema(
             raise SchemaValidationError(f"{path}: expected string")
         if "minLength" in schema and len(value) < schema["minLength"]:
             raise SchemaValidationError(f"{path}: string too short")
+        if "maxLength" in schema and len(value) > schema["maxLength"]:
+            raise SchemaValidationError(f"{path}: string too long")
         if "enum" in schema and value not in schema["enum"]:
             raise SchemaValidationError(f"{path}: must be one of {schema['enum']}")
         return

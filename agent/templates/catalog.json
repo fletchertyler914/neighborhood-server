@@ -978,7 +978,10 @@
         "henhouse",
         "chicken pen",
         "chicken barn",
-        "small chicken pen"
+        "small chicken pen",
+        "place for chickens",
+        "place for chickens to live",
+        "home for chickens"
       ],
       "schematic": "chicken_coop_small.schem",
       "footprint": [
@@ -1475,7 +1478,7 @@
         "village"
       ],
       "aliases": [
-        "garden",
+        "garden plot",
         "small garden",
         "flower garden",
         "garden bed"
@@ -1520,10 +1523,10 @@
       ],
       "aliases": [
         "gatehouse",
-        "gatehouse",
         "castle gate",
         "main gate",
-        "entrance gate"
+        "entrance gate",
+        "medieval gate"
       ],
       "schematic": "gatehouse.schem",
       "footprint": [
@@ -1561,7 +1564,9 @@
       "aliases": [
         "gazebo",
         "pavilion",
-        "wood gazebo"
+        "wood gazebo",
+        "garden gazebo",
+        "gazebo in the garden"
       ],
       "schematic": "gazebo_oak.schem",
       "footprint": [
@@ -2872,7 +2877,9 @@
         "crop"
       ],
       "aliases": [
-        "pumpkin farm"
+        "pumpkin farm",
+        "pumpkin patch",
+        "pumpkin field"
       ],
       "schematic": "pumpkin_farm_small.schem",
       "footprint": [
@@ -3907,7 +3914,9 @@
       "aliases": [
         "wheat farm",
         "wheat plot",
-        "grain farm"
+        "grain farm",
+        "wheat field",
+        "field of wheat"
       ],
       "schematic": "wheat_farm_small.schem",
       "footprint": [

@@ -51,8 +51,11 @@ def validate_coverage(
     if missing:
         errors.append(f"coverage requires missing case ids: {', '.join(missing)}")
 
-    extra = sorted(required - present)  # already handled
-    _ = extra
+    extra = sorted(present - required)
+    if extra:
+        errors.append(
+            f"coverage lists no requirement for case ids: {', '.join(extra)}"
+        )
 
     # Each required case must support the mode implied by coverage path
     families = coverage.get("intent_families") or {}

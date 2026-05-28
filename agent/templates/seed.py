@@ -188,11 +188,13 @@ def seed_one(template_id: str, player: str, *, keep_build: bool = False, dry_run
     out_copy = _agentexec(player, "copy")
     time.sleep(max(1.5, _FAWE_TICK * 2.0))
     save_name = meta.schematic_load_name
-    # FAWE's //schem save silently no-ops when the target file already exists
-    # (no overwrite by default, and no error surfaced to the player). Delete
-    # the existing file first so the save always writes fresh content.
     local = template_catalog.schematic_repo_path(meta)
-    if local.is_file():
+    backup = local.with_suffix(".schem.bak")
+    had_previous = local.is_file()
+    if had_previous:
+        import shutil
+
+        shutil.copy2(local, backup)
         try:
             local.unlink()
         except OSError:
@@ -202,7 +204,6 @@ def seed_one(template_id: str, player: str, *, keep_build: bool = False, dry_run
 
     deadline = time.time() + 10.0
     on_server = False
-    local = template_catalog.schematic_repo_path(meta)
     while time.time() < deadline:
         on_server = template_catalog.schematic_available_on_server(meta)
         if on_server and local.is_file():
@@ -211,10 +212,16 @@ def seed_one(template_id: str, player: str, *, keep_build: bool = False, dry_run
     local_exists = local.is_file()
 
     if not (on_server and local_exists):
+        if had_previous and backup.is_file():
+            import shutil
+
+            shutil.copy2(backup, local)
+        err = "schem save did not produce file within 10s"
+        _update_seed_manifest(template_id, ok=False, error=err)
         return {
             "template_id": template_id,
             "ok": False,
-            "error": "schem save did not produce file within 10s",
+            "error": err,
             "on_server": on_server,
             "local_exists": local_exists,
             "fawe_save_output": (out_save or "")[:200],
@@ -222,11 +229,17 @@ def seed_one(template_id: str, player: str, *, keep_build: bool = False, dry_run
             "fawe_pos2": (out2 or "")[:80],
             "fawe_copy": (out_copy or "")[:80],
         }
+    if backup.is_file():
+        try:
+            backup.unlink()
+        except OSError:
+            pass
 
     digest = file_content_hash(local)
     if not keep_build:
         call("clear_box", {"x1": wx1, "y1": wy1, "z1": wz1, "x2": wx2, "y2": wy2, "z2": wz2}, dry_run=False)
 
+    _update_seed_manifest(template_id, digest=digest, ok=True)
     return {
         "template_id": template_id,
         "ok": True,
@@ -235,6 +248,35 @@ def seed_one(template_id: str, player: str, *, keep_build: bool = False, dry_run
         "box": [x1, y1, z1, x2, y2, z2],
         "saved_as": save_name,
     }
+
+
+def _manifest_path() -> Path:
+    return Path(__file__).resolve().parent / ".seed_manifest.json"
+
+
+def _update_seed_manifest(template_id: str, *, digest: str = "", ok: bool, error: str = "") -> None:
+    import json
+    from datetime import datetime, timezone
+
+    path = _manifest_path()
+    data: dict[str, object] = {}
+    if path.is_file():
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            data = {}
+    entries = dict(data.get("templates") or {})
+    row = dict(entries.get(template_id) or {})
+    row["last_seeded_at"] = datetime.now(timezone.utc).isoformat()
+    row["ok"] = ok
+    if digest:
+        row["content_hash"] = digest
+    if error:
+        row["error"] = error
+        row["attempts"] = int(row.get("attempts") or 0) + 1
+    entries[template_id] = row
+    data["templates"] = entries
+    path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def seed_batch(

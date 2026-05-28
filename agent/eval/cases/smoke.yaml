@@ -20,6 +20,10 @@ cases:
       status: done
       max_steps: 6
       must_call: []
+      forbidden_tools:
+        - fawe_as_player
+        - clear_box
+        - run_command
 
   - id: world_settings.daylight_sunny
     category: world_settings

@@ -88,8 +88,9 @@ def join_feedback(
         audit = audit_index.get(job_id)
         if not audit:
             continue
-        if not audit.get("tool_calls"):
-            # Nothing to learn from a job with no tool calls.
+        tool_calls = audit.get("tool_calls") or []
+        rating = str(fb.get("rating") or "")
+        if not tool_calls and rating != "bad":
             continue
         yield JoinedRow(feedback=fb, audit=audit)
 
@@ -111,17 +112,24 @@ def _iter_jsonl(path: Path) -> Iterator[dict[str, Any]]:
 # --- SFT (supervised fine-tune) output ----------------------------------
 
 
-def _tool_calls_for_messages(tool_calls: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _tool_calls_for_messages(
+    tool_calls: list[dict[str, Any]],
+    *,
+    job_id: str | None = None,
+) -> list[dict[str, Any]]:
     """Translate audit-format tool calls to OpenAI tool_calls list."""
     out: list[dict[str, Any]] = []
-    for tc in tool_calls:
+    for idx, tc in enumerate(tool_calls):
         name = tc.get("name") or ""
         if not name:
             continue
         args = tc.get("arguments") or {}
+        call_id = tc.get("id") or tc.get("tool_call_id")
+        if not call_id:
+            call_id = f"{job_id or 'job'}:tool:{idx}:{name}"
         out.append(
             {
-                "id": tc.get("id") or name,
+                "id": call_id,
                 "type": "function",
                 "function": {
                     "name": name,
@@ -152,7 +160,8 @@ def to_sft_example(row: JoinedRow, *, system_prompt: str | None = None) -> dict[
     if system_prompt:
         messages.append({"role": "system", "content": system_prompt})
     messages.append({"role": "user", "content": row.prompt})
-    tool_calls = _tool_calls_for_messages(row.tool_calls)
+    job_id = str(row.audit.get("job_id") or "")
+    tool_calls = _tool_calls_for_messages(row.tool_calls, job_id=job_id)
     assistant_msg: dict[str, Any] = {
         "role": "assistant",
         "content": row.audit.get("message") or "",
@@ -160,6 +169,18 @@ def to_sft_example(row: JoinedRow, *, system_prompt: str | None = None) -> dict[
     if tool_calls:
         assistant_msg["tool_calls"] = tool_calls
     messages.append(assistant_msg)
+    for idx, tc in enumerate(row.tool_calls):
+        result = tc.get("result")
+        if result is None:
+            continue
+        call_id = tool_calls[idx]["id"] if idx < len(tool_calls) else f"{job_id}:tool:{idx}"
+        messages.append(
+            {
+                "role": "tool",
+                "tool_call_id": call_id,
+                "content": json.dumps(result, ensure_ascii=False),
+            }
+        )
     routing = _routing_meta(row)
     meta: dict[str, Any] = {
         "job_id": row.audit.get("job_id"),
@@ -218,27 +239,41 @@ def build_dpo_pairs(rows: Iterable[JoinedRow]) -> list[dict[str, Any]]:
     refer to the same audit job or produce identical tool calls are
     dropped — they teach the trainer nothing.
     """
+    def _cluster_key(prompt: str) -> str:
+        try:
+            from agent.templates.embedding_backend import tokenize
+
+            tokens = sorted(set(tokenize(prompt)))[:16]
+            return " ".join(tokens) if tokens else prompt.strip().lower()
+        except Exception:
+            return prompt.strip().lower()
+
     grouped: dict[str, dict[str, list[JoinedRow]]] = {}
     for row in rows:
         prompt = row.prompt.strip()
         if not prompt:
             continue
-        bucket = grouped.setdefault(prompt, {"good": [], "bad": []})
+        key = _cluster_key(prompt)
+        bucket = grouped.setdefault(key, {"good": [], "bad": []})
         if row.rating in bucket:
             bucket[row.rating].append(row)
 
     pairs: list[dict[str, Any]] = []
-    for prompt, buckets in grouped.items():
+    for _cluster, buckets in grouped.items():
         if not buckets["good"] or not buckets["bad"]:
             continue
         for chosen in buckets["good"]:
-            chosen_calls = _tool_calls_for_messages(chosen.tool_calls)
+            chosen_calls = _tool_calls_for_messages(
+                chosen.tool_calls, job_id=str(chosen.audit.get("job_id") or "")
+            )
             chosen_sig = json.dumps(chosen_calls, sort_keys=True)
             chosen_job = chosen.audit.get("job_id")
             for rejected in buckets["bad"]:
                 if rejected.audit.get("job_id") == chosen_job:
                     continue
-                rejected_calls = _tool_calls_for_messages(rejected.tool_calls)
+                rejected_calls = _tool_calls_for_messages(
+                    rejected.tool_calls, job_id=str(rejected.audit.get("job_id") or "")
+                )
                 if json.dumps(rejected_calls, sort_keys=True) == chosen_sig:
                     continue
                 chosen_routing = _routing_meta(chosen)
@@ -261,7 +296,7 @@ def build_dpo_pairs(rows: Iterable[JoinedRow]) -> list[dict[str, Any]]:
                     meta["rejected_intent_family"] = rejected_routing["intent_family"]
                 pairs.append(
                     {
-                        "prompt": prompt,
+                        "prompt": chosen.prompt,
                         "chosen": chosen_calls,
                         "rejected": rejected_calls,
                         "meta": meta,

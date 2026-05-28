@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
+import threading
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger("neighborhood.agent")
+_audit_lock = threading.Lock()
 
 # Per-player cooldown between /agent jobs (seconds).
 AGENT_COOLDOWN_SEC = float(os.environ.get("AGENT_COOLDOWN_SEC", "8"))
@@ -81,10 +86,21 @@ def audit_log_path() -> Path:
     return log_dir / "agent-audit.log"
 
 
+def _rotate_log_if_needed(path: Path, *, max_bytes: int = 50 * 1024 * 1024) -> None:
+    if not path.exists() or path.stat().st_size <= max_bytes:
+        return
+    rotated = path.with_suffix(path.suffix + ".1")
+    if rotated.exists():
+        rotated.unlink()
+    path.rename(rotated)
+
+
 def append_audit(entry: AuditEntry) -> None:
     path = audit_log_path()
-    with path.open("a", encoding="utf-8") as f:
-        f.write(entry.to_json() + "\n")
+    with _audit_lock:
+        _rotate_log_if_needed(path)
+        with path.open("a", encoding="utf-8") as f:
+            f.write(entry.to_json() + "\n")
 
 
 def check_cooldown(player_uuid: str) -> str | None:
@@ -98,9 +114,26 @@ def check_cooldown(player_uuid: str) -> str | None:
     return None
 
 
-def is_destructive_tool(tool_name: str, arguments: dict[str, Any]) -> bool:
+def _destructive_by_pattern(tool_name: str, arguments: dict[str, Any]) -> bool:
     blob = f"{tool_name} {json.dumps(arguments)}"
     return any(p.search(blob) for p in DESTRUCTIVE_PATTERNS)
+
+
+def is_destructive_tool(tool_name: str, arguments: dict[str, Any]) -> bool:
+    """Backward-compatible alias for pattern-based destructive detection."""
+
+    return _destructive_by_pattern(tool_name, arguments)
+
+
+def requires_confirmation(tool_name: str, arguments: dict[str, Any]) -> bool:
+    """True when registry risk or command patterns require a confirm token."""
+
+    from agent.tool_registry import TOOL_DEFINITIONS_BY_NAME
+
+    defn = TOOL_DEFINITIONS_BY_NAME.get(tool_name)
+    if defn is not None and defn.risk in ("high", "destructive"):
+        return True
+    return _destructive_by_pattern(tool_name, arguments)
 
 
 def require_confirmation(

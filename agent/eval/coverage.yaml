@@ -39,6 +39,7 @@ intent_families:
         - routing.spawn_chickens_uses_summon_entity
       P2-routing:
         - routing.fawe_player_dispatch
+        - build.hollow_fort_spec
     world: {}
   safety:
     spec: {}

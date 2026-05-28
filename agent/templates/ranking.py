@@ -382,7 +382,21 @@ def resolve_template(
     try:
         from agent.templates.ranking_audit import append_ranking_audit
 
-        append_ranking_audit(result, source="resolve_template")
+        append_ranking_audit(
+            result,
+            source="resolve_template",
+            extra={
+                "weights": {
+                    "lex": float(os.environ.get("TEMPLATE_RANK_W_LEX", "0.55")),
+                    "sem": float(os.environ.get("TEMPLATE_RANK_W_SEM", "0.30")),
+                    "pol": float(os.environ.get("TEMPLATE_RANK_W_POL", "0.15")),
+                },
+                "thresholds": {
+                    "high": _confidence_high(),
+                    "medium": _confidence_medium(),
+                },
+            },
+        )
     except OSError:
         pass
     return result

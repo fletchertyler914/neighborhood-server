@@ -26,7 +26,8 @@ RCON_PASSWORD_FILE = os.environ.get("RCON_PASSWORD_FILE", "")
 MAX_BLOCKS = int(os.environ.get("MINECRAFT_MCP_MAX_BLOCKS", "200000"))
 MAX_COMMANDS = int(os.environ.get("MINECRAFT_MCP_MAX_COMMANDS", "20000"))
 REPO_ROOT = os.environ.get(
-    "NEIGHBORHOOD_REPO", os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    "NEIGHBORHOOD_REPO",
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")),
 )
 
 
@@ -145,10 +146,29 @@ def _rcon_tcp(command: str, timeout: int = 30) -> str:
         return body.strip()
 
 
+_PLAYER_NAME_RX = re.compile(r"^\.?[A-Za-z0-9_]{1,16}$")
+_BLOCK_ID_RX = re.compile(r"^[a-z0-9_]+$")
+
+
+def validate_player_name(player: str) -> str:
+    name = (player or "").strip()
+    if not _PLAYER_NAME_RX.fullmatch(name):
+        raise ValueError(f"invalid player name: {player!r}")
+    return name
+
+
+def _validate_block_id(block: str) -> str:
+    name = (block or "").lower().removeprefix("minecraft:")
+    if not _BLOCK_ID_RX.match(name):
+        raise ValueError(f"invalid block id: {block!r}")
+    return name
+
+
 def _quote_player(player: str) -> str:
-    if " " in player:
-        return f'"{player}"'
-    return player
+    name = validate_player_name(player)
+    if " " in name:
+        return f'"{name}"'
+    return name
 
 
 _MC_ERROR_PREFIXES = (
@@ -626,6 +646,7 @@ def fill_box(
     mode: Literal["replace", "hollow", "outline", "destroy", "keep"] = "replace",
 ) -> ToolResult:
     try:
+        block = _validate_block_id(block)
         a, b = Vec3(x1, y1, z1), Vec3(x2, y2, z2)
         volume = _guard_volume(a, b)
         cmd = f"fill {x1} {y1} {z1} {x2} {y2} {z2} {block} {mode}"
@@ -650,7 +671,7 @@ def fill_box(
 
 
 def clear_box(x1: int, y1: int, z1: int, x2: int, y2: int, z2: int) -> ToolResult:
-    return fill_box(x1, y1, z1, x2, y2, z2, "air", "replace")
+    return _rename_tool(fill_box(x1, y1, z1, x2, y2, z2, "air", "replace"), "clear_box")
 
 
 def build_platform(
@@ -664,7 +685,9 @@ def build_platform(
     x2 = x1 + width - 1
     z1 = center_z - depth // 2
     z2 = z1 + depth - 1
-    return fill_box(x1, y, z1, x2, y, z2, block, "replace")
+    return _rename_tool(
+        fill_box(x1, y, z1, x2, y, z2, block, "replace"), "build_platform"
+    )
 
 
 def build_sphere(
@@ -725,7 +748,9 @@ def build_cylinder(
                     f"{center_x + dx} {y + height - 1} {center_z + dz} {block}"
                 )
         out, cmds = _run_many(commands)
-        return _ok("build_cylinder", out, commands=cmds, blocks=len(commands))
+        columns = len(commands)
+        block_estimate = columns * height
+        return _ok("build_cylinder", out, commands=cmds, blocks=block_estimate)
     except Exception as e:
         return _err("build_cylinder", e)
 
@@ -1676,9 +1701,21 @@ def _rename_tool(result: ToolResult, name: str) -> ToolResult:
     return result
 
 
+def _guard_fawe_volume(estimate: int, tool: str) -> None:
+    if estimate > MAX_BLOCKS:
+        raise ValueError(
+            f"refusing FAWE operation (~{estimate:,} blocks); limit is {MAX_BLOCKS:,}"
+        )
+
+
 def fawe_sphere_at_player(player: str, block: str, radius: int) -> ToolResult:
     if radius < 1 or radius > 64:
         return _err("fawe_sphere_at_player", ValueError("radius must be between 1 and 64"))
+    try:
+        _validate_block_id(block)
+        _guard_fawe_volume((2 * radius + 1) ** 3, "fawe_sphere_at_player")
+    except ValueError as exc:
+        return _err("fawe_sphere_at_player", exc)
     return _rename_tool(fawe_as_player(player, f"//sphere {block} {radius}"), "fawe_sphere_at_player")
 
 
@@ -1687,6 +1724,11 @@ def fawe_cyl_at_player(player: str, block: str, radius: int, height: int) -> Too
         return _err("fawe_cyl_at_player", ValueError("radius must be between 1 and 64"))
     if height < 1 or height > 256:
         return _err("fawe_cyl_at_player", ValueError("height must be between 1 and 256"))
+    try:
+        _validate_block_id(block)
+        _guard_fawe_volume((2 * radius + 1) ** 2 * height, "fawe_cyl_at_player")
+    except ValueError as exc:
+        return _err("fawe_cyl_at_player", exc)
     return _rename_tool(
         fawe_as_player(player, f"//cyl {block} {radius} {height}"), "fawe_cyl_at_player"
     )
@@ -1826,7 +1868,7 @@ def _template_follow_up_steps(
             follow_msgs.append(sr.output or sr.error or "")
             commands.extend(sr.commands)
         elif stool:
-            fn = TOOL_DISPATCH.get(stool)
+            fn = _tool_dispatch().get(stool)
             if fn:
                 sargs = {k: v for k, v in step.items() if k != "tool"}
                 if "player" not in sargs:
@@ -1925,7 +1967,7 @@ def paste_template_at_player(
                         dict(step.get("args") or {}), ax=ax, ay=ay, az=az
                     )
                     sargs.setdefault("player", player)
-                    fn = TOOL_DISPATCH.get(stool)
+                    fn = _tool_dispatch().get(stool)
                     if fn is None:
                         raise ValueError(f"fallback_steps tool not found: {stool}")
                     last_result = fn(**sargs)
@@ -1956,7 +1998,7 @@ def paste_template_at_player(
             fb_tool = str(fb.get("tool") or "")
             fb_args = resolve_step_args(dict(fb.get("args") or {}), ax=ax, ay=ay, az=az)
             fb_args.setdefault("player", player)
-            fn = TOOL_DISPATCH.get(fb_tool)
+            fn = _tool_dispatch().get(fb_tool)
             if fn is None:
                 raise ValueError(f"fallback tool not found: {fb_tool}")
             result = fn(**fb_args)
@@ -2122,6 +2164,12 @@ from agent.fawe_tools import (  # noqa: E402
 )
 
 
+def _tool_dispatch() -> dict[str, Any]:
+    from agent.tools import TOOL_DISPATCH
+
+    return TOOL_DISPATCH
+
+
 def _dispatch_entry(fn: Any) -> Any:
     """Return a kwargs-safe wrapper that ignores unknown LLM arguments."""
 
@@ -2135,36 +2183,3 @@ def _dispatch_entry(fn: Any) -> Any:
         return fn(**filtered)
 
     return _wrapped
-
-
-_raw_dispatch = build_dispatch(sys.modules[__name__])
-TOOL_DISPATCH: dict[str, Any] = {name: _dispatch_entry(fn) for name, fn in _raw_dispatch.items()}
-
-
-def _execute_tool_raw(name: str, arguments: dict[str, Any], dry_run: bool = False) -> ToolResult:
-    """Low-level dispatch without schema validation or signatures."""
-
-    fn = TOOL_DISPATCH.get(name)
-    if fn is None:
-        return _err(name, ValueError(f"unknown tool: {name}"))
-    if dry_run:
-        return ToolResult(
-            ok=True,
-            tool=name,
-            output=f"dry-run: would call {name} with {json.dumps(arguments)}",
-            commands=[],
-        )
-    return fn(**arguments)
-
-
-def execute_tool(name: str, arguments: dict[str, Any], dry_run: bool = False) -> ToolResult:
-    """Dispatch a tool by name. Used by orchestrator and tests."""
-    from agent.executor import execute_tool_deterministic
-
-    return execute_tool_deterministic(name, arguments, dry_run=dry_run)
-
-
-# Re-export for tests / orchestrator parity checks
-TOOL_SCHEMAS = build_openai_schemas(orchestrator_only=True)
-
-validate_registry()

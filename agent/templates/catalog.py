@@ -66,6 +66,14 @@ class TemplateMeta:
 _catalog_cache: dict[str, Any] | None = None
 _meta_by_id: dict[str, TemplateMeta] | None = None
 _alias_to_id: dict[str, str] | None = None
+_alias_collisions: list[tuple[str, str, str]] = []
+
+
+def alias_collisions() -> list[tuple[str, str, str]]:
+    """Return (alias, previous_template_id, new_template_id) for duplicate aliases."""
+
+    _build_index()
+    return list(_alias_collisions)
 
 
 def catalog_path() -> Path:
@@ -96,6 +104,7 @@ def _build_index() -> None:
     ns = str(raw.get("schematics_namespace") or "neighborhood")
     by_id: dict[str, TemplateMeta] = {}
     aliases: dict[str, str] = {}
+    collisions: list[tuple[str, str, str]] = []
     for item in raw.get("templates") or []:
         tid = str(item.get("id") or "").strip()
         if not tid or not _TEMPLATE_ID_RX.match(tid):
@@ -147,9 +156,14 @@ def _build_index() -> None:
         for alias in meta.aliases:
             key = alias.lower().strip()
             if key:
+                prev = aliases.get(key)
+                if prev and prev != tid:
+                    collisions.append((key, prev, tid))
                 aliases[key] = tid
     _meta_by_id = by_id
     _alias_to_id = aliases
+    global _alias_collisions
+    _alias_collisions = collisions
 
 
 _KNOWN_FALLBACK_TOOLS: frozenset[str] | None = None

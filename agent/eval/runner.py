@@ -199,8 +199,13 @@ def run(
             for env in envelopes:
                 ef.write(json.dumps(env, sort_keys=True) + "\n")
     has_baseline_regressions = bool(baseline_diff and baseline_diff["regressions"])
-    if exit_on_fail and (payload["summary"]["failed"] or has_baseline_regressions):
-        raise SystemExit(2)
+    if exit_on_fail:
+        if has_baseline_regressions:
+            raise SystemExit(2)
+        # When a baseline is provided, the baseline is the source of truth — only
+        # fail on regressions or new failures that aren't in the baseline.
+        if baseline_diff is None and payload["summary"]["failed"]:
+            raise SystemExit(2)
     return payload
 
 

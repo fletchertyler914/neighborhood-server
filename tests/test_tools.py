@@ -79,7 +79,7 @@ def _captured_rcon(replies):
 
 def test_mine_shaft_drills_downward_one_wide():
     calls, fake = _captured_rcon(["Successfully filled 100 block(s)"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = mine_shaft_at_player("firecrab93", depth=100)
     assert r.ok, r.error
     assert len(calls) == 1
@@ -92,7 +92,7 @@ def test_mine_shaft_drills_downward_one_wide():
 
 def test_mine_shaft_respects_forward_offset_and_radius():
     calls, fake = _captured_rcon(["Successfully filled 50 block(s)"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = mine_shaft_at_player("firecrab93", depth=50, radius=1, forward_offset=1)
     assert r.ok
     cmd = calls[0]
@@ -103,7 +103,7 @@ def test_mine_shaft_respects_forward_offset_and_radius():
 
 def test_mine_shaft_clamps_extreme_inputs():
     calls, fake = _captured_rcon(["OK"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = mine_shaft_at_player("firecrab93", depth=10_000, radius=99, forward_offset=999)
     assert r.ok
     cmd = calls[0]
@@ -114,7 +114,7 @@ def test_mine_shaft_clamps_extreme_inputs():
 
 def test_build_house_creates_door_and_windows():
     calls, fake = _captured_rcon(["OK"] * 9)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_house(100, 80, 200)
     assert r.ok, r.error
     joined = "\n".join(calls)
@@ -126,7 +126,7 @@ def test_build_house_creates_door_and_windows():
 
 def test_set_time_normalizes_aliases():
     calls, fake = _captured_rcon(["Set the time to 1000"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = set_time("morning")
     assert r.ok
     assert calls == ["time set day"]
@@ -134,7 +134,7 @@ def test_set_time_normalizes_aliases():
 
 def test_set_weather_normalizes_aliases():
     calls, fake = _captured_rcon(["Changed the weather to clear"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = set_weather("sunny")
     assert r.ok
     assert calls == ["weather clear"]
@@ -142,7 +142,7 @@ def test_set_weather_normalizes_aliases():
 
 def test_set_gamemode_accepts_short_alias():
     calls, fake = _captured_rcon(["Set firecrab93's gamemode to Creative Mode"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = set_gamemode("firecrab93", "c")
     assert r.ok
     assert calls == ["gamemode creative firecrab93"]
@@ -150,7 +150,7 @@ def test_set_gamemode_accepts_short_alias():
 
 def test_give_haste_uses_seconds_not_ticks():
     calls, fake = _captured_rcon(["Given [Haste II] to firecrab93 for 600 seconds"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = give_haste("firecrab93", duration_sec=600, amplifier=2)
     assert r.ok
     assert calls == ["effect give firecrab93 haste 600 2"]
@@ -167,7 +167,7 @@ def test_build_bridge_at_player_extends_forward_when_facing_south():
     # yaw 0 = facing south (+Z); player's right is west (-X)
     replies = _facing_replies(100, 80, 200, 0.0) + ["Successfully filled 24 block(s)"]
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_bridge_at_player("firecrab93", length=12, width=2, block="oak_planks")
     assert r.ok, r.error
     fill_cmd = [c for c in calls if c.startswith("fill ")][0]
@@ -179,7 +179,7 @@ def test_build_bridge_at_player_west_facing():
     # yaw 90 = facing west (-X)
     replies = _facing_replies(50, 64, 50, 90.0) + ["Successfully filled 10 block(s)"]
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_bridge_at_player("firecrab93", length=10, width=1, block="cobblestone")
     assert r.ok
     fill_cmd = [c for c in calls if c.startswith("fill ")][0]
@@ -190,7 +190,7 @@ def test_build_house_at_player_places_house_in_front_with_door_facing_player():
     # yaw 0 = south, so house extends +Z and door faces north (back to player)
     replies = _facing_replies(0, 80, 0, 0.0) + ["OK"] * 9
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_house_at_player("firecrab93", width=7, depth=7, height=5, distance=3)
     assert r.ok, r.error
     joined = "\n".join(calls)
@@ -204,7 +204,7 @@ def test_build_wall_at_player_perpendicular_to_facing():
     # yaw 180 = facing north (-Z), wall spans X
     replies = _facing_replies(20, 70, 30, 180.0) + ["Successfully filled 32 block(s)"]
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_wall_at_player("firecrab93", length=8, height=4, block="stone_bricks", distance=2)
     assert r.ok
     fill_cmd = [c for c in calls if c.startswith("fill ")][0]
@@ -228,7 +228,7 @@ def test_normalize_item_id_strips_namespace_and_aliases():
 
 def test_give_item_runs_vanilla_give_with_clamped_count():
     calls, fake = _captured_rcon(["Gave 1 [Diamond Pickaxe] to firecrab93"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = give_item("firecrab93", "pickaxe", count=99)
     assert r.ok, r.error
     assert calls == ["give firecrab93 diamond_pickaxe 64"]
@@ -237,7 +237,7 @@ def test_give_item_runs_vanilla_give_with_clamped_count():
 
 def test_give_item_respects_components_string():
     calls, fake = _captured_rcon(["Gave 1 [Diamond Sword] to firecrab93"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = give_item(
             "firecrab93",
             "diamond_sword",
@@ -258,7 +258,7 @@ def test_give_item_refuses_denylisted_items():
 
 def test_give_item_surfaces_rcon_error_text():
     calls, fake = _captured_rcon(["Unknown item 'minecraft:bogus_item'"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = give_item("firecrab93", "bogus_item")
     assert not r.ok
     assert "Unknown item" in r.output
@@ -271,7 +271,7 @@ def test_build_castle_at_player_produces_hollow_walls_and_towers():
     # yaw 0 → facing south (+Z); castle extends +Z from the player.
     replies = _facing_replies(0, 80, 0, 0.0) + ["Successfully filled blocks(s)"] * 200
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_castle_at_player(
             "firecrab93",
             size=11,
@@ -326,7 +326,7 @@ def test_normalize_entity_handles_plurals_and_namespace():
 
 def test_summon_entity_runs_n_summons_clamped_to_32():
     calls, fake = _captured_rcon(["OK"] * 99)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = summon_entity("chickens", 10, 64, 20, count=99)
     assert r.ok, r.error
     assert len(calls) == 32
@@ -341,7 +341,7 @@ def test_summon_entity_refuses_bosses():
 
 def test_summon_entity_appends_nbt_when_provided():
     calls, fake = _captured_rcon(["OK"])
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = summon_entity("villager", 1, 2, 3, count=1, nbt="{NoAI:1b}")
     assert r.ok, r.error
     assert calls[0] == "summon villager 1 2 3 {NoAI:1b}"
@@ -354,7 +354,7 @@ def test_build_animal_pen_open_air_has_fence_and_animals():
     # yaw 0 → facing south (+Z); pen extends in front of the player.
     replies = _facing_replies(0, 80, 0, 0.0) + ["OK"] * 99
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_animal_pen_at_player(
             "firecrab93",
             animal="chicken",
@@ -392,7 +392,7 @@ def test_build_animal_pen_open_air_has_fence_and_animals():
 def test_build_animal_pen_with_roof_adds_walls_and_door():
     replies = _facing_replies(0, 80, 0, 0.0) + ["OK"] * 99
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_animal_pen_at_player(
             "firecrab93",
             animal="chicken",
@@ -421,7 +421,7 @@ def test_build_animal_pen_with_roof_adds_walls_and_door():
 def test_build_animal_pen_rejects_hostile_or_unknown_animal():
     replies = _facing_replies(0, 80, 0, 0.0)
     _, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_animal_pen_at_player("firecrab93", animal="zombie", count=4)
     assert not r.ok
     assert "zombie" in (r.error or "")
@@ -430,7 +430,7 @@ def test_build_animal_pen_rejects_hostile_or_unknown_animal():
 def test_build_animal_pen_clamps_counts_and_size():
     replies = _facing_replies(0, 80, 0, 0.0) + ["OK"] * 200
     calls, fake = _captured_rcon(replies)
-    with patch("agent.tools._rcon", side_effect=fake):
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_animal_pen_at_player(
             "firecrab93",
             animal="cow",
