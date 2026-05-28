@@ -328,9 +328,13 @@ details, weights, and the latest production-validation snapshot.
 **Agent framework** (eval, registry, training prep):
 
 - Tool contracts: single registry in `agent/tool_registry.py` (schema, dispatch, MCP stay in sync)
+- Kitchen-sink dev loop: [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md)
 - Tool integration: `AGENT_LIVE_TOOL_PLAYER=firecrab93 ./scripts/live-tool-tests.sh` directly executes tools on Paper and probes blocks with RCON
+- One-command validation: `./scripts/validate-all.sh` (add `RUN_LIVE=1` / `RUN_FULL_WORLD=1` for live gates)
+- Real `/agent` NL smoke: `AGENT_SMOKE_PLAYER=firecrab93 ./scripts/agent-smoke.sh`
 - Eval harness: `./scripts/eval.sh spec` (live dry-run) and `./scripts/eval.sh world` (sandbox mutations)
 - Export: `./scripts/export-dataset.sh` → JSONL for review / fine-tuning
+- Feedback training data: `python3 -m agent.training feedback --sft-out ... --dpo-out ...`
 - Compare models: `AGENT_COMPARE_MODELS=... ./scripts/compare-models.sh`
 - Docs: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/TOOL_CONTRACT.md](docs/TOOL_CONTRACT.md), [CONTRIBUTING.md](CONTRIBUTING.md)
 

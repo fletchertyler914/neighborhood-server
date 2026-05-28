@@ -105,4 +105,7 @@ python -m agent.training pairs reviews.jsonl datasets/preferences/pairs.jsonl
 ```
 
 See [docs/ARCHITECTURE.md](../../docs/ARCHITECTURE.md) and [docs/TOOL_CONTRACT.md](../../docs/TOOL_CONTRACT.md).
+For the end-to-end developer loop (spin-up, validation tiers, feedback export,
+fine-tuning prep, and local trained-model usage), see
+[docs/DEVELOPMENT_WORKFLOW.md](../../docs/DEVELOPMENT_WORKFLOW.md).
 
