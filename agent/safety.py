@@ -52,23 +52,26 @@ class AuditEntry:
     tool_calls: list[dict[str, Any]] = field(default_factory=list)
     message: str = ""
     dry_run: bool = False
+    job_id: str | None = None
+    routing: dict[str, Any] = field(default_factory=dict)
 
     def to_json(self) -> str:
-        return json.dumps(
-            {
-                "timestamp": self.timestamp,
-                "player": self.player,
-                "uuid": self.uuid,
-                "prompt": self.prompt,
-                "status": self.status,
-                "model": self.model,
-                "steps": self.steps,
-                "tool_calls": self.tool_calls,
-                "message": self.message,
-                "dry_run": self.dry_run,
-            },
-            ensure_ascii=False,
-        )
+        payload: dict[str, Any] = {
+            "job_id": self.job_id,
+            "timestamp": self.timestamp,
+            "player": self.player,
+            "uuid": self.uuid,
+            "prompt": self.prompt,
+            "status": self.status,
+            "model": self.model,
+            "steps": self.steps,
+            "tool_calls": self.tool_calls,
+            "message": self.message,
+            "dry_run": self.dry_run,
+        }
+        if self.routing:
+            payload["routing"] = self.routing
+        return json.dumps(payload, ensure_ascii=False)
 
 
 def audit_log_path() -> Path:

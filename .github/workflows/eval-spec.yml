@@ -1,0 +1,39 @@
+name: eval-spec
+
+on:
+  pull_request:
+  push:
+    branches: ["main", "master"]
+
+jobs:
+  eval_spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install agent deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install fastapi uvicorn httpx pydantic pyyaml pytest
+      - name: Run unit tests
+        run: |
+          PYTHONPATH=. pytest -q
+      - name: Validate eval cases
+        run: |
+          PYTHONPATH=. python - <<'PY'
+          from pathlib import Path
+          from agent.eval.loader import load_cases
+
+          suite = load_cases(Path("agent/eval/cases"))
+          print(f"loaded_cases={len(suite.cases)}")
+          PY
+      - name: Recorded deterministic gate fixture
+        run: |
+          PYTHONPATH=. python -m pytest -q tests/test_eval_fixture_gate.py
+      - name: Coverage matrix gate
+        run: |
+          PYTHONPATH=. python -m pytest -q tests/test_eval_coverage.py tests/test_schema_tools.py
+
+

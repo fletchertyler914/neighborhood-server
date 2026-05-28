@@ -1,0 +1,15 @@
+schema_version: 1
+inbound_allowed_spdx:
+  - CC0-1.0
+  - CC-BY-4.0
+  - CC-BY-SA-4.0
+  - MIT
+inbound_rejected_patterns:
+  - NC
+  - ND
+  - NOASSERTION
+  - proprietary
+outbound_default_spdx: CC-BY-4.0
+require_pinned_source_ref: true
+require_asset_scope_license: true
+quarantine_on_failure: true

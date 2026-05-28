@@ -2,11 +2,7 @@
   "mcpServers": {
     "minecraft-builder": {
       "command": "uv",
-      "args": [
-        "run",
-        "--script",
-        "mcp/minecraft_build_mcp.py"
-      ],
+      "args": ["run", "--script", "mcp/minecraft_build_mcp.py"],
       "cwd": "${workspaceFolder}",
       "env": {
         "MC_CONTAINER": "mc-lan",

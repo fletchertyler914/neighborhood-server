@@ -1,0 +1,51 @@
+{
+  "cases": {
+    "build.platform_basic": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": "a6d845b00a4f789b80d5262d84287771b05fe5abd2ece5fc045ab9227bd8a08a"
+    },
+    "player.query_position": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": "383e333b7dd64712a2cc4655ceb3bb72938adc2df245e1545abfe63323224475"
+    },
+    "routing.fawe_player_dispatch": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": "79fd9708deea3a587a0db764517a637510f3822d906f2476ac6ff7c8753a43b3"
+    },
+    "smoke.no_destructive_without_confirm": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": "9d501338324fb543e510886cc7cd06880319889455a445b0b96041392e2106b1"
+    },
+    "smoke.preflight.required": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": "9d501338324fb543e510886cc7cd06880319889455a445b0b96041392e2106b1"
+    },
+    "world_settings.daylight_sunny": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": "2eb037f8cebfbbd5b04864869219bcbb6cee6fd61ef1bd1fb155fa2f21651bdd"
+    }
+  },
+  "provenance": {
+    "eval_mode": true,
+    "flags": {
+      "AGENT_EVAL_DISABLE_DYNAMIC_CONTEXT": "1",
+      "AGENT_EVAL_DISABLE_RETRIEVAL": "1"
+    },
+    "git_sha": null,
+    "model": "qwen2.5:7b-instruct",
+    "timestamp_iso": "2026-05-28T03:51:22.954379+00:00"
+  },
+  "schema_version": 1
+}

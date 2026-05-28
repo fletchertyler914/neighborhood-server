@@ -16,6 +16,8 @@ class JobRequest(BaseModel):
     prompt: str
     confirm_token: str | None = None
     dry_run: bool = False
+    eval_mode: bool = False
+    eval_model: str | None = None
 
 
 def build_user_message(req: JobRequest) -> str:

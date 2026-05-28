@@ -316,6 +316,24 @@ ports to the host or playit; the plugin reaches it on the private Compose networ
 **Magic tools** (orchestrator + MCP): `build_platform`, `build_sphere`,
 `fawe_sphere_at_player`, `mine_shaft_at_player`, `give_haste`, `backup_now`.
 
+**Hybrid template ranker.** Natural-language prompts like *"a place for
+chickens to live"* or *"build a fortress"* are resolved by
+`agent/templates/ranking.py` (lexical + local-CPU semantic + policy
+reranker → confidence gate) before `paste_template_at_player` runs. The
+catalog ships 101 verified `.schem` files; multi-story house, bridge,
+and castle builders include real interiors, railings, and stairs by
+default. See [docs/TEMPLATE_RANKING.md](docs/TEMPLATE_RANKING.md) for
+details, weights, and the latest production-validation snapshot.
+
+**Agent framework** (eval, registry, training prep):
+
+- Tool contracts: single registry in `agent/tool_registry.py` (schema, dispatch, MCP stay in sync)
+- Tool integration: `AGENT_LIVE_TOOL_PLAYER=firecrab93 ./scripts/live-tool-tests.sh` directly executes tools on Paper and probes blocks with RCON
+- Eval harness: `./scripts/eval.sh spec` (live dry-run) and `./scripts/eval.sh world` (sandbox mutations)
+- Export: `./scripts/export-dataset.sh` → JSONL for review / fine-tuning
+- Compare models: `AGENT_COMPARE_MODELS=... ./scripts/compare-models.sh`
+- Docs: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/TOOL_CONTRACT.md](docs/TOOL_CONTRACT.md), [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ### Backups
 
 `./backups/` fills automatically every 2 hours; old archives are pruned
@@ -362,6 +380,8 @@ If a major version requires a newer Java, also bump
 ```
 neighborhood-server/
 ├── docker-compose.yml      # Paper + Geyser/Floodgate + playit + backups
+├── agent/                  # orchestrator, tools, eval harness, training stubs
+├── docs/                   # ARCHITECTURE.md, TOOL_CONTRACT.md
 ├── README.md               # this file
 ├── .env                    # PLAYIT_SECRET_KEY=...   (gitignored)
 ├── .gitignore

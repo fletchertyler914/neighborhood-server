@@ -21,9 +21,29 @@ Always prefer typed tools for in-world actions:
 - Inspection: `server_status`, `preflight`, `list_players`,
   `get_player_position`, `get_player_dimension`
 - Admin: `op_player`, `say`, `teleport_player`, `set_gamemode`, `set_time`,
-  `set_weather`, `give_haste`, `backup_now`, `run_command` (escape hatch)
+ `set_weather`, `give_haste`, `give_item`, `backup_now`,
+ `run_command` (escape hatch)
 - Building: `fill_box`, `clear_box`, `build_platform`, `build_sphere`,
-  `build_cylinder`, `build_spiral_staircase`
+ `build_cylinder`, `build_spiral_staircase`
+- **Templates (quality-first):** `list_templates`, `paste_template_at_player`,
+ `create_template_from_selection` — FAWE schematics from
+ `agent/templates/catalog.json` + `agent/templates/schematics/` (mounted
+ into `mc-lan` at `.../schematics/neighborhood/`). Named structures
+ (coop, castle, barn, well, bridge) should use `paste_template_at_player`
+ unless the player gives explicit WxH / radius constraints.
+- Player-relative builds (parametric fallback): `build_house_at_player`,
+ `build_castle_at_player`, `build_bridge_at_player`,
+ `build_wall_at_player`, `build_animal_pen_at_player`. As of
+ `TOOLS_VERSION=2.8.0` these builders ship with real interiors:
+ `build_house_at_player(height>=7)` lays a floor divider every 4 blocks
+ and a 2-wide staircase against the back-left wall;
+ `build_bridge_at_player` adds material-matched railings + support
+ pillars by default (`add_rails=false` / `add_supports=false` to opt
+ out); `build_castle_at_player` adds an interior staircase to the
+ wall-walk plus a ladder up one tower. Don't manually splice extra
+ stairs/rails on top.
+- Mobs / world: `summon_entity` (raw `/summon`),
+ `build_animal_pen_at_player` (fenced pen + summoned animals)
 - FAWE: `fawe_as_player`, `fawe_sphere_at_player`, `mine_shaft_at_player`
 
 ### Guardrails (don't bypass without asking)
@@ -61,6 +81,23 @@ nor the scripts can express what's needed.
 - Spheres / domes → `build_sphere` (`hollow: true` for shells)
 - Towers / wells → `build_cylinder`
 - Stairs → `build_spiral_staircase`
+- Chicken coop / pig pen / castle / cottage / well / bridge →
+  `paste_template_at_player` first (catalog id or alias). The catalog
+  ships **101 verified `.schem` files** (`agent/templates/schematics/`)
+  bind-mounted at `mc-lan:/data/plugins/FastAsyncWorldEdit/schematics/
+  neighborhood/` and at `mc-agent:/app/data/...`. If the schematic is
+  somehow missing, the tool runs the catalog `fallback` parametric
+  builder + any `follow_up` (e.g. summon chickens). Explicit sizes
+  (`21x21`, `radius 12`) → parametric tools instead.
+- Re-seeding schematics (e.g. after a builder change): use
+  `python3 -m agent.templates.seed --player <op> --only <id> --all`. The
+  pipeline deletes the existing `.schem` first because FAWE's
+  `//schem save` is silently no-overwrite, and waits between
+  `//pos1`/`//pos2`/`//copy`/`//schem save` because `agentexec`
+  dispatches one FAWE command per server tick.
+- Publish a build: player FAWE selection → `create_template_from_selection`,
+  then commit `catalog.json` + `schematics/*.schem` for git-curated sharing.
+- Spawn a mob at coords → `summon_entity(entity, x, y, z, count)`
 - Selections, copy/paste, `//regen`, brushes, schematics →
   `fawe_as_player` so the operation runs with that player's selection
 - For absolute coordinates from console, vanilla `/fill` and `/setblock`

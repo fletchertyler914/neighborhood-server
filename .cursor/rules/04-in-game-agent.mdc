@@ -25,9 +25,37 @@ Players with `neighborhood.agent` (default: OP) run:
 6. **Thinking-mode models** (qwen3, deepseek-r1, qwq) get `/no_think`,
    `think: false`, and short local timeouts — required for valid tool-call JSON.
 
+## Player feedback (good / bad)
+
+- After any tool-running job, the orchestrator appends
+ `· Rate: /agent good or /agent bad <why>` to the chat reply so the
+ player can grade it.
+- `/agent good`, `/agent good job`, `/agent nice` mark the previous
+ job good. `/agent bad <reason>` records a rejection with the reason.
+- The orchestrator intercepts these prompts BEFORE the LLM ever sees
+ them (see `agent/feedback.py`) and writes to
+ `data/agent-feedback.jsonl`. Each row has `job_id` linking back to
+ the original audit log entry.
+- Build a training corpus with
+ `python -m agent.training feedback --sft-out <path> --dpo-out <path>`.
+ SFT is built from "good" jobs; DPO needs both a good and bad rating
+ on the same prompt text. Use `--report` for stats.
+- Toggle the chat hint with `AGENT_ASK_FEEDBACK=0` in compose if it
+ ever gets too noisy.
+
+## Hybrid template ranker (small-model first)
+
+`paste_template_at_player` accepts free-text in `template_id` (e.g.
+`"a place for chickens to live"`); it routes through
+`agent/templates/ranking.py` (lexical + local-CPU semantic + policy
+reranker → confidence gate). See `docs/TEMPLATE_RANKING.md`. Don't
+prompt-engineer the LLM to memorize snake_case ids — let the ranker
+resolve. `search_templates` exposes the same scoring without building.
+
 ## When helping with `/agent`
 
-- Start/rebuild with `docker compose up -d --build mc-agent`.
+- Start/rebuild with `docker compose up -d --build mc-agent`. Bumping
+  `TOOLS_VERSION` requires this rebuild to take effect.
 - If player sees "Agent offline", check `docker compose ps mc-agent` and
   `docker compose logs mc-agent`.
 - Keep `data/plugins/NeighborhoodAgent/config.yml` as
@@ -38,6 +66,10 @@ Players with `neighborhood.agent` (default: OP) run:
 - For regen/large clears: `backup_now` first, then act.
 - When extending Minecraft knowledge, edit `agent/knowledge/*.md` — the
   retrieval index reloads on orchestrator restart.
+- End-to-end smoke (catalog + mobs + ranker): `python3 scripts/full_validation.py`.
+- NL prompt smoke through the real `/v1/jobs` endpoint: see the helper
+  pattern at the bottom of `docs/TEMPLATE_RANKING.md` (or the validation
+  snapshot section there).
 
 ## Recommended models (Ollama)
 

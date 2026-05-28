@@ -1,0 +1,52 @@
+schema_version: 1
+sources:
+  - source_id: erg_world_structures
+    display_name: ERGeorgiev World Structures
+    source_type: git_repo
+    source_url: https://github.com/ERGeorgiev/minecraft-schematics-world-structures
+    source_ref: main
+    license_spdx: MIT
+    license_url: https://github.com/ERGeorgiev/minecraft-schematics-world-structures/blob/main/LICENSE
+    allowed_for_ingest: false
+    attribution_required: true
+    attribution_template: "Structure from ERGeorgiev/minecraft-schematics-world-structures (MIT)"
+    format: schem
+    enabled: false
+    notes: "Enable after verification checklist passes (asset-scope license proof)."
+    category_map:
+      structures: decoration
+    complexity_map:
+      default: common
+
+  - source_id: community_cc_pack
+    display_name: Community CC Template Packs
+    source_type: pack_dir
+    source_url: https://github.com/neighborhood-server/community-templates
+    source_ref: main
+    license_spdx: CC-BY-4.0
+    license_url: https://creativecommons.org/licenses/by/4.0/
+    allowed_for_ingest: true
+    attribution_required: true
+    attribution_template: "Community template pack (see pack.json per structure)"
+    format: schem
+    enabled: true
+    notes: "Drop packs under agent/templates/packs/<name>/ with pack.json; run ingest --ingest-packs"
+    category_map: {}
+    complexity_map:
+      default: common
+
+  - source_id: neighborhood_internal
+    display_name: Neighborhood Internal Gold Corpus
+    source_type: internal
+    source_url: https://github.com/neighborhood-server/templates
+    source_ref: gold-v1
+    license_spdx: CC-BY-4.0
+    license_url: https://creativecommons.org/licenses/by/4.0/
+    allowed_for_ingest: true
+    attribution_required: true
+    attribution_template: "Neighborhood Minecraft Server template pack (CC-BY-4.0)"
+    format: schem
+    enabled: true
+    category_map: {}
+    complexity_map:
+      default: basic

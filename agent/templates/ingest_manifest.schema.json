@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neighborhood-server.local/schemas/ingest_manifest.json",
+  "title": "TemplateSourceManifest",
+  "type": "object",
+  "required": ["sources"],
+  "properties": {
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "name",
+          "url",
+          "license",
+          "format",
+          "version_pin",
+          "enabled"
+        ],
+        "properties": {
+          "source_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$" },
+          "name": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "format": "uri" },
+          "license": {
+            "type": "string",
+            "enum": ["CC0-1.0", "CC-BY-4.0", "CC-BY-SA-4.0", "MIT"]
+          },
+          "attribution_template": { "type": "string" },
+          "format": { "type": "string", "enum": ["schem", "litematic", "mixed"] },
+          "version_pin": { "type": "string", "minLength": 8 },
+          "enabled": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

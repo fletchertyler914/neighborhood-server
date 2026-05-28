@@ -1,0 +1,29 @@
+name: eval-world
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 8 * * *"
+
+jobs:
+  eval_world:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install fastapi uvicorn httpx pydantic pyyaml pytest
+      - name: Run world eval
+        env:
+          AGENT_EVAL_MODE: "1"
+          AGENT_EVAL_ALLOW_WORLD_MUTATION: "1"
+          AGENT_EVAL_DISABLE_RETRIEVAL: "1"
+          AGENT_EVAL_DISABLE_DYNAMIC_CONTEXT: "1"
+          AGENT_API_TOKEN: ${{ secrets.AGENT_API_TOKEN }}
+        run: |
+          PYTHONPATH=. ./scripts/eval.sh world
+

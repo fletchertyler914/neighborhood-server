@@ -56,10 +56,26 @@ services:
       OP_PERMISSION_LEVEL: '4'
       SPAWN_PROTECTION: '0'
 
+      # --- Flat test world ---
+      # We use a separate level name so the original `world/` is preserved
+      # on disk. To revert: set LEVEL back to `world` and restart.
+      LEVEL: ${MC_LEVEL:-world_flat}
+      LEVEL_TYPE: ${MC_LEVEL_TYPE:-FLAT}
+      GENERATE_STRUCTURES: ${MC_GENERATE_STRUCTURES:-false}
+      # Vanilla "Flat" preset: bedrock + 2 dirt + grass at y=4. Override via env.
+      GENERATOR_SETTINGS: ${MC_GENERATOR_SETTINGS:-{"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:dirt","height":2},{"block":"minecraft:grass_block","height":1}],"biome":"minecraft:plains"}}
+
       ENABLE_AUTOPAUSE: 'false'
       ENABLE_RCON: 'true'
       RCON_PASSWORD_FILE: /run/secrets/rcon_pass
       AGENT_API_TOKEN: ${AGENT_API_TOKEN:-dev-change-me}
+
+      # Suppress RCON/console command echoes to ops chat. The agent shells
+      # out RCON for every tool call (build, teleport, give, summon, etc.);
+      # without this, ops see a torrent of [Rcon: ...] lines while the agent
+      # works. Errors still surface in the server console / agent audit log.
+      BROADCAST_RCON_TO_OPS: 'false'
+      BROADCAST_CONSOLE_TO_OPS: 'false'
 
       STOP_SERVER_ANNOUNCE_DELAY: '20'
       STOP_DURATION: '90'
@@ -79,6 +95,8 @@ services:
 
     volumes:
       - ./data:/data
+      # Curated agent templates → FAWE schematics (namespace: neighborhood/)
+      - ./agent/templates/schematics:/data/plugins/FastAsyncWorldEdit/schematics/neighborhood
 
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -106,7 +124,11 @@ services:
       AGENT_BIND_HOST: 0.0.0.0
       AGENT_BIND_PORT: '8787'
       AGENT_JOB_TIMEOUT_SEC: '75'
-      AGENT_LOCAL_MODEL_TIMEOUT_SEC: '15'
+      AGENT_LOCAL_MODEL_TIMEOUT_SEC: '30'
+      # Eval mode runs deterministic scripted scenarios; bigger reasoning
+      # models (qwen3:8b with think:false) need >15s on cold tool-schema
+      # load. In-game flow is unaffected.
+      AGENT_EVAL_LOCAL_MODEL_TIMEOUT_SEC: '120'
       AGENT_MAX_STEPS: '14'
       RCON_MODE: tcp
       RCON_HOST: mc
@@ -120,10 +142,27 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       CLOUD_BASE_URL: ${CLOUD_BASE_URL:-https://api.openai.com/v1}
       CLOUD_MODEL: ${CLOUD_MODEL:-gpt-4o-mini}
+      TEMPLATE_RANKER_MODE: ${TEMPLATE_RANKER_MODE:-hybrid}
+      TEMPLATE_EMBEDDING_BACKEND: ${TEMPLATE_EMBEDDING_BACKEND:-local}
+      TEMPLATE_RANK_TOP_K: ${TEMPLATE_RANK_TOP_K:-8}
+      TEMPLATE_CONFIDENCE_HIGH: ${TEMPLATE_CONFIDENCE_HIGH:-0.72}
+      TEMPLATE_CONFIDENCE_MEDIUM: ${TEMPLATE_CONFIDENCE_MEDIUM:-0.45}
+      TEMPLATE_RANK_W_LEX: ${TEMPLATE_RANK_W_LEX:-0.55}
+      TEMPLATE_RANK_W_SEM: ${TEMPLATE_RANK_W_SEM:-0.30}
+      TEMPLATE_RANK_W_POL: ${TEMPLATE_RANK_W_POL:-0.15}
+      TEMPLATE_RANKING_AUDIT: ${TEMPLATE_RANKING_AUDIT:-true}
+      # Flat-world preset stacks from min build height (-64), so the surface
+      # sits at y=-60. Seed pipeline + sandbox tools need that.
+      AGENT_SEED_SANDBOX_X: ${AGENT_SEED_SANDBOX_X:-9500}
+      AGENT_SEED_SANDBOX_Y: ${AGENT_SEED_SANDBOX_Y:--60}
+      AGENT_SEED_SANDBOX_Z: ${AGENT_SEED_SANDBOX_Z:-9500}
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
       - ./data:/app/data
+      # Same schematic bind as mc-lan, so the agent can probe and stage
+      # .schem files without needing a docker socket.
+      - ./agent/templates/schematics:/app/data/plugins/FastAsyncWorldEdit/schematics/neighborhood
     secrets:
       - rcon_pass
     healthcheck:
