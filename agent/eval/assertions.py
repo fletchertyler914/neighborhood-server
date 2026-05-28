@@ -81,6 +81,21 @@ def assert_spec(
                 )
             )
 
+    for group in expect.must_call_any:
+        if not group:
+            continue
+        if not any(_match_expected_call(exp, norm) for exp in group):
+            failures.append(
+                AssertionFailure(
+                    kind="must_call_any",
+                    message=(
+                        "expected at least one of: "
+                        + ", ".join(e.name for e in group)
+                    ),
+                    details={"expected_any": [e.model_dump() for e in group]},
+                )
+            )
+
     if expect.must_call_in_order:
         names = [tc["name"] for tc in norm]
         if not _is_subsequence(expect.must_call_in_order, names):

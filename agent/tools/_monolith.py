@@ -1719,7 +1719,13 @@ def fawe_sphere_at_player(player: str, block: str, radius: int) -> ToolResult:
     return _rename_tool(fawe_as_player(player, f"//sphere {block} {radius}"), "fawe_sphere_at_player")
 
 
-def fawe_cyl_at_player(player: str, block: str, radius: int, height: int) -> ToolResult:
+def fawe_cyl_at_player(
+    player: str,
+    block: str,
+    radius: int,
+    height: int,
+    hollow: bool = False,
+) -> ToolResult:
     if radius < 1 or radius > 64:
         return _err("fawe_cyl_at_player", ValueError("radius must be between 1 and 64"))
     if height < 1 or height > 256:
@@ -1729,8 +1735,10 @@ def fawe_cyl_at_player(player: str, block: str, radius: int, height: int) -> Too
         _guard_fawe_volume((2 * radius + 1) ** 2 * height, "fawe_cyl_at_player")
     except ValueError as exc:
         return _err("fawe_cyl_at_player", exc)
+    flag = " -h" if hollow else ""
     return _rename_tool(
-        fawe_as_player(player, f"//cyl {block} {radius} {height}"), "fawe_cyl_at_player"
+        fawe_as_player(player, f"//cyl{flag} {block} {radius} {height}"),
+        "fawe_cyl_at_player",
     )
 
 
@@ -1907,7 +1915,27 @@ def paste_template_at_player(
         ranked = resolve_template(raw)
         note_template_ranking(ranked)
         resolved = ranked.selected_template_id or template_catalog.resolve_template_id(raw) or raw
-        meta = template_catalog.find_template(resolved)
+        try:
+            meta = template_catalog.find_template(resolved)
+        except ValueError:
+            # The id couldn't be resolved (LLM hallucinated something like
+            # "sand fort"). Return a structured error with concrete suggestions
+            # so the next tool call has somewhere to go.
+            top_alts = [c.template_id for c in ranked.top_candidates[:3]]
+            suggest = ", ".join(top_alts) if top_alts else "list_templates"
+            hint = (
+                f"unknown template_id {raw!r}; closest matches: {suggest}. "
+                "If the player named a material (sand, stone, wood) plus a "
+                "structure (fort, house, castle), prefer build_house_at_player "
+                "or build_castle_at_player with the matching wall_block."
+            )
+            return ToolResult(
+                ok=False,
+                tool="paste_template_at_player",
+                error=hint,
+                output="",
+                commands=[],
+            )
         note_template_provenance(meta.id)
         # We intentionally do NOT splice ranked.disambiguation_message into
         # the successful paste output. The LLM tends to parrot it verbatim

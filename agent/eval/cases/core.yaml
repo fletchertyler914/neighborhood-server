@@ -31,11 +31,22 @@ cases:
     modes: [spec]
     determinism: relaxed
     retries_allowed: 1
+    # Cylinder + "around me" + hollow → fawe_cyl_at_player is the canonical
+    # answer. build_cylinder (absolute coords with hollow=true) is also
+    # acceptable since the model derives center from player_x/z. We DO NOT
+    # accept build_castle_at_player or build_sphere here.
     prompt: "Build a hollow stone brick cylinder fort around me with radius 4 and height 8."
     expect_spec:
       status: done
       max_steps: 8
-      must_call:
-        - name: fawe_cyl_at_player
-          arguments:
-            hollow: true
+      forbidden_tools:
+        - build_castle_at_player
+        - build_sphere
+        - fawe_sphere_at_player
+      must_call_any:
+        - - name: fawe_cyl_at_player
+            arguments:
+              hollow: true
+          - name: build_cylinder
+            arguments:
+              hollow: true

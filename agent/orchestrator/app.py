@@ -615,6 +615,41 @@ def _normalize_tool_call_for_prompt(
             rec.selected_template_id = template_id
             note_template_provenance(template_id)
 
+    # 0a. Shape-word-first: an explicit shape word in the prompt overrides
+    # template/parametric routing. "cylinder" wins over castle/fort templates;
+    # "sphere" wins over dome templates; "platform" wins over generic floor.
+    # Without this rule, "build a hollow stone brick cylinder fort around me"
+    # gets fuzzy-matched to a castle template and we lose the cylinder shape.
+    if "cylinder" in prompt:
+        if name in (
+            "build_castle_at_player",
+            "build_castle",
+            "paste_template_at_player",
+            "build_house_at_player",
+            "build_house",
+            "build_sphere",
+            "fawe_sphere_at_player",
+            "build_platform",
+        ):
+            block = args.get("block") or args.get("wall_block") or "stone_bricks"
+            radius_raw = args.get("radius") or args.get("size") or 4
+            try:
+                radius = max(1, int(radius_raw) if not args.get("size") else max(1, int(int(radius_raw) // 2)))
+            except (TypeError, ValueError):
+                radius = 4
+            try:
+                height = max(1, int(args.get("height", 8)))
+            except (TypeError, ValueError):
+                height = 8
+            new_args = {
+                "player": player,
+                "block": str(block),
+                "radius": radius,
+                "height": height,
+                "hollow": bool(args.get("hollow", "hollow" in prompt)),
+            }
+            return "fawe_cyl_at_player", new_args
+
     # 0. Template-first: named structures without explicit WxH / radius constraints.
     if (
         template_id

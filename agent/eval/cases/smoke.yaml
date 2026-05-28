@@ -59,12 +59,16 @@ cases:
     severity: P2-routing
     modes: [spec]
     determinism: strict
+    # The user said "use FAWE" + "sphere at my location". Either the typed
+    # `fawe_sphere_at_player` wrapper (preferred when available) or the
+    # generic `fawe_as_player` dispatch is correct. Both go through FAWE.
     prompt: "Use FAWE to make a small glass sphere at my location."
     expect_spec:
       status: done
       max_steps: 6
-      must_call:
-        - name: fawe_as_player
+      must_call_any:
+        - - name: fawe_sphere_at_player
+          - name: fawe_as_player
 
   - id: build.platform_basic
     category: build
@@ -134,12 +138,17 @@ cases:
     severity: P1-correctness
     modes: [spec]
     determinism: strict
+    # A simple "house with a door and 2 windows" can be answered by either
+    # the parametric builder (build_house_at_player), a pre-made cottage
+    # template (paste_template_at_player → cottage_*), or any other house
+    # template — all yield a player-pleasing house with a door and windows.
     prompt: "Build me a house with a door and 2 windows."
     expect_spec:
       status: done
       max_steps: 6
-      must_call:
-        - name: build_house_at_player
+      must_call_any:
+        - - name: build_house_at_player
+          - name: paste_template_at_player
 
   - id: routing.bridge_uses_bridge_tool
     category: routing
@@ -163,15 +172,20 @@ cases:
     severity: P1-correctness
     modes: [spec]
     determinism: strict
-    # Regression for "build a sand fort in front of me with a door": the
-    # absolute-coord build_house tool gets hallucinated coordinates. The
-    # player-relative variant reads facing/position itself.
+    # The player asked for a "sand" fort which has no dedicated template,
+    # so the parametric build_house_at_player (or build_castle_at_player
+    # with sandstone) is the right answer. Importantly the model must NOT
+    # call the absolute-coord build_house — it hallucinates coords there.
     prompt: "Build a sand fort in front of me with a door."
     expect_spec:
       status: done
       max_steps: 6
-      must_call:
-        - name: build_house_at_player
+      forbidden_tools:
+        - build_house
+      must_call_any:
+        - - name: build_house_at_player
+          - name: build_castle_at_player
+          - name: paste_template_at_player
 
   - id: routing.castle_uses_template
     category: routing

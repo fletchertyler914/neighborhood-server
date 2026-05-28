@@ -556,13 +556,21 @@ TOOL_DEFINITIONS: tuple[ToolDefinition, ...] = (
     ),
     ToolDefinition(
         name="fawe_cyl_at_player",
-        description="Build a FAWE cylinder centered on player.",
+        description=(
+            "Build a FAWE cylinder centered on player. "
+            "Set hollow=true for an open-top ring/fort wall (uses //cyl -h)."
+        ),
         parameters=_obj(
             {
                 "player": PLAYER,
                 "block": BLOCK_ID,
                 "radius": {"type": "integer", "minimum": 1, "maximum": 64},
                 "height": {"type": "integer", "minimum": 1, "maximum": 256},
+                "hollow": {
+                    "type": "boolean",
+                    "default": False,
+                    "description": "If true, only the outer ring is built (//cyl -h).",
+                },
             },
             ["player", "block", "radius", "height"],
         ),

@@ -27,6 +27,14 @@ class SpecExpect(BaseModel):
     status: Literal["done", "failed"] | None = None
     max_steps: int | None = None
     must_call: list[ToolCallExpectation] = Field(default_factory=list)
+    must_call_any: list[list[ToolCallExpectation]] = Field(
+        default_factory=list,
+        description=(
+            "Each inner list is an OR-group: at least one expectation in the "
+            "group must match. Use for cases where multiple tools are equally "
+            "good answers (e.g. typed FAWE wrapper or generic FAWE dispatch)."
+        ),
+    )
     forbidden_tools: list[str] = Field(default_factory=list)
     must_call_in_order: list[str] = Field(default_factory=list)
 
