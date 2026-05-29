@@ -14,21 +14,27 @@ work is published under the same terms. Please be kind in issues and PRs.
 ```bash
 git clone <fork-url> neighborhood-server
 cd neighborhood-server
-make bootstrap         # detects deps, generates secrets/.env
-make up                # boots Paper + agent + sidecars
-make seed              # one-time: build all .schem files in-world
-make test              # 129+ unit / contract tests, no live server needed
+make bootstrap         # detects deps, generates secrets/.env, picks Ollama path
+make up                # boots Paper + agent + sidecars (+ ollama if profile chosen)
+make plugin            # builds + installs the Paper /agent plugin JAR
+make seed              # one-time: build all 101 .schem files in-world
+make test              # 170+ unit / contract tests, no live server needed
 ```
 
 ## Development workflow
 
 1. Change tool contracts in `agent/tool_registry.py` only (not duplicate lists elsewhere).
-2. Implement behavior in `agent/tools/_monolith.py` (or the appropriate
-   submodule under `agent/tools/`).
-3. Add eval cases under `agent/eval/cases/`.
-4. Run tests: `make test` (or `PYTHONPATH=. pytest -q --ignore=tests/integration`).
-5. Run spec eval locally: `make eval` — it auto-detects an online player
+2. Implement behavior in the appropriate submodule under `agent/tools/`
+   (`admin.py`, `builders.py`, `fawe.py`, `inspection.py`, `templates.py`,
+   or `_monolith.py` for the still-unsplit shared helpers).
+3. Bump `TOOLS_VERSION` (registry) and `TOOLS_VERSION_EXPECTED`
+   (`agent/mcp_core.py`) — they must match.
+4. Add eval cases under `agent/eval/cases/`.
+5. Run tests: `make test` (or `PYTHONPATH=. pytest -q --ignore=tests/integration`).
+6. Run spec eval locally: `make eval` — it auto-detects an online player
    and compares against `agent/eval/baseline.strict.json`.
+7. Rebuild the orchestrator: `docker compose up -d --build mc-agent` (or
+   `make up`).
 
 For the full local loop (Docker spin-up, template seeding, live validation,
 agent smoke, feedback capture, dataset export, and local trained-model usage),

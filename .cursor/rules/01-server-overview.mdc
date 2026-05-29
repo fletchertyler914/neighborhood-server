@@ -5,19 +5,23 @@ alwaysApply: true
 
 # Neighborhood Minecraft Server
 
-Self-hosted crossplay Minecraft server defined by `docker-compose.yml`.
+Self-hosted crossplay Paper server with an in-game AI `/agent` and a Cursor
+MCP integration. The whole stack is defined by `docker-compose.yml` and
+spun up via `make up`.
 
 ## Stack
 
-- **Server**: Paper `26.1.2` on Java 25 via `itzg/minecraft-server:java25`
-- **Container name**: `mc-lan` (used by `docker exec`, MCP, scripts)
-- **Crossplay**: GeyserMC + Floodgate. Bedrock players appear with a leading
-  `.` (Floodgate prefix), e.g. `.BedrockPlayer`. Always include the dot.
-- **Building plugin**: FastAsyncWorldEdit (FAWE) `2.15.1`
-- **External access**: `playit-agent` sidecar (`playit-agent` container).
-  Tunnels: Java TCP 25565, Bedrock UDP 19132.
-- **Backups**: `itzg/mc-backup` sidecar (`mc-backup`), every 2h, 14d retention,
-  RCON-coordinated `save-off`/`save-on`.
+| Service | Image | Container | Purpose |
+| --- | --- | --- | --- |
+| `mc` | `itzg/minecraft-server:java25` | `mc-lan` | Paper 26.1.2 + Geyser + Floodgate + FAWE |
+| `mc-agent` | local build (`agent/Dockerfile`) | `mc-agent` | FastAPI orchestrator behind `/agent` (no published port) |
+| `playit` | `ghcr.io/playit-cloud/playit-agent` | `playit-agent` | TCP/UDP relay for public crossplay |
+| `backup` | `itzg/mc-backup` | `mc-backup` | RCON-coordinated `save-off`/`save-on`, 2h interval, 14d retention |
+| `ollama` (profile `ollama`) | `ollama/ollama` | `mc-ollama` | Optional bundled LLM; default is host Ollama |
+
+- **Building plugin**: FastAsyncWorldEdit (FAWE) `2.15.1` (Modrinth-managed)
+- **Crossplay**: Bedrock players appear with a leading `.` (Floodgate
+  prefix), e.g. `.BedrockPlayer`. Always include the dot.
 - **GC**: Generational ZGC. `USE_MEOWICE_FLAGS=false` on purpose
   (JDK-8359378 G1 barrier crash on aarch64 + Java 25). Don't re-enable
   without confirming a Temurin fix.
@@ -27,26 +31,37 @@ Self-hosted crossplay Minecraft server defined by `docker-compose.yml`.
 - `MODE=creative`, `FORCE_GAMEMODE=true`, `ALLOW_FLIGHT=true`,
   `SPAWN_PROTECTION=0`
 - `ONLINE_MODE=true`, `ENFORCE_SECURE_PROFILE=false`
-- Whitelist OFF (anyone with the playit address can join)
-- OPS list in compose is re-applied via `EXISTING_OPS_FILE: MERGE`,
-  manually opped players persist across restarts
+- `ENFORCE_WHITELIST` defaults to **true** for the public repo; flip to
+  `MC_ENFORCE_WHITELIST=false` in `.env` for the open friends-server mode.
+- `OPS:` block in compose is commented out by default; persist in-game
+  ops via `EXISTING_OPS_FILE: MERGE`. Manually opped players survive
+  restarts.
+- `AGENT_API_TOKEN` is **required** at boot (`${AGENT_API_TOKEN:?...}`);
+  `make bootstrap` writes a random token into `.env`.
 
 ## Files in this workspace
 
-- `docker-compose.yml` — the whole stack
+- `docker-compose.yml` — the whole stack (mc, mc-agent, playit, backup, ollama profile)
+- `Makefile` — `make help` for every target (bootstrap, up, plugin, seed, test, smoke, eval, corpus, train, etc.)
+- `.env` — `PLAYIT_SECRET_KEY`, `AGENT_API_TOKEN`, `MC_ENFORCE_WHITELIST`, `OLLAMA_BASE_URL`, `COMPOSE_PROFILES`, etc. (gitignored)
+- `.env.example` — public template; copied by `make bootstrap`
 - `secrets/rcon_password` — RCON password (Docker secret, gitignored)
-- `.env` — `PLAYIT_SECRET_KEY`, `AGENT_API_TOKEN`, Ollama/cloud vars (gitignored)
-- `agent/tools.py` — shared guardrailed RCON tools (MCP + `/agent`)
-- `agent/orchestrator.py` — host HTTP agent (`./scripts/agent.sh start`)
-- `mcp/minecraft_build_mcp.py` — thin Cursor MCP adapter
-- `.cursor/mcp.json` — registers `minecraft-builder`
-- `plugins/neighborhood-agent/` — Paper `/agent` plugin source
-- `mc.sh`, `op.sh`, `scripts/agent.sh`, `scripts/build-plugin.sh`
-- `data/` — world (gitignored)
+- `agent/` — orchestrator package, tools package, tool registry, eval harness, templates, training
+  - `agent/orchestrator/app.py` — FastAPI app (runs as `mc-agent`)
+  - `agent/tools/` — typed RCON tools (admin, builders, FAWE, templates, inspection)
+  - `agent/tool_registry.py` — single source of truth (`TOOLS_VERSION = "2.9.0"`)
+  - `agent/templates/catalog.json` + `agent/templates/schematics/*.schem` — 101 verified schematics
+- `plugins/neighborhood-agent/` — Paper `/agent` Java plugin source
+- `mcp/minecraft_build_mcp.py` — thin Cursor MCP adapter (re-uses `agent/tools/`)
+- `.cursor/mcp.json` — registers the `minecraft-builder` MCP
+- `mc.sh`, `op.sh`, `scripts/build-plugin.sh`, `scripts/bootstrap.sh`, etc.
+- `data/` — world + plugins (gitignored)
 - `backups/` — mc-backup archives (gitignored)
 
 ## Ports
 
 - `25565/tcp` published — Java
 - `19132/udp` published — Bedrock (Geyser)
-- `25575/tcp` **NOT published** — RCON, internal only by design
+- `25575/tcp` **not published** — RCON, container-internal only by design
+- `8787/tcp` **not published** — `mc-agent` orchestrator, Compose-network only
+- `11434/tcp` (when `--profile ollama` active) **not published** — bundled Ollama

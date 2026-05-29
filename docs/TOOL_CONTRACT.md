@@ -7,12 +7,15 @@ Tools are defined once in [`agent/tool_registry.py`](../agent/tool_registry.py).
 When adding or changing a tool:
 
 1. Add a `ToolDefinition` entry (name, description, parameters, `impl`, risk, `mcp`).
-2. Implement `impl` function in [`agent/tools.py`](../agent/tools.py).
-3. Bump `TOOLS_VERSION` in `tool_registry.py`.
+2. Implement `impl` function in [`agent/tools/`](../agent/tools/) (admin,
+   builders, fawe, inspection, or templates submodule as appropriate).
+3. Bump `TOOLS_VERSION` in `tool_registry.py` **and** `TOOLS_VERSION_EXPECTED`
+   in `agent/mcp_core.py` (they must match).
 4. Add/update eval cases in `agent/eval/cases/`.
 5. Update `agent/eval/coverage.yaml` if the case is required for merge gates.
 6. Refresh `agent/eval/baseline.strict.json` on self-hosted runner after intentional behavior changes.
 7. Update `agent/eval/fixtures/gate.spec.json` for new spec cases (CI fixture gate).
+8. Rebuild `mc-agent`: `docker compose up -d --build mc-agent` (or `make up`).
 
 ## Sync guarantees
 
@@ -28,7 +31,7 @@ When adding or changing a tool:
 | `TOOLS_SCHEMA_VERSION` | registry, baselines |
 | Eval `schema_version` | baseline JSON files |
 
-Current `TOOLS_VERSION` is `2.8.0`. The 2.8.0 bump in particular widened the
+Current `TOOLS_VERSION` is `2.9.0`. The 2.8.0 → 2.9.0 series widened the
 parametric builders so deterministic output now matches the catalog's
 advertised footprint heights:
 

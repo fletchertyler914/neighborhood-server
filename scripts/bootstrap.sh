@@ -28,17 +28,31 @@ require() {
   return 1
 }
 
-set_ollama_url_in_env() {
-  local url="$1"
+set_env_value() {
+  local key="$1" value="$2"
   python3 - <<PY
 import pathlib
 import re
 p = pathlib.Path(".env")
 text = p.read_text()
-if re.search(r"^OLLAMA_BASE_URL=", text, re.M):
-    text = re.sub(r"^OLLAMA_BASE_URL=.*$", "OLLAMA_BASE_URL=${url}", text, flags=re.M)
+key = "${key}"
+value = "${value}"
+if re.search(rf"^{re.escape(key)}=", text, re.M):
+    text = re.sub(rf"^{re.escape(key)}=.*$", f"{key}={value}", text, flags=re.M)
 else:
-    text = text.rstrip() + "\nOLLAMA_BASE_URL=${url}\n"
+    text = text.rstrip() + f"\n{key}={value}\n"
+p.write_text(text)
+PY
+}
+
+remove_env_key() {
+  local key="$1"
+  python3 - <<PY
+import pathlib
+import re
+p = pathlib.Path(".env")
+text = p.read_text()
+text = re.sub(r"^${key}=.*\n?", "", text, flags=re.M)
 p.write_text(text)
 PY
 }
@@ -130,13 +144,16 @@ fi
 
 case "$OLLAMA_MODE" in
   host)
-    set_ollama_url_in_env "http://host.docker.internal:11434"
+    set_env_value "OLLAMA_BASE_URL" "http://host.docker.internal:11434"
+    remove_env_key "COMPOSE_PROFILES"
     ok "OLLAMA_BASE_URL → host Ollama (http://host.docker.internal:11434)"
     USE_OLLAMA_PROFILE=0
     ;;
   profile|compose|docker)
-    set_ollama_url_in_env "http://ollama:11434"
+    set_env_value "OLLAMA_BASE_URL" "http://ollama:11434"
+    set_env_value "COMPOSE_PROFILES" "ollama"
     ok "OLLAMA_BASE_URL → Compose ollama service (http://ollama:11434)"
+    ok "COMPOSE_PROFILES → ollama (plain make up will include bundled Ollama)"
     USE_OLLAMA_PROFILE=1
     ;;
   *)
@@ -154,14 +171,14 @@ if (( HAS_OLLAMA == 1 )) && [[ "$OLLAMA_MODE" == host ]]; then
 fi
 
 if (( USE_OLLAMA_PROFILE == 1 )); then
-  warn "First boot with bundled Ollama pulls ~5GB; use: docker compose --profile ollama up -d"
+  warn "First boot with bundled Ollama pulls ~5GB; COMPOSE_PROFILES=ollama is set in .env"
 fi
 
 echo
 echo "Next steps:"
 printf "${DIM}"
 if (( USE_OLLAMA_PROFILE == 1 )); then
-  echo "  1. docker compose --profile ollama up -d   # Paper + agent + Ollama"
+  echo "  1. make up                                 # Paper + agent + bundled Ollama"
 else
   echo "  1. make up                                 # Paper + agent (host Ollama must be running)"
 fi

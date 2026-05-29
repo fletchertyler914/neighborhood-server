@@ -26,7 +26,7 @@ Single entrypoint: `agent/templates/ranking.py` → `resolve_template(query, con
 | `paste_template_at_player` | Build; `template_id` accepts NL or catalog id |
 | `list_templates` | Browse catalog by category/tags |
 
-All MCP clients share `agent/tools.py` and the same ranker — no hidden prompt hacks.
+All MCP clients share the `agent/tools/` package and the same ranker — no hidden prompt hacks.
 
 ## Configuration
 
@@ -83,17 +83,17 @@ python3 -m agent.eval.template_ranking_eval
 
 After Python changes: `docker compose up -d --build --no-deps mc-agent`.
 
-## Production validation snapshot (tools_version `2.8.0`)
+## Production validation snapshot (tools_version `2.9.0`)
 
 The most recent end-to-end pass on the live Paper server:
 
 | Surface | Result |
 | --- | --- |
-| `pytest tests/` | 123 passed, 20 skipped |
-| Live tool integration (`scripts/live-tool-tests.sh`) | 20/20 passed |
+| `pytest tests/` (via `make test`) | 170+ passed |
+| Live tool integration (`make live-tools`) | 20/20 passed |
 | Template ranking eval (`agent.eval.template_ranking_eval`) | green |
-| Full world validation (`scripts/full_validation.py`) | 101/101 templates pasted via real schematics, 0 fallbacks, 59/59 supported mobs summoned |
-| Real `/v1/jobs` NL smoke (26 prompts, `qwen2.5:7b-instruct`) | 26/26 routed to the expected tool |
+| Full world validation (`make full-validation`) | 101/101 templates pasted via real schematics, 0 fallbacks, 59/59 supported mobs summoned |
+| Real `/v1/jobs` NL smoke (`make smoke`, `qwen2.5:7b-instruct`) | 26/26 routed to the expected tool |
 
 The NL smoke set covers houses (cabin, two-story, tavern, cottage, treehouse,
 apartment), bridges (wood, stone, rope), castles/towers (castle, watchtower,

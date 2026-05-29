@@ -10,8 +10,12 @@ alwaysApply: true
 - `secrets/rcon_password` — never echo, never paste into commit messages,
   never embed in `.cursor/mcp.json`. The MCP and `mc.sh` deliberately use
   `docker exec` so the password stays in the container's secret mount.
-- `.env` holds `PLAYIT_SECRET_KEY` — same rules. Both files are in
-  `.gitignore`; keep them there.
+- `.env` holds `PLAYIT_SECRET_KEY`, `AGENT_API_TOKEN`, and optional
+  `OPENAI_API_KEY` — same rules. The file is gitignored; keep it that way.
+- `AGENT_API_TOKEN` is required: `docker-compose.yml` interpolates it with
+  `${AGENT_API_TOKEN:?...}` so Compose refuses to boot without it. Never
+  reintroduce the old `dev-change-me` fallback in production code paths.
+  `make bootstrap` writes a fresh random token on first run.
 
 ## Networking
 
@@ -19,8 +23,11 @@ alwaysApply: true
   unpublished. Anything that needs RCON should `docker exec` into `mc-lan`.
 - Don't change `network_mode: host` on the `playit` service — it needs it
   to forward UDP cleanly to Geyser.
-- The agent orchestrator binds `127.0.0.1:8787` only — never publish it on
-  playit or `0.0.0.0`. Plugin reaches it via `host.docker.internal`.
+- `mc-agent` deliberately has **no** `ports:` mapping. The container binds
+  `AGENT_BIND_HOST=0.0.0.0` inside the Compose network only; the plugin
+  reaches it at `http://mc-agent:8787`. Never add a host port mapping.
+- Bundled Ollama (`--profile ollama`) is the same story — internal only,
+  no host port. Don't publish `11434` to the host.
 
 ## JVM
 
@@ -40,9 +47,15 @@ alwaysApply: true
 
 ## Whitelist / public exposure
 
-- Whitelist is currently OFF. If the user wants to share the playit
-  address publicly without a whitelist, set `MC_ENFORCE_WHITELIST=false` in
-  `.env` only after populating `WHITELIST:` (default is enforced whitelist on).
+- `ENFORCE_WHITELIST` defaults to **true** in `docker-compose.yml`
+  (`ENFORCE_WHITELIST: ${MC_ENFORCE_WHITELIST:-true}`). Add players via
+  `./mc.sh cmd "whitelist add <name>"` before sharing the playit address.
+- For the open friends-server mode (anyone with the address can join),
+  set `MC_ENFORCE_WHITELIST=false` in `.env` and restart `mc`. Do this
+  intentionally; don't silently flip it back in commits.
+- The `OPS:` block in compose is commented out by default. Use
+  `./mc.sh op <name>` after first boot, or uncomment if you want certain
+  ops re-applied on every restart (combined with `EXISTING_OPS_FILE: MERGE`).
 
 ## World data
 

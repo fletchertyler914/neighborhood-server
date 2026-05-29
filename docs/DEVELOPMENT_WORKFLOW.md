@@ -7,28 +7,31 @@ build training data, and point the agent at a locally trained model.
 ## 1. First spin-up
 
 ```bash
-cp .env.example .env
-# Edit .env:
-# - PLAYIT_SECRET_KEY
-# - AGENT_API_TOKEN (long random string)
+make bootstrap                  # secrets, .env with AGENT_API_TOKEN, Ollama path choice
+# (optional) edit .env: PLAYIT_SECRET_KEY=..., OPENAI_API_KEY=...
 
+# Host Ollama path (Mac Metal GPU): pull the models locally.
 ollama pull qwen2.5:7b-instruct
 ollama pull qwen3:8b
+# Bundled Ollama path: nothing extra — bootstrap set COMPOSE_PROFILES=ollama
+# and `make up` will pull the model on first boot.
 
-./scripts/build-plugin.sh
-docker compose up -d --build
-docker compose ps
+make up                         # docker compose up -d (+ ollama if profile active)
+make plugin                     # builds the Paper plugin JAR + installs into data/plugins
+make status                     # docker compose ps for the stack
 ```
 
 Health checks:
 
 ```bash
-./mc.sh status
-./mc.sh list
-docker compose logs -f mc-agent
+make health                     # GET /health from mc-agent
+./mc.sh status                  # all services
+./mc.sh list                    # RCON sanity check
+make logs                       # tail mc-lan + mc-agent together
+docker compose logs -f mc-agent # just the orchestrator
 ```
 
-The Paper plugin config should remain:
+The Paper plugin config (auto-installed by `make plugin`) should remain:
 
 ```yaml
 orchestrator-url: http://mc-agent:8787
@@ -36,7 +39,8 @@ api-token: env:AGENT_API_TOKEN
 ```
 
 Do not publish RCON or `mc-agent` ports. Cursor MCP and `/agent` both use the
-same `agent/tools.py` core through the private Docker network / container exec.
+same `agent/tools/` package (registry in `agent/tool_registry.py`) through the
+private Docker network / container exec.
 
 ## 2. Daily dev loop
 
@@ -80,7 +84,7 @@ and checks that the selected tool family matches expectation.
 | Goal | Edit |
 | --- | --- |
 | Add/change tool contract | `agent/tool_registry.py` |
-| Implement tool behavior | `agent/tools.py` |
+| Implement tool behavior | `agent/tools/` (admin, builders, fawe, inspection, templates) |
 | Add template metadata | `agent/templates/catalog.json` or ingestion helpers |
 | Re-seed schematics | `agent/templates/seed.py` via `scripts/seed-templates.sh` |
 | Improve NL template routing | `agent/templates/ranking.py`, `embedding_backend.py` |
@@ -136,9 +140,9 @@ PYTHONPATH=. python3 scripts/full_validation.py
 | Agent smoke | `AGENT_SMOKE_PLAYER=JavaTester ./scripts/agent-smoke.sh` | Yes | Real `/v1/jobs` prompt routing with local model |
 | Full world | `PYTHONPATH=. python3 scripts/full_validation.py` | Yes, validation grid | Paste every catalog template + summon every supported mob |
 
-Current known-good snapshot (`TOOLS_VERSION=2.8.0`):
+Current known-good snapshot (`TOOLS_VERSION=2.9.0`):
 
-- `pytest tests/`: 123 passed, 20 skipped.
+- `pytest tests/`: 170+ passed.
 - Live tools: 20/20 passed.
 - Full world: 101/101 templates pasted via schematics, 0 fallbacks, 59/59 mobs.
 - Agent smoke: 26/26 representative prompts routed to expected tool/template.

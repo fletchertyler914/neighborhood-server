@@ -12,6 +12,7 @@ For first-time setup of the stack, see
 
 ```bash
 make status            # mc-lan + mc-agent should both show (healthy)
+make health            # GET /health from mc-agent
 ./mc.sh list           # confirms RCON works
 ./mc.sh backup         # snapshot the launch world before guests join
 ```
@@ -20,14 +21,15 @@ Visual check in-game:
 
 - Connect from your own client at `localhost:25565` (Java) or
   `localhost:19132` (Bedrock).
-- Spawn shows the new world (mountains/forest/whatever - not flat).
+- Spawn shows the new world (mountains/forest/whatever — not flat).
 - Type `/agent say hello` to confirm `/agent` answers from the host LLM.
 
-If anything is red, the most common fix is:
+If anything is red, the most common fixes are:
 
 ```bash
-docker compose restart mc-agent       # nudge the agent if /health fails
-docker compose up -d --build mc-agent # full rebuild if it drifted
+docker compose restart mc-agent        # nudge the agent if /health fails
+docker compose up -d --build mc-agent  # full rebuild if it drifted
+make logs                              # tail mc-lan + mc-agent together
 ```
 
 ---
@@ -38,16 +40,26 @@ The playit tunnel addresses live on your **playit.gg dashboard**, not in
 local logs (the agent only sees the relay endpoints). Open
 [playit.gg/account/tunnels](https://playit.gg/account/tunnels) and copy:
 
-- **Java edition** (TCP / 25565) -> something like `xyz-abc.gl.joinmc.link`
-- **Bedrock edition** (UDP / 19132) -> something like `xyz-abc.gl.joinmc.link:NNNNN`
+- **Java edition** (TCP / 25565) → e.g. `xyz-abc.gl.joinmc.link`
+- **Bedrock edition** (UDP / 19132) → e.g. `xyz-abc.gl.joinmc.link:NNNNN`
 
-Paste both into the party invite. Whitelist is **ON** by default in the
-public repo — add guests before sharing the address.
+Paste both into the party invite.
 
-For an open friends server (anyone with the playit address can join), set
-`MC_ENFORCE_WHITELIST=false` in `.env` and `docker compose restart mc`.
+### Whitelist mode (default, recommended)
 
-To lock it down on the fly without restarting:
+`ENFORCE_WHITELIST` is **on** by default in the public repo. Add every guest
+before sharing the address:
+
+```bash
+./mc.sh cmd "whitelist add <java_name>"
+./mc.sh cmd "whitelist add .<bedrock_gamertag>"   # leading dot for Bedrock
+```
+
+### Open friends-server mode
+
+For "anyone with the address can join", set `MC_ENFORCE_WHITELIST=false` in
+`.env` and `docker compose restart mc`. To lock it back down on the fly
+without restarting:
 
 ```bash
 ./mc.sh cmd "whitelist add <name>"
@@ -58,14 +70,15 @@ To lock it down on the fly without restarting:
 
 ## Common party operations
 
-Everything below uses the `mc.sh` and `op.sh` wrappers so you stay out of
-raw `docker exec`. Full list lives in [02-minecraft-tools](../.cursor/rules/02-minecraft-tools.mdc).
+Everything below uses the `mc.sh` / `op.sh` wrappers so you stay out of raw
+`docker exec`. Full list lives in
+[02-minecraft-tools](../.cursor/rules/02-minecraft-tools.mdc).
 
 ### Promote a friend to OP
 
 ```bash
 ./op.sh someFriend                     # Java edition
-./op.sh .someBedrockFriend             # Bedrock - leading dot is required
+./op.sh .someBedrockFriend             # Bedrock — leading dot is required
 ```
 
 OPs are persisted across restarts via `EXISTING_OPS_FILE: MERGE`.
@@ -89,16 +102,18 @@ Examples that the corpus regression-tests pass on every release:
 /agent give me a few pigs
 /agent dig a 30-block staircase down to bedrock
 /agent build a hollow stone-brick sphere radius 8 above me
-/agent confirm <token> clear a 20x20 area around me   # destructive ops
+/agent confirm <token> clear a 20x20 area around me     # destructive ops
 ```
 
-The orchestrator is local Ollama -> qwen2.5:7b-instruct by default. If
-you have `OPENAI_API_KEY` in `.env`, cloud is the third-tier fallback.
+The orchestrator routes through local Ollama (`qwen2.5:7b-instruct` by
+default) first; cloud (`OPENAI_API_KEY`) is the third-tier fallback.
 
 ### Forgot the agent token
 
-`AGENT_API_TOKEN` is in `.env`. Players don't need it - it only matters
-for direct HTTP calls to `mc-agent`.
+`AGENT_API_TOKEN` is in `.env`. Players don't need it — it only matters for
+the Paper plugin → orchestrator handshake. If you ever wipe `.env`, regenerate
+with `make bootstrap` and `docker compose up -d --build mc-agent` so the new
+token reaches the container.
 
 ---
 
@@ -108,9 +123,11 @@ for direct HTTP calls to `mc-agent`.
 | --- | --- |
 | Player stuck under the world | `./mc.sh cmd "tp <name> 0 100 0"` then `/spawnpoint @s` |
 | `/agent` says "Agent offline" | `docker compose ps mc-agent` ; `docker compose restart mc-agent` |
+| `/agent` says "Agent misconfigured" | `AGENT_API_TOKEN` missing — set in `.env` and rebuild `mc-agent` |
+| Bundled Ollama timing out | `docker compose logs mc-ollama` ; first prompt loads model into RAM |
 | Server lag spike | `./mc.sh cmd "tps"` ; if persistent, `./mc.sh cmd "spark profile"` |
 | Someone griefs | `./mc.sh cmd "ban <name>"` ; restore from latest backup if needed |
-| Bedrock friend can't connect | confirm UDP port `19132` tunnel is showing on playit dashboard |
+| Bedrock friend can't connect | Confirm UDP port `19132` tunnel is online on the playit dashboard |
 
 A backup runs automatically every 2h via `mc-backup` (RCON-coordinated
 `save-off` / `save-on`, 14-day retention). To roll back:
@@ -119,7 +136,7 @@ A backup runs automatically every 2h via `mc-backup` (RCON-coordinated
 ls -lt backups | head             # find a snapshot before the incident
 docker compose stop mc
 mv data/world data/world.bad
-tar -xzf backups/world-YYYYMMDD-HHMMSS.tar.gz -C data/
+tar -xzf backups/world-YYYY-MM-DD-HH-MM-SS.tgz -C data/
 docker compose start mc
 ```
 
@@ -131,12 +148,12 @@ Save anything cool from the session before the next dev cycle:
 
 ```bash
 ./mc.sh backup                                       # final snapshot
-cp backups/world-$(date +%Y%m%d)*.tar.gz \
-   backups/keep-party-$(date +%Y%m%d).tar.gz        # rename outside the prune window
+cp backups/world-$(date +%Y-%m-%d)*.tgz \
+   backups/keep-party-$(date +%Y%m%d).tgz           # rename outside the prune window
 ```
 
-If you want to extract a particular build as a reusable template, jump
-into the world as an OP, select with `//pos1`/`//pos2`, then:
+If you want to extract a particular build as a reusable template, jump into
+the world as an OP, select with `//pos1`/`//pos2`, then:
 
 ```text
 //copy
@@ -144,19 +161,27 @@ into the world as an OP, select with `//pos1`/`//pos2`, then:
 ```
 
 The schematic lands in `data/plugins/FastAsyncWorldEdit/schematics/` and
-can be copied into `agent/templates/schematics/neighborhood/` so
-`/agent` can paste it later.
+can be copied into `agent/templates/schematics/` (and added to
+`agent/templates/catalog.json`) so `/agent` and the Cursor MCP can paste it
+later. See [docs/TEMPLATES.md](TEMPLATES.md) for the full publish workflow.
 
 ---
 
-## What changed for the launch
+## Tunables worth knowing
 
-For posterity (commit log has details):
+The `mc` service in `docker-compose.yml` ships with sensible defaults for a
+friends-scale server. Common knobs (override in `.env` via the standard
+itzg env vars or by editing compose):
 
-- Memory: `MAX_MEMORY 8G`, container `mem_limit 10g`
-- World: vanilla `minecraft:normal` terrain (not flat). Validation flat
-  world archived under `data/_reset_archives/<timestamp>-pre-launch/`.
-- View distance: 12, simulation distance: 6
-- MOTD: customizable via `MC_MOTD` in `.env`
-- Backups: `_reset_archives/`, `corpus-runs/`, `eval-runs/` excluded so
-  daily snapshots stay ~3 MB instead of ~100 MB
+| Setting | Default | Purpose |
+| --- | --- | --- |
+| `MAX_MEMORY` | `8G` | JVM heap ceiling (ZGC + generational) |
+| `mem_limit` (container) | `10g` | Hard container cap |
+| `VIEW_DISTANCE` | `12` | Chunks visible to each player |
+| `SIMULATION_DISTANCE` | `6` | Chunks ticking around each player |
+| `MOTD` (`MC_MOTD`) | "Neighborhood Server" | What appears in the server list |
+| `MC_ENFORCE_WHITELIST` | `true` | Flip to `false` for open friends mode |
+
+Backups under `backups/` exclude `_reset_archives/`, `corpus-runs/`, and
+`eval-runs/` so daily snapshots stay small (~3 MB) instead of bloating with
+eval data.

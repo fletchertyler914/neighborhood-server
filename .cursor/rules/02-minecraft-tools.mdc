@@ -10,41 +10,48 @@ teleport, set time/weather, run a command), use this priority order.
 
 ## 1. Shared tool core — MCP and `/agent`
 
-All in-world actions go through `agent/tools.py` (guardrailed RCON via
-`docker exec mc-lan rcon-cli`). Two entry points use the same code:
+All in-world actions go through the typed tool registry in
+`agent/tool_registry.py` and the dispatch package in `agent/tools/`
+(guardrailed RCON via `docker exec mc-lan rcon-cli`). Two entry points
+use the same code:
 
 - **Cursor**: `minecraft-builder` MCP (`mcp/minecraft_build_mcp.py`)
-- **In-game**: `/agent <prompt>` → Paper plugin → host orchestrator → Ollama/cloud
+- **In-game**: `/agent <prompt>` → Paper plugin → `mc-agent` orchestrator → Ollama/cloud
+
+Current `TOOLS_VERSION` is `2.9.0` (`agent/tool_registry.py`,
+mirrored in `agent/mcp_core.py`). Bump both when you change a parameter
+or semantics.
 
 Always prefer typed tools for in-world actions:
 
 - Inspection: `server_status`, `preflight`, `list_players`,
   `get_player_position`, `get_player_dimension`
 - Admin: `op_player`, `say`, `teleport_player`, `set_gamemode`, `set_time`,
- `set_weather`, `give_haste`, `give_item`, `backup_now`,
- `run_command` (escape hatch)
+  `set_weather`, `give_haste`, `give_item`, `backup_now`,
+  `run_command` (escape hatch)
 - Building: `fill_box`, `clear_box`, `build_platform`, `build_sphere`,
- `build_cylinder`, `build_spiral_staircase`
+  `build_cylinder`, `build_spiral_staircase`
 - **Templates (quality-first):** `list_templates`, `paste_template_at_player`,
- `create_template_from_selection` — FAWE schematics from
- `agent/templates/catalog.json` + `agent/templates/schematics/` (mounted
- into `mc-lan` at `.../schematics/neighborhood/`). Named structures
- (coop, castle, barn, well, bridge) should use `paste_template_at_player`
- unless the player gives explicit WxH / radius constraints.
+  `create_template_from_selection` — FAWE schematics from
+  `agent/templates/catalog.json` + `agent/templates/schematics/` (mounted
+  into `mc-lan` at `.../schematics/neighborhood/`). Named structures
+  (coop, castle, barn, well, bridge) should use `paste_template_at_player`
+  unless the player gives explicit WxH / radius constraints.
 - Player-relative builds (parametric fallback): `build_house_at_player`,
- `build_castle_at_player`, `build_bridge_at_player`,
- `build_wall_at_player`, `build_animal_pen_at_player`. As of
- `TOOLS_VERSION=2.8.0` these builders ship with real interiors:
- `build_house_at_player(height>=7)` lays a floor divider every 4 blocks
- and a 2-wide staircase against the back-left wall;
- `build_bridge_at_player` adds material-matched railings + support
- pillars by default (`add_rails=false` / `add_supports=false` to opt
- out); `build_castle_at_player` adds an interior staircase to the
- wall-walk plus a ladder up one tower. Don't manually splice extra
- stairs/rails on top.
+  `build_castle_at_player`, `build_bridge_at_player`,
+  `build_wall_at_player`, `build_animal_pen_at_player`. As of
+  `TOOLS_VERSION=2.9.0` these builders ship with real interiors:
+  `build_house_at_player(height>=7)` lays a floor divider every 4 blocks
+  and a 2-wide staircase against the back-left wall;
+  `build_bridge_at_player` adds material-matched railings + support
+  pillars by default (`add_rails=false` / `add_supports=false` to opt
+  out); `build_castle_at_player` adds an interior staircase to the
+  wall-walk plus a ladder up one tower. Don't manually splice extra
+  stairs/rails on top.
 - Mobs / world: `summon_entity` (raw `/summon`),
- `build_animal_pen_at_player` (fenced pen + summoned animals)
-- FAWE: `fawe_as_player`, `fawe_sphere_at_player`, `mine_shaft_at_player`
+  `build_animal_pen_at_player` (fenced pen + summoned animals)
+- FAWE: `fawe_as_player`, `fawe_sphere_at_player`, `fawe_cyl_at_player`,
+  `mine_shaft_at_player`
 
 ### Guardrails (don't bypass without asking)
 
@@ -54,9 +61,10 @@ Always prefer typed tools for in-world actions:
 
 ### Bedrock vs Java names
 
-Bedrock players show up via Floodgate with a leading `.`. When the user
-says "lunar", confirm whether they mean `.BedrockPlayer` (Bedrock) or a
-Java handle. The dot is part of the name in commands.
+Bedrock players show up via Floodgate with a leading `.`. When a request
+mentions a player by short nickname, confirm whether they mean the
+Bedrock account (leading dot, e.g. `.BedrockPlayer`) or a Java handle.
+The dot is part of the name in commands.
 
 ## 2. Shell wrappers — for terminal work
 
@@ -69,6 +77,15 @@ hand-writing `docker exec`:
 - `./mc.sh say "<message>"`
 - `./mc.sh gamemode <mode> <player>`
 - `./mc.sh cmd "<rcon command>"` — escape hatch
+
+Or the Makefile (calls the above + `docker compose`):
+
+- `make up | down | restart | logs | status | health | metrics`
+- `make plugin` — build & install the Paper plugin JAR
+- `make seed` — pre-build every schematic in-world (one-time)
+- `make test | smoke | eval | live-tools | full-validation`
+- `make corpus | corpus-quick | triage`
+- `make train | train-full | deploy-model | compare-models`
 
 ## 3. Raw `docker exec` — last resort
 
