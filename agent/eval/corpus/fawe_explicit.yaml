@@ -1,0 +1,511 @@
+cases:
+- id: fawe.sphere.direct.001
+  category: fawe
+  intent: fawe_sphere
+  language_style: direct
+  prompt: Use FAWE to make a small glass sphere at my location
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.casual.002
+  category: fawe
+  intent: fawe_sphere
+  language_style: casual
+  prompt: yo use fawe to make a small glass sphere at my location
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.polite.003
+  category: fawe
+  intent: fawe_sphere
+  language_style: polite
+  prompt: Could you please use FAWE to make a small glass sphere at my location
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.typoed.004
+  category: fawe
+  intent: fawe_sphere
+  language_style: typoed
+  prompt: Use FAWE to make a small glass sphere at my location
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.verbose.005
+  category: fawe
+  intent: fawe_sphere
+  language_style: verbose
+  prompt: I would really like it if you could use FAWE to make a small glass sphere at my location
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.minimal.006
+  category: fawe
+  intent: fawe_sphere
+  language_style: minimal
+  prompt: at my location
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.direct.007
+  category: fawe
+  intent: fawe_sphere
+  language_style: direct
+  prompt: FAWE a hollow glass dome radius 8 around me
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.casual.008
+  category: fawe
+  intent: fawe_sphere
+  language_style: casual
+  prompt: yo fawe a hollow glass dome radius 8 around me
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.polite.009
+  category: fawe
+  intent: fawe_sphere
+  language_style: polite
+  prompt: Could you please fAWE a hollow glass dome radius 8 around me
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.typoed.010
+  category: fawe
+  intent: fawe_sphere
+  language_style: typoed
+  prompt: FAWE a hollow glass dome radius 8 around me
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.verbose.011
+  category: fawe
+  intent: fawe_sphere
+  language_style: verbose
+  prompt: I would really like it if you could fAWE a hollow glass dome radius 8 around me
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.minimal.012
+  category: fawe
+  intent: fawe_sphere
+  language_style: minimal
+  prompt: 8 around me
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.direct.013
+  category: fawe
+  intent: fawe_sphere
+  language_style: direct
+  prompt: Use worldedit to set a glass sphere here
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.casual.014
+  category: fawe
+  intent: fawe_sphere
+  language_style: casual
+  prompt: yo use worldedit to set a glass sphere here
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.polite.015
+  category: fawe
+  intent: fawe_sphere
+  language_style: polite
+  prompt: Could you please use worldedit to set a glass sphere here
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.typoed.016
+  category: fawe
+  intent: fawe_sphere
+  language_style: typoed
+  prompt: Use worldedit to set a glass sphere here
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.verbose.017
+  category: fawe
+  intent: fawe_sphere
+  language_style: verbose
+  prompt: I would really like it if you could use worldedit to set a glass sphere here
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.minimal.018
+  category: fawe
+  intent: fawe_sphere
+  language_style: minimal
+  prompt: glass sphere here
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.direct.019
+  category: fawe
+  intent: fawe_sphere
+  language_style: direct
+  prompt: Make a glass sphere with FAWE radius 6
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.casual.020
+  category: fawe
+  intent: fawe_sphere
+  language_style: casual
+  prompt: yo make a glass sphere with fawe radius 6
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.polite.021
+  category: fawe
+  intent: fawe_sphere
+  language_style: polite
+  prompt: Could you please make a glass sphere with FAWE radius 6
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.typoed.022
+  category: fawe
+  intent: fawe_sphere
+  language_style: typoed
+  prompt: Make a glass sphere with FAWE radius 6
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.verbose.023
+  category: fawe
+  intent: fawe_sphere
+  language_style: verbose
+  prompt: I would really like it if you could make a glass sphere with FAWE radius 6
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.minimal.024
+  category: fawe
+  intent: fawe_sphere
+  language_style: minimal
+  prompt: FAWE radius 6
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.direct.025
+  category: fawe
+  intent: fawe_sphere
+  language_style: direct
+  prompt: Use FAWE //hsphere glass 10 at my feet
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.casual.026
+  category: fawe
+  intent: fawe_sphere
+  language_style: casual
+  prompt: yo use fawe //hsphere glass 10 at my feet
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.polite.027
+  category: fawe
+  intent: fawe_sphere
+  language_style: polite
+  prompt: Could you please use FAWE //hsphere glass 10 at my feet
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.typoed.028
+  category: fawe
+  intent: fawe_sphere
+  language_style: typoed
+  prompt: Use FAWE //hsphere glass 10 at my feet
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.verbose.029
+  category: fawe
+  intent: fawe_sphere
+  language_style: verbose
+  prompt: I would really like it if you could use FAWE //hsphere glass 10 at my feet
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []
+- id: fawe.sphere.minimal.030
+  category: fawe
+  intent: fawe_sphere
+  language_style: minimal
+  prompt: at my feet
+  expect:
+    tool_any:
+    - name: fawe_sphere_at_player
+    - name: fawe_as_player
+    - name: build_sphere
+    world_probe:
+      kind: shape_built
+      shape: sphere
+      block: glass
+      radius: 5
+      min_matches: 1
+  tags: []

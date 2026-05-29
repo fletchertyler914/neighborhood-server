@@ -1,0 +1,901 @@
+cases:
+- id: pen.chicken_coop_small.direct.001
+  category: animal_pen
+  intent: build_chicken_coop_small
+  language_style: direct
+  prompt: make me a chicken pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: chicken_coop_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.chicken_coop_small.casual.002
+  category: animal_pen
+  intent: build_chicken_coop_small
+  language_style: casual
+  prompt: yo build a chicken coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: chicken_coop_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.chicken_coop_small.polite.003
+  category: animal_pen
+  intent: build_chicken_coop_small
+  language_style: polite
+  prompt: Could you please build a chicken enclosure
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: chicken_coop_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.chicken_coop_small.typoed.004
+  category: animal_pen
+  intent: build_chicken_coop_small
+  language_style: typoed
+  prompt: Build a chiken coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: chicken_coop_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.chicken_coop_small.verbose.005
+  category: animal_pen
+  intent: build_chicken_coop_small
+  language_style: verbose
+  prompt: I would really like it if you could a place for chickens to live
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: chicken_coop_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.pig_pen_small.direct.006
+  category: animal_pen
+  intent: build_pig_pen_small
+  language_style: direct
+  prompt: Build a pig pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pig_pen_small
+      - template_id: pig pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: pig
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.pig_pen_small.casual.007
+  category: animal_pen
+  intent: build_pig_pen_small
+  language_style: casual
+  prompt: yo i need a home for my pigs
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pig_pen_small
+      - template_id: pig pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: pig
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.pig_pen_small.polite.008
+  category: animal_pen
+  intent: build_pig_pen_small
+  language_style: polite
+  prompt: Could you please build a pig pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pig_pen_small
+      - template_id: pig pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: pig
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.pig_pen_small.typoed.009
+  category: animal_pen
+  intent: build_pig_pen_small
+  language_style: typoed
+  prompt: put up a pig coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pig_pen_small
+      - template_id: pig pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: pig
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.pig_pen_small.verbose.010
+  category: animal_pen
+  intent: build_pig_pen_small
+  language_style: verbose
+  prompt: I would really like it if you could build a pig pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pig_pen_small
+      - template_id: pig pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: pig
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.sheep_pen_medium.direct.011
+  category: animal_pen
+  intent: build_sheep_pen_medium
+  language_style: direct
+  prompt: make me a sheep pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sheep_pen_medium
+      - template_id: sheep pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: sheep
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.sheep_pen_medium.casual.012
+  category: animal_pen
+  intent: build_sheep_pen_medium
+  language_style: casual
+  prompt: yo build a sheep pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sheep_pen_medium
+      - template_id: sheep pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: sheep
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.sheep_pen_medium.polite.013
+  category: animal_pen
+  intent: build_sheep_pen_medium
+  language_style: polite
+  prompt: Could you please build a sheep enclosure
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sheep_pen_medium
+      - template_id: sheep pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: sheep
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.sheep_pen_medium.typoed.014
+  category: animal_pen
+  intent: build_sheep_pen_medium
+  language_style: typoed
+  prompt: Build a sheep pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sheep_pen_medium
+      - template_id: sheep pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: sheep
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.sheep_pen_medium.verbose.015
+  category: animal_pen
+  intent: build_sheep_pen_medium
+  language_style: verbose
+  prompt: I would really like it if you could a place for sheeps to live
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sheep_pen_medium
+      - template_id: sheep pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: sheep
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.cow_barn_medium.direct.016
+  category: animal_pen
+  intent: build_cow_barn_medium
+  language_style: direct
+  prompt: Build a cow barn
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cow_barn_medium
+      - template_id: cow pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: cow
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.cow_barn_medium.casual.017
+  category: animal_pen
+  intent: build_cow_barn_medium
+  language_style: casual
+  prompt: yo i need a home for my cows
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cow_barn_medium
+      - template_id: cow pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: cow
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.cow_barn_medium.polite.018
+  category: animal_pen
+  intent: build_cow_barn_medium
+  language_style: polite
+  prompt: Could you please build a cow barn
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cow_barn_medium
+      - template_id: cow pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: cow
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.cow_barn_medium.typoed.019
+  category: animal_pen
+  intent: build_cow_barn_medium
+  language_style: typoed
+  prompt: put up a cow coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cow_barn_medium
+      - template_id: cow pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: cow
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.cow_barn_medium.verbose.020
+  category: animal_pen
+  intent: build_cow_barn_medium
+  language_style: verbose
+  prompt: I would really like it if you could build a cow barn
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cow_barn_medium
+      - template_id: cow pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: cow
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.horse_stable_small.direct.021
+  category: animal_pen
+  intent: build_horse_stable_small
+  language_style: direct
+  prompt: make me a horse pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: horse_stable_small
+      - template_id: horse pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: horse
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.horse_stable_small.casual.022
+  category: animal_pen
+  intent: build_horse_stable_small
+  language_style: casual
+  prompt: yo build a horse stable
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: horse_stable_small
+      - template_id: horse pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: horse
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.horse_stable_small.polite.023
+  category: animal_pen
+  intent: build_horse_stable_small
+  language_style: polite
+  prompt: Could you please build a horse enclosure
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: horse_stable_small
+      - template_id: horse pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: horse
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.horse_stable_small.typoed.024
+  category: animal_pen
+  intent: build_horse_stable_small
+  language_style: typoed
+  prompt: Build a horse stable
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: horse_stable_small
+      - template_id: horse pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: horse
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.horse_stable_small.verbose.025
+  category: animal_pen
+  intent: build_horse_stable_small
+  language_style: verbose
+  prompt: I would really like it if you could a place for horses to live
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: horse_stable_small
+      - template_id: horse pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: horse
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.rabbit_hutch_small.direct.026
+  category: animal_pen
+  intent: build_rabbit_hutch_small
+  language_style: direct
+  prompt: Build a rabbit hutch
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: rabbit_hutch_small
+      - template_id: rabbit pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: rabbit
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.rabbit_hutch_small.casual.027
+  category: animal_pen
+  intent: build_rabbit_hutch_small
+  language_style: casual
+  prompt: yo i need a home for my rabbits
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: rabbit_hutch_small
+      - template_id: rabbit pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: rabbit
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.rabbit_hutch_small.polite.028
+  category: animal_pen
+  intent: build_rabbit_hutch_small
+  language_style: polite
+  prompt: Could you please build a rabbit hutch
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: rabbit_hutch_small
+      - template_id: rabbit pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: rabbit
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.rabbit_hutch_small.typoed.029
+  category: animal_pen
+  intent: build_rabbit_hutch_small
+  language_style: typoed
+  prompt: put up a rabbit coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: rabbit_hutch_small
+      - template_id: rabbit pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: rabbit
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.rabbit_hutch_small.verbose.030
+  category: animal_pen
+  intent: build_rabbit_hutch_small
+  language_style: verbose
+  prompt: I would really like it if you could build a rabbit hutch
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: rabbit_hutch_small
+      - template_id: rabbit pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: rabbit
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.duck_pond_small.direct.031
+  category: animal_pen
+  intent: build_duck_pond_small
+  language_style: direct
+  prompt: make me a chicken pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: duck_pond_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.duck_pond_small.casual.032
+  category: animal_pen
+  intent: build_duck_pond_small
+  language_style: casual
+  prompt: yo build a duck pond
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: duck_pond_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.duck_pond_small.polite.033
+  category: animal_pen
+  intent: build_duck_pond_small
+  language_style: polite
+  prompt: Could you please build a chicken enclosure
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: duck_pond_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.duck_pond_small.typoed.034
+  category: animal_pen
+  intent: build_duck_pond_small
+  language_style: typoed
+  prompt: Build a duck pond
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: duck_pond_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.duck_pond_small.verbose.035
+  category: animal_pen
+  intent: build_duck_pond_small
+  language_style: verbose
+  prompt: I would really like it if you could a place for chickens to live
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: duck_pond_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.goat_pen_small.direct.036
+  category: animal_pen
+  intent: build_goat_pen_small
+  language_style: direct
+  prompt: Build a goat pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: goat_pen_small
+      - template_id: goat pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: goat
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.goat_pen_small.casual.037
+  category: animal_pen
+  intent: build_goat_pen_small
+  language_style: casual
+  prompt: yo i need a home for my goats
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: goat_pen_small
+      - template_id: goat pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: goat
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.goat_pen_small.polite.038
+  category: animal_pen
+  intent: build_goat_pen_small
+  language_style: polite
+  prompt: Could you please build a goat pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: goat_pen_small
+      - template_id: goat pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: goat
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.goat_pen_small.typoed.039
+  category: animal_pen
+  intent: build_goat_pen_small
+  language_style: typoed
+  prompt: put up a goat coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: goat_pen_small
+      - template_id: goat pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: goat
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.goat_pen_small.verbose.040
+  category: animal_pen
+  intent: build_goat_pen_small
+  language_style: verbose
+  prompt: I would really like it if you could build a goat pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: goat_pen_small
+      - template_id: goat pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: goat
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.turkey_pen_small.direct.041
+  category: animal_pen
+  intent: build_turkey_pen_small
+  language_style: direct
+  prompt: make me a chicken pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: turkey_pen_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.turkey_pen_small.casual.042
+  category: animal_pen
+  intent: build_turkey_pen_small
+  language_style: casual
+  prompt: yo build a turkey pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: turkey_pen_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.turkey_pen_small.polite.043
+  category: animal_pen
+  intent: build_turkey_pen_small
+  language_style: polite
+  prompt: Could you please build a chicken enclosure
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: turkey_pen_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.turkey_pen_small.typoed.044
+  category: animal_pen
+  intent: build_turkey_pen_small
+  language_style: typoed
+  prompt: Build a turkey pen
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: turkey_pen_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.turkey_pen_small.verbose.045
+  category: animal_pen
+  intent: build_turkey_pen_small
+  language_style: verbose
+  prompt: I would really like it if you could a place for chickens to live
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: turkey_pen_small
+      - template_id: chicken pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: chicken
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.bee_apiary_small.direct.046
+  category: animal_pen
+  intent: build_bee_apiary_small
+  language_style: direct
+  prompt: Build a bee apiary
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: bee_apiary_small
+      - template_id: bee pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: bee
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.bee_apiary_small.casual.047
+  category: animal_pen
+  intent: build_bee_apiary_small
+  language_style: casual
+  prompt: yo i need a home for my bees
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: bee_apiary_small
+      - template_id: bee pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: bee
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.bee_apiary_small.polite.048
+  category: animal_pen
+  intent: build_bee_apiary_small
+  language_style: polite
+  prompt: Could you please build a bee apiary
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: bee_apiary_small
+      - template_id: bee pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: bee
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.bee_apiary_small.typoed.049
+  category: animal_pen
+  intent: build_bee_apiary_small
+  language_style: typoed
+  prompt: put up a bee coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: bee_apiary_small
+      - template_id: bee pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: bee
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []
+- id: pen.bee_apiary_small.verbose.050
+  category: animal_pen
+  intent: build_bee_apiary_small
+  language_style: verbose
+  prompt: I would really like it if you could build a bee apiary
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: bee_apiary_small
+      - template_id: bee pen
+    - name: build_animal_pen_at_player
+      arguments_any:
+      - animal: bee
+    world_probe:
+      kind: template_built
+      min_matches: 1
+  tags: []

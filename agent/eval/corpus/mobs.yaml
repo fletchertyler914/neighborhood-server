@@ -1,0 +1,801 @@
+cases:
+- id: mob.chicken.direct.001
+  category: mob
+  intent: summon_chicken
+  language_style: direct
+  prompt: Spawn 4 chickens here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 4
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.casual.002
+  category: mob
+  intent: summon_chicken
+  language_style: casual
+  prompt: yo spawn 4 chickens here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 4
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.polite.003
+  category: mob
+  intent: summon_chicken
+  language_style: polite
+  prompt: Could you please spawn 4 chickens here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 4
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.typoed.004
+  category: mob
+  intent: summon_chicken
+  language_style: typoed
+  prompt: Spawn 4 chikens here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 4
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.verbose.005
+  category: mob
+  intent: summon_chicken
+  language_style: verbose
+  prompt: I would really like it if you could spawn 4 chickens here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 4
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.direct.006
+  category: mob
+  intent: summon_chicken
+  language_style: direct
+  prompt: Summon a chicken
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.casual.007
+  category: mob
+  intent: summon_chicken
+  language_style: casual
+  prompt: yo summon a chicken
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.polite.008
+  category: mob
+  intent: summon_chicken
+  language_style: polite
+  prompt: Could you please summon a chicken
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.typoed.009
+  category: mob
+  intent: summon_chicken
+  language_style: typoed
+  prompt: Summon a chiken
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.chicken.verbose.010
+  category: mob
+  intent: summon_chicken
+  language_style: verbose
+  prompt: I would really like it if you could summon a chicken
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: chicken
+      - entity: chicken
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: chicken
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.cow.direct.011
+  category: mob
+  intent: summon_cow
+  language_style: direct
+  prompt: Spawn 2 cows
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: cow
+      - entity: cow
+        count: 2
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: cow
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.cow.casual.012
+  category: mob
+  intent: summon_cow
+  language_style: casual
+  prompt: yo spawn 2 cows
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: cow
+      - entity: cow
+        count: 2
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: cow
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.cow.polite.013
+  category: mob
+  intent: summon_cow
+  language_style: polite
+  prompt: Could you please spawn 2 cows
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: cow
+      - entity: cow
+        count: 2
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: cow
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.cow.typoed.014
+  category: mob
+  intent: summon_cow
+  language_style: typoed
+  prompt: Spawn 2 cows
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: cow
+      - entity: cow
+        count: 2
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: cow
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.cow.verbose.015
+  category: mob
+  intent: summon_cow
+  language_style: verbose
+  prompt: I would really like it if you could spawn 2 cows
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: cow
+      - entity: cow
+        count: 2
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: cow
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.pig.direct.016
+  category: mob
+  intent: summon_pig
+  language_style: direct
+  prompt: Give me a few pigs
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: pig
+      - entity: pig
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: pig
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.pig.casual.017
+  category: mob
+  intent: summon_pig
+  language_style: casual
+  prompt: yo give me a few pigs
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: pig
+      - entity: pig
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: pig
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.pig.polite.018
+  category: mob
+  intent: summon_pig
+  language_style: polite
+  prompt: Could you please give me a few pigs
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: pig
+      - entity: pig
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: pig
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.pig.typoed.019
+  category: mob
+  intent: summon_pig
+  language_style: typoed
+  prompt: Give me a few pigs
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: pig
+      - entity: pig
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: pig
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.pig.verbose.020
+  category: mob
+  intent: summon_pig
+  language_style: verbose
+  prompt: I would really like it if you could give me a few pigs
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: pig
+      - entity: pig
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: pig
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.sheep.direct.021
+  category: mob
+  intent: summon_sheep
+  language_style: direct
+  prompt: Spawn 5 sheep
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: sheep
+      - entity: sheep
+        count: 5
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: sheep
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.sheep.casual.022
+  category: mob
+  intent: summon_sheep
+  language_style: casual
+  prompt: yo spawn 5 sheep
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: sheep
+      - entity: sheep
+        count: 5
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: sheep
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.sheep.polite.023
+  category: mob
+  intent: summon_sheep
+  language_style: polite
+  prompt: Could you please spawn 5 sheep
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: sheep
+      - entity: sheep
+        count: 5
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: sheep
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.sheep.typoed.024
+  category: mob
+  intent: summon_sheep
+  language_style: typoed
+  prompt: Spawn 5 sheep
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: sheep
+      - entity: sheep
+        count: 5
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: sheep
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.sheep.verbose.025
+  category: mob
+  intent: summon_sheep
+  language_style: verbose
+  prompt: I would really like it if you could spawn 5 sheep
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: sheep
+      - entity: sheep
+        count: 5
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: sheep
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.horse.direct.026
+  category: mob
+  intent: summon_horse
+  language_style: direct
+  prompt: Summon a horse
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: horse
+      - entity: horse
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: horse
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.horse.casual.027
+  category: mob
+  intent: summon_horse
+  language_style: casual
+  prompt: yo summon a horse
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: horse
+      - entity: horse
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: horse
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.horse.polite.028
+  category: mob
+  intent: summon_horse
+  language_style: polite
+  prompt: Could you please summon a horse
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: horse
+      - entity: horse
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: horse
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.horse.typoed.029
+  category: mob
+  intent: summon_horse
+  language_style: typoed
+  prompt: Summon a horse
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: horse
+      - entity: horse
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: horse
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.horse.verbose.030
+  category: mob
+  intent: summon_horse
+  language_style: verbose
+  prompt: I would really like it if you could summon a horse
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: horse
+      - entity: horse
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: horse
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.rabbit.direct.031
+  category: mob
+  intent: summon_rabbit
+  language_style: direct
+  prompt: Spawn rabbits here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: rabbit
+      - entity: rabbit
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: rabbit
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.rabbit.casual.032
+  category: mob
+  intent: summon_rabbit
+  language_style: casual
+  prompt: yo spawn rabbits here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: rabbit
+      - entity: rabbit
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: rabbit
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.rabbit.polite.033
+  category: mob
+  intent: summon_rabbit
+  language_style: polite
+  prompt: Could you please spawn rabbits here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: rabbit
+      - entity: rabbit
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: rabbit
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.rabbit.typoed.034
+  category: mob
+  intent: summon_rabbit
+  language_style: typoed
+  prompt: Spawn rabbits here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: rabbit
+      - entity: rabbit
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: rabbit
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.rabbit.verbose.035
+  category: mob
+  intent: summon_rabbit
+  language_style: verbose
+  prompt: I would really like it if you could spawn rabbits here
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: rabbit
+      - entity: rabbit
+        count: 3
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: rabbit
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.villager.direct.036
+  category: mob
+  intent: summon_villager
+  language_style: direct
+  prompt: Summon a villager
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: villager
+      - entity: villager
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: villager
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.villager.casual.037
+  category: mob
+  intent: summon_villager
+  language_style: casual
+  prompt: yo summon a villager
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: villager
+      - entity: villager
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: villager
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.villager.polite.038
+  category: mob
+  intent: summon_villager
+  language_style: polite
+  prompt: Could you please summon a villager
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: villager
+      - entity: villager
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: villager
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.villager.typoed.039
+  category: mob
+  intent: summon_villager
+  language_style: typoed
+  prompt: Summon a villager
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: villager
+      - entity: villager
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: villager
+      count_min: 1
+      search_radius: 16
+  tags: []
+- id: mob.villager.verbose.040
+  category: mob
+  intent: summon_villager
+  language_style: verbose
+  prompt: I would really like it if you could summon a villager
+  expect:
+    tool_any:
+    - name: summon_entity
+      arguments_any:
+      - entity: villager
+      - entity: villager
+        count: 1
+    - name: paste_template_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: mob_count
+      entity: villager
+      count_min: 1
+      search_radius: 16
+  tags: []

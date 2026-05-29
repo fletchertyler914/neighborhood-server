@@ -9,6 +9,40 @@ class SchemaValidationError(ValueError):
     pass
 
 
+def coerce_to_schema(value: Any, schema: dict[str, Any]) -> Any:
+    """Coerce common LLM type mismatches (e.g. float coords) before validation."""
+
+    stype = schema.get("type")
+    if isinstance(stype, list):
+        if value is None and "null" in stype:
+            return value
+        for candidate in stype:
+            if candidate == "integer" and isinstance(value, (int, float)) and not isinstance(value, bool):
+                return int(round(value))
+            if _matches_type(value, candidate):
+                coerced = coerce_to_schema(value, {**schema, "type": candidate})
+                return coerced
+        return value
+
+    if stype == "integer" and isinstance(value, float) and not isinstance(value, bool):
+        return int(round(value))
+
+    if stype == "object" and isinstance(value, dict):
+        props = schema.get("properties") or {}
+        return {
+            key: coerce_to_schema(val, props[key]) if key in props else val
+            for key, val in value.items()
+        }
+
+    if stype == "array" and isinstance(value, list):
+        items = schema.get("items")
+        if items:
+            return [coerce_to_schema(item, items) for item in value]
+        return value
+
+    return value
+
+
 def validate_against_schema(
     value: Any,
     schema: dict[str, Any],
@@ -65,6 +99,10 @@ def validate_against_schema(
         return
 
     if stype == "integer":
+        if isinstance(value, float) and not isinstance(value, bool):
+            if value != int(round(value)):
+                raise SchemaValidationError(f"{path}: expected integer, got float")
+            value = int(round(value))
         if not isinstance(value, int) or isinstance(value, bool):
             raise SchemaValidationError(f"{path}: expected integer")
         if "minimum" in schema and value < schema["minimum"]:

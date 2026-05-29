@@ -18,6 +18,7 @@ class JobRequest(BaseModel):
     dry_run: bool = False
     eval_mode: bool = False
     eval_model: str | None = None
+    eval_temperature: float | None = None
 
 
 def build_user_message(req: JobRequest) -> str:

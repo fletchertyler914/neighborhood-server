@@ -76,6 +76,10 @@ make full-validation                       # paste every template + summon every
 ./scripts/validate-all.sh                  # fast offline validation
 RUN_LIVE=1 ./scripts/validate-all.sh       # also runs live-tools
 RUN_FULL_WORLD=1 ./scripts/validate-all.sh # plus full-validation (slow)
+make corpus-quick                          # 30-prompt NL corpus smoke (live world)
+make corpus                                # full ~612-prompt corpus (~3h)
+make triage                                # failure buckets from latest corpus run
+make train                                 # export SFT/DPO + LoRA dry-run
 ```
 
 ## Coding style

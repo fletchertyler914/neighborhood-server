@@ -366,6 +366,8 @@ details, weights, and the latest production-validation snapshot.
 - Kitchen-sink dev loop: [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md)
 - Tool integration: `make live-tools` (auto-detects an online player) or `AGENT_LIVE_TOOL_PLAYER=<name> ./scripts/live-tool-tests.sh`
 - One-command validation: `./scripts/validate-all.sh` (add `RUN_LIVE=1` / `RUN_FULL_WORLD=1` for live gates)
+- **NL corpus** (612 prompts, live world probes): `make corpus-quick` / `make corpus` — see [docs/CORPUS.md](docs/CORPUS.md)
+- **Fine-tuning loop**: `make train` (SFT+DPO export + LoRA dry-run) — see [docs/FINE_TUNING.md](docs/FINE_TUNING.md)
 - Real `/agent` NL smoke: `make smoke` (auto-detects player) or `AGENT_SMOKE_PLAYER=<name> ./scripts/agent-smoke.sh`
 - Eval harness: `./scripts/eval.sh spec` (live dry-run) and `./scripts/eval.sh world` (sandbox mutations)
 - Export: `./scripts/export-dataset.sh` → JSONL for review / fine-tuning

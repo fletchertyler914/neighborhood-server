@@ -14,6 +14,11 @@ All notable changes to this experimental neighborhood-server stack are documente
 - `Makefile` — `make bootstrap|up|seed|smoke|eval|live-tools|health|metrics`
 - `scripts/_detect_player.sh` — auto-detect first online player for smoke/live tests
 - MIT `LICENSE`, polished `docs/PUBLIC_QUICKSTART.md`, README quickstart banner
+- **612-prompt NL corpus** (`agent/eval/corpus/`) with live world probes and 8 language styles
+- Corpus runner, probes, triage, and continuous DPO/SFT training pipeline
+- Make targets: `corpus`, `corpus-quick`, `corpus-gate`, `triage`, `train`, `compare-models`, `corpus-baseline`
+- Docs: `docs/CORPUS.md`, `docs/FINE_TUNING.md`
+- `eval_temperature` on job requests for diverse resampling
 
 ### Changed
 - System prompt: critical word-routing table at top; cylinder vs castle disambiguation
@@ -28,7 +33,7 @@ All notable changes to this experimental neighborhood-server stack are documente
 - CONTRIBUTING.md updated with Makefile workflow and PR checklist
 
 ### Validated (e2e)
-- `make test` — 129/129
+- `make test` — 137/137
 - `make smoke` — 26/26 NL prompts through live LLM
 - `make eval` — 19/19 spec, 0 regressions vs baseline
 - `make live-tools` — 20/20 RCON integration tests

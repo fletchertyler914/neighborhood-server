@@ -1,0 +1,1171 @@
+cases:
+- id: house.cabin_log.direct.001
+  category: house
+  intent: build_cabin_log
+  language_style: direct
+  prompt: Build a small log cabin in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cabin_log
+      - template_id: cabin log
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cabin_log
+      sample_blocks: &id001
+      - oak_log
+      - spruce_log
+      min_matches: 2
+  tags: []
+- id: house.cabin_log.casual.002
+  category: house
+  intent: build_cabin_log
+  language_style: casual
+  prompt: yo build a small log cabin in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cabin_log
+      - template_id: cabin log
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cabin_log
+      sample_blocks: *id001
+      min_matches: 2
+  tags: []
+- id: house.cabin_log.polite.003
+  category: house
+  intent: build_cabin_log
+  language_style: polite
+  prompt: Could you please build a small log cabin in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cabin_log
+      - template_id: cabin log
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cabin_log
+      sample_blocks: *id001
+      min_matches: 2
+  tags: []
+- id: house.cabin_log.typoed.004
+  category: house
+  intent: build_cabin_log
+  language_style: typoed
+  prompt: Build a small log cabin in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cabin_log
+      - template_id: cabin log
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cabin_log
+      sample_blocks: *id001
+      min_matches: 2
+  tags: []
+- id: house.cabin_log.verbose.005
+  category: house
+  intent: build_cabin_log
+  language_style: verbose
+  prompt: I would really like it if you could build a small log cabin in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cabin_log
+      - template_id: cabin log
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cabin_log
+      sample_blocks: *id001
+      min_matches: 2
+  tags: []
+- id: house.cottage_medium.direct.001
+  category: house
+  intent: build_cottage_medium
+  language_style: direct
+  prompt: Build a cottage in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cottage_medium
+      - template_id: cottage medium
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cottage_medium
+      sample_blocks: &id002
+      - oak_planks
+      - white_terracotta
+      min_matches: 2
+  tags: []
+- id: house.cottage_medium.casual.002
+  category: house
+  intent: build_cottage_medium
+  language_style: casual
+  prompt: yo build a cottage in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cottage_medium
+      - template_id: cottage medium
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cottage_medium
+      sample_blocks: *id002
+      min_matches: 2
+  tags: []
+- id: house.cottage_medium.polite.003
+  category: house
+  intent: build_cottage_medium
+  language_style: polite
+  prompt: Could you please build a cottage in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cottage_medium
+      - template_id: cottage medium
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cottage_medium
+      sample_blocks: *id002
+      min_matches: 2
+  tags: []
+- id: house.cottage_medium.typoed.004
+  category: house
+  intent: build_cottage_medium
+  language_style: typoed
+  prompt: Build a cottage in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cottage_medium
+      - template_id: cottage medium
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cottage_medium
+      sample_blocks: *id002
+      min_matches: 2
+  tags: []
+- id: house.cottage_medium.verbose.005
+  category: house
+  intent: build_cottage_medium
+  language_style: verbose
+  prompt: I would really like it if you could build a cottage in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: cottage_medium
+      - template_id: cottage medium
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: cottage_medium
+      sample_blocks: *id002
+      min_matches: 2
+  tags: []
+- id: house.tavern_small.direct.001
+  category: house
+  intent: build_tavern_small
+  language_style: direct
+  prompt: Build a tavern in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: tavern_small
+      - template_id: tavern small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: tavern_small
+      sample_blocks: &id003
+      - oak_planks
+      - barrel
+      min_matches: 2
+  tags: []
+- id: house.tavern_small.casual.002
+  category: house
+  intent: build_tavern_small
+  language_style: casual
+  prompt: yo build a tavern in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: tavern_small
+      - template_id: tavern small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: tavern_small
+      sample_blocks: *id003
+      min_matches: 2
+  tags: []
+- id: house.tavern_small.polite.003
+  category: house
+  intent: build_tavern_small
+  language_style: polite
+  prompt: Could you please build a tavern in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: tavern_small
+      - template_id: tavern small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: tavern_small
+      sample_blocks: *id003
+      min_matches: 2
+  tags: []
+- id: house.tavern_small.typoed.004
+  category: house
+  intent: build_tavern_small
+  language_style: typoed
+  prompt: Build a tavern in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: tavern_small
+      - template_id: tavern small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: tavern_small
+      sample_blocks: *id003
+      min_matches: 2
+  tags: []
+- id: house.tavern_small.verbose.005
+  category: house
+  intent: build_tavern_small
+  language_style: verbose
+  prompt: I would really like it if you could build a tavern in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: tavern_small
+      - template_id: tavern small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: tavern_small
+      sample_blocks: *id003
+      min_matches: 2
+  tags: []
+- id: house.townhouse_2story.direct.001
+  category: house
+  intent: build_townhouse_2story
+  language_style: direct
+  prompt: Build a two story house with stairs
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: townhouse_2story
+      - template_id: townhouse 2story
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: townhouse_2story
+      sample_blocks: &id004
+      - stone_bricks
+      - oak_stairs
+      min_matches: 2
+  tags: []
+- id: house.townhouse_2story.casual.002
+  category: house
+  intent: build_townhouse_2story
+  language_style: casual
+  prompt: yo build a two story house with stairs
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: townhouse_2story
+      - template_id: townhouse 2story
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: townhouse_2story
+      sample_blocks: *id004
+      min_matches: 2
+  tags: []
+- id: house.townhouse_2story.polite.003
+  category: house
+  intent: build_townhouse_2story
+  language_style: polite
+  prompt: Could you please build a two story house with stairs
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: townhouse_2story
+      - template_id: townhouse 2story
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: townhouse_2story
+      sample_blocks: *id004
+      min_matches: 2
+  tags: []
+- id: house.townhouse_2story.typoed.004
+  category: house
+  intent: build_townhouse_2story
+  language_style: typoed
+  prompt: Build a two story house with stairs
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: townhouse_2story
+      - template_id: townhouse 2story
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: townhouse_2story
+      sample_blocks: *id004
+      min_matches: 2
+  tags: []
+- id: house.townhouse_2story.verbose.005
+  category: house
+  intent: build_townhouse_2story
+  language_style: verbose
+  prompt: I would really like it if you could build a two story house with stairs
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: townhouse_2story
+      - template_id: townhouse 2story
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: townhouse_2story
+      sample_blocks: *id004
+      min_matches: 2
+  tags: []
+- id: house.treehouse_oak.direct.001
+  category: house
+  intent: build_treehouse_oak
+  language_style: direct
+  prompt: Plant a treehouse in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: treehouse_oak
+      - template_id: treehouse oak
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: treehouse_oak
+      sample_blocks: &id005
+      - oak_log
+      - oak_leaves
+      min_matches: 2
+  tags: []
+- id: house.treehouse_oak.casual.002
+  category: house
+  intent: build_treehouse_oak
+  language_style: casual
+  prompt: yo plant a treehouse in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: treehouse_oak
+      - template_id: treehouse oak
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: treehouse_oak
+      sample_blocks: *id005
+      min_matches: 2
+  tags: []
+- id: house.treehouse_oak.polite.003
+  category: house
+  intent: build_treehouse_oak
+  language_style: polite
+  prompt: Could you please plant a treehouse in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: treehouse_oak
+      - template_id: treehouse oak
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: treehouse_oak
+      sample_blocks: *id005
+      min_matches: 2
+  tags: []
+- id: house.treehouse_oak.typoed.004
+  category: house
+  intent: build_treehouse_oak
+  language_style: typoed
+  prompt: Plant a treehouse in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: treehouse_oak
+      - template_id: treehouse oak
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: treehouse_oak
+      sample_blocks: *id005
+      min_matches: 2
+  tags: []
+- id: house.treehouse_oak.verbose.005
+  category: house
+  intent: build_treehouse_oak
+  language_style: verbose
+  prompt: I would really like it if you could plant a treehouse in front of me
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: treehouse_oak
+      - template_id: treehouse oak
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: treehouse_oak
+      sample_blocks: *id005
+      min_matches: 2
+  tags: []
+- id: house.apartment_block.direct.001
+  category: house
+  intent: build_apartment_block
+  language_style: direct
+  prompt: Build an apartment building
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: apartment_block
+      - template_id: apartment block
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: apartment_block
+      sample_blocks: &id006
+      - stone_bricks
+      - glass
+      min_matches: 2
+  tags: []
+- id: house.apartment_block.casual.002
+  category: house
+  intent: build_apartment_block
+  language_style: casual
+  prompt: yo build an apartment building
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: apartment_block
+      - template_id: apartment block
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: apartment_block
+      sample_blocks: *id006
+      min_matches: 2
+  tags: []
+- id: house.apartment_block.polite.003
+  category: house
+  intent: build_apartment_block
+  language_style: polite
+  prompt: Could you please build an apartment building
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: apartment_block
+      - template_id: apartment block
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: apartment_block
+      sample_blocks: *id006
+      min_matches: 2
+  tags: []
+- id: house.apartment_block.typoed.004
+  category: house
+  intent: build_apartment_block
+  language_style: typoed
+  prompt: Build an apartment building
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: apartment_block
+      - template_id: apartment block
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: apartment_block
+      sample_blocks: *id006
+      min_matches: 2
+  tags: []
+- id: house.apartment_block.verbose.005
+  category: house
+  intent: build_apartment_block
+  language_style: verbose
+  prompt: I would really like it if you could build an apartment building
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: apartment_block
+      - template_id: apartment block
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: apartment_block
+      sample_blocks: *id006
+      min_matches: 2
+  tags: []
+- id: house.inn_small.direct.001
+  category: house
+  intent: build_inn_small
+  language_style: direct
+  prompt: I want an inn
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: inn_small
+      - template_id: inn small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: inn_small
+      sample_blocks: &id007
+      - oak_planks
+      - oak_door
+      min_matches: 2
+  tags: []
+- id: house.inn_small.casual.002
+  category: house
+  intent: build_inn_small
+  language_style: casual
+  prompt: yo i want an inn
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: inn_small
+      - template_id: inn small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: inn_small
+      sample_blocks: *id007
+      min_matches: 2
+  tags: []
+- id: house.inn_small.polite.003
+  category: house
+  intent: build_inn_small
+  language_style: polite
+  prompt: Could you please i want an inn
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: inn_small
+      - template_id: inn small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: inn_small
+      sample_blocks: *id007
+      min_matches: 2
+  tags: []
+- id: house.inn_small.typoed.004
+  category: house
+  intent: build_inn_small
+  language_style: typoed
+  prompt: I want an inn
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: inn_small
+      - template_id: inn small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: inn_small
+      sample_blocks: *id007
+      min_matches: 2
+  tags: []
+- id: house.inn_small.verbose.005
+  category: house
+  intent: build_inn_small
+  language_style: verbose
+  prompt: I would really like it if you could i want an inn
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: inn_small
+      - template_id: inn small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: inn_small
+      sample_blocks: *id007
+      min_matches: 2
+  tags: []
+- id: house.desert_house_small.direct.001
+  category: house
+  intent: build_desert_house_small
+  language_style: direct
+  prompt: Build a desert house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: desert_house_small
+      - template_id: desert house small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: desert_house_small
+      sample_blocks: &id008
+      - sandstone
+      - terracotta
+      min_matches: 2
+  tags: []
+- id: house.desert_house_small.casual.002
+  category: house
+  intent: build_desert_house_small
+  language_style: casual
+  prompt: yo build a desert house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: desert_house_small
+      - template_id: desert house small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: desert_house_small
+      sample_blocks: *id008
+      min_matches: 2
+  tags: []
+- id: house.desert_house_small.polite.003
+  category: house
+  intent: build_desert_house_small
+  language_style: polite
+  prompt: Could you please build a desert house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: desert_house_small
+      - template_id: desert house small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: desert_house_small
+      sample_blocks: *id008
+      min_matches: 2
+  tags: []
+- id: house.desert_house_small.typoed.004
+  category: house
+  intent: build_desert_house_small
+  language_style: typoed
+  prompt: Build a desert house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: desert_house_small
+      - template_id: desert house small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: desert_house_small
+      sample_blocks: *id008
+      min_matches: 2
+  tags: []
+- id: house.desert_house_small.verbose.005
+  category: house
+  intent: build_desert_house_small
+  language_style: verbose
+  prompt: I would really like it if you could build a desert house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: desert_house_small
+      - template_id: desert house small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: desert_house_small
+      sample_blocks: *id008
+      min_matches: 2
+  tags: []
+- id: house.beach_hut.direct.001
+  category: house
+  intent: build_beach_hut
+  language_style: direct
+  prompt: Build a beach hut
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: beach_hut
+      - template_id: beach hut
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: beach_hut
+      sample_blocks: &id009
+      - bamboo
+      - oak_planks
+      min_matches: 2
+  tags: []
+- id: house.beach_hut.casual.002
+  category: house
+  intent: build_beach_hut
+  language_style: casual
+  prompt: yo build a beach hut
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: beach_hut
+      - template_id: beach hut
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: beach_hut
+      sample_blocks: *id009
+      min_matches: 2
+  tags: []
+- id: house.beach_hut.polite.003
+  category: house
+  intent: build_beach_hut
+  language_style: polite
+  prompt: Could you please build a beach hut
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: beach_hut
+      - template_id: beach hut
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: beach_hut
+      sample_blocks: *id009
+      min_matches: 2
+  tags: []
+- id: house.beach_hut.typoed.004
+  category: house
+  intent: build_beach_hut
+  language_style: typoed
+  prompt: Build a beach hut
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: beach_hut
+      - template_id: beach hut
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: beach_hut
+      sample_blocks: *id009
+      min_matches: 2
+  tags: []
+- id: house.beach_hut.verbose.005
+  category: house
+  intent: build_beach_hut
+  language_style: verbose
+  prompt: I would really like it if you could build a beach hut
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: beach_hut
+      - template_id: beach hut
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: beach_hut
+      sample_blocks: *id009
+      min_matches: 2
+  tags: []
+- id: house.modern_house_flat.direct.001
+  category: house
+  intent: build_modern_house_flat
+  language_style: direct
+  prompt: Build a modern flat roof house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: modern_house_flat
+      - template_id: modern house flat
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: modern_house_flat
+      sample_blocks: &id010
+      - quartz_block
+      - glass
+      min_matches: 2
+  tags: []
+- id: house.modern_house_flat.casual.002
+  category: house
+  intent: build_modern_house_flat
+  language_style: casual
+  prompt: yo build a modern flat roof house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: modern_house_flat
+      - template_id: modern house flat
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: modern_house_flat
+      sample_blocks: *id010
+      min_matches: 2
+  tags: []
+- id: house.modern_house_flat.polite.003
+  category: house
+  intent: build_modern_house_flat
+  language_style: polite
+  prompt: Could you please build a modern flat roof house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: modern_house_flat
+      - template_id: modern house flat
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: modern_house_flat
+      sample_blocks: *id010
+      min_matches: 2
+  tags: []
+- id: house.modern_house_flat.typoed.004
+  category: house
+  intent: build_modern_house_flat
+  language_style: typoed
+  prompt: Build a modern flat roof house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: modern_house_flat
+      - template_id: modern house flat
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: modern_house_flat
+      sample_blocks: *id010
+      min_matches: 2
+  tags: []
+- id: house.modern_house_flat.verbose.005
+  category: house
+  intent: build_modern_house_flat
+  language_style: verbose
+  prompt: I would really like it if you could build a modern flat roof house
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: modern_house_flat
+      - template_id: modern house flat
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: modern_house_flat
+      sample_blocks: *id010
+      min_matches: 2
+  tags: []

@@ -1,0 +1,321 @@
+cases:
+- id: multi.direct.001
+  category: multi_step
+  intent: multi
+  language_style: direct
+  prompt: Build a cabin and spawn 4 chickens
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.casual.002
+  category: multi_step
+  intent: multi
+  language_style: casual
+  prompt: yo build a cabin and spawn 4 chickens
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.polite.003
+  category: multi_step
+  intent: multi
+  language_style: polite
+  prompt: Could you please build a cabin and spawn 4 chickens
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.typoed.004
+  category: multi_step
+  intent: multi
+  language_style: typoed
+  prompt: Build a cabin and spawn 4 chikens
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.verbose.005
+  category: multi_step
+  intent: multi
+  language_style: verbose
+  prompt: I would really like it if you could build a cabin and spawn 4 chickens
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.direct.006
+  category: multi_step
+  intent: multi
+  language_style: direct
+  prompt: Make a platform then a tower on it
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.casual.007
+  category: multi_step
+  intent: multi
+  language_style: casual
+  prompt: yo make a platform then a tower on it
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.polite.008
+  category: multi_step
+  intent: multi
+  language_style: polite
+  prompt: Could you please make a platform then a tower on it
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.typoed.009
+  category: multi_step
+  intent: multi
+  language_style: typoed
+  prompt: Make a platform tehn a tower on it
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.verbose.010
+  category: multi_step
+  intent: multi
+  language_style: verbose
+  prompt: I would really like it if you could make a platform then a tower on it
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.direct.011
+  category: multi_step
+  intent: multi
+  language_style: direct
+  prompt: Build a chicken coop with chickens inside
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.casual.012
+  category: multi_step
+  intent: multi
+  language_style: casual
+  prompt: yo build a chicken coop with chickens inside
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.polite.013
+  category: multi_step
+  intent: multi
+  language_style: polite
+  prompt: Could you please build a chicken coop with chickens inside
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.typoed.014
+  category: multi_step
+  intent: multi
+  language_style: typoed
+  prompt: Build a chiken coop with chikens inside
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.verbose.015
+  category: multi_step
+  intent: multi
+  language_style: verbose
+  prompt: I would really like it if you could build a chicken coop with chickens inside
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.direct.016
+  category: multi_step
+  intent: multi
+  language_style: direct
+  prompt: Set time to day and give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.casual.017
+  category: multi_step
+  intent: multi
+  language_style: casual
+  prompt: yo set time to day and give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.polite.018
+  category: multi_step
+  intent: multi
+  language_style: polite
+  prompt: Could you please set time to day and give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.typoed.019
+  category: multi_step
+  intent: multi
+  language_style: typoed
+  prompt: Set time to day and give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []
+- id: multi.verbose.020
+  category: multi_step
+  intent: multi
+  language_style: verbose
+  prompt: I would really like it if you could set time to day and give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: summon_entity
+    - name: build_platform
+    - name: set_time
+    - name: give_haste
+    world_probe:
+      kind: none
+  tags: []

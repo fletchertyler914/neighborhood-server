@@ -16,8 +16,13 @@ endif
 
 .PHONY: help bootstrap up down logs status restart \
         seed smoke eval test live-tools full-validation \
+        corpus corpus-quick triage train compare-models \
         plugin metrics health \
-        format clean
+        format clean generate-corpus corpus-export
+
+CORPUS_ENV = -e AGENT_EVAL_ALLOW_WORLD_MUTATION=1 \
+  -e AGENT_API_TOKEN="$$(awk -F= '/^AGENT_API_TOKEN=/{print $$2}' .env 2>/dev/null || echo dev-change-me)" \
+  -e AGENT_CORPUS_PLAYER="$${AGENT_CORPUS_PLAYER:-$$(./scripts/_detect_player.sh 2>/dev/null || true)}"
 
 help:
 	@echo "Neighborhood Minecraft Server"
@@ -40,6 +45,11 @@ help:
 	@echo "  $(COLOR_GREEN)make eval$(COLOR_RESET)             19-case strict spec eval (vs baseline)"
 	@echo "  $(COLOR_GREEN)make live-tools$(COLOR_RESET)       Live RCON tool integration tests"
 	@echo "  $(COLOR_GREEN)make full-validation$(COLOR_RESET)  Paste every template + summon every mob"
+	@echo "  $(COLOR_GREEN)make corpus$(COLOR_RESET)           Full NL corpus (~612 prompts, live world)"
+	@echo "  $(COLOR_GREEN)make corpus-quick$(COLOR_RESET)     Corpus smoke (30 prompts)"
+	@echo "  $(COLOR_GREEN)make triage$(COLOR_RESET)           Triage latest corpus run failures"
+	@echo "  $(COLOR_GREEN)make train$(COLOR_RESET)            Corpus → resample → export → LoRA (dry-run safe)"
+	@echo "  $(COLOR_GREEN)make compare-models$(COLOR_RESET)   Base vs fine-tuned on corpus subset"
 	@echo ""
 	@echo "Observability"
 	@echo "  $(COLOR_GREEN)make health$(COLOR_RESET)           Hit /health"
@@ -91,6 +101,46 @@ live-tools:
 
 full-validation:
 	PYTHONPATH=. python3 scripts/full_validation.py
+
+generate-corpus:
+	PYTHONPATH=. python3 agent/eval/corpus/generate_corpus.py
+
+corpus:
+	docker compose exec -T $(CORPUS_ENV) mc-agent \
+	  python -m agent.eval.corpus_runner \
+	  --orchestrator-url http://127.0.0.1:8787
+
+corpus-gate:
+	docker compose exec -T $(CORPUS_ENV) -e AGENT_CORPUS_MIN_PASS_RATE=0.9 mc-agent \
+	  python -m agent.eval.corpus_runner \
+	  --orchestrator-url http://127.0.0.1:8787
+
+corpus-quick:
+	docker compose exec -T $(CORPUS_ENV) -e AGENT_CORPUS_LIMIT=30 mc-agent \
+	  python -m agent.eval.corpus_runner \
+	  --orchestrator-url http://127.0.0.1:8787
+
+triage:
+	docker compose exec -T mc-agent python -m agent.eval.triage --run /app/data/corpus-runs/latest
+
+corpus-baseline:
+	PYTHONPATH=. python3 agent/eval/corpus/save_baseline.py --run data/corpus-runs/latest
+
+corpus-export:
+	PYTHONPATH=. python3 -m agent.training build-datasets --run data/corpus-runs/latest
+
+sample-diverse:
+	PYTHONPATH=. python3 -m agent.training sample-diverse --run data/corpus-runs/latest
+
+train: corpus-export
+	PYTHONPATH=. python3 -m agent.training sample-diverse --run data/corpus-runs/latest || true
+	PYTHONPATH=. python3 -m agent.training build-datasets --run data/corpus-runs/latest
+	AGENT_TRAIN_DRY_RUN=1 PYTHONPATH=. python3 -m agent.training lora-finetune --dry-run --out models/lora/v1
+	PYTHONPATH=. python3 -m agent.training ollama-register --model-name neighborhood-qwen2.5-7b:v1 --adapter models/lora/v1/adapter || true
+
+compare-models:
+	docker compose exec -T $(CORPUS_ENV) -e AGENT_CORPUS_LIMIT=30 mc-agent \
+	  python -m agent.training.compare_models --limit 30
 
 health:
 	@docker compose exec -T mc-agent python -c \

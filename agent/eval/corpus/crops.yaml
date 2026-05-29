@@ -1,0 +1,1041 @@
+cases:
+- id: crop.wheat_farm_small.direct.001
+  category: crop
+  intent: build_wheat_farm_small
+  language_style: direct
+  prompt: field of wheat
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: wheat_farm_small
+      - template_id: wheat farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: wheat_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - wheat
+      min_matches: 2
+  tags: []
+- id: crop.wheat_farm_small.casual.002
+  category: crop
+  intent: build_wheat_farm_small
+  language_style: casual
+  prompt: yo build a wheat farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: wheat_farm_small
+      - template_id: wheat farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: wheat_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - wheat
+      min_matches: 2
+  tags: []
+- id: crop.wheat_farm_small.polite.003
+  category: crop
+  intent: build_wheat_farm_small
+  language_style: polite
+  prompt: Could you please field of wheat
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: wheat_farm_small
+      - template_id: wheat farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: wheat_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - wheat
+      min_matches: 2
+  tags: []
+- id: crop.wheat_farm_small.typoed.004
+  category: crop
+  intent: build_wheat_farm_small
+  language_style: typoed
+  prompt: Build a wheat farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: wheat_farm_small
+      - template_id: wheat farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: wheat_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - wheat
+      min_matches: 2
+  tags: []
+- id: crop.wheat_farm_small.verbose.005
+  category: crop
+  intent: build_wheat_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could field of wheat
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: wheat_farm_small
+      - template_id: wheat farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: wheat_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - wheat
+      min_matches: 2
+  tags: []
+- id: crop.pumpkin_farm_small.direct.006
+  category: crop
+  intent: build_pumpkin_farm_small
+  language_style: direct
+  prompt: Make a pumpkin patch
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pumpkin_farm_small
+      - template_id: pumpkin farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: pumpkin_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - pumpkin
+      min_matches: 2
+  tags: []
+- id: crop.pumpkin_farm_small.casual.007
+  category: crop
+  intent: build_pumpkin_farm_small
+  language_style: casual
+  prompt: yo field of pumpkin
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pumpkin_farm_small
+      - template_id: pumpkin farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: pumpkin_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - pumpkin
+      min_matches: 2
+  tags: []
+- id: crop.pumpkin_farm_small.polite.008
+  category: crop
+  intent: build_pumpkin_farm_small
+  language_style: polite
+  prompt: Could you please make a pumpkin patch
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pumpkin_farm_small
+      - template_id: pumpkin farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: pumpkin_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - pumpkin
+      min_matches: 2
+  tags: []
+- id: crop.pumpkin_farm_small.typoed.009
+  category: crop
+  intent: build_pumpkin_farm_small
+  language_style: typoed
+  prompt: field of pumpkin
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pumpkin_farm_small
+      - template_id: pumpkin farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: pumpkin_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - pumpkin
+      min_matches: 2
+  tags: []
+- id: crop.pumpkin_farm_small.verbose.010
+  category: crop
+  intent: build_pumpkin_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could make a pumpkin patch
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: pumpkin_farm_small
+      - template_id: pumpkin farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: pumpkin_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - pumpkin
+      min_matches: 2
+  tags: []
+- id: crop.carrot_farm_small.direct.011
+  category: crop
+  intent: build_carrot_farm_small
+  language_style: direct
+  prompt: field of carrot
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: carrot_farm_small
+      - template_id: carrot farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: carrot_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - carrot
+      min_matches: 2
+  tags: []
+- id: crop.carrot_farm_small.casual.012
+  category: crop
+  intent: build_carrot_farm_small
+  language_style: casual
+  prompt: yo plant a carrot farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: carrot_farm_small
+      - template_id: carrot farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: carrot_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - carrot
+      min_matches: 2
+  tags: []
+- id: crop.carrot_farm_small.polite.013
+  category: crop
+  intent: build_carrot_farm_small
+  language_style: polite
+  prompt: Could you please field of carrot
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: carrot_farm_small
+      - template_id: carrot farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: carrot_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - carrot
+      min_matches: 2
+  tags: []
+- id: crop.carrot_farm_small.typoed.014
+  category: crop
+  intent: build_carrot_farm_small
+  language_style: typoed
+  prompt: Plant a carrot farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: carrot_farm_small
+      - template_id: carrot farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: carrot_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - carrot
+      min_matches: 2
+  tags: []
+- id: crop.carrot_farm_small.verbose.015
+  category: crop
+  intent: build_carrot_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could field of carrot
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: carrot_farm_small
+      - template_id: carrot farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: carrot_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - carrot
+      min_matches: 2
+  tags: []
+- id: crop.potato_farm_small.direct.016
+  category: crop
+  intent: build_potato_farm_small
+  language_style: direct
+  prompt: Build a potato farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: potato_farm_small
+      - template_id: potato farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: potato_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - potato
+      min_matches: 2
+  tags: []
+- id: crop.potato_farm_small.casual.017
+  category: crop
+  intent: build_potato_farm_small
+  language_style: casual
+  prompt: yo field of potato
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: potato_farm_small
+      - template_id: potato farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: potato_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - potato
+      min_matches: 2
+  tags: []
+- id: crop.potato_farm_small.polite.018
+  category: crop
+  intent: build_potato_farm_small
+  language_style: polite
+  prompt: Could you please build a potato farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: potato_farm_small
+      - template_id: potato farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: potato_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - potato
+      min_matches: 2
+  tags: []
+- id: crop.potato_farm_small.typoed.019
+  category: crop
+  intent: build_potato_farm_small
+  language_style: typoed
+  prompt: field of potato
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: potato_farm_small
+      - template_id: potato farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: potato_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - potato
+      min_matches: 2
+  tags: []
+- id: crop.potato_farm_small.verbose.020
+  category: crop
+  intent: build_potato_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could build a potato farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: potato_farm_small
+      - template_id: potato farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: potato_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - potato
+      min_matches: 2
+  tags: []
+- id: crop.sugarcane_farm_small.direct.021
+  category: crop
+  intent: build_sugarcane_farm_small
+  language_style: direct
+  prompt: field of sugarcane
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sugarcane_farm_small
+      - template_id: sugarcane farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: sugarcane_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sugarcane
+      min_matches: 2
+  tags: []
+- id: crop.sugarcane_farm_small.casual.022
+  category: crop
+  intent: build_sugarcane_farm_small
+  language_style: casual
+  prompt: yo build a sugarcane farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sugarcane_farm_small
+      - template_id: sugarcane farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: sugarcane_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sugarcane
+      min_matches: 2
+  tags: []
+- id: crop.sugarcane_farm_small.polite.023
+  category: crop
+  intent: build_sugarcane_farm_small
+  language_style: polite
+  prompt: Could you please field of sugarcane
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sugarcane_farm_small
+      - template_id: sugarcane farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: sugarcane_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sugarcane
+      min_matches: 2
+  tags: []
+- id: crop.sugarcane_farm_small.typoed.024
+  category: crop
+  intent: build_sugarcane_farm_small
+  language_style: typoed
+  prompt: Build a sugarcane farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sugarcane_farm_small
+      - template_id: sugarcane farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: sugarcane_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sugarcane
+      min_matches: 2
+  tags: []
+- id: crop.sugarcane_farm_small.verbose.025
+  category: crop
+  intent: build_sugarcane_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could field of sugarcane
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: sugarcane_farm_small
+      - template_id: sugarcane farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: sugarcane_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sugarcane
+      min_matches: 2
+  tags: []
+- id: crop.melon_farm_small.direct.026
+  category: crop
+  intent: build_melon_farm_small
+  language_style: direct
+  prompt: Make a melon farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: melon_farm_small
+      - template_id: melon farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: melon_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - melon
+      min_matches: 2
+  tags: []
+- id: crop.melon_farm_small.casual.027
+  category: crop
+  intent: build_melon_farm_small
+  language_style: casual
+  prompt: yo field of melon
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: melon_farm_small
+      - template_id: melon farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: melon_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - melon
+      min_matches: 2
+  tags: []
+- id: crop.melon_farm_small.polite.028
+  category: crop
+  intent: build_melon_farm_small
+  language_style: polite
+  prompt: Could you please make a melon farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: melon_farm_small
+      - template_id: melon farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: melon_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - melon
+      min_matches: 2
+  tags: []
+- id: crop.melon_farm_small.typoed.029
+  category: crop
+  intent: build_melon_farm_small
+  language_style: typoed
+  prompt: field of melon
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: melon_farm_small
+      - template_id: melon farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: melon_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - melon
+      min_matches: 2
+  tags: []
+- id: crop.melon_farm_small.verbose.030
+  category: crop
+  intent: build_melon_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could make a melon farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: melon_farm_small
+      - template_id: melon farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: melon_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - melon
+      min_matches: 2
+  tags: []
+- id: crop.kelp_farm_small.direct.031
+  category: crop
+  intent: build_kelp_farm_small
+  language_style: direct
+  prompt: field of kelp
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: kelp_farm_small
+      - template_id: kelp farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: kelp_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - kelp
+      min_matches: 2
+  tags: []
+- id: crop.kelp_farm_small.casual.032
+  category: crop
+  intent: build_kelp_farm_small
+  language_style: casual
+  prompt: yo build a kelp farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: kelp_farm_small
+      - template_id: kelp farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: kelp_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - kelp
+      min_matches: 2
+  tags: []
+- id: crop.kelp_farm_small.polite.033
+  category: crop
+  intent: build_kelp_farm_small
+  language_style: polite
+  prompt: Could you please field of kelp
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: kelp_farm_small
+      - template_id: kelp farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: kelp_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - kelp
+      min_matches: 2
+  tags: []
+- id: crop.kelp_farm_small.typoed.034
+  category: crop
+  intent: build_kelp_farm_small
+  language_style: typoed
+  prompt: Build a kelp farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: kelp_farm_small
+      - template_id: kelp farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: kelp_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - kelp
+      min_matches: 2
+  tags: []
+- id: crop.kelp_farm_small.verbose.035
+  category: crop
+  intent: build_kelp_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could field of kelp
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: kelp_farm_small
+      - template_id: kelp farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: kelp_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - kelp
+      min_matches: 2
+  tags: []
+- id: crop.berry_farm_small.direct.036
+  category: crop
+  intent: build_berry_farm_small
+  language_style: direct
+  prompt: Plant a berry farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: berry_farm_small
+      - template_id: berry farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: berry_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sweet_berries
+      min_matches: 2
+  tags: []
+- id: crop.berry_farm_small.casual.037
+  category: crop
+  intent: build_berry_farm_small
+  language_style: casual
+  prompt: yo field of sweet_berries
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: berry_farm_small
+      - template_id: berry farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: berry_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sweet_berries
+      min_matches: 2
+  tags: []
+- id: crop.berry_farm_small.polite.038
+  category: crop
+  intent: build_berry_farm_small
+  language_style: polite
+  prompt: Could you please plant a berry farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: berry_farm_small
+      - template_id: berry farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: berry_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sweet_berries
+      min_matches: 2
+  tags: []
+- id: crop.berry_farm_small.typoed.039
+  category: crop
+  intent: build_berry_farm_small
+  language_style: typoed
+  prompt: field of sweet_berries
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: berry_farm_small
+      - template_id: berry farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: berry_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sweet_berries
+      min_matches: 2
+  tags: []
+- id: crop.berry_farm_small.verbose.040
+  category: crop
+  intent: build_berry_farm_small
+  language_style: verbose
+  prompt: I would really like it if you could plant a berry farm
+  expect:
+    status: done
+    max_steps: 14
+    tool_any:
+    - name: paste_template_at_player
+      arguments_any:
+      - template_id: berry_farm_small
+      - template_id: berry farm small
+    - name: build_house_at_player
+    - name: build_castle_at_player
+    - name: build_animal_pen_at_player
+    world_probe:
+      kind: template_built
+      anchor: player_forward
+      template_id: berry_farm_small
+      sample_blocks:
+      - farmland
+      - dirt
+      - sweet_berries
+      min_matches: 2
+  tags: []

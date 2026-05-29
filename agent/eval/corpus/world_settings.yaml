@@ -1,0 +1,391 @@
+cases:
+- id: world.set_time.direct.001
+  category: world
+  intent: set_time_day
+  language_style: direct
+  prompt: set time to day
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: day
+  tags: []
+- id: world.set_time.casual.002
+  category: world
+  intent: set_time_day
+  language_style: casual
+  prompt: yo set time to day
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: day
+  tags: []
+- id: world.set_time.polite.003
+  category: world
+  intent: set_time_day
+  language_style: polite
+  prompt: Could you please set time to day
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: day
+  tags: []
+- id: world.set_time.typoed.004
+  category: world
+  intent: set_time_day
+  language_style: typoed
+  prompt: set time to day
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: day
+  tags: []
+- id: world.set_time.verbose.005
+  category: world
+  intent: set_time_day
+  language_style: verbose
+  prompt: I would really like it if you could set time to day
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: day
+  tags: []
+- id: world.set_time.direct.006
+  category: world
+  intent: set_time_noon
+  language_style: direct
+  prompt: make it noon
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: noon
+  tags: []
+- id: world.set_time.casual.007
+  category: world
+  intent: set_time_noon
+  language_style: casual
+  prompt: yo make it noon
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: noon
+  tags: []
+- id: world.set_time.polite.008
+  category: world
+  intent: set_time_noon
+  language_style: polite
+  prompt: Could you please make it noon
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: noon
+  tags: []
+- id: world.set_time.typoed.009
+  category: world
+  intent: set_time_noon
+  language_style: typoed
+  prompt: make it noon
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: noon
+  tags: []
+- id: world.set_time.verbose.010
+  category: world
+  intent: set_time_noon
+  language_style: verbose
+  prompt: I would really like it if you could make it noon
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: noon
+  tags: []
+- id: world.set_time.direct.011
+  category: world
+  intent: set_time_night
+  language_style: direct
+  prompt: set time to night
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: night
+  tags: []
+- id: world.set_time.casual.012
+  category: world
+  intent: set_time_night
+  language_style: casual
+  prompt: yo set time to night
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: night
+  tags: []
+- id: world.set_time.polite.013
+  category: world
+  intent: set_time_night
+  language_style: polite
+  prompt: Could you please set time to night
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: night
+  tags: []
+- id: world.set_time.typoed.014
+  category: world
+  intent: set_time_night
+  language_style: typoed
+  prompt: set time to night
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: night
+  tags: []
+- id: world.set_time.verbose.015
+  category: world
+  intent: set_time_night
+  language_style: verbose
+  prompt: I would really like it if you could set time to night
+  expect:
+    tool_any:
+    - name: set_time
+    world_probe:
+      kind: setting
+      setting: time
+      value: night
+  tags: []
+- id: world.set_weather.direct.016
+  category: world
+  intent: set_weather_rain
+  language_style: direct
+  prompt: make it rain
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: rain
+  tags: []
+- id: world.set_weather.casual.017
+  category: world
+  intent: set_weather_rain
+  language_style: casual
+  prompt: yo make it rain
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: rain
+  tags: []
+- id: world.set_weather.polite.018
+  category: world
+  intent: set_weather_rain
+  language_style: polite
+  prompt: Could you please make it rain
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: rain
+  tags: []
+- id: world.set_weather.typoed.019
+  category: world
+  intent: set_weather_rain
+  language_style: typoed
+  prompt: make it rain
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: rain
+  tags: []
+- id: world.set_weather.verbose.020
+  category: world
+  intent: set_weather_rain
+  language_style: verbose
+  prompt: I would really like it if you could make it rain
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: rain
+  tags: []
+- id: world.set_weather.direct.021
+  category: world
+  intent: set_weather_clear
+  language_style: direct
+  prompt: clear the weather
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.casual.022
+  category: world
+  intent: set_weather_clear
+  language_style: casual
+  prompt: yo clear the weather
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.polite.023
+  category: world
+  intent: set_weather_clear
+  language_style: polite
+  prompt: Could you please clear the weather
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.typoed.024
+  category: world
+  intent: set_weather_clear
+  language_style: typoed
+  prompt: clear teh weatehr
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.verbose.025
+  category: world
+  intent: set_weather_clear
+  language_style: verbose
+  prompt: I would really like it if you could clear the weather
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.direct.026
+  category: world
+  intent: set_weather_clear
+  language_style: direct
+  prompt: make it sunny
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.casual.027
+  category: world
+  intent: set_weather_clear
+  language_style: casual
+  prompt: yo make it sunny
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.polite.028
+  category: world
+  intent: set_weather_clear
+  language_style: polite
+  prompt: Could you please make it sunny
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.typoed.029
+  category: world
+  intent: set_weather_clear
+  language_style: typoed
+  prompt: make it sunny
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []
+- id: world.set_weather.verbose.030
+  category: world
+  intent: set_weather_clear
+  language_style: verbose
+  prompt: I would really like it if you could make it sunny
+  expect:
+    tool_any:
+    - name: set_weather
+    world_probe:
+      kind: setting
+      setting: weather
+      value: clear
+  tags: []

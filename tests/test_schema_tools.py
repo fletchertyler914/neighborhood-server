@@ -49,3 +49,22 @@ def test_registry_version_present():
 def test_build_openai_schemas_matches_exported():
     built = build_openai_schemas(orchestrator_only=True)
     assert len(built) == len(TOOL_SCHEMAS)
+
+
+def test_validate_tool_arguments_coerces_float_coords():
+    from agent.executor import validate_tool_arguments
+
+    args = validate_tool_arguments(
+        "build_cylinder",
+        {
+            "center_x": 10144.5,
+            "y": -58,
+            "center_z": 10000.5,
+            "radius": 6,
+            "height": 20,
+            "block": "stone_bricks",
+            "hollow": False,
+        },
+    )
+    assert args["center_x"] == 10144
+    assert args["center_z"] == 10000

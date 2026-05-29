@@ -275,3 +275,22 @@ def test_spawn_n_chickens_from_give_item_routes_to_summon_entity():
     assert args["entity"] == "chicken"
     assert args["x"] == 100 and args["y"] == 64 and args["z"] == 200
     assert args["count"] == 4
+
+
+def test_bind_request_player_rejects_uuid_hallucination():
+    from agent.orchestrator.app import _bind_request_player
+
+    req = JobRequest(
+        player="firecrab93",
+        uuid="u",
+        prompt="hollow sphere",
+        x=0,
+        y=64,
+        z=0,
+    )
+    args = {
+        "command": "//hsphere stone 5",
+        "player": "c07e6ca8-b33b-4ab2-babb-b0d5e6b9367d",
+    }
+    _bind_request_player("fawe_as_player", args, req)
+    assert args["player"] == "firecrab93"

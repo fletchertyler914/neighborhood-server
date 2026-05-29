@@ -8,7 +8,11 @@ from dataclasses import dataclass, field
 from typing import Any, Callable
 
 from agent.mcp_core import MCP_CORE_VERSION, default_capabilities
-from agent.schema_validate import SchemaValidationError, validate_against_schema
+from agent.schema_validate import (
+    SchemaValidationError,
+    coerce_to_schema,
+    validate_against_schema,
+)
 from agent.tool_registry import TOOL_DEFINITIONS_BY_NAME, TOOLS_VERSION
 
 # Late import avoids circular dependency at module load.
@@ -74,8 +78,9 @@ def validate_tool_arguments(name: str, arguments: dict[str, Any]) -> dict[str, A
     if defn is None:
         raise SchemaValidationError(f"unknown tool: {name}")
     normalized = normalize_arguments(name, arguments)
-    validate_against_schema(normalized, defn.parameters)
-    return normalized
+    coerced = coerce_to_schema(normalized, defn.parameters)
+    validate_against_schema(coerced, defn.parameters)
+    return coerced
 
 
 def deterministic_signature(

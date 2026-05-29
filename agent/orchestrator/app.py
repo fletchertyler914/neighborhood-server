@@ -171,6 +171,7 @@ async def _chat_completion(
     api_key: str | None = None,
     timeout: float | None = None,
     eval_mode: bool = False,
+    temperature: float | None = None,
 ) -> dict[str, Any]:
     headers: dict[str, str] = {"Content-Type": "application/json"}
     if api_key:
@@ -184,7 +185,11 @@ async def _chat_completion(
         "messages": messages,
         "tools": TOOL_SCHEMAS,
         "tool_choice": "auto",
-        "temperature": 0.0 if eval_mode else 0.2,
+        "temperature": (
+            temperature
+            if temperature is not None
+            else (0.0 if eval_mode else 0.2)
+        ),
     }
     if is_ollama:
         payload["options"] = {
@@ -893,6 +898,49 @@ def _normalize_tool_call_for_prompt(
     return name, args
 
 
+_PLAYER_NAME_RX = re.compile(r"^\.?[A-Za-z0-9_]{1,16}$")
+
+_SELF_PLAYER_TOOLS = frozenset(
+    {
+        "fawe_as_player",
+        "fawe_sphere_at_player",
+        "fawe_cyl_at_player",
+        "mine_shaft_at_player",
+        "get_player_position",
+        "get_player_dimension",
+        "give_haste",
+        "paste_template_at_player",
+        "create_template_from_selection",
+        "build_house_at_player",
+        "build_castle_at_player",
+        "build_animal_pen_at_player",
+        "build_bridge_at_player",
+        "build_wall_at_player",
+    }
+)
+
+
+def _is_valid_player_name(name: str) -> bool:
+    return bool(_PLAYER_NAME_RX.fullmatch((name or "").strip()))
+
+
+def _bind_request_player(name: str, args: dict[str, Any], req: JobRequest) -> None:
+    """Force the job's requesting player onto self-scoped tools; fix UUID hallucinations."""
+
+    if not req.player:
+        return
+    if name.endswith("_at_player") or name in _SELF_PLAYER_TOOLS:
+        args["player"] = req.player
+        return
+    current = args.get("player")
+    if current is None:
+        if name in {"teleport_player", "set_gamemode", "give_item", "give_haste"}:
+            args["player"] = req.player
+        return
+    if not _is_valid_player_name(str(current)):
+        args["player"] = req.player
+
+
 # Back-compat alias for tests that import the old name. Mutates args in
 # place when the tool name didn't change; name swaps are exercised via the
 # new helper which the orchestrator actually calls.
@@ -957,6 +1005,7 @@ async def _run_agent_loop(job: Job) -> None:
                         messages,
                         timeout=EVAL_LOCAL_MODEL_TIMEOUT if eval_mode else LOCAL_MODEL_TIMEOUT,
                         eval_mode=eval_mode,
+                        temperature=req.eval_temperature,
                     )
                     model_used = f"ollama:{candidate}"
                 except Exception as e:
@@ -972,6 +1021,7 @@ async def _run_agent_loop(job: Job) -> None:
                         messages,
                         api_key=OPENAI_API_KEY,
                         eval_mode=eval_mode,
+                        temperature=req.eval_temperature,
                     )
                     model_used = f"cloud:{CLOUD_MODEL}"
                 except Exception as e:
@@ -1003,22 +1053,7 @@ async def _run_agent_loop(job: Job) -> None:
             for tc in tool_calls:
                 name = tc["name"]
                 args = tc["arguments"]
-                player_tools = {
-                    "fawe_as_player",
-                    "fawe_sphere_at_player",
-                    "fawe_cyl_at_player",
-                    "mine_shaft_at_player",
-                    "get_player_position",
-                    "get_player_dimension",
-                    "give_haste",
-                    "teleport_player",
-                    "set_gamemode",
-                }
-                if name in player_tools and "player" not in args:
-                    args["player"] = req.player
-                if name in ("paste_template_at_player", "create_template_from_selection"):
-                    if "player" not in args:
-                        args["player"] = req.player
+                _bind_request_player(name, args, req)
                 original_name = name
                 name, args = _normalize_tool_call_for_prompt(req, name, args)
                 rec = current_routing()

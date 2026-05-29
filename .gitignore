@@ -28,6 +28,8 @@ plugins/neighborhood-agent/.gradle/
 # --- agent transient indexes / audits ----------------------------------
 agent/templates/.rank_index/
 agent/templates/.seed_manifest.json
+datasets/
+models/
 
 # --- macOS / IDE -------------------------------------------------------
 .DS_Store

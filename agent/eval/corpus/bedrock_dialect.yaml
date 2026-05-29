@@ -1,0 +1,361 @@
+cases:
+- id: bedrock.bedrock.001
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build me a small cabin
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.002
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build me a small cabin
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.003
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build me a small cabin
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.004
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build me a small cabin
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.005
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build me a small cabin
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.006
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent make a chicken coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.007
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent make a chicken coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.008
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent make a chicken coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.009
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent make a chicken coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.010
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent make a chicken coop
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.011
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.012
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.013
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.014
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.015
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent give me haste
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.016
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build a castle
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.017
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build a castle
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.018
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build a castle
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.019
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build a castle
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
+- id: bedrock.bedrock.020
+  category: bedrock
+  intent: bedrock_nl
+  language_style: bedrock
+  prompt: /agent build a castle
+  expect:
+    tool_any:
+    - name: paste_template_at_player
+    - name: build_house_at_player
+    - name: build_animal_pen_at_player
+    - name: build_castle_at_player
+    - name: give_haste
+    - name: give_item
+    - name: summon_entity
+    world_probe:
+      kind: none
+  tags:
+  - bedrock_prefix
