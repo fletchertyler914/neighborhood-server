@@ -373,6 +373,7 @@ details, weights, and the latest production-validation snapshot.
 - Export: `./scripts/export-dataset.sh` → JSONL for review / fine-tuning
 - Feedback training data: `python3 -m agent.training feedback --sft-out ... --dpo-out ...`
 - Compare models: `AGENT_COMPARE_MODELS=... ./scripts/compare-models.sh`
+- Hosting a live session: [docs/HOSTING.md](docs/HOSTING.md) — preflight, sharing the playit address, common admin, recovery
 - Docs: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/TOOL_CONTRACT.md](docs/TOOL_CONTRACT.md), [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Backups
