@@ -62,9 +62,12 @@ echo "============================="
 
 missing=0
 require docker         "https://docs.docker.com/get-docker/"            || missing=$((missing+1))
-require docker-compose "(comes with Docker Desktop, or 'docker compose')" \
-  || command -v "docker compose" >/dev/null 2>&1 \
-  || warn "docker compose plugin not found; some scripts assume 'docker compose'"
+if docker compose version >/dev/null 2>&1; then
+  ok "docker compose found ($(docker compose version --short 2>/dev/null || docker compose version 2>/dev/null | head -1))"
+else
+  err "docker compose plugin is missing: install Docker Desktop or Docker Compose v2"
+  missing=$((missing+1))
+fi
 require python3        "https://www.python.org/downloads/"              || missing=$((missing+1))
 if (( missing > 0 )); then
   err "$missing required dependency(ies) missing — install them and re-run."
