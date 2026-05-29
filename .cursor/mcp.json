@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "minecraft-builder": {
+      "command": "uv",
+      "args": ["run", "--script", "mcp/minecraft_build_mcp.py"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "MC_CONTAINER": "mc-lan",
+        "MINECRAFT_MCP_MAX_BLOCKS": "200000",
+        "MINECRAFT_MCP_MAX_COMMANDS": "20000"
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+name: NeighborhoodAgent
+version: ${version}
+main: com.neighborhood.agent.NeighborhoodAgentPlugin
+api-version: '1.21'
+description: In-game /agent command wired to the host orchestrator
+author: neighborhood-server
+commands:
+  agent:
+    description: Ask the AI agent to build, mine, or run server actions
+    usage: /agent <prompt> | /agent confirm <token> <prompt>
+    permission: neighborhood.agent
+  agentexec:
+    description: (Console only) Dispatch a Bukkit command as a target player. Used by the orchestrator for FAWE.
+    usage: /agentexec <player> <command...>
+    permission: neighborhood.agentexec
+permissions:
+  neighborhood.agent:
+    description: Use /agent
+    default: op
+  neighborhood.agentexec:
+    description: Use /agentexec (console-only)
+    default: op

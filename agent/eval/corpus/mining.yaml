@@ -1,0 +1,481 @@
+cases:
+- id: mining.shaft.direct.001
+  category: mining
+  intent: mine_shaft
+  language_style: direct
+  prompt: Dig a shaft 16 blocks below me
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 16
+      - depth: 16
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.casual.002
+  category: mining
+  intent: mine_shaft
+  language_style: casual
+  prompt: yo dig a shaft 16 blocks below me
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 16
+      - depth: 16
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.polite.003
+  category: mining
+  intent: mine_shaft
+  language_style: polite
+  prompt: Could you please dig a shaft 16 blocks below me
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 16
+      - depth: 16
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.typoed.004
+  category: mining
+  intent: mine_shaft
+  language_style: typoed
+  prompt: Dig a shaft 16 blocks below me
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 16
+      - depth: 16
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.verbose.005
+  category: mining
+  intent: mine_shaft
+  language_style: verbose
+  prompt: I would really like it if you could dig a shaft 16 blocks below me
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 16
+      - depth: 16
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.minimal.006
+  category: mining
+  intent: mine_shaft
+  language_style: minimal
+  prompt: blocks below me
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 16
+      - depth: 16
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.direct.007
+  category: mining
+  intent: mine_shaft
+  language_style: direct
+  prompt: Drill a 1-wide hole 32 blocks down
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 32
+      - depth: 32
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.casual.008
+  category: mining
+  intent: mine_shaft
+  language_style: casual
+  prompt: yo drill a 1-wide hole 32 blocks down
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 32
+      - depth: 32
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.polite.009
+  category: mining
+  intent: mine_shaft
+  language_style: polite
+  prompt: Could you please drill a 1-wide hole 32 blocks down
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 32
+      - depth: 32
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.typoed.010
+  category: mining
+  intent: mine_shaft
+  language_style: typoed
+  prompt: Drill a 1-wide hole 32 blocks down
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 32
+      - depth: 32
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.verbose.011
+  category: mining
+  intent: mine_shaft
+  language_style: verbose
+  prompt: I would really like it if you could drill a 1-wide hole 32 blocks down
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 32
+      - depth: 32
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.minimal.012
+  category: mining
+  intent: mine_shaft
+  language_style: minimal
+  prompt: 32 blocks down
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 32
+      - depth: 32
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.direct.013
+  category: mining
+  intent: mine_shaft
+  language_style: direct
+  prompt: Dig a hole 20 blocks down and 1 block forward
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 20
+      - depth: 20
+        forward_offset: 1
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.casual.014
+  category: mining
+  intent: mine_shaft
+  language_style: casual
+  prompt: yo dig a hole 20 blocks down and 1 block forward
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 20
+      - depth: 20
+        forward_offset: 1
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.polite.015
+  category: mining
+  intent: mine_shaft
+  language_style: polite
+  prompt: Could you please dig a hole 20 blocks down and 1 block forward
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 20
+      - depth: 20
+        forward_offset: 1
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.typoed.016
+  category: mining
+  intent: mine_shaft
+  language_style: typoed
+  prompt: Dig a hole 20 blocks down and 1 block forward
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 20
+      - depth: 20
+        forward_offset: 1
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.verbose.017
+  category: mining
+  intent: mine_shaft
+  language_style: verbose
+  prompt: I would really like it if you could dig a hole 20 blocks down and 1 block forward
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 20
+      - depth: 20
+        forward_offset: 1
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.minimal.018
+  category: mining
+  intent: mine_shaft
+  language_style: minimal
+  prompt: mine a shaft 1 block forward
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 20
+      - depth: 20
+        forward_offset: 1
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.direct.019
+  category: mining
+  intent: mine_shaft
+  language_style: direct
+  prompt: Mine a shaft below me 24 deep
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 24
+      - depth: 24
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.casual.020
+  category: mining
+  intent: mine_shaft
+  language_style: casual
+  prompt: yo mine a shaft below me 24 deep
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 24
+      - depth: 24
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.polite.021
+  category: mining
+  intent: mine_shaft
+  language_style: polite
+  prompt: Could you please mine a shaft below me 24 deep
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 24
+      - depth: 24
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.typoed.022
+  category: mining
+  intent: mine_shaft
+  language_style: typoed
+  prompt: Mine a shaft below me 24 deep
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 24
+      - depth: 24
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.verbose.023
+  category: mining
+  intent: mine_shaft
+  language_style: verbose
+  prompt: I would really like it if you could mine a shaft below me 24 deep
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 24
+      - depth: 24
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.minimal.024
+  category: mining
+  intent: mine_shaft
+  language_style: minimal
+  prompt: me 24 deep
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 24
+      - depth: 24
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 16
+  tags: []
+- id: mining.shaft.direct.025
+  category: mining
+  intent: mine_shaft
+  language_style: direct
+  prompt: Dig straight down 12 blocks
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 12
+      - depth: 12
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 12
+  tags: []
+- id: mining.shaft.casual.026
+  category: mining
+  intent: mine_shaft
+  language_style: casual
+  prompt: yo dig straight down 12 blocks
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 12
+      - depth: 12
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 12
+  tags: []
+- id: mining.shaft.polite.027
+  category: mining
+  intent: mine_shaft
+  language_style: polite
+  prompt: Could you please dig straight down 12 blocks
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 12
+      - depth: 12
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 12
+  tags: []
+- id: mining.shaft.typoed.028
+  category: mining
+  intent: mine_shaft
+  language_style: typoed
+  prompt: Dig straight down 12 blocks
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 12
+      - depth: 12
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 12
+  tags: []
+- id: mining.shaft.verbose.029
+  category: mining
+  intent: mine_shaft
+  language_style: verbose
+  prompt: I would really like it if you could dig straight down 12 blocks
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 12
+      - depth: 12
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 12
+  tags: []
+- id: mining.shaft.minimal.030
+  category: mining
+  intent: mine_shaft
+  language_style: minimal
+  prompt: down 12 blocks
+  expect:
+    tool_any:
+    - name: mine_shaft_at_player
+      arguments_any:
+      - depth: 12
+      - depth: 12
+        forward_offset: 0
+    world_probe:
+      kind: shaft_dug
+      shaft_depth: 12
+  tags: []

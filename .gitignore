@@ -1,0 +1,47 @@
+# --- secrets / runtime data --------------------------------------------
+.env
+secrets/
+data/
+backups/
+
+# --- python ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+agent/.venv/
+.venv/
+
+# --- node / web (kept for future ui work) ------------------------------
+node_modules/
+
+# --- gradle / paper plugin builds --------------------------------------
+plugins/neighborhood-agent/build/
+plugins/neighborhood-agent/.gradle/
+
+# --- agent transient indexes / audits ----------------------------------
+agent/templates/.rank_index/
+agent/templates/.seed_manifest.json
+datasets/
+models/
+
+# --- Cursor internal planning (not for public repo) --------------------
+.cursor/plans/
+
+# --- macOS / IDE -------------------------------------------------------
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# --- logs / scratch ----------------------------------------------------
+*.log
+tmp_*.py
+scratch/

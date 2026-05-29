@@ -1,0 +1,18 @@
+name: agent-smoke-manual
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Agent smoke (dry-run)
+        env:
+          AGENT_EVAL_MODE: "1"
+          AGENT_API_TOKEN: dev-change-me
+          AGENT_SMOKE_DRY_RUN: "1"
+        run: |
+          echo "Manual smoke — run ./scripts/agent-smoke.sh on a host with mc-agent + Ollama"
+          test -x ./scripts/agent-smoke.sh

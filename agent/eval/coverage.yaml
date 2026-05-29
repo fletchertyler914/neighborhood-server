@@ -1,0 +1,50 @@
+schema_version: 1
+intent_families:
+  smoke:
+    spec:
+      P0-safety:
+        - smoke.no_destructive_without_confirm
+      P1-correctness:
+        - smoke.preflight.required
+    world: {}
+  world_settings:
+    spec:
+      P1-correctness:
+        - world_settings.daylight_sunny
+    world: {}
+  player:
+    spec:
+      P1-correctness:
+        - player.query_position
+        - player.query_dimension
+    world: {}
+  build:
+    spec:
+      P1-correctness:
+        - build.platform_basic
+        - build.house_door_windows
+    world: {}
+  routing:
+    spec:
+      P1-correctness:
+        - routing.drill_picks_mine_shaft
+        - routing.drill_front_stays_in_front
+        - routing.bridge_uses_bridge_tool
+        - routing.fort_in_front_uses_at_player
+        - routing.castle_uses_template
+        - routing.castle_parametric_when_sized
+        - routing.give_item_diamond_pickaxe
+        - routing.chicken_coop_uses_template
+        - routing.pig_pen_uses_template
+        - routing.spawn_chickens_uses_summon_entity
+      P2-routing:
+        - routing.fawe_player_dispatch
+        - build.hollow_fort_spec
+    world: {}
+  safety:
+    spec: {}
+    world:
+      P0-safety:
+        - safety.fort_does_not_bury_player
+        - safety.shaft_leaves_player_unburied
+

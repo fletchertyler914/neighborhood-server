@@ -1,0 +1,259 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "case_id": "smoke.preflight.required",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {"name": "preflight", "arguments": {}},
+        {"name": "say", "arguments": {"message": "ok."}}
+      ]
+    },
+    {
+      "case_id": "smoke.no_destructive_without_confirm",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {"name": "preflight", "arguments": {}},
+        {"name": "say", "arguments": {"message": "Ok."}}
+      ]
+    },
+    {
+      "case_id": "world_settings.daylight_sunny",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {"name": "set_time", "arguments": {"value": "day"}},
+        {"name": "set_weather", "arguments": {"weather": "clear"}}
+      ]
+    },
+    {
+      "case_id": "player.query_position",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {"name": "get_player_position", "arguments": {"player": ".EvalBot"}}
+      ]
+    },
+    {
+      "case_id": "routing.fawe_player_dispatch",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "fawe_as_player",
+          "arguments": {"player": ".EvalBot", "command": "//sphere glass 5"}
+        }
+      ]
+    },
+    {
+      "case_id": "build.platform_basic",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "build_platform",
+          "arguments": {
+            "center_x": 0,
+            "y": 79,
+            "center_z": 0,
+            "width": 5,
+            "depth": 5,
+            "block": "quartz_block"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "player.query_dimension",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {"name": "get_player_dimension", "arguments": {"player": ".EvalBot"}}
+      ]
+    },
+    {
+      "case_id": "build.hollow_fort_spec",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "fawe_cyl_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "radius": 4,
+            "height": 8,
+            "block": "stone_bricks",
+            "hollow": true
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.drill_picks_mine_shaft",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "mine_shaft_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "depth": 100,
+            "forward_offset": 1
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.drill_front_stays_in_front",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "mine_shaft_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "depth": 50,
+            "forward_offset": 1
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "build.house_door_windows",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "build_house_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "width": 7,
+            "depth": 7,
+            "height": 5
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.bridge_uses_bridge_tool",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "build_bridge_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "length": 24,
+            "width": 2,
+            "block": "oak_planks"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.fort_in_front_uses_at_player",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "build_house_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "wall_block": "sandstone",
+            "roof_block": "sandstone_slab"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.castle_uses_template",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "paste_template_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "template_id": "castle_small_keep"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.castle_parametric_when_sized",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "build_castle_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "size": 21
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.give_item_diamond_pickaxe",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "give_item",
+          "arguments": {
+            "player": ".EvalBot",
+            "item": "diamond_pickaxe"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.chicken_coop_uses_template",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "paste_template_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "template_id": "chicken_coop_small"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.pig_pen_uses_template",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "paste_template_at_player",
+          "arguments": {
+            "player": ".EvalBot",
+            "template_id": "pig_pen_small"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "routing.spawn_chickens_uses_summon_entity",
+      "status": "done",
+      "steps": 2,
+      "tool_calls": [
+        {
+          "name": "summon_entity",
+          "arguments": {
+            "entity": "chicken",
+            "x": 0,
+            "y": 80,
+            "z": 0,
+            "count": 4
+          }
+        }
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,27 @@
+# Copy relevant values to environment or .env (see .env.example)
+
+orchestrator:
+  # Compose sets this to 0.0.0.0 inside mc-agent. Keep private: no host port.
+  host: 0.0.0.0
+  port: 8787
+  # Shared secret — plugin and orchestrator must match
+  api_token: change-me-to-a-long-random-string
+
+models:
+  # Local-first (Ollama on host). In Compose, use host.docker.internal.
+  ollama_base_url: http://host.docker.internal:11434
+  ollama_model: qwen2.5:7b-instruct
+  ollama_fallback_model: qwen3:8b
+  local_model_timeout_sec: 15
+  # Optional cloud fallback (OpenAI-compatible)
+  cloud_base_url: https://api.openai.com/v1
+  cloud_model: gpt-4o-mini
+  # Set OPENAI_API_KEY in .env to enable fallback
+
+limits:
+  max_steps: 12
+  cooldown_sec: 8
+  job_timeout_sec: 180
+
+plugin:
+  orchestrator_url: http://mc-agent:8787

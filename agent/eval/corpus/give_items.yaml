@@ -1,0 +1,451 @@
+cases:
+- id: item.diamond_pickaxe.direct.001
+  category: item
+  intent: give_diamond_pickaxe
+  language_style: direct
+  prompt: Give me a diamond pickaxe
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_pickaxe
+    world_probe:
+      kind: inventory_has
+      item: diamond_pickaxe
+      min_count: 1
+  tags: []
+- id: item.diamond_pickaxe.casual.002
+  category: item
+  intent: give_diamond_pickaxe
+  language_style: casual
+  prompt: yo give me a diamond pickaxe
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_pickaxe
+    world_probe:
+      kind: inventory_has
+      item: diamond_pickaxe
+      min_count: 1
+  tags: []
+- id: item.diamond_pickaxe.polite.003
+  category: item
+  intent: give_diamond_pickaxe
+  language_style: polite
+  prompt: Could you please give me a diamond pickaxe
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_pickaxe
+    world_probe:
+      kind: inventory_has
+      item: diamond_pickaxe
+      min_count: 1
+  tags: []
+- id: item.diamond_pickaxe.typoed.004
+  category: item
+  intent: give_diamond_pickaxe
+  language_style: typoed
+  prompt: Give me a diamond pickaxe
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_pickaxe
+    world_probe:
+      kind: inventory_has
+      item: diamond_pickaxe
+      min_count: 1
+  tags: []
+- id: item.diamond_pickaxe.verbose.005
+  category: item
+  intent: give_diamond_pickaxe
+  language_style: verbose
+  prompt: I would really like it if you could give me a diamond pickaxe
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_pickaxe
+    world_probe:
+      kind: inventory_has
+      item: diamond_pickaxe
+      min_count: 1
+  tags: []
+- id: item.diamond_sword.direct.006
+  category: item
+  intent: give_diamond_sword
+  language_style: direct
+  prompt: I need a diamond sword
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_sword
+    world_probe:
+      kind: inventory_has
+      item: diamond_sword
+      min_count: 1
+  tags: []
+- id: item.diamond_sword.casual.007
+  category: item
+  intent: give_diamond_sword
+  language_style: casual
+  prompt: yo i need a diamond sword
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_sword
+    world_probe:
+      kind: inventory_has
+      item: diamond_sword
+      min_count: 1
+  tags: []
+- id: item.diamond_sword.polite.008
+  category: item
+  intent: give_diamond_sword
+  language_style: polite
+  prompt: Could you please i need a diamond sword
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_sword
+    world_probe:
+      kind: inventory_has
+      item: diamond_sword
+      min_count: 1
+  tags: []
+- id: item.diamond_sword.typoed.009
+  category: item
+  intent: give_diamond_sword
+  language_style: typoed
+  prompt: I need a diamond sword
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_sword
+    world_probe:
+      kind: inventory_has
+      item: diamond_sword
+      min_count: 1
+  tags: []
+- id: item.diamond_sword.verbose.010
+  category: item
+  intent: give_diamond_sword
+  language_style: verbose
+  prompt: I would really like it if you could i need a diamond sword
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: diamond_sword
+    world_probe:
+      kind: inventory_has
+      item: diamond_sword
+      min_count: 1
+  tags: []
+- id: item.stone.direct.011
+  category: item
+  intent: give_stone
+  language_style: direct
+  prompt: Give me a stack of stone
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: stone
+    world_probe:
+      kind: inventory_has
+      item: stone
+      min_count: 1
+  tags: []
+- id: item.stone.casual.012
+  category: item
+  intent: give_stone
+  language_style: casual
+  prompt: yo give me a stack of stone
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: stone
+    world_probe:
+      kind: inventory_has
+      item: stone
+      min_count: 1
+  tags: []
+- id: item.stone.polite.013
+  category: item
+  intent: give_stone
+  language_style: polite
+  prompt: Could you please give me a stack of stone
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: stone
+    world_probe:
+      kind: inventory_has
+      item: stone
+      min_count: 1
+  tags: []
+- id: item.stone.typoed.014
+  category: item
+  intent: give_stone
+  language_style: typoed
+  prompt: Give me a stack of stone
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: stone
+    world_probe:
+      kind: inventory_has
+      item: stone
+      min_count: 1
+  tags: []
+- id: item.stone.verbose.015
+  category: item
+  intent: give_stone
+  language_style: verbose
+  prompt: I would really like it if you could give me a stack of stone
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: stone
+    world_probe:
+      kind: inventory_has
+      item: stone
+      min_count: 1
+  tags: []
+- id: item.bread.direct.016
+  category: item
+  intent: give_bread
+  language_style: direct
+  prompt: Give me some bread
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: bread
+    world_probe:
+      kind: inventory_has
+      item: bread
+      min_count: 1
+  tags: []
+- id: item.bread.casual.017
+  category: item
+  intent: give_bread
+  language_style: casual
+  prompt: yo give me some bread
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: bread
+    world_probe:
+      kind: inventory_has
+      item: bread
+      min_count: 1
+  tags: []
+- id: item.bread.polite.018
+  category: item
+  intent: give_bread
+  language_style: polite
+  prompt: Could you please give me some bread
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: bread
+    world_probe:
+      kind: inventory_has
+      item: bread
+      min_count: 1
+  tags: []
+- id: item.bread.typoed.019
+  category: item
+  intent: give_bread
+  language_style: typoed
+  prompt: Give me some bread
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: bread
+    world_probe:
+      kind: inventory_has
+      item: bread
+      min_count: 1
+  tags: []
+- id: item.bread.verbose.020
+  category: item
+  intent: give_bread
+  language_style: verbose
+  prompt: I would really like it if you could give me some bread
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: bread
+    world_probe:
+      kind: inventory_has
+      item: bread
+      min_count: 1
+  tags: []
+- id: item.oak_planks.direct.021
+  category: item
+  intent: give_oak_planks
+  language_style: direct
+  prompt: Give me oak planks
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: oak_planks
+    world_probe:
+      kind: inventory_has
+      item: oak_planks
+      min_count: 1
+  tags: []
+- id: item.oak_planks.casual.022
+  category: item
+  intent: give_oak_planks
+  language_style: casual
+  prompt: yo give me oak planks
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: oak_planks
+    world_probe:
+      kind: inventory_has
+      item: oak_planks
+      min_count: 1
+  tags: []
+- id: item.oak_planks.polite.023
+  category: item
+  intent: give_oak_planks
+  language_style: polite
+  prompt: Could you please give me oak planks
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: oak_planks
+    world_probe:
+      kind: inventory_has
+      item: oak_planks
+      min_count: 1
+  tags: []
+- id: item.oak_planks.typoed.024
+  category: item
+  intent: give_oak_planks
+  language_style: typoed
+  prompt: Give me oak planks
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: oak_planks
+    world_probe:
+      kind: inventory_has
+      item: oak_planks
+      min_count: 1
+  tags: []
+- id: item.oak_planks.verbose.025
+  category: item
+  intent: give_oak_planks
+  language_style: verbose
+  prompt: I would really like it if you could give me oak planks
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: oak_planks
+    world_probe:
+      kind: inventory_has
+      item: oak_planks
+      min_count: 1
+  tags: []
+- id: item.iron_ingot.direct.026
+  category: item
+  intent: give_iron_ingot
+  language_style: direct
+  prompt: Give me iron ingots
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: iron_ingot
+    world_probe:
+      kind: inventory_has
+      item: iron_ingot
+      min_count: 1
+  tags: []
+- id: item.iron_ingot.casual.027
+  category: item
+  intent: give_iron_ingot
+  language_style: casual
+  prompt: yo give me iron ingots
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: iron_ingot
+    world_probe:
+      kind: inventory_has
+      item: iron_ingot
+      min_count: 1
+  tags: []
+- id: item.iron_ingot.polite.028
+  category: item
+  intent: give_iron_ingot
+  language_style: polite
+  prompt: Could you please give me iron ingots
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: iron_ingot
+    world_probe:
+      kind: inventory_has
+      item: iron_ingot
+      min_count: 1
+  tags: []
+- id: item.iron_ingot.typoed.029
+  category: item
+  intent: give_iron_ingot
+  language_style: typoed
+  prompt: Give me iron ingots
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: iron_ingot
+    world_probe:
+      kind: inventory_has
+      item: iron_ingot
+      min_count: 1
+  tags: []
+- id: item.iron_ingot.verbose.030
+  category: item
+  intent: give_iron_ingot
+  language_style: verbose
+  prompt: I would really like it if you could give me iron ingots
+  expect:
+    tool_any:
+    - name: give_item
+      arguments_any:
+      - item: iron_ingot
+    world_probe:
+      kind: inventory_has
+      item: iron_ingot
+      min_count: 1
+  tags: []

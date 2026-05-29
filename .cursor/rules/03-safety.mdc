@@ -1,0 +1,65 @@
+---
+description: Safety, secrets, and don't-touch list for the Minecraft stack
+alwaysApply: true
+---
+
+# Safety / Don'ts
+
+## Secrets
+
+- `secrets/rcon_password` — never echo, never paste into commit messages,
+  never embed in `.cursor/mcp.json`. The MCP and `mc.sh` deliberately use
+  `docker exec` so the password stays in the container's secret mount.
+- `.env` holds `PLAYIT_SECRET_KEY`, `AGENT_API_TOKEN`, and optional
+  `OPENAI_API_KEY` — same rules. The file is gitignored; keep it that way.
+- `AGENT_API_TOKEN` is required: `docker-compose.yml` interpolates it with
+  `${AGENT_API_TOKEN:?...}` so Compose refuses to boot without it. Never
+  reintroduce the old `dev-change-me` fallback in production code paths.
+  `make bootstrap` writes a fresh random token on first run.
+
+## Networking
+
+- Do **not** add `25575:25575` to `docker-compose.yml`. RCON must remain
+  unpublished. Anything that needs RCON should `docker exec` into `mc-lan`.
+- Don't change `network_mode: host` on the `playit` service — it needs it
+  to forward UDP cleanly to Geyser.
+- `mc-agent` deliberately has **no** `ports:` mapping. The container binds
+  `AGENT_BIND_HOST=0.0.0.0` inside the Compose network only; the plugin
+  reaches it at `http://mc-agent:8787`. Never add a host port mapping.
+- Bundled Ollama (`--profile ollama`) is the same story — internal only,
+  no host port. Don't publish `11434` to the host.
+
+## JVM
+
+- `USE_MEOWICE_FLAGS: 'false'` is intentional on aarch64 + Java 25
+  (JDK-8359378). Use the existing ZGC `JVM_XX_OPTS`. Only re-enable
+  MeowIce flags after confirming a Temurin patch.
+
+## Builds
+
+- Respect the MCP guardrails (200k blocks, 20k commands). If a request is
+  bigger, propose splitting it or using FAWE chunk operations instead of
+  silently raising `MINECRAFT_MCP_MAX_BLOCKS` / `MINECRAFT_MCP_MAX_COMMANDS`.
+- Before destructive ops (`clear_box`, `//set air`, `//regen`, large
+  `fill_box` with `mode: replace`), confirm coordinates and rough volume
+  with the user.
+- Don't TP players or set their gamemode without it being asked for.
+
+## Whitelist / public exposure
+
+- `ENFORCE_WHITELIST` defaults to **true** in `docker-compose.yml`
+  (`ENFORCE_WHITELIST: ${MC_ENFORCE_WHITELIST:-true}`). Add players via
+  `./mc.sh cmd "whitelist add <name>"` before sharing the playit address.
+- For the open friends-server mode (anyone with the address can join),
+  set `MC_ENFORCE_WHITELIST=false` in `.env` and restart `mc`. Do this
+  intentionally; don't silently flip it back in commits.
+- The `OPS:` block in compose is commented out by default. Use
+  `./mc.sh op <name>` after first boot, or uncomment if you want certain
+  ops re-applied on every restart (combined with `EXISTING_OPS_FILE: MERGE`).
+
+## World data
+
+- `data/` and `backups/` are bind mounts — don't `rm -rf` them. To wipe
+  a world, stop the stack, move `data/world*` aside, then start.
+- Use `./mc.sh backup` (or let the `mc-backup` sidecar run) before any
+  risky world-altering operation.

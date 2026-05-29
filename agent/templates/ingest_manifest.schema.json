@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neighborhood-server.local/schemas/ingest_manifest.json",
+  "title": "TemplateSourceManifest",
+  "type": "object",
+  "required": ["sources"],
+  "properties": {
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_id", "display_name", "source_url", "license_spdx", "enabled"],
+        "properties": {
+          "source_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$" },
+          "display_name": { "type": "string", "minLength": 1 },
+          "source_type": { "type": "string" },
+          "source_url": { "type": "string", "format": "uri" },
+          "source_ref": { "type": "string", "minLength": 1 },
+          "license_spdx": {
+            "type": "string",
+            "enum": ["CC0-1.0", "CC-BY-4.0", "CC-BY-SA-4.0", "MIT"]
+          },
+          "license_url": { "type": "string", "format": "uri" },
+          "allowed_for_ingest": { "type": "boolean" },
+          "attribution_required": { "type": "boolean" },
+          "attribution_template": { "type": "string" },
+          "format": { "type": "string", "enum": ["schem", "litematic", "mixed"] },
+          "enabled": { "type": "boolean" },
+          "notes": { "type": "string" },
+          "category_map": { "type": "object" },
+          "complexity_map": { "type": "object" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,261 @@
+cases:
+- id: effect.haste.direct.001
+  category: effect
+  intent: give_haste
+  language_style: direct
+  prompt: Give me haste for 30 minutes
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.casual.002
+  category: effect
+  intent: give_haste
+  language_style: casual
+  prompt: yo give me haste for 30 minutes
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.polite.003
+  category: effect
+  intent: give_haste
+  language_style: polite
+  prompt: Could you please give me haste for 30 minutes
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.typoed.004
+  category: effect
+  intent: give_haste
+  language_style: typoed
+  prompt: Give me haste for 30 minutes
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.direct.005
+  category: effect
+  intent: give_haste
+  language_style: direct
+  prompt: I want haste level 2
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.casual.006
+  category: effect
+  intent: give_haste
+  language_style: casual
+  prompt: yo i want haste level 2
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.polite.007
+  category: effect
+  intent: give_haste
+  language_style: polite
+  prompt: Could you please i want haste level 2
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.typoed.008
+  category: effect
+  intent: give_haste
+  language_style: typoed
+  prompt: I want haste level 2
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.direct.009
+  category: effect
+  intent: give_haste
+  language_style: direct
+  prompt: Give us speed boost
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.casual.010
+  category: effect
+  intent: give_haste
+  language_style: casual
+  prompt: yo give us speed boost
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.polite.011
+  category: effect
+  intent: give_haste
+  language_style: polite
+  prompt: Could you please give us speed boost
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.typoed.012
+  category: effect
+  intent: give_haste
+  language_style: typoed
+  prompt: Give us speed boost
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.direct.013
+  category: effect
+  intent: give_haste
+  language_style: direct
+  prompt: Apply haste effect
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.casual.014
+  category: effect
+  intent: give_haste
+  language_style: casual
+  prompt: yo apply haste effect
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.polite.015
+  category: effect
+  intent: give_haste
+  language_style: polite
+  prompt: Could you please apply haste effect
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.typoed.016
+  category: effect
+  intent: give_haste
+  language_style: typoed
+  prompt: Apply haste effect
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.direct.017
+  category: effect
+  intent: give_haste
+  language_style: direct
+  prompt: Give me regeneration
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.casual.018
+  category: effect
+  intent: give_haste
+  language_style: casual
+  prompt: yo give me regeneration
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.polite.019
+  category: effect
+  intent: give_haste
+  language_style: polite
+  prompt: Could you please give me regeneration
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []
+- id: effect.haste.typoed.020
+  category: effect
+  intent: give_haste
+  language_style: typoed
+  prompt: Give me regeneration
+  expect:
+    tool_any:
+    - name: give_haste
+    - name: give_item
+    - name: run_command
+    world_probe:
+      kind: none
+  tags: []

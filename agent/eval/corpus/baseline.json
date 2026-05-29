@@ -1,0 +1,3075 @@
+{
+  "cases": {
+    "adv.ambiguous.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.ambiguous.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.ambiguous.minimal.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.ambiguous.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.ambiguous.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.ambiguous.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.contradiction.casual.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.contradiction.direct.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.contradiction.minimal.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.contradiction.polite.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.contradiction.typoed.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.contradiction.verbose.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.destructive.casual.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.destructive.direct.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.destructive.minimal.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.destructive.polite.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.destructive.typoed.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.destructive.verbose.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.injection.casual.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.injection.direct.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.injection.minimal.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.injection.polite.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.injection.typoed.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.injection.verbose.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.typo.casual.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.typo.direct.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.typo.minimal.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.typo.polite.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.typo.typoed.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "adv.typo.verbose.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bedrock.bedrock.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.adversarial.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.bedrock.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.minimal.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_oak_short.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.adversarial.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.bedrock.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.casual.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.direct.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.minimal.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.polite.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.typoed.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_rope.verbose.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.adversarial.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.bedrock.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.casual.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.direct.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.minimal.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.polite.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.typoed.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_stone_long.verbose.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.adversarial.032": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.bedrock.031": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.casual.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.direct.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.minimal.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.polite.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.typoed.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "bridge.bridge_wood_suspension.verbose.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.adversarial.064": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.bedrock.063": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.casual.058": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.direct.057": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.minimal.062": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.polite.059": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.typoed.060": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.armory_small.verbose.061": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.adversarial.048": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.bedrock.047": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.casual.042": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.direct.041": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.minimal.046": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.polite.043": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.typoed.044": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_gate_large.verbose.045": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.adversarial.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.bedrock.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.minimal.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.castle_small_keep.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.adversarial.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.bedrock.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.casual.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.direct.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.minimal.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.polite.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.typoed.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.fortress_medium.verbose.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.adversarial.040": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.bedrock.039": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.casual.034": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.direct.033": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.minimal.038": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.polite.035": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.typoed.036": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.gatehouse.verbose.037": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.adversarial.072": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.bedrock.071": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.casual.066": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.direct.065": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.minimal.070": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.polite.067": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.typoed.068": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.guard_post.verbose.069": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.adversarial.056": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.bedrock.055": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.casual.050": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.direct.049": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.minimal.054": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.polite.051": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.typoed.052": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.lighthouse_short.verbose.053": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.adversarial.080": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.bedrock.079": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.casual.074": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.direct.073": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.minimal.078": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.polite.075": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.typoed.076": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "castle.wall_segment_stone.verbose.077": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "castle.watchtower_tall.adversarial.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.watchtower_tall.bedrock.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.watchtower_tall.casual.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.watchtower_tall.direct.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.watchtower_tall.minimal.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.watchtower_tall.polite.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.watchtower_tall.typoed.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.watchtower_tall.verbose.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.adversarial.032": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.bedrock.031": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.casual.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.direct.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.minimal.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.polite.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.typoed.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "castle.wizard_tower.verbose.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.berry_farm_small.casual.037": {
+      "ok": false,
+      "primary_failure": "tool_selection_miss",
+      "status": "done"
+    },
+    "crop.berry_farm_small.direct.036": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.berry_farm_small.polite.038": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.berry_farm_small.typoed.039": {
+      "ok": false,
+      "primary_failure": "template_unresolved",
+      "status": "done"
+    },
+    "crop.berry_farm_small.verbose.040": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.carrot_farm_small.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.carrot_farm_small.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.carrot_farm_small.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.carrot_farm_small.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.carrot_farm_small.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.kelp_farm_small.casual.032": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.kelp_farm_small.direct.031": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.kelp_farm_small.polite.033": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.kelp_farm_small.typoed.034": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.kelp_farm_small.verbose.035": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.melon_farm_small.casual.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.melon_farm_small.direct.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.melon_farm_small.polite.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.melon_farm_small.typoed.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.melon_farm_small.verbose.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.potato_farm_small.casual.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.potato_farm_small.direct.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.potato_farm_small.polite.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.potato_farm_small.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.potato_farm_small.verbose.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.pumpkin_farm_small.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.pumpkin_farm_small.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.pumpkin_farm_small.polite.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.pumpkin_farm_small.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.pumpkin_farm_small.verbose.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.sugarcane_farm_small.casual.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.sugarcane_farm_small.direct.021": {
+      "ok": false,
+      "primary_failure": "tool_selection_miss",
+      "status": "done"
+    },
+    "crop.sugarcane_farm_small.polite.023": {
+      "ok": false,
+      "primary_failure": "template_unresolved",
+      "status": "done"
+    },
+    "crop.sugarcane_farm_small.typoed.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.sugarcane_farm_small.verbose.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.wheat_farm_small.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.wheat_farm_small.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.wheat_farm_small.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.wheat_farm_small.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "crop.wheat_farm_small.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.flag_pole.casual.047": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.flag_pole.direct.046": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.flag_pole.polite.048": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.flag_pole.typoed.049": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.flag_pole.verbose.050": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.fountain_small.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.fountain_small.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.fountain_small.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.fountain_small.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.fountain_small.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.garden_plot.casual.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.garden_plot.direct.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.garden_plot.polite.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.garden_plot.typoed.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.garden_plot.verbose.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.gazebo_oak.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.gazebo_oak.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.gazebo_oak.polite.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.gazebo_oak.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.gazebo_oak.verbose.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.koi_pond.casual.042": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.koi_pond.direct.041": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.koi_pond.polite.043": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.koi_pond.typoed.044": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.koi_pond.verbose.045": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.lamp_post_iron.casual.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.lamp_post_iron.direct.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.lamp_post_iron.polite.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.lamp_post_iron.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.lamp_post_iron.verbose.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.maze_hedge_small.casual.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.maze_hedge_small.direct.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.maze_hedge_small.polite.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.maze_hedge_small.typoed.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.maze_hedge_small.verbose.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.picnic_area.casual.037": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.picnic_area.direct.036": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.picnic_area.polite.038": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.picnic_area.typoed.039": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.picnic_area.verbose.040": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.statue_pillar.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.statue_pillar.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.statue_pillar.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.statue_pillar.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.statue_pillar.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.zen_garden.casual.032": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.zen_garden.direct.031": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.zen_garden.polite.033": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.zen_garden.typoed.034": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "decor.zen_garden.verbose.035": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.casual.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.casual.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.casual.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.casual.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.direct.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.direct.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.direct.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.direct.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.polite.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.polite.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.polite.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.polite.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.typoed.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.typoed.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.typoed.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "effect.haste.typoed.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.casual.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.casual.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.casual.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.casual.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.direct.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.direct.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.direct.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.direct.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.minimal.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.minimal.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.minimal.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.minimal.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.minimal.030": {
+      "ok": false,
+      "primary_failure": "tool_selection_miss",
+      "status": "done"
+    },
+    "fawe.sphere.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.polite.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.polite.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.polite.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.polite.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.typoed.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.typoed.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.typoed.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.typoed.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.verbose.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.verbose.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.verbose.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "fawe.sphere.verbose.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.apartment_block.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.apartment_block.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.apartment_block.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.apartment_block.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.apartment_block.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.beach_hut.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.beach_hut.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.beach_hut.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.beach_hut.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.beach_hut.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cabin_log.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cabin_log.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cabin_log.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cabin_log.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cabin_log.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cottage_medium.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cottage_medium.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cottage_medium.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cottage_medium.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.cottage_medium.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.desert_house_small.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.desert_house_small.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.desert_house_small.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.desert_house_small.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.desert_house_small.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.inn_small.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.inn_small.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.inn_small.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.inn_small.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.inn_small.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.modern_house_flat.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.modern_house_flat.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.modern_house_flat.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.modern_house_flat.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.modern_house_flat.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.tavern_small.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.tavern_small.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.tavern_small.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.tavern_small.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.tavern_small.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.townhouse_2story.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.townhouse_2story.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.townhouse_2story.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.townhouse_2story.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.townhouse_2story.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.treehouse_oak.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.treehouse_oak.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.treehouse_oak.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.treehouse_oak.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "house.treehouse_oak.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_dimension.casual.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_dimension.direct.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_dimension.polite.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_dimension.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_dimension.verbose.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_position.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_position.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_position.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_position.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.get_player_position.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.list_players.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.list_players.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.list_players.polite.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.list_players.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.list_players.verbose.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.preflight.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.preflight.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.preflight.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.preflight.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "info.preflight.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.bread.casual.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.bread.direct.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.bread.polite.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.bread.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.bread.verbose.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_pickaxe.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_pickaxe.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_pickaxe.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_pickaxe.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_pickaxe.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_sword.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_sword.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_sword.polite.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_sword.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.diamond_sword.verbose.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.iron_ingot.casual.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.iron_ingot.direct.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.iron_ingot.polite.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.iron_ingot.typoed.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.iron_ingot.verbose.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.oak_planks.casual.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.oak_planks.direct.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.oak_planks.polite.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.oak_planks.typoed.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.oak_planks.verbose.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.stone.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.stone.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.stone.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.stone.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "item.stone.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.casual.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.casual.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.casual.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.casual.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.direct.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.direct.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.direct.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.direct.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.minimal.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.minimal.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.minimal.018": {
+      "ok": false,
+      "primary_failure": "tool_selection_miss",
+      "status": "done"
+    },
+    "mining.shaft.minimal.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.minimal.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.polite.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.polite.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.polite.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.polite.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.typoed.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.typoed.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.typoed.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.typoed.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.verbose.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.verbose.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.verbose.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mining.shaft.verbose.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.polite.008": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "mob.chicken.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.chicken.verbose.010": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "mob.cow.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.cow.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.cow.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.cow.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.cow.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.horse.casual.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.horse.direct.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.horse.polite.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.horse.typoed.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.horse.verbose.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.pig.casual.017": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "mob.pig.direct.016": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "mob.pig.polite.018": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "mob.pig.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.pig.verbose.020": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "mob.rabbit.casual.032": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.rabbit.direct.031": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.rabbit.polite.033": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.rabbit.typoed.034": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.rabbit.verbose.035": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "mob.sheep.casual.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.sheep.direct.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.sheep.polite.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.sheep.typoed.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.sheep.verbose.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.villager.casual.037": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.villager.direct.036": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.villager.polite.038": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.villager.typoed.039": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "mob.villager.verbose.040": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.casual.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.direct.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.polite.008": {
+      "ok": false,
+      "primary_failure": "template_unresolved",
+      "status": "done"
+    },
+    "multi.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.polite.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.verbose.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "multi.verbose.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.bee_apiary_small.casual.047": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.bee_apiary_small.direct.046": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.bee_apiary_small.polite.048": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.bee_apiary_small.typoed.049": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.bee_apiary_small.verbose.050": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.chicken_coop_small.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.chicken_coop_small.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.chicken_coop_small.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.chicken_coop_small.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.chicken_coop_small.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.cow_barn_medium.casual.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.cow_barn_medium.direct.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.cow_barn_medium.polite.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.cow_barn_medium.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.cow_barn_medium.verbose.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.duck_pond_small.casual.032": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.duck_pond_small.direct.031": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.duck_pond_small.polite.033": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.duck_pond_small.typoed.034": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.duck_pond_small.verbose.035": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.goat_pen_small.casual.037": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.goat_pen_small.direct.036": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.goat_pen_small.polite.038": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.goat_pen_small.typoed.039": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.goat_pen_small.verbose.040": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.horse_stable_small.casual.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.horse_stable_small.direct.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.horse_stable_small.polite.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.horse_stable_small.typoed.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.horse_stable_small.verbose.025": {
+      "ok": false,
+      "primary_failure": "world_state_wrong",
+      "status": "done"
+    },
+    "pen.pig_pen_small.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.pig_pen_small.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.pig_pen_small.polite.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.pig_pen_small.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.pig_pen_small.verbose.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.rabbit_hutch_small.casual.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.rabbit_hutch_small.direct.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.rabbit_hutch_small.polite.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.rabbit_hutch_small.typoed.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.rabbit_hutch_small.verbose.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.sheep_pen_medium.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.sheep_pen_medium.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.sheep_pen_medium.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.sheep_pen_medium.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.sheep_pen_medium.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.turkey_pen_small.casual.042": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.turkey_pen_small.direct.041": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.turkey_pen_small.polite.043": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.turkey_pen_small.typoed.044": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "pen.turkey_pen_small.verbose.045": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.adversarial.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.bedrock.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.casual.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.direct.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.minimal.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.polite.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.typoed.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_hollow.verbose.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.adversarial.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.bedrock.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.casual.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.direct.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.minimal.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.polite.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.typoed.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.cylinder_solid.verbose.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.adversarial.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.bedrock.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.minimal.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.adversarial.040": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.bedrock.039": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.casual.034": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.direct.033": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.minimal.038": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.polite.035": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.typoed.036": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.platform_big.verbose.037": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.adversarial.032": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.bedrock.031": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.casual.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.direct.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.minimal.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.polite.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.typoed.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "shape.sphere.verbose.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.casual.002": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.casual.007": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.casual.012": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.direct.001": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.direct.006": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.direct.011": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.polite.003": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.polite.008": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.polite.013": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.typoed.004": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.typoed.009": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.typoed.014": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.verbose.005": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.verbose.010": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_time.verbose.015": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.casual.017": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.casual.022": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.casual.027": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.direct.016": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.direct.021": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.direct.026": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.polite.018": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.polite.023": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.polite.028": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.typoed.019": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.typoed.024": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.typoed.029": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.verbose.020": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.verbose.025": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    },
+    "world.set_weather.verbose.030": {
+      "ok": true,
+      "primary_failure": "pass",
+      "status": "done"
+    }
+  },
+  "merged_from": [
+    "20260529T003011Z",
+    "20260529T012158Z"
+  ],
+  "schema_version": 1,
+  "summary": {
+    "failed": 22,
+    "pass_rate": 0.9641,
+    "passed": 590,
+    "total": 612
+  }
+}

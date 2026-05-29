@@ -1,0 +1,4147 @@
+{
+  "version": 1,
+  "schematics_namespace": "neighborhood",
+  "templates": [
+    {
+      "id": "apartment_block",
+      "title": "Apartment",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "apartment building",
+        "apartment"
+      ],
+      "schematic": "apartment_block.schem",
+      "footprint": [
+        14,
+        12,
+        10
+      ],
+      "max_blocks": 1680,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 14,
+          "depth": 10,
+          "height": 12
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "archway_stone",
+      "title": "Stone archway",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure"
+      ],
+      "aliases": [
+        "archway",
+        "stone archway",
+        "arch",
+        "stone arch",
+        "entry arch"
+      ],
+      "schematic": "archway_stone.schem",
+      "footprint": [
+        5,
+        8,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 5,
+          "depth": 5,
+          "block": "oak_planks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "armory_small",
+      "title": "Armory",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "armory",
+        "weapons shop",
+        "small armory"
+      ],
+      "schematic": "armory_small.schem",
+      "footprint": [
+        9,
+        6,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 6,
+          "wall_block": "cobblestone"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bakery_small",
+      "title": "Bakery",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "bakery",
+        "bakery",
+        "bread shop",
+        "baker",
+        "small bakery"
+      ],
+      "schematic": "bakery_small.schem",
+      "footprint": [
+        8,
+        6,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 8,
+          "depth": 8,
+          "height": 6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "barn_red_large",
+      "title": "Red barn",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "farm",
+        "building"
+      ],
+      "aliases": [
+        "red barn",
+        "red barn"
+      ],
+      "schematic": "barn_red_large.schem",
+      "footprint": [
+        15,
+        8,
+        13
+      ],
+      "max_blocks": 1560,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 15,
+          "depth": 13,
+          "height": 8
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bastion_corner",
+      "title": "Bastion",
+      "category": "fortress",
+      "complexity": "complex",
+      "tags": [
+        "fortress",
+        "stone",
+        "defense"
+      ],
+      "aliases": [
+        "bastion",
+        "bastion",
+        "corner bastion",
+        "bastion tower"
+      ],
+      "schematic": "bastion_corner.schem",
+      "footprint": [
+        11,
+        8,
+        11
+      ],
+      "max_blocks": 968,
+      "distance_default": 5,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 11,
+          "height": 6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "beach_hut",
+      "title": "Beach hut",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "beach hut",
+        "beach hut"
+      ],
+      "schematic": "beach_hut.schem",
+      "footprint": [
+        7,
+        5,
+        7
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 7,
+          "depth": 7,
+          "height": 5
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bee_apiary_small",
+      "title": "Bee apiary",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "bee",
+        "farm",
+        "pen"
+      ],
+      "aliases": [
+        "bee apiary",
+        "apiary",
+        "bee farm",
+        "bee box"
+      ],
+      "schematic": "bee_apiary_small.schem",
+      "footprint": [
+        9,
+        4,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "bee",
+          "count": 3,
+          "with_roof": true
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bell_tower",
+      "title": "Bell tower",
+      "category": "fortress",
+      "complexity": "common",
+      "tags": [
+        "fortress",
+        "tower"
+      ],
+      "aliases": [
+        "bell tower",
+        "bell tower"
+      ],
+      "schematic": "bell_tower.schem",
+      "footprint": [
+        5,
+        20,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 7,
+          "height": 14
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bench_row",
+      "title": "Bench row",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "benches",
+        "bench",
+        "park bench",
+        "wooden bench"
+      ],
+      "schematic": "bench_row.schem",
+      "footprint": [
+        8,
+        2,
+        3
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 8,
+          "depth": 3,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "berry_farm_small",
+      "title": "Berry farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "berry farm"
+      ],
+      "schematic": "berry_farm_small.schem",
+      "footprint": [
+        11,
+        3,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "blacksmith_shop",
+      "title": "Blacksmith",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "village",
+        "shop",
+        "building"
+      ],
+      "aliases": [
+        "blacksmith",
+        "blacksmith"
+      ],
+      "schematic": "blacksmith_shop.schem",
+      "footprint": [
+        10,
+        7,
+        10
+      ],
+      "max_blocks": 700,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 10,
+          "depth": 10,
+          "height": 7,
+          "wall_block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "brewing_station",
+      "title": "Brewing station",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "brewing",
+        "potion station",
+        "potion lab",
+        "brewery"
+      ],
+      "schematic": "brewing_station.schem",
+      "footprint": [
+        9,
+        6,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 6,
+          "wall_block": "cobblestone"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bridge_oak_short",
+      "title": "Short oak bridge",
+      "category": "infrastructure",
+      "tags": [
+        "bridge",
+        "walkway",
+        "oak"
+      ],
+      "aliases": [
+        "bridge",
+        "wooden bridge",
+        "oak bridge",
+        "wood bridge",
+        "small bridge"
+      ],
+      "schematic": "bridge_oak_short.schem",
+      "footprint": [
+        24,
+        2,
+        4
+      ],
+      "max_blocks": 200,
+      "distance_default": 2,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 24,
+          "width": 3,
+          "block": "oak_planks"
+        }
+      },
+      "complexity": "basic",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bridge_rope",
+      "title": "Rope bridge",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "rope bridge"
+      ],
+      "schematic": "bridge_rope.schem",
+      "footprint": [
+        18,
+        3,
+        3
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 18,
+          "width": 3,
+          "block": "oak_planks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bridge_stone_long",
+      "title": "Stone bridge",
+      "category": "infrastructure",
+      "complexity": "common",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "stone bridge",
+        "long bridge"
+      ],
+      "schematic": "bridge_stone_long.schem",
+      "footprint": [
+        32,
+        3,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 32,
+          "width": 5,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "bridge_wood_suspension",
+      "title": "Wooden bridge",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "suspension bridge",
+        "long wooden bridge"
+      ],
+      "schematic": "bridge_wood_suspension.schem",
+      "footprint": [
+        24,
+        4,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 24,
+          "width": 5,
+          "block": "oak_planks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "cabin_log",
+      "title": "Log cabin",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "log cabin",
+        "log cabin",
+        "log house",
+        "wood cabin"
+      ],
+      "schematic": "cabin_log.schem",
+      "footprint": [
+        8,
+        6,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 8,
+          "depth": 8,
+          "height": 6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "cabin_stone",
+      "title": "Stone cabin",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "stone cabin",
+        "stone cabin",
+        "stone house"
+      ],
+      "schematic": "cabin_stone.schem",
+      "footprint": [
+        8,
+        6,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 8,
+          "depth": 8,
+          "height": 6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "campground",
+      "title": "Campground",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "campground",
+        "campground"
+      ],
+      "schematic": "campground.schem",
+      "footprint": [
+        13,
+        2,
+        13
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 13,
+          "depth": 13,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "carrot_farm_small",
+      "title": "Carrot farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "carrot farm"
+      ],
+      "schematic": "carrot_farm_small.schem",
+      "footprint": [
+        11,
+        3,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "castle_gate_large",
+      "title": "Castle gate",
+      "category": "fortress",
+      "complexity": "complex",
+      "tags": [
+        "fortress",
+        "tower"
+      ],
+      "aliases": [
+        "castle gate",
+        "castle gate"
+      ],
+      "schematic": "castle_gate_large.schem",
+      "footprint": [
+        11,
+        10,
+        7
+      ],
+      "max_blocks": 770,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 11,
+          "height": 8
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "castle_small_keep",
+      "title": "Small stone keep",
+      "category": "fortress",
+      "tags": [
+        "castle",
+        "fortress",
+        "keep",
+        "stone"
+      ],
+      "aliases": [
+        "castle",
+        "small castle",
+        "stone castle",
+        "stone fortress",
+        "fortress",
+        "keep",
+        "tower keep",
+        "small keep"
+      ],
+      "schematic": "castle_small_keep.schem",
+      "footprint": [
+        17,
+        12,
+        17
+      ],
+      "max_blocks": 8000,
+      "distance_default": 6,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 15,
+          "height": 6,
+          "tower_height": 10
+        }
+      },
+      "complexity": "complex",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "chicken_coop_large",
+      "title": "Large chicken coop",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "farm",
+        "pen",
+        "chicken"
+      ],
+      "aliases": [
+        "big chicken coop",
+        "large chicken coop"
+      ],
+      "schematic": "chicken_coop_large.schem",
+      "footprint": [
+        13,
+        5,
+        13
+      ],
+      "max_blocks": 845,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "chicken",
+          "count": 6,
+          "with_roof": true,
+          "width": 11,
+          "depth": 11
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "chicken_coop_small",
+      "title": "Small chicken coop",
+      "category": "farm",
+      "tags": [
+        "coop",
+        "chicken",
+        "farm",
+        "barn"
+      ],
+      "aliases": [
+        "chicken coop",
+        "hen house",
+        "chicken house",
+        "henhouse",
+        "chicken pen",
+        "chicken barn",
+        "small chicken pen",
+        "place for chickens",
+        "place for chickens to live",
+        "home for chickens"
+      ],
+      "schematic": "chicken_coop_small.schem",
+      "footprint": [
+        9,
+        6,
+        9
+      ],
+      "max_blocks": 1200,
+      "distance_default": 4,
+      "follow_up": [
+        {
+          "tool": "summon_entity",
+          "entity": "chicken",
+          "count": 4,
+          "offset_y": 1
+        }
+      ],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "chicken",
+          "count": 4,
+          "with_roof": true
+        }
+      },
+      "complexity": "basic",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "church_small",
+      "title": "Church",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "village",
+        "shop",
+        "building"
+      ],
+      "aliases": [
+        "church",
+        "church"
+      ],
+      "schematic": "church_small.schem",
+      "footprint": [
+        10,
+        7,
+        10
+      ],
+      "max_blocks": 700,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 10,
+          "depth": 10,
+          "height": 7,
+          "wall_block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "cottage_medium",
+      "title": "Medium cottage",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "medium cottage",
+        "medium cottage"
+      ],
+      "schematic": "cottage_medium.schem",
+      "footprint": [
+        9,
+        7,
+        9
+      ],
+      "max_blocks": 567,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "cow_barn_medium",
+      "title": "Cow barn",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "cow",
+        "farm",
+        "pen"
+      ],
+      "aliases": [
+        "cow barn",
+        "cow pen",
+        "cattle pen",
+        "cattle barn",
+        "barn",
+        "small barn",
+        "animal pen",
+        "farm pen",
+        "livestock pen"
+      ],
+      "schematic": "cow_barn_medium.schem",
+      "footprint": [
+        11,
+        5,
+        11
+      ],
+      "max_blocks": 605,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "cow",
+          "count": 4,
+          "with_roof": true
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "desert_house_small",
+      "title": "Desert house",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "desert house",
+        "desert house",
+        "sand house",
+        "sandstone house",
+        "desert hut"
+      ],
+      "schematic": "desert_house_small.schem",
+      "footprint": [
+        8,
+        5,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 8,
+          "depth": 8,
+          "height": 5
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "dock_small",
+      "title": "Dock",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure"
+      ],
+      "aliases": [
+        "dock",
+        "pier",
+        "wharf",
+        "small dock",
+        "boat dock"
+      ],
+      "schematic": "dock_small.schem",
+      "footprint": [
+        14,
+        3,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 14,
+          "depth": 8,
+          "block": "oak_planks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "duck_pond_small",
+      "title": "Duck pond",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "pen",
+        "duck"
+      ],
+      "aliases": [
+        "duck pond",
+        "duck pond"
+      ],
+      "schematic": "duck_pond_small.schem",
+      "footprint": [
+        9,
+        5,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "chicken",
+          "count": 4,
+          "width": 7,
+          "depth": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "enchanting_room",
+      "title": "Enchanting room",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "enchanting",
+        "enchanting table room",
+        "enchant room",
+        "enchantment room"
+      ],
+      "schematic": "enchanting_room.schem",
+      "footprint": [
+        9,
+        6,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 6,
+          "wall_block": "cobblestone"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "fishing_hut",
+      "title": "Fishing hut",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "fishing hut",
+        "fishing hut"
+      ],
+      "schematic": "fishing_hut.schem",
+      "footprint": [
+        11,
+        7,
+        11
+      ],
+      "max_blocks": 847,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 11,
+          "depth": 11,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "flag_pole",
+      "title": "Flag pole",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "flag pole",
+        "flagpole",
+        "banner pole"
+      ],
+      "schematic": "flag_pole.schem",
+      "footprint": [
+        2,
+        12,
+        2
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 2,
+          "depth": 2,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "fortress_medium",
+      "title": "Fortress",
+      "category": "fortress",
+      "complexity": "complex",
+      "tags": [
+        "fortress",
+        "stone",
+        "defense"
+      ],
+      "aliases": [
+        "medium fortress",
+        "big fortress",
+        "large fortress"
+      ],
+      "schematic": "fortress_medium.schem",
+      "footprint": [
+        19,
+        10,
+        19
+      ],
+      "max_blocks": 3610,
+      "distance_default": 5,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 19,
+          "height": 8
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "fountain_small",
+      "title": "Fountain",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "fountain",
+        "small fountain",
+        "water fountain",
+        "park fountain"
+      ],
+      "schematic": "fountain_small.schem",
+      "footprint": [
+        7,
+        5,
+        7
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_cylinder",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "radius": 3,
+          "height": 4,
+          "block": "stone_bricks",
+          "hollow": true
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "garden_plot",
+      "title": "Garden plot",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "garden plot",
+        "small garden",
+        "flower garden",
+        "garden bed"
+      ],
+      "schematic": "garden_plot.schem",
+      "footprint": [
+        9,
+        2,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "gatehouse",
+      "title": "Gatehouse",
+      "category": "fortress",
+      "complexity": "common",
+      "tags": [
+        "fortress",
+        "stone",
+        "defense"
+      ],
+      "aliases": [
+        "gatehouse",
+        "castle gate",
+        "main gate",
+        "entrance gate",
+        "medieval gate"
+      ],
+      "schematic": "gatehouse.schem",
+      "footprint": [
+        9,
+        8,
+        7
+      ],
+      "max_blocks": 504,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 9,
+          "height": 6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "gazebo_oak",
+      "title": "Gazebo",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "gazebo",
+        "pavilion",
+        "wood gazebo",
+        "garden gazebo",
+        "gazebo in the garden"
+      ],
+      "schematic": "gazebo_oak.schem",
+      "footprint": [
+        7,
+        6,
+        7
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_cylinder",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay+1}",
+          "center_z": "${az}",
+          "radius": 3,
+          "height": 4,
+          "block": "oak_planks",
+          "hollow": true
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "goat_pen_small",
+      "title": "Goat pen",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "pen",
+        "goat"
+      ],
+      "aliases": [
+        "goat pen",
+        "goat pen"
+      ],
+      "schematic": "goat_pen_small.schem",
+      "footprint": [
+        9,
+        5,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "goat",
+          "count": 3,
+          "width": 7,
+          "depth": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "graveyard_small",
+      "title": "Graveyard",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "graveyard",
+        "graveyard"
+      ],
+      "schematic": "graveyard_small.schem",
+      "footprint": [
+        15,
+        3,
+        15
+      ],
+      "max_blocks": 675,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 15,
+          "depth": 15,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "greenhouse_small",
+      "title": "Greenhouse",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "farm",
+        "building"
+      ],
+      "aliases": [
+        "greenhouse",
+        "greenhouse"
+      ],
+      "schematic": "greenhouse_small.schem",
+      "footprint": [
+        11,
+        6,
+        11
+      ],
+      "max_blocks": 726,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 11,
+          "depth": 11,
+          "height": 6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "guard_post",
+      "title": "Guard post",
+      "category": "fortress",
+      "complexity": "basic",
+      "tags": [
+        "fortress",
+        "stone",
+        "defense"
+      ],
+      "aliases": [
+        "guard post",
+        "guard post",
+        "sentry post",
+        "guard hut",
+        "watch post"
+      ],
+      "schematic": "guard_post.schem",
+      "footprint": [
+        7,
+        6,
+        7
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 7,
+          "height": 4
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "herb_garden",
+      "title": "Herb garden",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "herb garden",
+        "herb garden"
+      ],
+      "schematic": "herb_garden.schem",
+      "footprint": [
+        8,
+        2,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 8,
+          "depth": 8,
+          "block": "moss_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "horse_stable_small",
+      "title": "Horse stable",
+      "category": "farm",
+      "tags": [
+        "stable",
+        "horse",
+        "barn"
+      ],
+      "aliases": [
+        "horse stable",
+        "pony stable",
+        "horse pen",
+        "stable",
+        "stables"
+      ],
+      "schematic": "horse_stable_small.schem",
+      "footprint": [
+        13,
+        7,
+        11
+      ],
+      "max_blocks": 2500,
+      "distance_default": 5,
+      "follow_up": [
+        {
+          "tool": "summon_entity",
+          "entity": "horse",
+          "count": 2,
+          "offset_y": 1
+        }
+      ],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "horse",
+          "count": 2,
+          "with_roof": true,
+          "wall_height": 4
+        }
+      },
+      "complexity": "common",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "house_cottage_small",
+      "title": "Small cottage",
+      "category": "house",
+      "tags": [
+        "house",
+        "cabin",
+        "cottage",
+        "home"
+      ],
+      "aliases": [
+        "house",
+        "cottage",
+        "cabin",
+        "small house",
+        "tiny house",
+        "starter house"
+      ],
+      "schematic": "house_cottage_small.schem",
+      "footprint": [
+        9,
+        7,
+        9
+      ],
+      "max_blocks": 1500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 7
+        }
+      },
+      "complexity": "common",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "igloo_small",
+      "title": "Igloo",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "igloo",
+        "igloo"
+      ],
+      "schematic": "igloo_small.schem",
+      "footprint": [
+        8,
+        5,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 8,
+          "depth": 8,
+          "height": 5
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "inn_small",
+      "title": "Inn",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "inn",
+        "inn",
+        "small inn",
+        "lodge"
+      ],
+      "schematic": "inn_small.schem",
+      "footprint": [
+        11,
+        7,
+        11
+      ],
+      "max_blocks": 847,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 11,
+          "depth": 11,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "kelp_farm_small",
+      "title": "Kelp farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "kelp farm",
+        "kelp plot",
+        "underwater farm"
+      ],
+      "schematic": "kelp_farm_small.schem",
+      "footprint": [
+        13,
+        3,
+        13
+      ],
+      "max_blocks": 507,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "koi_pond",
+      "title": "Koi pond",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "koi pond",
+        "koi pond"
+      ],
+      "schematic": "koi_pond.schem",
+      "footprint": [
+        9,
+        3,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "lamp_post_iron",
+      "title": "Lamp post",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "lamp post",
+        "street light",
+        "lantern post"
+      ],
+      "schematic": "lamp_post_iron.schem",
+      "footprint": [
+        2,
+        5,
+        2
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 2,
+          "depth": 2,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "library_small",
+      "title": "Library",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "village",
+        "shop",
+        "building"
+      ],
+      "aliases": [
+        "library",
+        "library"
+      ],
+      "schematic": "library_small.schem",
+      "footprint": [
+        10,
+        7,
+        10
+      ],
+      "max_blocks": 700,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 10,
+          "depth": 10,
+          "height": 7,
+          "wall_block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "lighthouse_short",
+      "title": "Lighthouse",
+      "category": "fortress",
+      "complexity": "common",
+      "tags": [
+        "fortress",
+        "stone",
+        "defense"
+      ],
+      "aliases": [
+        "lighthouse",
+        "lighthouse",
+        "small lighthouse",
+        "beacon tower"
+      ],
+      "schematic": "lighthouse_short.schem",
+      "footprint": [
+        6,
+        14,
+        6
+      ],
+      "max_blocks": 504,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 7,
+          "height": 12
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "market_stall",
+      "title": "Market stall",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "village",
+        "shop",
+        "building"
+      ],
+      "aliases": [
+        "market stall",
+        "market stall"
+      ],
+      "schematic": "market_stall.schem",
+      "footprint": [
+        10,
+        7,
+        10
+      ],
+      "max_blocks": 700,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 10,
+          "depth": 10,
+          "height": 7,
+          "wall_block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "maze_hedge_small",
+      "title": "Hedge maze",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "hedge maze",
+        "hedge maze"
+      ],
+      "schematic": "maze_hedge_small.schem",
+      "footprint": [
+        17,
+        4,
+        17
+      ],
+      "max_blocks": 1156,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 17,
+          "depth": 17,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "melon_farm_small",
+      "title": "Melon farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "melon farm",
+        "melon plot",
+        "watermelon farm"
+      ],
+      "schematic": "melon_farm_small.schem",
+      "footprint": [
+        13,
+        3,
+        13
+      ],
+      "max_blocks": 507,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "mill_water",
+      "title": "Water mill",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "water mill",
+        "water mill"
+      ],
+      "schematic": "mill_water.schem",
+      "footprint": [
+        11,
+        7,
+        11
+      ],
+      "max_blocks": 847,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 11,
+          "depth": 11,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "moat_bridge",
+      "title": "Moat bridge",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "moat bridge"
+      ],
+      "schematic": "moat_bridge.schem",
+      "footprint": [
+        12,
+        2,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 12,
+          "width": 5,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "modern_house_flat",
+      "title": "Modern house",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "modern house",
+        "modern house"
+      ],
+      "schematic": "modern_house_flat.schem",
+      "footprint": [
+        12,
+        6,
+        10
+      ],
+      "max_blocks": 720,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 12,
+          "depth": 10,
+          "height": 6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "mushroom_farm_dark",
+      "title": "Mushroom farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "mushroom farm",
+        "mushroom plot",
+        "shroom farm"
+      ],
+      "schematic": "mushroom_farm_dark.schem",
+      "footprint": [
+        13,
+        3,
+        13
+      ],
+      "max_blocks": 507,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "mushroom_house",
+      "title": "Mushroom house",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "mushroom house",
+        "mushroom house"
+      ],
+      "schematic": "mushroom_house.schem",
+      "footprint": [
+        8,
+        7,
+        8
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 8,
+          "depth": 8,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "observatory_small",
+      "title": "Observatory",
+      "category": "fortress",
+      "complexity": "common",
+      "tags": [
+        "fortress",
+        "tower"
+      ],
+      "aliases": [
+        "observatory",
+        "observatory"
+      ],
+      "schematic": "observatory_small.schem",
+      "footprint": [
+        9,
+        12,
+        9
+      ],
+      "max_blocks": 972,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 9,
+          "height": 10
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "picnic_area",
+      "title": "Picnic area",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "picnic area",
+        "picnic area"
+      ],
+      "schematic": "picnic_area.schem",
+      "footprint": [
+        9,
+        2,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "pier_long",
+      "title": "Long pier",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "pier"
+      ],
+      "schematic": "pier_long.schem",
+      "footprint": [
+        20,
+        4,
+        6
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 20,
+          "width": 6,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "pig_pen_large",
+      "title": "Large pig pen",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "farm",
+        "pen",
+        "pig"
+      ],
+      "aliases": [
+        "big pig pen",
+        "large pig pen"
+      ],
+      "schematic": "pig_pen_large.schem",
+      "footprint": [
+        13,
+        5,
+        13
+      ],
+      "max_blocks": 845,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "pig",
+          "count": 5,
+          "with_roof": false,
+          "width": 11,
+          "depth": 11
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "pig_pen_small",
+      "title": "Small pig pen",
+      "category": "farm",
+      "tags": [
+        "pig",
+        "farm",
+        "corral"
+      ],
+      "aliases": [
+        "pig pen",
+        "pig sty",
+        "hog pen",
+        "pigpen",
+        "small pig pen"
+      ],
+      "schematic": "pig_pen_small.schem",
+      "footprint": [
+        11,
+        4,
+        11
+      ],
+      "max_blocks": 900,
+      "distance_default": 4,
+      "follow_up": [
+        {
+          "tool": "summon_entity",
+          "entity": "pig",
+          "count": 4,
+          "offset_y": 1
+        }
+      ],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "pig",
+          "count": 4,
+          "with_roof": false
+        }
+      },
+      "complexity": "basic",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "playground_small",
+      "title": "Playground",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "playground",
+        "playground"
+      ],
+      "schematic": "playground_small.schem",
+      "footprint": [
+        11,
+        4,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "plaza_stone",
+      "title": "Stone plaza",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "plaza",
+        "square",
+        "courtyard",
+        "town plaza"
+      ],
+      "schematic": "plaza_stone.schem",
+      "footprint": [
+        11,
+        1,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "pond_small",
+      "title": "Pond",
+      "category": "nature_terrain",
+      "complexity": "basic",
+      "tags": [
+        "nature",
+        "terrain"
+      ],
+      "aliases": [
+        "pond",
+        "small pond",
+        "water pond",
+        "fish pond"
+      ],
+      "schematic": "pond_small.schem",
+      "footprint": [
+        9,
+        4,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_cylinder",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "radius": 4,
+          "height": 2,
+          "block": "water",
+          "hollow": true
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "potato_farm_small",
+      "title": "Potato farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "potato farm"
+      ],
+      "schematic": "potato_farm_small.schem",
+      "footprint": [
+        11,
+        3,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "pumpkin_farm_small",
+      "title": "Pumpkin farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "pumpkin farm",
+        "pumpkin patch",
+        "pumpkin field"
+      ],
+      "schematic": "pumpkin_farm_small.schem",
+      "footprint": [
+        11,
+        3,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "rabbit_hutch_small",
+      "title": "Rabbit hutch",
+      "category": "farm",
+      "tags": [
+        "hutch",
+        "rabbit",
+        "bunny"
+      ],
+      "aliases": [
+        "rabbit hutch",
+        "bunny hutch",
+        "bunny pen",
+        "rabbit pen",
+        "bunny cage"
+      ],
+      "schematic": "rabbit_hutch_small.schem",
+      "footprint": [
+        7,
+        5,
+        7
+      ],
+      "max_blocks": 800,
+      "distance_default": 3,
+      "follow_up": [
+        {
+          "tool": "summon_entity",
+          "entity": "rabbit",
+          "count": 3,
+          "offset_y": 1
+        }
+      ],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "rabbit",
+          "count": 3,
+          "with_roof": true
+        }
+      },
+      "complexity": "basic",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "rail_segment",
+      "title": "Rail segment",
+      "category": "infrastructure",
+      "complexity": "common",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "rail",
+        "railway",
+        "rail track",
+        "track"
+      ],
+      "schematic": "rail_segment.schem",
+      "footprint": [
+        24,
+        2,
+        3
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 24,
+          "width": 3,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "road_segment",
+      "title": "Road segment",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "road",
+        "path",
+        "stone road"
+      ],
+      "schematic": "road_segment.schem",
+      "footprint": [
+        16,
+        1,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_bridge_at_player",
+        "args": {
+          "length": 16,
+          "width": 5,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "rock_arch",
+      "title": "Rock arch",
+      "category": "nature_terrain",
+      "complexity": "basic",
+      "tags": [
+        "nature",
+        "terrain"
+      ],
+      "aliases": [
+        "rock arch",
+        "natural arch",
+        "stone rock arch",
+        "boulder arch"
+      ],
+      "schematic": "rock_arch.schem",
+      "footprint": [
+        9,
+        4,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_cylinder",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "radius": 4,
+          "height": 2,
+          "block": "water",
+          "hollow": true
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "sheep_pen_medium",
+      "title": "Sheep pen",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "sheep",
+        "farm",
+        "pen"
+      ],
+      "aliases": [
+        "sheep pen",
+        "sheep enclosure",
+        "ram pen",
+        "small sheep pen",
+        "sheep field"
+      ],
+      "schematic": "sheep_pen_medium.schem",
+      "footprint": [
+        11,
+        5,
+        11
+      ],
+      "max_blocks": 605,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "sheep",
+          "count": 4,
+          "with_roof": false
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "shrine_small",
+      "title": "Shrine",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "shrine",
+        "shrine"
+      ],
+      "schematic": "shrine_small.schem",
+      "footprint": [
+        7,
+        6,
+        7
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 7,
+          "depth": 7,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "silo_grain",
+      "title": "Grain silo",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "farm",
+        "building"
+      ],
+      "aliases": [
+        "silo",
+        "grain silo"
+      ],
+      "schematic": "silo_grain.schem",
+      "footprint": [
+        7,
+        14,
+        7
+      ],
+      "max_blocks": 686,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 7,
+          "depth": 7,
+          "height": 14
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "smelter_array",
+      "title": "Smelter array",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "smelter",
+        "smelter row",
+        "furnace array",
+        "smelting station"
+      ],
+      "schematic": "smelter_array.schem",
+      "footprint": [
+        9,
+        6,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 6,
+          "wall_block": "cobblestone"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "stable_large",
+      "title": "Large stable",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "big horse stable",
+        "large stable"
+      ],
+      "schematic": "stable_large.schem",
+      "footprint": [
+        11,
+        7,
+        11
+      ],
+      "max_blocks": 847,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 11,
+          "depth": 11,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "statue_pillar",
+      "title": "Statue pillar",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "statue",
+        "monument",
+        "pillar statue"
+      ],
+      "schematic": "statue_pillar.schem",
+      "footprint": [
+        3,
+        8,
+        3
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 3,
+          "depth": 3,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "storage_shed",
+      "title": "Storage shed",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "storage shed",
+        "small shed",
+        "shed",
+        "storage hut",
+        "tool shed"
+      ],
+      "schematic": "storage_shed.schem",
+      "footprint": [
+        9,
+        6,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 6,
+          "wall_block": "cobblestone"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "sugarcane_farm_small",
+      "title": "Sugarcane farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "sugar cane farm",
+        "sugar farm",
+        "cane farm",
+        "reed farm"
+      ],
+      "schematic": "sugarcane_farm_small.schem",
+      "footprint": [
+        13,
+        3,
+        13
+      ],
+      "max_blocks": 507,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "tavern_small",
+      "title": "Tavern",
+      "category": "house",
+      "complexity": "basic",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "tavern",
+        "tavern",
+        "pub",
+        "alehouse",
+        "small tavern"
+      ],
+      "schematic": "tavern_small.schem",
+      "footprint": [
+        12,
+        7,
+        10
+      ],
+      "max_blocks": 840,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 12,
+          "depth": 10,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "tent_camp",
+      "title": "Tent camp",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "tent camp",
+        "tent camp"
+      ],
+      "schematic": "tent_camp.schem",
+      "footprint": [
+        11,
+        4,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "grass_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "townhouse_2story",
+      "title": "Townhouse",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "townhouse",
+        "townhouse",
+        "two story house",
+        "2 story house",
+        "tall house",
+        "row house",
+        "townhome"
+      ],
+      "schematic": "townhouse_2story.schem",
+      "footprint": [
+        10,
+        8,
+        10
+      ],
+      "max_blocks": 800,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 10,
+          "depth": 10,
+          "height": 8
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "tree_dark_oak",
+      "title": "Dark oak tree",
+      "category": "nature_terrain",
+      "complexity": "basic",
+      "tags": [
+        "tree",
+        "nature"
+      ],
+      "aliases": [
+        "dark oak tree",
+        "dark oak",
+        "jungle tree"
+      ],
+      "schematic": "tree_dark_oak.schem",
+      "footprint": [
+        5,
+        12,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "generate_forest_at_player",
+        "args": {
+          "size": 4,
+          "tree_type": "tree",
+          "density": 0.6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "tree_oak_large",
+      "title": "Large oak tree",
+      "category": "nature_terrain",
+      "complexity": "basic",
+      "tags": [
+        "tree",
+        "nature"
+      ],
+      "aliases": [
+        "big oak tree",
+        "oak tree",
+        "big oak",
+        "large oak",
+        "huge tree",
+        "big tree"
+      ],
+      "schematic": "tree_oak_large.schem",
+      "footprint": [
+        5,
+        12,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "generate_forest_at_player",
+        "args": {
+          "size": 4,
+          "tree_type": "tree",
+          "density": 0.6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "tree_spruce_pine",
+      "title": "Spruce pine",
+      "category": "nature_terrain",
+      "complexity": "basic",
+      "tags": [
+        "tree",
+        "nature"
+      ],
+      "aliases": [
+        "spruce tree",
+        "pine tree",
+        "pine",
+        "spruce",
+        "evergreen"
+      ],
+      "schematic": "tree_spruce_pine.schem",
+      "footprint": [
+        5,
+        12,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "generate_forest_at_player",
+        "args": {
+          "size": 4,
+          "tree_type": "tree",
+          "density": 0.6
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "treehouse_oak",
+      "title": "Treehouse",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "house",
+        "building"
+      ],
+      "aliases": [
+        "treehouse",
+        "treehouse"
+      ],
+      "schematic": "treehouse_oak.schem",
+      "footprint": [
+        9,
+        10,
+        9
+      ],
+      "max_blocks": 810,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 10
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "turkey_pen_small",
+      "title": "Turkey pen",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "pen",
+        "chicken"
+      ],
+      "aliases": [
+        "turkey pen",
+        "turkey pen"
+      ],
+      "schematic": "turkey_pen_small.schem",
+      "footprint": [
+        9,
+        5,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_animal_pen_at_player",
+        "args": {
+          "animal": "chicken",
+          "count": 4,
+          "width": 7,
+          "depth": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "wall_segment_stone",
+      "title": "Wall segment",
+      "category": "fortress",
+      "complexity": "basic",
+      "tags": [
+        "fortress",
+        "stone",
+        "defense"
+      ],
+      "aliases": [
+        "castle wall",
+        "wall segment",
+        "wall",
+        "stone wall",
+        "perimeter wall",
+        "small wall"
+      ],
+      "schematic": "wall_segment_stone.schem",
+      "footprint": [
+        16,
+        6,
+        4
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 16,
+          "height": 4
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "warehouse_small",
+      "title": "Warehouse",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "warehouse",
+        "warehouse"
+      ],
+      "schematic": "warehouse_small.schem",
+      "footprint": [
+        11,
+        7,
+        11
+      ],
+      "max_blocks": 847,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 11,
+          "depth": 11,
+          "height": 7
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "watchtower_tall",
+      "title": "Watchtower",
+      "category": "fortress",
+      "complexity": "common",
+      "tags": [
+        "fortress",
+        "stone",
+        "defense"
+      ],
+      "aliases": [
+        "watchtower",
+        "watchtower",
+        "tower",
+        "guard tower",
+        "lookout tower",
+        "tall tower"
+      ],
+      "schematic": "watchtower_tall.schem",
+      "footprint": [
+        5,
+        18,
+        5
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 7,
+          "height": 12
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "well_village",
+      "title": "Village well",
+      "category": "decoration",
+      "tags": [
+        "well",
+        "village",
+        "decoration"
+      ],
+      "aliases": [
+        "well",
+        "water well",
+        "town well",
+        "stone well"
+      ],
+      "schematic": "well_village.schem",
+      "footprint": [
+        5,
+        6,
+        5
+      ],
+      "max_blocks": 400,
+      "distance_default": 3,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_cylinder",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "radius": 2,
+          "height": 4,
+          "block": "cobblestone",
+          "hollow": true
+        }
+      },
+      "complexity": "basic",
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "wheat_farm_small",
+      "title": "Wheat farm",
+      "category": "farm",
+      "complexity": "basic",
+      "tags": [
+        "farm",
+        "farm",
+        "crop"
+      ],
+      "aliases": [
+        "wheat farm",
+        "wheat plot",
+        "grain farm",
+        "wheat field",
+        "field of wheat"
+      ],
+      "schematic": "wheat_farm_small.schem",
+      "footprint": [
+        13,
+        3,
+        13
+      ],
+      "max_blocks": 507,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "farmland"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "windmill_small",
+      "title": "Windmill",
+      "category": "farm",
+      "complexity": "common",
+      "tags": [
+        "farm",
+        "building"
+      ],
+      "aliases": [
+        "windmill",
+        "windmill"
+      ],
+      "schematic": "windmill_small.schem",
+      "footprint": [
+        9,
+        12,
+        9
+      ],
+      "max_blocks": 972,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 12
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "wizard_tower",
+      "title": "Wizard tower",
+      "category": "fortress",
+      "complexity": "complex",
+      "tags": [
+        "fortress",
+        "tower"
+      ],
+      "aliases": [
+        "wizard tower",
+        "wizard tower"
+      ],
+      "schematic": "wizard_tower.schem",
+      "footprint": [
+        7,
+        16,
+        7
+      ],
+      "max_blocks": 784,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_castle_at_player",
+        "args": {
+          "size": 7,
+          "height": 14
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "wooden_palisade",
+      "title": "Wooden palisade",
+      "category": "infrastructure",
+      "complexity": "basic",
+      "tags": [
+        "infrastructure",
+        "path"
+      ],
+      "aliases": [
+        "palisade wall"
+      ],
+      "schematic": "wooden_palisade.schem",
+      "footprint": [
+        14,
+        5,
+        3
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 14,
+          "depth": 3,
+          "block": "oak_fence"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "workshop_small",
+      "title": "Workshop",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "utility",
+        "workshop"
+      ],
+      "aliases": [
+        "workshop",
+        "small workshop",
+        "crafting hut",
+        "craft shop"
+      ],
+      "schematic": "workshop_small.schem",
+      "footprint": [
+        9,
+        6,
+        9
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 9,
+          "depth": 9,
+          "height": 6,
+          "wall_block": "cobblestone"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    },
+    {
+      "id": "zen_garden",
+      "title": "Zen garden",
+      "category": "decoration",
+      "complexity": "basic",
+      "tags": [
+        "decoration",
+        "village"
+      ],
+      "aliases": [
+        "zen garden",
+        "zen garden"
+      ],
+      "schematic": "zen_garden.schem",
+      "footprint": [
+        11,
+        2,
+        11
+      ],
+      "max_blocks": 500,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 11,
+          "depth": 11,
+          "block": "moss_block"
+        }
+      },
+      "source_id": "neighborhood_internal",
+      "source_url": "https://github.com/neighborhood-server/templates",
+      "source_ref": "gold-v1",
+      "license": "CC-BY-4.0",
+      "author": "neighborhood",
+      "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
+      "deterministic_seed_version": "1"
+    }
+  ]
+}

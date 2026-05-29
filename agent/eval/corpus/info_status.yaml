@@ -1,0 +1,205 @@
+cases:
+- id: info.preflight.direct.001
+  category: info
+  intent: preflight
+  language_style: direct
+  prompt: Run a preflight check
+  expect:
+    tool_any:
+    - name: preflight
+    world_probe: &id001
+      kind: none
+  tags: []
+- id: info.preflight.casual.002
+  category: info
+  intent: preflight
+  language_style: casual
+  prompt: yo run a preflight check
+  expect:
+    tool_any:
+    - name: preflight
+    world_probe: *id001
+  tags: []
+- id: info.preflight.polite.003
+  category: info
+  intent: preflight
+  language_style: polite
+  prompt: Could you please run a preflight check
+  expect:
+    tool_any:
+    - name: preflight
+    world_probe: *id001
+  tags: []
+- id: info.preflight.typoed.004
+  category: info
+  intent: preflight
+  language_style: typoed
+  prompt: Run a preflight check
+  expect:
+    tool_any:
+    - name: preflight
+    world_probe: *id001
+  tags: []
+- id: info.preflight.verbose.005
+  category: info
+  intent: preflight
+  language_style: verbose
+  prompt: I would really like it if you could run a preflight check
+  expect:
+    tool_any:
+    - name: preflight
+    world_probe: *id001
+  tags: []
+- id: info.list_players.direct.006
+  category: info
+  intent: list_players
+  language_style: direct
+  prompt: Who is online?
+  expect:
+    tool_any:
+    - name: list_players
+    world_probe: &id002
+      kind: none
+  tags: []
+- id: info.list_players.casual.007
+  category: info
+  intent: list_players
+  language_style: casual
+  prompt: yo who is online?
+  expect:
+    tool_any:
+    - name: list_players
+    world_probe: *id002
+  tags: []
+- id: info.list_players.polite.008
+  category: info
+  intent: list_players
+  language_style: polite
+  prompt: Could you please who is online?
+  expect:
+    tool_any:
+    - name: list_players
+    world_probe: *id002
+  tags: []
+- id: info.list_players.typoed.009
+  category: info
+  intent: list_players
+  language_style: typoed
+  prompt: Who is online?
+  expect:
+    tool_any:
+    - name: list_players
+    world_probe: *id002
+  tags: []
+- id: info.list_players.verbose.010
+  category: info
+  intent: list_players
+  language_style: verbose
+  prompt: I would really like it if you could who is online?
+  expect:
+    tool_any:
+    - name: list_players
+    world_probe: *id002
+  tags: []
+- id: info.get_player_position.direct.011
+  category: info
+  intent: get_player_position
+  language_style: direct
+  prompt: Where am I?
+  expect:
+    tool_any:
+    - name: get_player_position
+    world_probe: &id003
+      kind: none
+  tags: []
+- id: info.get_player_position.casual.012
+  category: info
+  intent: get_player_position
+  language_style: casual
+  prompt: yo where am i?
+  expect:
+    tool_any:
+    - name: get_player_position
+    world_probe: *id003
+  tags: []
+- id: info.get_player_position.polite.013
+  category: info
+  intent: get_player_position
+  language_style: polite
+  prompt: Could you please where am I?
+  expect:
+    tool_any:
+    - name: get_player_position
+    world_probe: *id003
+  tags: []
+- id: info.get_player_position.typoed.014
+  category: info
+  intent: get_player_position
+  language_style: typoed
+  prompt: Where am I?
+  expect:
+    tool_any:
+    - name: get_player_position
+    world_probe: *id003
+  tags: []
+- id: info.get_player_position.verbose.015
+  category: info
+  intent: get_player_position
+  language_style: verbose
+  prompt: I would really like it if you could where am I?
+  expect:
+    tool_any:
+    - name: get_player_position
+    world_probe: *id003
+  tags: []
+- id: info.get_player_dimension.direct.016
+  category: info
+  intent: get_player_dimension
+  language_style: direct
+  prompt: What dimension am I in?
+  expect:
+    tool_any:
+    - name: get_player_dimension
+    world_probe: &id004
+      kind: none
+  tags: []
+- id: info.get_player_dimension.casual.017
+  category: info
+  intent: get_player_dimension
+  language_style: casual
+  prompt: yo what dimension am i in?
+  expect:
+    tool_any:
+    - name: get_player_dimension
+    world_probe: *id004
+  tags: []
+- id: info.get_player_dimension.polite.018
+  category: info
+  intent: get_player_dimension
+  language_style: polite
+  prompt: Could you please what dimension am I in?
+  expect:
+    tool_any:
+    - name: get_player_dimension
+    world_probe: *id004
+  tags: []
+- id: info.get_player_dimension.typoed.019
+  category: info
+  intent: get_player_dimension
+  language_style: typoed
+  prompt: What dimension am I in?
+  expect:
+    tool_any:
+    - name: get_player_dimension
+    world_probe: *id004
+  tags: []
+- id: info.get_player_dimension.verbose.020
+  category: info
+  intent: get_player_dimension
+  language_style: verbose
+  prompt: I would really like it if you could what dimension am I in?
+  expect:
+    tool_any:
+    - name: get_player_dimension
+    world_probe: *id004
+  tags: []

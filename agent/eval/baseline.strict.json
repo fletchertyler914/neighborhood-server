@@ -1,0 +1,126 @@
+{
+  "cases": {
+    "build.hollow_fort_spec": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "build.house_door_windows": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "build.platform_basic": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "player.query_dimension": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "player.query_position": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.bridge_uses_bridge_tool": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.castle_parametric_when_sized": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.castle_uses_template": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.chicken_coop_uses_template": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.drill_front_stays_in_front": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.drill_picks_mine_shaft": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.fawe_player_dispatch": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.fort_in_front_uses_at_player": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.give_item_diamond_pickaxe": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.pig_pen_uses_template": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "routing.spawn_chickens_uses_summon_entity": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "smoke.no_destructive_without_confirm": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "smoke.preflight.required": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    },
+    "world_settings.daylight_sunny": {
+      "ok": true,
+      "status": "done",
+      "steps": 2,
+      "trace_hash": null
+    }
+  },
+  "provenance": {
+    "generated": "magic-pass",
+    "model": "ollama:qwen2.5:7b-instruct",
+    "note": "All 19 spec cases pass against the default local model after the shape-word router and must_call_any expectation primitive landed. Verified stable over 3 consecutive runs."
+  },
+  "schema_version": 1,
+  "tools_schema_version": 1,
+  "tools_version": "2.8.0"
+}

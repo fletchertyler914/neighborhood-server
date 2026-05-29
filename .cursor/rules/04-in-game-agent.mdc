@@ -1,0 +1,111 @@
+---
+description: In-game /agent command, orchestrator, and local/cloud model routing
+alwaysApply: true
+---
+
+# In-Game `/agent` Command
+
+Players with `neighborhood.agent` (default: OP) run:
+
+```text
+/agent <prompt>
+/agent confirm <token> <prompt>
+```
+
+## Architecture
+
+1. **Paper plugin** `NeighborhoodAgent` in `mc-lan` POSTs to the orchestrator.
+2. **Orchestrator** Compose service `mc-agent` (private network, no host port).
+   Source: `agent/orchestrator/app.py`. Entrypoint: `python -m agent.orchestrator`.
+3. **Models**:
+   - Local Ollama first (default `qwen2.5:7b-instruct`); bounded
+     `qwen3:8b` fallback.
+   - Cloud fallback when `OPENAI_API_KEY` is set
+     (`CLOUD_BASE_URL` / `CLOUD_MODEL`).
+   - Ollama may be on the host (`OLLAMA_BASE_URL=http://host.docker.internal:11434`)
+     or bundled (`OLLAMA_BASE_URL=http://ollama:11434` + `COMPOSE_PROFILES=ollama`
+     in `.env`). `make bootstrap` writes both for you.
+4. **Tools**: same `agent/tools/` package + `agent/tool_registry.py` as the
+   Cursor MCP — never duplicate logic in Java.
+5. **Smart context** (per request): `agent/context.py` injects online players,
+   time of day, player facing, and recent agent actions; `agent/retrieval.py`
+   pulls relevant chunks from `agent/knowledge/{blocks,fawe,patterns}.md`.
+6. **Thinking-mode models** (qwen3, deepseek-r1, qwq) get `/no_think`,
+   `think: false`, and short local timeouts — required for valid tool-call JSON.
+7. **Prompt-mode tool fallback**: families that don't support Ollama's native
+   `tools` API (e.g. `deepseek-r1`) get tool schemas inlined in the system
+   prompt and return JSON we parse with `_extract_prompt_tool_call`. They also
+   get a longer timeout floor — see `_NO_NATIVE_TOOLS_FAMILIES` in
+   `agent/orchestrator/app.py`.
+
+## Player feedback (good / bad)
+
+- After any tool-running job, the orchestrator appends
+  `· Rate: /agent good or /agent bad <why>` to the chat reply so the
+  player can grade it.
+- `/agent good`, `/agent good job`, `/agent nice` mark the previous
+  job good. `/agent bad <reason>` records a rejection with the reason.
+- The orchestrator intercepts these prompts BEFORE the LLM ever sees
+  them (see `agent/feedback.py`) and writes to
+  `data/agent-feedback.jsonl`. Each row has `job_id` linking back to
+  the original audit log entry.
+- Build a training corpus with
+  `python -m agent.training feedback --sft-out <path> --dpo-out <path>`,
+  or `make feedback-export` / `make training-data`.
+  SFT is built from "good" jobs; DPO needs both a good and bad rating
+  on the same prompt text. Use `--report` for stats.
+- Toggle the chat hint with `AGENT_ASK_FEEDBACK=0` in compose if it
+  ever gets too noisy.
+
+## Hybrid template ranker (small-model first)
+
+`paste_template_at_player` accepts free-text in `template_id` (e.g.
+`"a place for chickens to live"`); it routes through
+`agent/templates/ranking.py` (lexical + local-CPU semantic + policy
+reranker → confidence gate). See `docs/TEMPLATE_RANKING.md`. Don't
+prompt-engineer the LLM to memorize snake_case ids — let the ranker
+resolve. `search_templates` exposes the same scoring without building.
+
+## When helping with `/agent`
+
+- Start/rebuild with `docker compose up -d --build mc-agent` (or `make up`).
+  Bumping `TOOLS_VERSION` requires this rebuild to take effect.
+- If player sees "Agent offline", check `docker compose ps mc-agent`,
+  `make health`, and `docker compose logs mc-agent`.
+- If the plugin reports "Agent misconfigured: set AGENT_API_TOKEN" the
+  Compose stack started without a token. Add it to `.env` and rebuild.
+- Keep `data/plugins/NeighborhoodAgent/config.yml` as
+  `orchestrator-url: http://mc-agent:8787` and `api-token: env:AGENT_API_TOKEN`.
+- Bedrock names use leading `.` in all tool `player` args.
+- Destructive ops require `/agent confirm <token> ...` — do not bypass.
+- Prefer `fawe_*` and `build_*` tools over raw `run_command`.
+- For regen/large clears: `backup_now` first, then act.
+- When extending Minecraft knowledge, edit `agent/knowledge/*.md` — the
+  retrieval index reloads on orchestrator restart.
+- End-to-end smoke (catalog + mobs + ranker): `python3 scripts/full_validation.py`
+  or `make full-validation`.
+- NL prompt smoke through the real `/v1/jobs` endpoint: `make smoke` or
+  see the helper pattern in `docs/TEMPLATE_RANKING.md`.
+
+## Recommended models (Ollama)
+
+| Model | RAM | Notes |
+| --- | --- | --- |
+| `qwen2.5:7b-instruct` (default) | ~5 GB | Reliable fast path on this host |
+| `qwen3:8b` (fallback) | ~5 GB | Smarter in theory, but bounded by timeout |
+| `llama3.1:8b` | ~5.5 GB | Solid baseline, no thinking-mode quirks |
+| `qwen3:14b` / `qwen2.5:14b` | ~9 GB | Better multi-tool reasoning |
+| Avoid | — | MoE / elastic models — fragment multi-step tool chains |
+
+## Host commands
+
+```bash
+make up                                # start the stack (Ollama via profile or host)
+make plugin                            # build + install the Paper plugin JAR
+make health                            # GET /health from mc-agent
+make logs                              # tail mc-agent + mc-lan
+make smoke                             # 26 NL prompts → live LLM → /v1/jobs
+docker compose up -d --build mc-agent  # rebuild orchestrator only
+```
+
+Do not publish `mc-agent` ports. It should stay private on the Compose network.
