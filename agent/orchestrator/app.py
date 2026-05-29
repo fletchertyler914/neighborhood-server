@@ -826,6 +826,115 @@ def _ground_parametric_shape_to_player(
     return new_args
 
 
+_TEMPLATE_ID_ALIASES = {
+    "field_of_sugarcane": "sugarcane_farm_small",
+    "sugarcane_field": "sugarcane_farm_small",
+    "field_of_sweet_berries": "berry_farm_small",
+    "field_of_sweet_berry": "berry_farm_small",
+    "sweet_berries_field": "berry_farm_small",
+    "sweet_berry_field": "berry_farm_small",
+    "duck_pond": "duck_pond_small",
+}
+
+
+def _looks_like_mob_spawn_prompt(prompt: str) -> bool:
+    animal_hit = _infer_animal_from_prompt(prompt)
+    if not animal_hit:
+        return False
+    if _looks_like_animal_pen_prompt(prompt):
+        return False
+    return any(
+        kw in prompt
+        for kw in (
+            "spawn",
+            "summon",
+            "give me a few",
+            "give me some",
+            "gimme a few",
+            "gimme some",
+        )
+    )
+
+
+def _should_use_animal_template(prompt: str, template_id: str | None) -> bool:
+    if not template_id:
+        return False
+    if template_id == "horse_stable_small":
+        return "stable" in prompt
+    return template_id in {
+        "chicken_coop_small",
+        "pig_pen_small",
+        "pig_pen_large",
+        "sheep_pen_medium",
+        "cow_barn_medium",
+        "rabbit_hutch_small",
+        "duck_pond_small",
+        "goat_pen_small",
+        "turkey_pen_small",
+        "bee_apiary_small",
+    }
+
+
+def _sanitize_normalized_tool_args(
+    req: JobRequest, name: str, args: dict[str, Any]
+) -> tuple[str, dict[str, Any]]:
+    prompt = (req.prompt or "").lower()
+    new_args = dict(args)
+
+    if name == "paste_template_at_player":
+        template_id = str(new_args.get("template_id") or "").strip()
+        if template_id in _TEMPLATE_ID_ALIASES:
+            new_args["template_id"] = _TEMPLATE_ID_ALIASES[template_id]
+        new_args = {
+            "player": new_args.get("player") or req.player,
+            "template_id": new_args.get("template_id"),
+        }
+
+    if name == "build_wall_at_player":
+        try:
+            new_args["distance"] = max(0, min(int(new_args.get("distance", 2)), 8))
+        except (TypeError, ValueError):
+            new_args["distance"] = 2
+
+    if name == "summon_entity":
+        new_args.setdefault("x", int(req.x))
+        new_args.setdefault("y", int(req.y))
+        new_args.setdefault("z", int(req.z))
+
+    if name == "build_animal_pen_at_player":
+        block_defaults = {
+            "fence_block": "oak_fence",
+            "gate_block": "oak_fence_gate",
+            "floor_block": "grass_block",
+            "roof_block": "oak_slab",
+            "wall_block": "oak_planks",
+        }
+        for block_arg, fallback in block_defaults.items():
+            if block_arg in new_args and new_args[block_arg] is None:
+                new_args[block_arg] = fallback
+
+    if _looks_like_mob_spawn_prompt(prompt):
+        animal_hit = _infer_animal_from_prompt(prompt)
+        if animal_hit and name in {"paste_template_at_player", "build_animal_pen_at_player"}:
+            count = _infer_pen_count_from_prompt(prompt) or _infer_count_from_prompt(prompt) or 4
+            return (
+                "summon_entity",
+                {
+                    "entity": animal_hit[0],
+                    "x": int(req.x),
+                    "y": int(req.y),
+                    "z": int(req.z),
+                    "count": min(max(count, 1), 16),
+                },
+            )
+
+    if "where am i" in prompt or "where am i?" in prompt or "where am i" in prompt.replace("?", ""):
+        if name == "list_players":
+            return "get_player_position", {"player": req.player}
+
+    return name, new_args
+
+
 def _normalize_tool_call_for_prompt(
     req: JobRequest, name: str, args: dict[str, Any]
 ) -> tuple[str, dict[str, Any]]:
@@ -837,6 +946,7 @@ def _normalize_tool_call_for_prompt(
 
     new_name, new_args = _normalize_tool_call_for_prompt_inner(req, name, args)
     new_args = _ground_parametric_shape_to_player(req, new_name, new_args)
+    new_name, new_args = _sanitize_normalized_tool_args(req, new_name, new_args)
     return new_name, new_args
 
 
@@ -1050,11 +1160,12 @@ def _normalize_tool_call_for_prompt_inner(
     ):
         if (
             template_id
+            and _should_use_animal_template(prompt, template_id)
             and not _looks_like_parametric_constraint(prompt)
             and not _wants_custom_build_params(prompt, args)
         ):
-            if name != "paste_template_at_player":
-                return _rewrite_to_template(req, name, args, template_id, "farm_pen")
+            return _rewrite_to_template(req, name, args, template_id, "farm_pen")
+
         # When the model already picked the right tool, start from its args
         # and only fill in what's missing or obviously wrong.
         if name == "build_animal_pen_at_player":

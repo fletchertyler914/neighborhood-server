@@ -323,6 +323,85 @@ def test_animal_pen_null_blocks_get_defaults():
     assert args["roof_block"] == "oak_slab"
 
 
+def test_animal_pen_prompt_prefers_parametric_pen_over_generic_template():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("yo i need a home for my pigs"),
+        "paste_template_at_player",
+        {"player": "firecrab93", "template_id": "house_cottage_small"},
+    )
+
+    assert name == "build_animal_pen_at_player"
+    assert args["animal"] == "pig"
+
+
+def test_give_me_animals_routes_to_summon_not_pen_template():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("Give me a few pigs"),
+        "paste_template_at_player",
+        {"player": "firecrab93", "template_id": "pig_pen_large"},
+    )
+
+    assert name == "summon_entity"
+    assert args == {"entity": "pig", "x": 0, "y": 80, "z": 0, "count": 4}
+
+
+def test_summon_entity_missing_coords_uses_request_position():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("Could you please summon a chicken"),
+        "summon_entity",
+        {"entity": "chicken", "count": 1},
+    )
+
+    assert name == "summon_entity"
+    assert args["x"] == 0
+    assert args["y"] == 80
+    assert args["z"] == 0
+
+
+def test_wall_distance_is_clamped_to_schema_max():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("Build a stone wall segment"),
+        "build_wall_at_player",
+        {"player": "firecrab93", "distance": 10, "height": 3, "block": "stone_bricks"},
+    )
+
+    assert name == "build_wall_at_player"
+    assert args["distance"] == 8
+
+
+def test_crop_field_template_aliases_are_normalized():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("field of sugarcane"),
+        "paste_template_at_player",
+        {"player": "firecrab93", "template_id": "field_of_sugarcane"},
+    )
+
+    assert name == "paste_template_at_player"
+    assert args["template_id"] == "sugarcane_farm_small"
+
+
+def test_paste_template_strips_non_schema_args():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("yo build a turkey pen"),
+        "paste_template_at_player",
+        {"player": "firecrab93", "template_id": "turkey_pen_small", "with_roof": True},
+    )
+
+    assert name == "paste_template_at_player"
+    assert args == {"player": "firecrab93", "template_id": "turkey_pen_small"}
+
+
+def test_where_am_i_routes_to_position_not_player_list():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("Where am I?"),
+        "list_players",
+        {},
+    )
+
+    assert name == "get_player_position"
+    assert args["player"] == "firecrab93"
+
+
 def test_spawn_n_chickens_from_give_item_routes_to_summon_entity():
     req = JobRequest(
         player="firecrab93",
