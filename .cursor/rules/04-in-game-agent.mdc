@@ -23,7 +23,12 @@ Players with `neighborhood.agent` (default: OP) run:
    time of day, player facing, and recent agent actions; `agent/retrieval.py`
    pulls relevant chunks from `agent/knowledge/{blocks,fawe,patterns}.md`.
 6. **Thinking-mode models** (qwen3, deepseek-r1, qwq) get `/no_think`,
-   `think: false`, and short local timeouts — required for valid tool-call JSON.
+ `think: false`, and short local timeouts — required for valid tool-call JSON.
+7. **Prompt-mode tool fallback**: families that don't support Ollama's native
+ `tools` API (e.g. `deepseek-r1`) get tool schemas inlined in the system
+ prompt and return JSON we parse with `_extract_prompt_tool_call`. They also
+ get a longer timeout floor — see `_NO_NATIVE_TOOLS_FAMILIES` in
+ `agent/orchestrator/app.py`.
 
 ## Player feedback (good / bad)
 

@@ -20,7 +20,7 @@ from agent.eval.corpus_case import CorpusCase
 from agent.eval.corpus_loader import filter_corpus_cases, load_corpus
 from agent.eval.assertions import normalize_tool_calls
 from agent.eval.probes import run_world_probe
-from agent.eval.world import Box, clear_box
+from agent.eval.world import Box, clear_box, rcon
 from agent.tool_registry import TOOLS_VERSION
 
 
@@ -43,6 +43,7 @@ class CorpusCaseResult:
     sandbox_center: list[int] = field(default_factory=list)
     temperature: float | None = None
     cell_index: int = 0
+    latency_ms: int = 0
 
 
 @dataclass(frozen=True)
@@ -113,11 +114,23 @@ def _detect_player(repo_root: Path) -> str:
 def _prepare_cell(cell: SandboxCell, player: str) -> None:
     from agent import tools as T
 
-    clear_box(cell.box)
     cx, cy, cz = cell.center
-    T.teleport_player(player, cx, cy + 2, cz)
+    # Move into the target chunk before clearing it, then restore a small
+    # standing pad so the player cannot fall through the cleared sandbox.
+    T.teleport_player(player, cx, cy + 1, cz)
+    time.sleep(0.2)
+    clear_box(cell.box)
+    rcon(f"fill {cx - 2} {cy} {cz - 2} {cx + 2} {cy} {cz + 2} grass_block replace", timeout=15)
+    T.teleport_player(player, cx, cy + 1, cz)
     T._rcon(f"execute as {T._quote_player(player)} at @s run tp @s ~ ~ ~ 0 0", timeout=15)
-    time.sleep(float(os.environ.get("AGENT_CORPUS_SETTLE_SEC", "0.5")))
+    settle = float(os.environ.get("AGENT_CORPUS_SETTLE_SEC", "0.5"))
+    deadline = time.monotonic() + max(2.0, settle + 2.0)
+    while time.monotonic() < deadline:
+        px, py, pz = _live_player_pos(player)
+        if abs(px - cx) <= 2 and abs(pz - cz) <= 2 and py >= cy:
+            break
+        time.sleep(0.2)
+    time.sleep(settle)
 
 
 def _live_player_pos(player: str) -> tuple[float, float, float]:
@@ -158,6 +171,7 @@ def _run_one_case(
     if temperature is not None:
         req["eval_temperature"] = temperature
 
+    started = time.perf_counter()
     try:
         resp = client.post(
             f"{orchestrator_url.rstrip('/')}/v1/jobs",
@@ -168,6 +182,7 @@ def _run_one_case(
         resp.raise_for_status()
         job = resp.json()
     except Exception as exc:
+        elapsed_ms = int((time.perf_counter() - started) * 1000)
         return CorpusCaseResult(
             case_id=case.id,
             category=case.category,
@@ -184,21 +199,25 @@ def _run_one_case(
             sandbox_center=list(cell.center),
             temperature=temperature,
             cell_index=cell.index,
+            latency_ms=elapsed_ms,
         )
+    elapsed_ms = int((time.perf_counter() - started) * 1000)
 
     tool_calls = job.get("tool_calls") or []
     norm_trace = normalize_tool_calls(tool_calls)
     status = str(job.get("status") or "")
     steps = int(job.get("steps") or 0)
-    tool_ok = all(
-        (tc.get("result") or {}).get("ok", True) for tc in norm_trace if tc.get("result")
-    ) if norm_trace else False
+    tool_ok = (
+        all((tc.get("result") or {}).get("ok", True) for tc in norm_trace if tc.get("result"))
+        if norm_trace
+        else False
+    )
 
     probe = run_world_probe(
         case.expect.world_probe,
         player=player,
         sandbox_center=cell.center,
-        tool_ok=tool_ok or status == "done",
+        tool_ok=tool_ok,
         tool_calls=tool_calls,
     )
 
@@ -230,6 +249,7 @@ def _run_one_case(
         sandbox_center=list(cell.center),
         temperature=temperature,
         cell_index=cell.index,
+        latency_ms=elapsed_ms,
     )
 
 
@@ -313,6 +333,7 @@ def run_corpus(
                 "probe_message": r.probe_message,
                 "temperature": r.temperature,
                 "sandbox_center": r.sandbox_center,
+                "latency_ms": r.latency_ms,
             }
         )
 
@@ -352,6 +373,7 @@ def _summarize(results: list[CorpusCaseResult]) -> dict[str, Any]:
     passed = sum(1 for r in results if r.ok)
     by_category: dict[str, dict[str, int]] = {}
     by_failure: dict[str, int] = {}
+    latencies: list[int] = []
     for r in results:
         cat = by_category.setdefault(r.category, {"total": 0, "passed": 0})
         cat["total"] += 1
@@ -359,6 +381,21 @@ def _summarize(results: list[CorpusCaseResult]) -> dict[str, Any]:
             cat["passed"] += 1
         if not r.ok:
             by_failure[r.primary_failure] = by_failure.get(r.primary_failure, 0) + 1
+        if r.latency_ms > 0:
+            latencies.append(r.latency_ms)
+    latency_stats: dict[str, float] = {}
+    if latencies:
+        sl = sorted(latencies)
+        n = len(sl)
+        latency_stats = {
+            "count": float(n),
+            "min_ms": float(sl[0]),
+            "p50_ms": float(sl[n // 2]),
+            "p90_ms": float(sl[max(0, int(n * 0.9) - 1)]),
+            "max_ms": float(sl[-1]),
+            "mean_ms": float(sum(sl) / n),
+            "total_s": round(sum(sl) / 1000.0, 2),
+        }
     return {
         "total": total,
         "passed": passed,
@@ -366,6 +403,7 @@ def _summarize(results: list[CorpusCaseResult]) -> dict[str, Any]:
         "pass_rate": round(passed / total, 4) if total else 0.0,
         "by_category": by_category,
         "by_failure": by_failure,
+        "latency": latency_stats,
     }
 
 

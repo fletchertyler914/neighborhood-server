@@ -74,7 +74,7 @@ if not _API_TOKEN_RAW and not EVAL_MODE:
     )
 API_TOKEN = _API_TOKEN_RAW or "dev-change-me"
 OLLAMA_BASE = os.environ.get("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen3:8b")
+OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "qwen2.5:7b-instruct")
 OLLAMA_FALLBACK_MODEL = os.environ.get("OLLAMA_FALLBACK_MODEL", "qwen2.5:7b-instruct")
 CLOUD_BASE = os.environ.get("CLOUD_BASE_URL", "https://api.openai.com/v1").rstrip("/")
 CLOUD_MODEL = os.environ.get("CLOUD_MODEL", "gpt-4o-mini")
@@ -436,6 +436,9 @@ _PEN_STRUCTURE_KEYWORDS = (
     "fenced in area",
     "fenced-in area",
     "animal area",
+    "home for",
+    "place for",
+    "to live",
 )
 _PEN_ANIMAL_NOUNS: tuple[tuple[str, str, bool], ...] = (
     # (prompt substring, canonical animal id, default with_roof)
@@ -675,6 +678,21 @@ def _wants_in_front(prompt: str) -> bool:
     )
 
 
+_ABSOLUTE_COORD_RX = re.compile(
+    r"(?:^|\D)-?\d{1,7}(?:\.\d+)?\s*,?\s+-?\d{1,4}(?:\.\d+)?\s*,?\s+-?\d{1,7}(?:\.\d+)?(?:\D|$)"
+)
+
+
+def _has_explicit_absolute_coords(prompt: str) -> bool:
+    if _ABSOLUTE_COORD_RX.search(prompt):
+        return True
+    return all(token in prompt for token in ("x", "y", "z")) and bool(
+        re.search(r"\bx\s*=?\s*-?\d+", prompt)
+        and re.search(r"\by\s*=?\s*-?\d+", prompt)
+        and re.search(r"\bz\s*=?\s*-?\d+", prompt)
+    )
+
+
 _PARAMETRIC_CONSTRAINT_RX = (
     re.compile(r"\d{1,3}\s*x\s*\d{1,3}", re.I),
     re.compile(r"\bradius\s+\d{1,2}\b", re.I),
@@ -780,6 +798,34 @@ def _rewrite_to_template(
     return "paste_template_at_player", {"player": req.player, "template_id": template_id}
 
 
+def _ground_parametric_shape_to_player(
+    req: JobRequest, name: str, args: dict[str, Any]
+) -> dict[str, Any]:
+    """Re-anchor `build_platform/cylinder/sphere` calls to the live player position.
+
+    Models often emit stale absolute coordinates (e.g. from a previous eval
+    cell or the prior turn) for prompts like "at my feet" or "under me". When
+    the prompt does not contain explicit absolute coordinates, snap the
+    center to `req.x/y/z` so the build lands where the player is standing.
+    """
+
+    if name not in {"build_platform", "build_cylinder", "build_sphere"}:
+        return args
+    prompt = (req.prompt or "").lower()
+    if _has_explicit_absolute_coords(prompt):
+        return args
+    new_args = dict(args)
+    if name == "build_sphere":
+        new_args["center_x"] = int(req.x)
+        new_args["center_z"] = int(req.z)
+        new_args.setdefault("center_y", int(req.y))
+    else:
+        new_args["center_x"] = int(req.x)
+        new_args["center_z"] = int(req.z)
+        new_args["y"] = int(req.y) - 1
+    return new_args
+
+
 def _normalize_tool_call_for_prompt(
     req: JobRequest, name: str, args: dict[str, Any]
 ) -> tuple[str, dict[str, Any]]:
@@ -789,6 +835,14 @@ def _normalize_tool_call_for_prompt(
     intent (length/width/block) wherever possible.
     """
 
+    new_name, new_args = _normalize_tool_call_for_prompt_inner(req, name, args)
+    new_args = _ground_parametric_shape_to_player(req, new_name, new_args)
+    return new_name, new_args
+
+
+def _normalize_tool_call_for_prompt_inner(
+    req: JobRequest, name: str, args: dict[str, Any]
+) -> tuple[str, dict[str, Any]]:
     prompt = (req.prompt or "").lower()
     player = req.player
 
@@ -844,6 +898,7 @@ def _normalize_tool_call_for_prompt(
         template_id
         and not _looks_like_parametric_constraint(prompt)
         and not _wants_custom_build_params(prompt, args)
+        and not _looks_like_animal_pen_prompt(prompt)
     ):
         _PARAMETRIC_BUILD_TOOLS = (
             "build_house",
@@ -1025,6 +1080,17 @@ def _normalize_tool_call_for_prompt(
         elif "with_roof" not in new_args:
             if animal_hit and animal_hit[1]:
                 new_args["with_roof"] = True
+
+        block_defaults = {
+            "fence_block": "oak_fence",
+            "gate_block": "oak_fence_gate",
+            "floor_block": "grass_block",
+            "roof_block": "oak_slab",
+            "wall_block": "oak_planks",
+        }
+        for block_arg, fallback in block_defaults.items():
+            if block_arg in new_args and new_args[block_arg] is None:
+                new_args[block_arg] = fallback
 
         # Count from prompt overrides the model's count.
         n = _infer_pen_count_from_prompt(prompt)

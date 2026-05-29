@@ -155,6 +155,43 @@ def test_castle_left_alone_when_user_asks_for_cylinder():
     assert name == "build_cylinder"
 
 
+def test_relative_platform_prompt_grounded_to_request_position():
+    req = JobRequest(player="firecrab93", uuid="u", prompt="build a platform at my feet", x=10336.5, y=-58, z=12880.5)
+
+    name, args = _normalize_tool_call_for_prompt(
+        req,
+        "build_platform",
+        {"center_x": 10096, "y": -59, "center_z": 10064, "width": 5, "depth": 5, "block": "quartz_block"},
+    )
+
+    assert name == "build_platform"
+    assert args["center_x"] == 10336
+    assert args["center_z"] == 12880
+    assert args["y"] == -59
+    assert args["width"] == 5
+
+
+def test_explicit_coordinate_platform_is_not_regrounded():
+    req = JobRequest(
+        player="firecrab93",
+        uuid="u",
+        prompt="build a platform at 10096 -59 10064",
+        x=10336.5,
+        y=-58,
+        z=12880.5,
+    )
+
+    name, args = _normalize_tool_call_for_prompt(
+        req,
+        "build_platform",
+        {"center_x": 10096, "y": -59, "center_z": 10064, "width": 5, "depth": 5, "block": "quartz_block"},
+    )
+
+    assert name == "build_platform"
+    assert args["center_x"] == 10096
+    assert args["center_z"] == 10064
+
+
 # --- give_item routing --------------------------------------------------
 
 
@@ -227,6 +264,18 @@ def test_pig_pen_rewrites_to_template():
     assert args["template_id"] == "pig_pen_small"
 
 
+def test_home_for_pigs_rewrites_generic_template_to_pen():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("yo i need a home for my pigs"),
+        "paste_template_at_player",
+        {"player": "firecrab93", "template_id": "house_cottage_small"},
+    )
+
+    assert name == "build_animal_pen_at_player"
+    assert args["animal"] == "pig"
+    assert args["player"] == "firecrab93"
+
+
 def test_horse_stable_rewrites_to_template():
     name, args = _normalize_tool_call_for_prompt(
         _req("build a horse stable with 2 horses"),
@@ -255,6 +304,23 @@ def test_pen_keeps_block_overrides_from_model():
     )
     assert name == "build_animal_pen_at_player"
     assert args["animal"] == "sheep"
+
+
+def test_animal_pen_null_blocks_get_defaults():
+    name, args = _normalize_tool_call_for_prompt(
+        _req("I would really like it if you could a place for horses to live"),
+        "build_animal_pen_at_player",
+        {
+            "animal": "horse",
+            "player": "firecrab93",
+            "roof_block": None,
+            "wall_block": "oak_planks",
+        },
+    )
+
+    assert name == "build_animal_pen_at_player"
+    assert args["animal"] == "horse"
+    assert args["roof_block"] == "oak_slab"
 
 
 def test_spawn_n_chickens_from_give_item_routes_to_summon_entity():

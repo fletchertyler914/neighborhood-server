@@ -70,7 +70,19 @@ make corpus-baseline   # snapshot pass rate → agent/eval/corpus/baseline.json
 ## Sandbox
 
 Cases run in an isolated grid starting at `(10000, -60, 10000)` with 48-block
-stride. Each cell is cleared before and after the case.
+stride. For each case the runner:
+
+1. Teleports the player one block above the cell center to load the chunk.
+2. Clears the cell box (`clear_box`).
+3. Lays a small `5x5` `grass_block` pad at the cell center so the player has
+   something to stand on (otherwise long `clear_box` calls drop them into the
+   void and subsequent builds fail with `That position is not loaded`).
+4. Re-teleports the player onto the pad and waits for the position to settle
+   before sending the prompt.
+
+`report.json` includes per-case `latency_ms` and a global `latency` block with
+`p50_ms`, `p90_ms`, `mean_ms`, and `total_s` so timing regressions show up
+alongside pass-rate ones.
 
 ## Environment
 
@@ -85,3 +97,13 @@ stride. Each cell is cleared before and after the case.
 
 After a green run, save summary to `agent/eval/corpus/baseline.json` for regression
 tracking on pass rate by category.
+
+## Failure classification
+
+`assert_corpus_expect` orders failures so the *cause* shows up in
+`primary_failure`, not the symptom. When a tool returns `ok=False`
+(`That position is not loaded`, schema validation failure, etc.) the case is
+classified as `server_error` / `template_unresolved` even if the world probe
+also failed because nothing was built — a tool that errored is the real
+story. World-probe-only failures (e.g. wrong palette, missing target block)
+remain `world_state_wrong`.

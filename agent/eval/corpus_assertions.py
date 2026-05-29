@@ -107,6 +107,22 @@ def assert_corpus_expect(
             )
         )
 
+    for tc in norm:
+        result = tc.get("result") or {}
+        if isinstance(result, dict) and not result.get("ok", True):
+            err = str(result.get("error") or result.get("output") or "")
+            kind = "server_error"
+            if "unknown template_id" in err.lower():
+                kind = "template_unresolved"
+            if not any(f.kind in (kind, "tool_selection_miss") for f in failures):
+                failures.append(
+                    CorpusFailure(
+                        kind=kind,
+                        message=err[:200] or f"tool {tc['name']} failed",
+                    )
+                )
+            break
+
     if expect.world_probe and expect.world_probe.kind != "none":
         if not world_probe_ok:
             failures.append(
@@ -115,22 +131,6 @@ def assert_corpus_expect(
                     message=world_probe_message,
                 )
             )
-
-    for tc in norm:
-        result = tc.get("result") or {}
-        if isinstance(result, dict) and not result.get("ok", True):
-            err = str(result.get("error") or result.get("output") or "")
-            kind = "server_error"
-            if "unknown template_id" in err.lower():
-                kind = "template_unresolved"
-            if not any(f.kind in (kind, "world_state_wrong", "tool_selection_miss") for f in failures):
-                failures.append(
-                    CorpusFailure(
-                        kind=kind,
-                        message=err[:200] or f"tool {tc['name']} failed",
-                    )
-                )
-            break
 
     return failures
 

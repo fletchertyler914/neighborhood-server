@@ -87,6 +87,34 @@ def test_tool_any_miss_classified():
     assert classify_primary_failure(failures) == "tool_selection_miss"
 
 
+def test_failed_tool_is_classified_before_world_probe_failure():
+    expect = CorpusExpect(
+        tool_any=[ToolExpectAny(name="build_platform")],
+        world_probe=WorldProbe(kind="shape_built", shape="platform", block="quartz_block"),
+    )
+
+    failures = assert_corpus_expect(
+        expect,
+        actual_status="done",
+        actual_steps=2,
+        tool_calls=[
+            {
+                "name": "build_platform",
+                "arguments": {"block": "quartz_block"},
+                "result": {
+                    "ok": False,
+                    "error": "That position is not loaded",
+                },
+            }
+        ],
+        world_probe_ok=False,
+        world_probe_message="tool failed; skipping world probe",
+    )
+
+    assert classify_primary_failure(failures) == "server_error"
+    assert {f.kind for f in failures} == {"server_error", "world_state_wrong"}
+
+
 def test_build_datasets_from_synthetic_envelope():
     from agent.training.build_datasets import build_dpo_from_envelopes, build_sft_from_envelopes
 
