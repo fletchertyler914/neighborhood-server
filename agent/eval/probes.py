@@ -24,6 +24,38 @@ from agent.world_auditor.snapshot import SnapshotBox, snapshot_box
 _PASTE_ANCHOR_RE = re.compile(
     r"pasted template .+ at \((-?\d+),\s*(-?\d+),\s*(-?\d+)\)", re.IGNORECASE
 )
+_TP_COMMAND_RE = re.compile(
+    r"\btp\s+\S+\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\b", re.IGNORECASE
+)
+_FILL_COMMAND_RE = re.compile(
+    r"\bfill\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\s+(-?\d+)\b",
+    re.IGNORECASE,
+)
+
+
+def _anchor_from_commands(commands: list[Any] | None) -> tuple[int, int, int] | None:
+    """Parse the build anchor from a tool's emitted command list.
+
+    Supports two patterns:
+
+    1. `paste_template_at_player`-style: first command is
+       ``tp <player> <x> <y> <z>`` placing the player at the paste origin.
+    2. Parametric `build_*_at_player` tools: first command is a ``fill x1 y1
+       z1 x2 y2 z2 ...`` covering the build footprint; we return the midpoint.
+    """
+
+    if not commands:
+        return None
+    for entry in commands:
+        text = str(entry or "")
+        m = _TP_COMMAND_RE.search(text)
+        if m:
+            return int(m.group(1)), int(m.group(2)), int(m.group(3))
+        m = _FILL_COMMAND_RE.search(text)
+        if m:
+            x1, y1, z1, x2, y2, z2 = (int(g) for g in m.groups())
+            return (x1 + x2) // 2, min(y1, y2), (z1 + z2) // 2
+    return None
 _NATURAL_BLOCKS = frozenset(
     {
         "air",
@@ -98,6 +130,22 @@ def infer_build_anchor_from_trace(
         m = _PASTE_ANCHOR_RE.search(output)
         if m:
             return int(m.group(1)), int(m.group(2)), int(m.group(3))
+        commands = result.get("commands") if isinstance(result.get("commands"), list) else None
+        cmd_anchor = _anchor_from_commands(commands)
+        if cmd_anchor is not None and tc.get("name") in {
+            "paste_template_at_player",
+            "build_house_at_player",
+            "build_castle_at_player",
+            "build_animal_pen_at_player",
+            "build_bridge_at_player",
+            "build_wall_at_player",
+            "build_sphere",
+            "build_cylinder",
+            "build_platform",
+            "fawe_sphere_at_player",
+            "fawe_cyl_at_player",
+        }:
+            return cmd_anchor
         if tc.get("name") in {
             "build_house_at_player",
             "build_castle_at_player",
@@ -389,12 +437,37 @@ def _auditor_box(probe: WorldProbe, anchor: tuple[int, int, int]) -> SnapshotBox
     return SnapshotBox(x1, anchor[1], z1, x1 + width - 1, anchor[1] + height - 1, z1 + depth - 1)
 
 
+def _palette_of_interest(probe: WorldProbe) -> list[str]:
+    """Block names probes care about, used to drive RCON ``execute if block`` checks."""
+
+    blocks: list[str] = []
+    if probe.block:
+        blocks.append(probe.block)
+    for k in (probe.min_counts or {}).keys():
+        blocks.append(k)
+    for k in (probe.max_counts or {}).keys():
+        blocks.append(k)
+    for raw in (probe.sample_blocks or []):
+        blocks.append(raw)
+    out: list[str] = []
+    for raw in blocks:
+        normalized = _normalize_block(raw)
+        if normalized and normalized not in out:
+            out.append(normalized)
+    return out
+
+
 def probe_palette_histogram(
     probe: WorldProbe,
     *,
     anchor: tuple[int, int, int],
 ) -> ProbeResult:
-    snap = snapshot_box(_auditor_box(probe, anchor), flush=True, include_sparse=False)
+    snap = snapshot_box(
+        _auditor_box(probe, anchor),
+        flush=True,
+        include_sparse=False,
+        palette_of_interest=_palette_of_interest(probe),
+    )
     failures: list[str] = []
     for block, minimum in probe.min_counts.items():
         count = snap.palette.get(_normalize_block(block), 0)
@@ -418,7 +491,12 @@ def probe_count_block_in_box(
     anchor: tuple[int, int, int],
 ) -> ProbeResult:
     block = _normalize_block(probe.block or "air")
-    snap = snapshot_box(_auditor_box(probe, anchor), flush=True, include_sparse=False)
+    snap = snapshot_box(
+        _auditor_box(probe, anchor),
+        flush=True,
+        include_sparse=False,
+        palette_of_interest=_palette_of_interest(probe),
+    )
     count = snap.palette.get(block, 0)
     ok = count >= probe.min_count
     if probe.count_max is not None:
@@ -435,7 +513,12 @@ def probe_structural_check(
     *,
     anchor: tuple[int, int, int],
 ) -> ProbeResult:
-    snap = snapshot_box(_auditor_box(probe, anchor), flush=True, include_sparse=True)
+    snap = snapshot_box(
+        _auditor_box(probe, anchor),
+        flush=True,
+        include_sparse=True,
+        palette_of_interest=_palette_of_interest(probe),
+    )
     result = verify_structure(
         probe.check or "footprint_filled_ratio",
         snap,

@@ -158,11 +158,156 @@ def _auth(authorization: str | None = Header(default=None)) -> None:
 
 
 _THINKING_FAMILIES = ("qwen3", "qwen3.5", "qwen3.6", "deepseek-r1", "qwq")
+_NO_NATIVE_TOOLS_FAMILIES = ("deepseek-r1",)
+_TOOLS_UNSUPPORTED_NEEDLE = "does not support tools"
 
 
 def _is_thinking_model(model: str) -> bool:
     m = model.lower()
     return any(f in m for f in _THINKING_FAMILIES)
+
+
+def _model_lacks_native_tools(model: str) -> bool:
+    """Models Ollama refuses to send a tools=[...] payload to."""
+
+    m = model.lower()
+    return any(f in m for f in _NO_NATIVE_TOOLS_FAMILIES)
+
+
+def _summarize_tool_schemas(schemas: list[dict[str, Any]]) -> str:
+    """Compact text catalog of tools for prompt-only models."""
+
+    lines: list[str] = []
+    for schema in schemas:
+        fn = (schema or {}).get("function") or {}
+        name = fn.get("name") or ""
+        desc = (fn.get("description") or "").strip().split("\n", 1)[0]
+        params = ((fn.get("parameters") or {}).get("properties") or {})
+        required = list(((fn.get("parameters") or {}).get("required") or []))
+        param_parts: list[str] = []
+        for p_name, p_def in params.items():
+            p_type = (p_def or {}).get("type") or "any"
+            req = "*" if p_name in required else ""
+            param_parts.append(f"{p_name}{req}:{p_type}")
+        lines.append(f"- {name}({', '.join(param_parts)}) -- {desc}")
+    return "\n".join(lines)
+
+
+_PROMPT_TOOL_INSTRUCTIONS = (
+    "You are a Minecraft action router. You MUST respond with EXACTLY ONE "
+    "JSON object on a single line and nothing else. Format: "
+    '{"tool": "<tool_name>", "arguments": {...}}. '
+    "If the user request maps to a tool, pick the single best one and fill "
+    'the arguments. If no tool fits, output {"tool": "say", "arguments": '
+    '{"message": "<short reply>"}}. NEVER explain. NEVER include the tool '
+    "list. NEVER write <think> tags or any reasoning -- thinking is "
+    "FORBIDDEN, you must output the JSON object directly and stop. Begin "
+    "your reply with '{' and end with '}'."
+)
+
+
+def _extract_prompt_tool_call(text: str) -> dict[str, Any] | None:
+    """Pull a single ``{tool, arguments}`` JSON object out of free-form text."""
+
+    if not text:
+        return None
+    cleaned = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
+    if cleaned.startswith("```"):
+        cleaned = re.sub(r"^```[a-zA-Z0-9]*\n", "", cleaned)
+        cleaned = cleaned.rstrip("`").strip()
+    candidates: list[str] = []
+    if cleaned.startswith("{"):
+        candidates.append(cleaned)
+    for match in re.finditer(r"\{(?:[^{}]|\{[^{}]*\})*\}", cleaned, flags=re.DOTALL):
+        candidates.append(match.group(0))
+    for raw in candidates:
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(data, dict):
+            continue
+        name = data.get("tool") or data.get("name") or data.get("function")
+        if not isinstance(name, str) or not name.strip():
+            continue
+        args = data.get("arguments") or data.get("args") or {}
+        if isinstance(args, str):
+            try:
+                args = json.loads(args)
+            except json.JSONDecodeError:
+                args = {}
+        if not isinstance(args, dict):
+            args = {}
+        return {"name": name.strip(), "arguments": args}
+    return None
+
+
+def _wrap_prompt_tool_call(call: dict[str, Any] | None, content: str) -> dict[str, Any]:
+    """Shape a parsed JSON tool call (or its absence) like an OpenAI response."""
+
+    message: dict[str, Any] = {"role": "assistant", "content": content}
+    if call:
+        message["tool_calls"] = [
+            {
+                "id": call["name"],
+                "type": "function",
+                "function": {
+                    "name": call["name"],
+                    "arguments": json.dumps(call.get("arguments", {})),
+                },
+            }
+        ]
+        message["content"] = ""
+    return {"choices": [{"message": message}]}
+
+
+async def _ollama_prompt_tool_call(
+    client: httpx.AsyncClient,
+    base_url: str,
+    model: str,
+    messages: list[dict[str, Any]],
+    *,
+    timeout: float,
+    temperature: float,
+    num_ctx: int,
+    num_predict: int,
+    think_off: bool,
+) -> dict[str, Any]:
+    """Tool calling without Ollama's native ``tools`` API for non-supporting models."""
+
+    tool_text = _summarize_tool_schemas(TOOL_SCHEMAS)
+    augmented = list(messages)
+    augmented.insert(
+        0,
+        {
+            "role": "system",
+            "content": _PROMPT_TOOL_INSTRUCTIONS + "\n\nAvailable tools:\n" + tool_text,
+        },
+    )
+    payload: dict[str, Any] = {
+        "model": model,
+        "messages": augmented,
+        "temperature": temperature,
+        "options": {
+            "num_ctx": num_ctx,
+            "num_predict": num_predict,
+            # Cap any inadvertent reasoning chain so we still get the JSON.
+            "stop": ["</think>", "<|im_end|>", "<|end|>", "\n}\n"],
+        },
+    }
+    if think_off:
+        payload["think"] = False
+    resp = await client.post(
+        f"{base_url}/v1/chat/completions",
+        headers={"Content-Type": "application/json"},
+        json=payload,
+        timeout=timeout,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    text = ((data.get("choices") or [{}])[0].get("message") or {}).get("content") or ""
+    call = _extract_prompt_tool_call(text)
+    return _wrap_prompt_tool_call(call, text)
 
 
 async def _chat_completion(
@@ -182,25 +327,62 @@ async def _chat_completion(
     is_ollama = "11434" in base_url or base_url.endswith("ollama")
     if is_ollama:
         url = f"{base_url}/v1/chat/completions"
+    effective_temperature = (
+        temperature if temperature is not None else (0.0 if eval_mode else 0.2)
+    )
+    effective_num_ctx = EVAL_NUM_CTX if eval_mode else OLLAMA_NUM_CTX
+    effective_num_predict = EVAL_NUM_PREDICT if eval_mode else OLLAMA_NUM_PREDICT
+    effective_timeout = timeout or JOB_TIMEOUT
+    think_off = is_ollama and _is_thinking_model(model)
+
+    if is_ollama and _model_lacks_native_tools(model):
+        # Reasoning-style models can take 60-120s per call by design.
+        # Scale this up to a sane floor so they don't time out under default
+        # eval timeouts (20s).
+        slow_floor = max(effective_timeout, 300.0)
+        return await _ollama_prompt_tool_call(
+            client,
+            base_url,
+            model,
+            messages,
+            timeout=slow_floor,
+            temperature=effective_temperature,
+            num_ctx=effective_num_ctx,
+            num_predict=effective_num_predict,
+            think_off=think_off,
+        )
+
     payload: dict[str, Any] = {
         "model": model,
         "messages": messages,
         "tools": TOOL_SCHEMAS,
         "tool_choice": "auto",
-        "temperature": (
-            temperature
-            if temperature is not None
-            else (0.0 if eval_mode else 0.2)
-        ),
+        "temperature": effective_temperature,
     }
     if is_ollama:
         payload["options"] = {
-            "num_ctx": EVAL_NUM_CTX if eval_mode else OLLAMA_NUM_CTX,
-            "num_predict": EVAL_NUM_PREDICT if eval_mode else OLLAMA_NUM_PREDICT,
+            "num_ctx": effective_num_ctx,
+            "num_predict": effective_num_predict,
         }
-    if is_ollama and _is_thinking_model(model):
+    if think_off:
         payload["think"] = False
-    resp = await client.post(url, headers=headers, json=payload, timeout=timeout or JOB_TIMEOUT)
+    resp = await client.post(url, headers=headers, json=payload, timeout=effective_timeout)
+    if (
+        is_ollama
+        and resp.status_code in (400, 422)
+        and _TOOLS_UNSUPPORTED_NEEDLE in resp.text.lower()
+    ):
+        return await _ollama_prompt_tool_call(
+            client,
+            base_url,
+            model,
+            messages,
+            timeout=effective_timeout,
+            temperature=effective_temperature,
+            num_ctx=effective_num_ctx,
+            num_predict=effective_num_predict,
+            think_off=think_off,
+        )
     resp.raise_for_status()
     return resp.json()
 

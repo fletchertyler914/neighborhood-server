@@ -92,6 +92,7 @@ def snapshot_box(
     include_sparse: bool = True,
     allow_rcon_fallback: bool = True,
     max_rcon_blocks: int = DEFAULT_MAX_RCON_BLOCKS,
+    palette_of_interest: list[str] | None = None,
 ) -> WorldSnapshot:
     """Snapshot a box from Anvil region files, falling back to RCON for small boxes."""
 
@@ -100,21 +101,31 @@ def snapshot_box(
     if flush:
         _flush_world()
 
+    anvil_snap: WorldSnapshot | None = None
     try:
-        snap = _snapshot_box_anvil(nbox, wdir, include_sparse=include_sparse)
-        if snap.block_count:
-            return snap
+        anvil_snap = _snapshot_box_anvil(nbox, wdir, include_sparse=include_sparse)
+        # Anvil-on-disk lags behind FAWE/world edits for chunks still in memory.
+        # Treat an all-air result as "not yet persisted" and fall back to RCON.
+        non_air = sum(
+            count for block, count in anvil_snap.palette.items() if block not in AIR_BLOCKS
+        )
+        if non_air > 0:
+            return anvil_snap
     except Exception:
         if not allow_rcon_fallback:
             raise
 
     if not allow_rcon_fallback:
-        return WorldSnapshot(box=nbox, source="empty", world_dir=str(wdir))
+        return anvil_snap or WorldSnapshot(box=nbox, source="empty", world_dir=str(wdir))
     if nbox.volume > max_rcon_blocks:
-        raise ValueError(
-            f"RCON fallback refuses {nbox.volume:,} blocks; cap is {max_rcon_blocks:,}"
-        )
-    return _snapshot_box_rcon(nbox, wdir, include_sparse=include_sparse)
+        # Box is too large to RCON-sample; return whatever anvil saw.
+        return anvil_snap or WorldSnapshot(box=nbox, source="empty", world_dir=str(wdir))
+    return _snapshot_box_rcon(
+        nbox,
+        wdir,
+        include_sparse=include_sparse,
+        palette_of_interest=palette_of_interest,
+    )
 
 
 def _normalize_block_id(block: str) -> str:
@@ -198,16 +209,41 @@ def _snapshot_box_rcon(
     world_dir: Path,
     *,
     include_sparse: bool,
+    palette_of_interest: list[str] | None = None,
 ) -> WorldSnapshot:
+    """RCON-backed snapshot.
+
+    Vanilla Minecraft has no general "what block is here?" RCON command
+    (``data get block`` only returns NBT for block entities). To work around
+    this, we use ``execute if block`` against a shortlist of candidate blocks:
+    first ``minecraft:air`` to classify air vs structure, then any
+    ``palette_of_interest`` so callers can reliably count specific block
+    types. Non-air cells we cannot identify are recorded as
+    ``minecraft:_unknown_solid`` so structural invariants can still see them.
+    """
+
     from agent import tools as T
+
+    candidate_blocks: list[str] = ["minecraft:air"]
+    for raw in palette_of_interest or []:
+        normalized = raw if ":" in raw else f"minecraft:{raw}"
+        if normalized not in candidate_blocks:
+            candidate_blocks.append(normalized)
 
     palette: Counter[str] = Counter()
     sparse: dict[tuple[int, int, int], str] = {}
     for x, y, z in box.iter_xyz():
-        out = T._rcon(f"data get block {x} {y} {z} Name", timeout=15)
-        m = re.search(r"minecraft:[a-z0-9_]+", out or "")
-        block = m.group(0) if m else "minecraft:air"
+        block = "minecraft:_unknown_solid"
+        for candidate in candidate_blocks:
+            out = T._rcon(
+                f"execute if block {x} {y} {z} {candidate}", timeout=10
+            )
+            if "passed" in (out or "").lower():
+                block = candidate
+                break
         palette[block] += 1
         if include_sparse:
             sparse[(x, y, z)] = block
-    return WorldSnapshot(box=box, palette=palette, sparse=sparse, source="rcon", world_dir=str(world_dir))
+    return WorldSnapshot(
+        box=box, palette=palette, sparse=sparse, source="rcon", world_dir=str(world_dir)
+    )
