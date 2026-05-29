@@ -50,8 +50,8 @@ services:
       SIMULATION_DISTANCE: '6'
       PAUSE_WHEN_EMPTY_SECONDS: '600'
 
-      # Server browser banner. The itzg image translates &-color codes for us.
-      MOTD: ${MC_MOTD:-&aThe Neighborhood &7- &fCreative crossplay (Java + Bedrock)}
+      # Server browser banner. Use § color codes (vanilla format).
+      MOTD: ${MC_MOTD:-§aThe Neighborhood §7§o- §r§fCreative crossplay (Java + Bedrock)}
 
       MODE: creative
       FORCE_GAMEMODE: 'true'
@@ -60,8 +60,10 @@ services:
       SPAWN_PROTECTION: '0'
 
       # --- Neighborhood world ---
-      # Override MC_LEVEL in .env when temporarily booting sandbox/test worlds.
+      # Default party world is vanilla terrain. Override LEVEL/LEVEL_TYPE in
+      # .env when temporarily booting sandbox/test worlds.
       LEVEL: ${MC_LEVEL:-world}
+      LEVEL_TYPE: ${MC_LEVEL_TYPE:-minecraft:normal}
 
       ENABLE_AUTOPAUSE: 'false'
       ENABLE_RCON: 'true'
@@ -201,6 +203,8 @@ services:
       INITIAL_DELAY: '0'
       RCON_HOST: mc
       RCON_PASSWORD_FILE: /run/secrets/rcon_pass
+      # Skip dev/eval sandbox dirs so backups stay focused on world state.
+      EXCLUDES: '*.jar,cache,logs,*.tmp,_reset_archives,corpus-runs,eval-runs'
     volumes:
       - ./data:/data:ro
       - ./backups:/backups
