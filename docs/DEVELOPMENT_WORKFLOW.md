@@ -57,19 +57,19 @@ One-command non-mutating validation:
 With live server checks:
 
 ```bash
-AGENT_LIVE_TOOL_PLAYER=firecrab93 RUN_LIVE=1 ./scripts/validate-all.sh
+AGENT_LIVE_TOOL_PLAYER=JavaTester RUN_LIVE=1 ./scripts/validate-all.sh
 ```
 
 With full world/corpus validation (mutates the flat validation area):
 
 ```bash
-AGENT_LIVE_TOOL_PLAYER=firecrab93 RUN_LIVE=1 RUN_FULL_WORLD=1 ./scripts/validate-all.sh
+AGENT_LIVE_TOOL_PLAYER=JavaTester RUN_LIVE=1 RUN_FULL_WORLD=1 ./scripts/validate-all.sh
 ```
 
 Representative real `/agent` prompt smoke through `mc-agent`:
 
 ```bash
-AGENT_SMOKE_PLAYER=firecrab93 ./scripts/agent-smoke.sh
+AGENT_SMOKE_PLAYER=JavaTester ./scripts/agent-smoke.sh
 ```
 
 This sends 26 natural-language prompts through `/v1/jobs` using the local model
@@ -107,17 +107,17 @@ Create or edit templates in one of three ways:
 python3 -m agent.templates.ingest --apply-corpus-sprint
 
 # 2. Re-seed one or more schematics from catalog fallback builders.
-AGENT_SEED_PLAYER=firecrab93 ./scripts/seed-templates.sh --all --only cottage_medium
+AGENT_SEED_PLAYER=JavaTester ./scripts/seed-templates.sh --all --only cottage_medium
 
 # 3. Save a hand-built FAWE selection from in game.
 # In Cursor/MCP or /agent tool call:
-create_template_from_selection(player="firecrab93", template_id="my_new_template")
+create_template_from_selection(player="JavaTester", template_id="my_new_template")
 ```
 
 After changing builders that affect schematics:
 
 ```bash
-AGENT_SEED_PLAYER=firecrab93 ./scripts/seed-templates.sh --all --only <template_id>
+AGENT_SEED_PLAYER=JavaTester ./scripts/seed-templates.sh --all --only <template_id>
 PYTHONPATH=. python3 scripts/full_validation.py
 ```
 
@@ -132,8 +132,8 @@ PYTHONPATH=. python3 scripts/full_validation.py
 | Unit/contract | `python3 -m pytest tests/ -q` | No | Registry/schema/tool contracts, ranker, training, catalog |
 | Ranking eval | `PYTHONPATH=. python3 -m agent.eval.template_ranking_eval` | No | Natural-language template resolution |
 | Spec eval | `./scripts/eval.sh spec` | Dry-run | Model/tool trajectory vs baselines |
-| Live tools | `AGENT_LIVE_TOOL_PLAYER=firecrab93 ./scripts/live-tool-tests.sh` | Yes, sandbox | Direct `agent.tools` against Paper + RCON probes |
-| Agent smoke | `AGENT_SMOKE_PLAYER=firecrab93 ./scripts/agent-smoke.sh` | Yes | Real `/v1/jobs` prompt routing with local model |
+| Live tools | `AGENT_LIVE_TOOL_PLAYER=JavaTester ./scripts/live-tool-tests.sh` | Yes, sandbox | Direct `agent.tools` against Paper + RCON probes |
+| Agent smoke | `AGENT_SMOKE_PLAYER=JavaTester ./scripts/agent-smoke.sh` | Yes | Real `/v1/jobs` prompt routing with local model |
 | Full world | `PYTHONPATH=. python3 scripts/full_validation.py` | Yes, validation grid | Paste every catalog template + summon every supported mob |
 
 Current known-good snapshot (`TOOLS_VERSION=2.8.0`):
@@ -221,7 +221,7 @@ Restart:
 
 ```bash
 docker compose up -d --build mc-agent
-AGENT_SMOKE_PLAYER=firecrab93 ./scripts/agent-smoke.sh
+AGENT_SMOKE_PLAYER=JavaTester ./scripts/agent-smoke.sh
 ```
 
 ### GGUF via Ollama Modelfile
@@ -264,8 +264,8 @@ Before treating a branch as a stable foundation:
 
 ```bash
 ./scripts/validate-all.sh
-AGENT_LIVE_TOOL_PLAYER=firecrab93 RUN_LIVE=1 ./scripts/validate-all.sh
-AGENT_SMOKE_PLAYER=firecrab93 ./scripts/agent-smoke.sh
+AGENT_LIVE_TOOL_PLAYER=JavaTester RUN_LIVE=1 ./scripts/validate-all.sh
+AGENT_SMOKE_PLAYER=JavaTester ./scripts/agent-smoke.sh
 PYTHONPATH=. python3 scripts/full_validation.py
 git status -s
 ```

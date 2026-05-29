@@ -57,7 +57,7 @@ Use deterministic live tests to verify the tool implementations themselves,
 without an LLM in the loop:
 
 ```bash
-AGENT_LIVE_TOOL_PLAYER=firecrab93 ./scripts/live-tool-tests.sh
+AGENT_LIVE_TOOL_PLAYER=JavaTester ./scripts/live-tool-tests.sh
 ```
 
 These tests call `agent.tools` directly and probe server state through RCON.

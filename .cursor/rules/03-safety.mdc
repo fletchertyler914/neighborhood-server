@@ -41,8 +41,8 @@ alwaysApply: true
 ## Whitelist / public exposure
 
 - Whitelist is currently OFF. If the user wants to share the playit
-  address publicly, set `ENFORCE_WHITELIST=true` in compose and populate
-  `WHITELIST:` first, then restart.
+  address publicly without a whitelist, set `MC_ENFORCE_WHITELIST=false` in
+  `.env` only after populating `WHITELIST:` (default is enforced whitelist on).
 
 ## World data
 

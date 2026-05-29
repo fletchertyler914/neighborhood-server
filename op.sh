@@ -6,7 +6,7 @@
 #
 # Notes:
 #   - Bedrock (Geyser/Floodgate) players need a leading "." prefix on their
-#     gamertag, e.g. .LunarLicense582
+#     gamertag, e.g. .BedrockPlayer
 #   - Override the container name with MC_CONTAINER=foo ./op.sh ...
 
 set -euo pipefail

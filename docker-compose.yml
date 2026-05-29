@@ -68,7 +68,7 @@ services:
       ENABLE_AUTOPAUSE: 'false'
       ENABLE_RCON: 'true'
       RCON_PASSWORD_FILE: /run/secrets/rcon_pass
-      AGENT_API_TOKEN: ${AGENT_API_TOKEN:-dev-change-me}
+      AGENT_API_TOKEN: ${AGENT_API_TOKEN:?Set AGENT_API_TOKEN in .env — run make bootstrap}
 
       # Suppress RCON/console command echoes to ops chat. The agent shells
       # out RCON for every tool call (build, teleport, give, summon, etc.);
@@ -80,15 +80,17 @@ services:
       STOP_SERVER_ANNOUNCE_DELAY: '20'
       STOP_DURATION: '90'
 
-      ENFORCE_WHITELIST: 'false'
+      # Friends-server override: MC_ENFORCE_WHITELIST=false in .env
+      ENFORCE_WHITELIST: ${MC_ENFORCE_WHITELIST:-true}
       EXISTING_WHITELIST_FILE: SYNCHRONIZE
       EXISTING_OPS_FILE: MERGE
 
       # Pre-opped players. MERGE mode keeps anyone you `/op` at runtime, and
       # also re-ops anyone listed here on every restart. Bedrock players show
       # up with a leading "." (Floodgate prefix) - keep it when adding them.
-      OPS: |
-        .LunarLicense582
+      # OPS: |
+      #   JavaPlayer
+      #   .BedrockPlayer
       # WHITELIST: |
       #   friend1
       #   friend2
@@ -120,7 +122,8 @@ services:
       mc:
         condition: service_healthy
     environment:
-      AGENT_API_TOKEN: ${AGENT_API_TOKEN:-dev-change-me}
+      AGENT_API_TOKEN: ${AGENT_API_TOKEN:?Set AGENT_API_TOKEN in .env — run make bootstrap}
+      # Binds all interfaces inside the container; safe — no host ports: mapping.
       AGENT_BIND_HOST: 0.0.0.0
       AGENT_BIND_PORT: '8787'
       AGENT_JOB_TIMEOUT_SEC: '75'
@@ -134,7 +137,7 @@ services:
       RCON_HOST: mc
       RCON_PORT: '25575'
       RCON_PASSWORD_FILE: /run/secrets/rcon_pass
-      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
       OLLAMA_FALLBACK_MODEL: ${OLLAMA_FALLBACK_MODEL:-qwen3:8b}
       OLLAMA_NUM_CTX: ${OLLAMA_NUM_CTX:-4096}
@@ -211,6 +214,39 @@ services:
     secrets:
       - rcon_pass
 
+  # Opt-in bundled Ollama (Linux/Windows, or when you skip host install).
+  # Mac Apple Silicon: prefer host Ollama for Metal GPU — do not enable this profile.
+  ollama:
+    image: ollama/ollama:latest
+    container_name: mc-ollama
+    profiles: ["ollama"]
+    restart: unless-stopped
+    volumes:
+      - ollama-models:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: mc-ollama-pull
+    profiles: ["ollama"]
+    depends_on:
+      ollama:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - ollama pull ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    restart: "no"
+
 secrets:
   rcon_pass:
     file: ./secrets/rcon_password
+
+volumes:
+  ollama-models:

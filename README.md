@@ -28,10 +28,11 @@
 ```bash
 git clone <this repo> neighborhood-server
 cd neighborhood-server
-make bootstrap            # detects deps, generates secrets/.env
-make up                   # boots Paper + agent + sidecars
-make plugin && make seed  # build the in-game plugin and pre-build all schematics
-# Join the server, type /agent build me a hollow stone cylinder around me radius 6
+make bootstrap            # secrets, .env + AGENT_API_TOKEN, Ollama path choice
+make up                   # host Ollama path (or: docker compose --profile ollama up -d)
+make plugin && make seed  # in-game plugin + schematic corpus
+./mc.sh op <yourname>     # whitelist is on by default — add yourself first
+# /agent build me a hollow stone cylinder around me radius 6
 ```
 
 `make help` lists every target. Read on for the full setup story.
@@ -99,8 +100,11 @@ committed (see `.gitignore`).
 
 ### 2c. (Optional) Add yourself as op and whitelist your players
 
-Edit `docker-compose.yml` and fill in `OPS:` and `WHITELIST:` (one player
-name per line). The image resolves names to UUIDs automatically.
+After first boot, op yourself: `./mc.sh op <name>` (Bedrock: leading `.`).
+
+To pre-op players on every restart, uncomment `OPS:` in `docker-compose.yml`.
+Whitelist is **on** by default; add names via `./mc.sh cmd "whitelist add …"`.
+For an open friends server, set `MC_ENFORCE_WHITELIST=false` in `.env`.
 
 ## 3. Start the server
 
@@ -193,12 +197,12 @@ The repo ships a small admin wrapper, `./mc.sh`, that fronts the most common
 RCON and container chores. Run it with no args for the full help.
 
 ```bash
-./mc.sh op .LunarLicense582       # bedrock player (note the leading dot)
+./mc.sh op .BedrockPlayer       # bedrock player (note the leading dot)
 ./mc.sh op SomeJavaPlayer
 ./mc.sh deop SomeJavaPlayer
 ./mc.sh list                      # who's online
 ./mc.sh say "Restart in 5 minutes"
-./mc.sh gamemode creative .LunarLicense582
+./mc.sh gamemode creative .BedrockPlayer
 ./mc.sh time set day
 ./mc.sh kick TrollPlayer "no thanks"
 ./mc.sh ban TrollPlayer
@@ -243,7 +247,7 @@ Use minecraft-builder to list online players.
 Use minecraft-builder to build a 21x21 quartz platform at 0 80 0.
 Use minecraft-builder to build a hollow glass sphere of radius 10 around 25 90 25.
 Use minecraft-builder to build a spiral staircase at 50 70 50.
-Use minecraft-builder to teleport .LunarLicense582 to 0 90 0.
+Use minecraft-builder to teleport .BedrockPlayer to 0 90 0.
 Use minecraft-builder to run the raw command time set day.
 ```
 
@@ -256,7 +260,7 @@ The MCP has guardrails:
 
 FastAsyncWorldEdit is also installed. The MCP exposes `fawe_as_player` for
 commands that need a player context/location/selection, for example running
-WorldEdit commands as `.LunarLicense582`.
+WorldEdit commands as `.BedrockPlayer`.
 
 #### Cursor rules (so new chats just know what to do)
 
@@ -275,7 +279,7 @@ workspace already has the context. You can just say things like:
 ```text
 Build me a 31x31 quartz platform centered at 100 80 -50, hollow walls 4 blocks tall.
 Op .NewBedrockPlayer and put them in creative.
-Backup now, then run //regen on .LunarLicense582's selection.
+Backup now, then run //regen on .BedrockPlayer's selection.
 ```
 
 ### In-game `/agent` (local AI + shared MCP tools)
@@ -293,13 +297,17 @@ cloud fallback.
 
 **One-time setup**
 
-1. Copy agent vars from `.env.example` into `.env` and set `AGENT_API_TOKEN`.
-2. Install [Ollama](https://ollama.com) on the host and pull the local models:
-   `ollama pull qwen2.5:7b-instruct && ollama pull qwen3:8b`
-3. Build and install the Paper plugin:
-   `./scripts/build-plugin.sh`
-4. Start the whole stack:
-   `docker compose up -d --build`
+1. `make bootstrap` — generates `secrets/rcon_password`, `.env`, and
+   `AGENT_API_TOKEN` (required; Compose will not start without it).
+2. **LLM** (pick one):
+   - **Host Ollama** (Mac GPU): install [Ollama](https://ollama.com),
+     `ollama pull qwen2.5:7b-instruct`, keep
+     `OLLAMA_BASE_URL=http://host.docker.internal:11434` in `.env`, then `make up`.
+   - **Bundled Ollama**: set `OLLAMA_BASE_URL=http://ollama:11434` in `.env`
+     (bootstrap can do this), then
+     `docker compose --profile ollama up -d` (first run pulls ~5 GB).
+   - **Cloud only**: set `OPENAI_API_KEY` in `.env` (no Ollama needed).
+3. `make plugin && make seed`
 
 The plugin config should point to the Compose service:
 

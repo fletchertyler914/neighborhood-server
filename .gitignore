@@ -31,6 +31,9 @@ agent/templates/.seed_manifest.json
 datasets/
 models/
 
+# --- Cursor internal planning (not for public repo) --------------------
+.cursor/plans/
+
 # --- macOS / IDE -------------------------------------------------------
 .DS_Store
 *.swp

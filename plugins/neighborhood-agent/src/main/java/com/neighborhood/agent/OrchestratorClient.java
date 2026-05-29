@@ -33,10 +33,15 @@ public final class OrchestratorClient implements AutoCloseable {
             if (envValue != null && !envValue.isBlank()) {
                 return envValue;
             }
-            plugin.getLogger().warning("Environment variable " + envName + " is not set; using dev token");
-            return "dev-change-me";
+            plugin.getLogger().severe(
+                    "Environment variable " + envName + " is not set; /agent is disabled until AGENT_API_TOKEN is configured");
+            return "";
         }
-        return configured == null || configured.isBlank() ? "dev-change-me" : configured;
+        if (configured == null || configured.isBlank()) {
+            plugin.getLogger().severe("api-token is not set in plugin config; /agent is disabled");
+            return "";
+        }
+        return configured;
     }
 
     private int getTimeoutSec() {
@@ -44,6 +49,11 @@ public final class OrchestratorClient implements AutoCloseable {
     }
 
     public CompletableFuture<JobResult> submitJob(JobPayload payload) {
+        String token = getApiToken();
+        if (token.isBlank()) {
+            return CompletableFuture.completedFuture(
+                    JobResult.fail("Agent misconfigured: set AGENT_API_TOKEN in .env and restart the stack"));
+        }
         String url = getBaseUrl().replaceAll("/$", "") + "/v1/jobs";
         String body = payload.toJson();
         int timeout = getTimeoutSec();
@@ -52,7 +62,7 @@ public final class OrchestratorClient implements AutoCloseable {
                 .uri(URI.create(url))
                 .timeout(Duration.ofSeconds(timeout))
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + getApiToken())
+                .header("Authorization", "Bearer " + token)
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 

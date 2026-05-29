@@ -5,6 +5,21 @@ All notable changes to this experimental neighborhood-server stack are documente
 ## [Unreleased]
 
 ### Added
+- Opt-in Compose `ollama` profile (`docker compose --profile ollama up`) for
+  bundled local LLM without a host Ollama install
+- `MC_ENFORCE_WHITELIST` env override for friends-server mode
+
+### Removed
+- Tracked `.cursor/plans/` (gitignored; internal planning only)
+
+### Security / OSS hygiene
+- Sanitized example player names; empty default `OPS:` block
+- `AGENT_API_TOKEN` required at Compose boot (no `dev-change-me` production default)
+- Plugin refuses `/agent` when `AGENT_API_TOKEN` is unset
+- Whitelist **on** by default (`ENFORCE_WHITELIST` via `MC_ENFORCE_WHITELIST`)
+- Bootstrap chooses host Ollama vs Compose `ollama` profile and sets `OLLAMA_BASE_URL`
+
+### Added (prior release work)
 - `must_call_any` OR-group assertion primitive for spec eval (accepts multiple
   equally-good tool answers)
 - Shape-word router in orchestrator: "cylinder" overrides template-first routing

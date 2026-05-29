@@ -12,7 +12,7 @@ Self-hosted crossplay Minecraft server defined by `docker-compose.yml`.
 - **Server**: Paper `26.1.2` on Java 25 via `itzg/minecraft-server:java25`
 - **Container name**: `mc-lan` (used by `docker exec`, MCP, scripts)
 - **Crossplay**: GeyserMC + Floodgate. Bedrock players appear with a leading
-  `.` (Floodgate prefix), e.g. `.LunarLicense582`. Always include the dot.
+  `.` (Floodgate prefix), e.g. `.BedrockPlayer`. Always include the dot.
 - **Building plugin**: FastAsyncWorldEdit (FAWE) `2.15.1`
 - **External access**: `playit-agent` sidecar (`playit-agent` container).
   Tunnels: Java TCP 25565, Bedrock UDP 19132.

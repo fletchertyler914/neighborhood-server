@@ -8,9 +8,9 @@ This is the new-clone, get-running-fast guide. For the deeper setup story
 - Docker Desktop (macOS / Windows) or Docker Engine + Compose v2 (Linux)
 - Python 3.11 or newer
 - ~6 GB free RAM, ~5 GB free disk
-- (Optional but recommended) [Ollama](https://ollama.com) on the host for
-  free, local LLM inference. Without Ollama you can fall back to OpenAI by
-  setting `OPENAI_API_KEY` in `.env`.
+- A local LLM for `/agent`: either [Ollama](https://ollama.com) on the host
+  (recommended on Mac for GPU) **or** the bundled Compose `ollama` profile
+  (no host install). Without either, set `OPENAI_API_KEY` in `.env`.
 
 ## 1. Bootstrap
 
@@ -25,24 +25,36 @@ make bootstrap
 - Verify Docker, Python, and (if present) Ollama
 - Generate a fresh RCON password into `secrets/rcon_password`
 - Create `.env` from `.env.example` with a randomly-generated `AGENT_API_TOKEN`
-- Warn if you haven't pulled `qwen2.5:7b-instruct` yet
+- Pick host Ollama vs the Compose `ollama` profile (interactive if no host Ollama)
+- Warn if you haven't pulled `qwen2.5:7b-instruct` yet (host path only)
 
 If you want playit.gg crossplay tunnels, add a `PLAYIT_SECRET_KEY` to `.env`
 ([signup is free](https://playit.gg/login)).
 
-## 2. Pull a model (recommended)
+## 2. LLM for `/agent` (pick one path)
+
+### Path A — host Ollama (Mac GPU, or you already use Ollama)
 
 ```bash
 ollama pull qwen2.5:7b-instruct
+# .env should have OLLAMA_BASE_URL=http://host.docker.internal:11434 (bootstrap sets this)
+make up
 ```
 
-This is the default local model. The orchestrator falls back to
-`qwen3:8b` if the primary stalls, and to OpenAI if `OPENAI_API_KEY` is set.
-
-## 3. Start the stack
+### Path B — bundled Ollama (Linux/Windows, zero host install)
 
 ```bash
-make up         # equivalent to docker compose up -d
+# bootstrap sets OLLAMA_BASE_URL=http://ollama:11434
+docker compose --profile ollama up -d   # first run pulls the model (~5 GB)
+```
+
+The orchestrator falls back to `qwen3:8b` if the primary stalls, and to
+OpenAI if `OPENAI_API_KEY` is set.
+
+## 3. Start the stack (if not already up)
+
+```bash
+make up         # host-Ollama path (docker compose up -d)
 make logs       # watch first boot (ctrl-c to detach)
 ```
 
@@ -62,6 +74,16 @@ rebuild what changed.
 ## 5. Join and try it
 
 Connect at `localhost:25565` (Java) or `localhost:19132` (Bedrock).
+
+Whitelist is **on** by default. Add yourself before guests join:
+
+```bash
+./mc.sh cmd "whitelist add <your_java_name>"
+./mc.sh cmd "whitelist add .<bedrock_gamertag>"   # leading dot for Bedrock
+```
+
+Friends-server mode (anyone with the playit address can join): set
+`MC_ENFORCE_WHITELIST=false` in `.env` and restart `mc`.
 
 In Minecraft chat:
 

@@ -35,14 +35,14 @@ Server commands:
   backup              Trigger an immediate world backup
 
 Notes:
-  - Bedrock players appear with a leading "." (Floodgate prefix), e.g. .LunarLicense582
+  - Bedrock players appear with a leading "." (Floodgate prefix), e.g. .BedrockPlayer
   - Override container name with MC_CONTAINER=foo ./mc.sh ...
 
 Examples:
-  ./mc.sh op .LunarLicense582
+  ./mc.sh op .BedrockPlayer
   ./mc.sh op SomeJavaPlayer
   ./mc.sh say "Restarting in 5 minutes"
-  ./mc.sh gamemode creative .LunarLicense582
+  ./mc.sh gamemode creative .BedrockPlayer
   ./mc.sh cmd "time set day"
 EOF
 }

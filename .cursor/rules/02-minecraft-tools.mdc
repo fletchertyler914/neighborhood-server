@@ -55,7 +55,7 @@ Always prefer typed tools for in-world actions:
 ### Bedrock vs Java names
 
 Bedrock players show up via Floodgate with a leading `.`. When the user
-says "lunar", confirm whether they mean `.LunarLicense582` (Bedrock) or a
+says "lunar", confirm whether they mean `.BedrockPlayer` (Bedrock) or a
 Java handle. The dot is part of the name in commands.
 
 ## 2. Shell wrappers — for terminal work

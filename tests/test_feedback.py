@@ -57,7 +57,7 @@ def test_record_feedback_resolves_last_job_from_audit(isolated_data_dir):
             {
                 "job_id": "job-1",
                 "timestamp": "t1",
-                "player": "firecrab93",
+                "player": "JavaTester",
                 "uuid": "uu1",
                 "prompt": "build a castle",
                 "status": "done",
@@ -73,7 +73,7 @@ def test_record_feedback_resolves_last_job_from_audit(isolated_data_dir):
     from agent.feedback import record_feedback, feedback_log_path
 
     entry = record_feedback(
-        player="firecrab93",
+        player="JavaTester",
         rating="bad",
         note="walls were solid",
         source="chat",
@@ -98,7 +98,7 @@ def test_record_feedback_copies_routing_from_audit(isolated_data_dir):
         [
             {
                 "job_id": "job-routed",
-                "player": "firecrab93",
+                "player": "JavaTester",
                 "uuid": "uu",
                 "prompt": "make a chicken coop",
                 "status": "done",
@@ -120,7 +120,7 @@ def test_record_feedback_copies_routing_from_audit(isolated_data_dir):
     )
     from agent.feedback import feedback_log_path, record_feedback
 
-    entry = record_feedback(player="firecrab93", rating="good")
+    entry = record_feedback(player="JavaTester", rating="good")
     assert entry.routing["intent_family"] == "farm_pen"
     assert entry.routing["selected_template_id"] == "chicken_coop_small"
     written = json.loads(feedback_log_path().read_text(encoding="utf-8").strip())
@@ -130,8 +130,8 @@ def test_record_feedback_copies_routing_from_audit(isolated_data_dir):
 def test_record_feedback_uses_in_memory_last_job_when_no_audit(isolated_data_dir):
     from agent.feedback import record_feedback, remember_last_job
 
-    remember_last_job("firecrab93", "live-job-xyz")
-    entry = record_feedback(player="firecrab93", rating="good")
+    remember_last_job("JavaTester", "live-job-xyz")
+    entry = record_feedback(player="JavaTester", rating="good")
     assert entry.job_id == "live-job-xyz"
     assert entry.tool_names == []  # no audit entry for this job
     assert entry.prompt == ""
@@ -143,7 +143,7 @@ def test_record_feedback_explicit_job_id_wins(isolated_data_dir):
         [
             {
                 "job_id": "other-job",
-                "player": "firecrab93",
+                "player": "JavaTester",
                 "uuid": "uu",
                 "prompt": "older",
                 "status": "done",
@@ -156,7 +156,7 @@ def test_record_feedback_explicit_job_id_wins(isolated_data_dir):
     from agent.feedback import record_feedback
 
     entry = record_feedback(
-        player="firecrab93",
+        player="JavaTester",
         rating="good",
         job_id="other-job",
     )
@@ -177,7 +177,7 @@ def test_handle_rating_job_returns_done_with_no_tool_calls(isolated_data_dir):
         [
             {
                 "job_id": "job-A",
-                "player": "firecrab93",
+                "player": "JavaTester",
                 "uuid": "uu",
                 "prompt": "build a castle",
                 "status": "done",
@@ -192,7 +192,7 @@ def test_handle_rating_job_returns_done_with_no_tool_calls(isolated_data_dir):
     from agent.orchestrator import _handle_rating_job, JobStatus
 
     req = JobRequest(
-        player="firecrab93",
+        player="JavaTester",
         uuid="uu",
         prompt="bad walls were solid",
         x=0,
@@ -233,7 +233,7 @@ def test_audit_hydration_skips_feedback_entries(isolated_data_dir):
         [
             {
                 "job_id": "real-1",
-                "player": "firecrab93",
+                "player": "JavaTester",
                 "uuid": "uu",
                 "prompt": "build a wall",
                 "status": "done",
@@ -242,7 +242,7 @@ def test_audit_hydration_skips_feedback_entries(isolated_data_dir):
             },
             {
                 "job_id": "rating-1",
-                "player": "firecrab93",
+                "player": "JavaTester",
                 "uuid": "uu",
                 "prompt": "good",
                 "status": "feedback",  # should be ignored
@@ -254,4 +254,4 @@ def test_audit_hydration_skips_feedback_entries(isolated_data_dir):
 
     from agent.feedback import get_last_job
 
-    assert get_last_job("firecrab93") == "real-1"
+    assert get_last_job("JavaTester") == "real-1"

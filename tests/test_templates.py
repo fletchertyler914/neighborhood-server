@@ -116,7 +116,7 @@ def test_paste_template_falls_back_when_no_schematic():
         "agent.tools._monolith._player_facing",
         return_value=facing,
     ), patch.dict("agent.tools.TOOL_DISPATCH", stubs):
-        result = paste_template_at_player("firecrab93", "chicken_coop_small")
+        result = paste_template_at_player("JavaTester", "chicken_coop_small")
     assert result.ok
     assert "fallback" in (result.output or "").lower()
 

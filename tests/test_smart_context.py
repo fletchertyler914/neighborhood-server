@@ -25,7 +25,7 @@ def test_thinking_model_detection():
 
 def test_world_context_render():
     wc = WorldContext(
-        online_players=[".LunarLicense582", "firecrab93"],
+        online_players=[".BedrockTester", "JavaTester"],
         time_of_day="noon",
         facing="south (+Z)",
         ground_block="grass_block",
@@ -33,7 +33,7 @@ def test_world_context_render():
         last_actions=['"build platform here" -> build_platform'],
     )
     rendered = wc.render()
-    assert ".LunarLicense582" in rendered
+    assert ".BedrockTester" in rendered
     assert "noon" in rendered
     assert "grass_block" in rendered
     assert "build_platform" in rendered
@@ -41,7 +41,7 @@ def test_world_context_render():
 
 def test_smart_context_includes_player_and_kb():
     req = JobRequest(
-        player=".LunarLicense582",
+        player=".BedrockTester",
         uuid="00000000-0000-0000-0009-01f42260e0d1",
         x=100.0,
         y=80.0,
@@ -50,7 +50,7 @@ def test_smart_context_includes_player_and_kb():
     )
 
     fake = WorldContext(
-        online_players=[".LunarLicense582"],
+        online_players=[".BedrockTester"],
         time_of_day="noon",
         facing="south (+Z)",
         ground_block="grass_block",
@@ -61,6 +61,6 @@ def test_smart_context_includes_player_and_kb():
         "agent.orchestrator.gather_context", return_value=fake
     ):
         msg = _build_smart_context(req)
-    assert ".LunarLicense582" in msg
+    assert ".BedrockTester" in msg
     assert "quartz" in msg.lower() or "platform" in msg.lower()
     assert "Live world context" in msg

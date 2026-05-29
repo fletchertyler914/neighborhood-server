@@ -153,7 +153,7 @@ include explicit dimensions (`21x21`, `radius 12`, `exactly N blocks wide`).
 - `give_haste` + `set_time("day")` is the classic creative combo
 
 ## Bedrock player names
-- ALWAYS keep the leading dot: `.LunarLicense582`, never `LunarLicense582`.
+- ALWAYS keep the leading dot: `.BedrockPlayer`, never `BedrockPlayer` (no dot).
 
 ## Anti-patterns to refuse
 - "Build something huge" without coords -> ask for size or use `build_platform` near player with sane defaults.

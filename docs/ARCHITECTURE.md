@@ -26,7 +26,7 @@ Bump `TOOLS_VERSION` when changing tool parameters or semantics. Eval baselines 
 | Tier | Command | Gates |
 |------|---------|-------|
 | Unit | `pytest` | Assertions, coverage matrix, schema sync, fixture replay |
-| Tool integration (live) | `AGENT_LIVE_TOOL_PLAYER=firecrab93 ./scripts/live-tool-tests.sh` | Direct `agent.tools` calls against Paper + RCON state probes |
+| Tool integration (live) | `AGENT_LIVE_TOOL_PLAYER=JavaTester ./scripts/live-tool-tests.sh` | Direct `agent.tools` calls against Paper + RCON state probes |
 | Spec (live) | `./scripts/eval.sh spec` | Dry-run tool trajectories vs baseline |
 | World (live) | `AGENT_EVAL_ALLOW_WORLD_MUTATION=1 ./scripts/eval.sh world` | RCON world probes |
 

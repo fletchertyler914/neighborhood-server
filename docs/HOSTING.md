@@ -41,8 +41,11 @@ local logs (the agent only sees the relay endpoints). Open
 - **Java edition** (TCP / 25565) -> something like `xyz-abc.gl.joinmc.link`
 - **Bedrock edition** (UDP / 19132) -> something like `xyz-abc.gl.joinmc.link:NNNNN`
 
-Paste both into the party invite. Reminder: whitelist is **OFF** by
-default for the friends server, so anyone with the address can join.
+Paste both into the party invite. Whitelist is **ON** by default in the
+public repo — add guests before sharing the address.
+
+For an open friends server (anyone with the playit address can join), set
+`MC_ENFORCE_WHITELIST=false` in `.env` and `docker compose restart mc`.
 
 To lock it down on the fly without restarting:
 

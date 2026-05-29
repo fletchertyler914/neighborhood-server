@@ -28,6 +28,21 @@ require() {
   return 1
 }
 
+set_ollama_url_in_env() {
+  local url="$1"
+  python3 - <<PY
+import pathlib
+import re
+p = pathlib.Path(".env")
+text = p.read_text()
+if re.search(r"^OLLAMA_BASE_URL=", text, re.M):
+    text = re.sub(r"^OLLAMA_BASE_URL=.*$", "OLLAMA_BASE_URL=${url}", text, flags=re.M)
+else:
+    text = text.rstrip() + "\nOLLAMA_BASE_URL=${url}\n"
+p.write_text(text)
+PY
+}
+
 echo "neighborhood-server bootstrap"
 echo "============================="
 
@@ -46,9 +61,27 @@ if command -v ollama >/dev/null 2>&1; then
   ok "ollama found ($(ollama --version 2>/dev/null | head -1))"
   HAS_OLLAMA=1
 else
-  warn "ollama not found — the agent will fall back to OPENAI if you set OPENAI_API_KEY"
-  warn "install from https://ollama.com to run a free, local model"
+  warn "ollama not found on the host"
   HAS_OLLAMA=0
+fi
+
+OLLAMA_MODE="${BOOTSTRAP_OLLAMA:-}"
+if [[ -z "$OLLAMA_MODE" ]]; then
+  if (( HAS_OLLAMA == 1 )); then
+    OLLAMA_MODE=host
+  elif [[ -t 0 ]]; then
+    echo
+    echo "How should /agent reach the LLM?"
+    echo "  1) Host Ollama (install from https://ollama.com — best on Mac for GPU)"
+    echo "  2) Docker Compose ollama profile (bundled; no host install)"
+    read -r -p "Choice [1/2] (default 2): " choice
+    case "${choice:-2}" in
+      1|host) OLLAMA_MODE=host ;;
+      *) OLLAMA_MODE=profile ;;
+    esac
+  else
+    OLLAMA_MODE=profile
+  fi
 fi
 
 if [[ ! -d "secrets" ]]; then
@@ -81,7 +114,7 @@ PY
 AGENT_API_TOKEN=$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')
 AGENT_BIND_HOST=0.0.0.0
 AGENT_BIND_PORT=8787
-OLLAMA_BASE_URL=http://127.0.0.1:11434
+OLLAMA_BASE_URL=http://host.docker.internal:11434
 OLLAMA_MODEL=qwen2.5:7b-instruct
 OLLAMA_FALLBACK_MODEL=qwen3:8b
 AGENT_LOCAL_MODEL_TIMEOUT_SEC=15
@@ -95,7 +128,24 @@ else
   ok ".env exists"
 fi
 
-if (( HAS_OLLAMA == 1 )); then
+case "$OLLAMA_MODE" in
+  host)
+    set_ollama_url_in_env "http://host.docker.internal:11434"
+    ok "OLLAMA_BASE_URL → host Ollama (http://host.docker.internal:11434)"
+    USE_OLLAMA_PROFILE=0
+    ;;
+  profile|compose|docker)
+    set_ollama_url_in_env "http://ollama:11434"
+    ok "OLLAMA_BASE_URL → Compose ollama service (http://ollama:11434)"
+    USE_OLLAMA_PROFILE=1
+    ;;
+  *)
+    err "Unknown BOOTSTRAP_OLLAMA=$OLLAMA_MODE (use host or profile)"
+    exit 1
+    ;;
+esac
+
+if (( HAS_OLLAMA == 1 )) && [[ "$OLLAMA_MODE" == host ]]; then
   if ! ollama list 2>/dev/null | awk 'NR>1{print $1}' | grep -q "^qwen2.5:7b-instruct$"; then
     warn "qwen2.5:7b-instruct not pulled. Run: ollama pull qwen2.5:7b-instruct"
   else
@@ -103,11 +153,19 @@ if (( HAS_OLLAMA == 1 )); then
   fi
 fi
 
+if (( USE_OLLAMA_PROFILE == 1 )); then
+  warn "First boot with bundled Ollama pulls ~5GB; use: docker compose --profile ollama up -d"
+fi
+
 echo
 echo "Next steps:"
 printf "${DIM}"
-echo "  1. ./mc.sh up                  # start the Paper server + agent"
-echo "  2. ./scripts/seed-templates.sh # build all .schem files in-world"
-echo "  3. ./mc.sh op <yourname>       # op yourself in-game"
-echo "  4. /agent build me a small cabin   # in-game!"
+if (( USE_OLLAMA_PROFILE == 1 )); then
+  echo "  1. docker compose --profile ollama up -d   # Paper + agent + Ollama"
+else
+  echo "  1. make up                                 # Paper + agent (host Ollama must be running)"
+fi
+echo "  2. make plugin && make seed                # in-game plugin + schematic corpus"
+echo "  3. ./mc.sh op <yourname>                   # op yourself (whitelist is on by default)"
+echo "  4. /agent build me a small cabin           # in-game!"
 printf "${RESET}"

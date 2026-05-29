@@ -36,8 +36,8 @@ from agent.tools import (
 
 def _facing_replies(x: int, y: int, z: int, yaw: float):
     return [
-        f"firecrab93 has the following entity data: [{x}.5d, {y}.0d, {z}.5d]",
-        f"firecrab93 has the following entity data: [{yaw}f, 0.0f]",
+        f"JavaTester has the following entity data: [{x}.5d, {y}.0d, {z}.5d]",
+        f"JavaTester has the following entity data: [{yaw}f, 0.0f]",
     ]
 
 
@@ -80,11 +80,11 @@ def _captured_rcon(replies):
 def test_mine_shaft_drills_downward_one_wide():
     calls, fake = _captured_rcon(["Successfully filled 100 block(s)"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = mine_shaft_at_player("firecrab93", depth=100)
+        r = mine_shaft_at_player("JavaTester", depth=100)
     assert r.ok, r.error
     assert len(calls) == 1
     cmd = calls[0]
-    assert cmd.startswith("execute as firecrab93 at @s run fill ")
+    assert cmd.startswith("execute as JavaTester at @s run fill ")
     # 1-wide column: radius 0 → ~0..~0 on x/z, ~-1 down to ~-100 on y
     assert "~ ~-1 ~ ~ ~-100 ~ air replace" in cmd
     assert r.block_estimate == 100
@@ -93,7 +93,7 @@ def test_mine_shaft_drills_downward_one_wide():
 def test_mine_shaft_respects_forward_offset_and_radius():
     calls, fake = _captured_rcon(["Successfully filled 50 block(s)"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = mine_shaft_at_player("firecrab93", depth=50, radius=1, forward_offset=1)
+        r = mine_shaft_at_player("JavaTester", depth=50, radius=1, forward_offset=1)
     assert r.ok
     cmd = calls[0]
     assert "positioned ^ ^ ^1" in cmd
@@ -104,7 +104,7 @@ def test_mine_shaft_respects_forward_offset_and_radius():
 def test_mine_shaft_clamps_extreme_inputs():
     calls, fake = _captured_rcon(["OK"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = mine_shaft_at_player("firecrab93", depth=10_000, radius=99, forward_offset=999)
+        r = mine_shaft_at_player("JavaTester", depth=10_000, radius=99, forward_offset=999)
     assert r.ok
     cmd = calls[0]
     # depth capped at 256, radius capped at 5, forward_offset capped at 16
@@ -141,24 +141,24 @@ def test_set_weather_normalizes_aliases():
 
 
 def test_set_gamemode_accepts_short_alias():
-    calls, fake = _captured_rcon(["Set firecrab93's gamemode to Creative Mode"])
+    calls, fake = _captured_rcon(["Set JavaTester's gamemode to Creative Mode"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = set_gamemode("firecrab93", "c")
+        r = set_gamemode("JavaTester", "c")
     assert r.ok
-    assert calls == ["gamemode creative firecrab93"]
+    assert calls == ["gamemode creative JavaTester"]
 
 
 def test_give_haste_uses_seconds_not_ticks():
-    calls, fake = _captured_rcon(["Given [Haste II] to firecrab93 for 600 seconds"])
+    calls, fake = _captured_rcon(["Given [Haste II] to JavaTester for 600 seconds"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = give_haste("firecrab93", duration_sec=600, amplifier=2)
+        r = give_haste("JavaTester", duration_sec=600, amplifier=2)
     assert r.ok
-    assert calls == ["effect give firecrab93 haste 600 2"]
+    assert calls == ["effect give JavaTester haste 600 2"]
 
 
 def test_fawe_wrappers_validate_bounds():
-    bad_sphere = fawe_sphere_at_player("firecrab93", "glass", 0)
-    bad_cyl = fawe_cyl_at_player("firecrab93", "stone", radius=2, height=999)
+    bad_sphere = fawe_sphere_at_player("JavaTester", "glass", 0)
+    bad_cyl = fawe_cyl_at_player("JavaTester", "stone", radius=2, height=999)
     assert not bad_sphere.ok
     assert not bad_cyl.ok
 
@@ -168,7 +168,7 @@ def test_build_bridge_at_player_extends_forward_when_facing_south():
     replies = _facing_replies(100, 80, 200, 0.0) + ["Successfully filled 24 block(s)"]
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = build_bridge_at_player("firecrab93", length=12, width=2, block="oak_planks")
+        r = build_bridge_at_player("JavaTester", length=12, width=2, block="oak_planks")
     assert r.ok, r.error
     fill_cmd = [c for c in calls if c.startswith("fill ")][0]
     # deck at player_y - 1 = 79, spans z=201..212, x={99,100} (player at right edge)
@@ -180,7 +180,7 @@ def test_build_bridge_at_player_west_facing():
     replies = _facing_replies(50, 64, 50, 90.0) + ["Successfully filled 10 block(s)"]
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = build_bridge_at_player("firecrab93", length=10, width=1, block="cobblestone")
+        r = build_bridge_at_player("JavaTester", length=10, width=1, block="cobblestone")
     assert r.ok
     fill_cmd = [c for c in calls if c.startswith("fill ")][0]
     assert "fill 40 63 50 49 63 50 cobblestone replace" == fill_cmd
@@ -191,7 +191,7 @@ def test_build_house_at_player_places_house_in_front_with_door_facing_player():
     replies = _facing_replies(0, 80, 0, 0.0) + ["OK"] * 9
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = build_house_at_player("firecrab93", width=7, depth=7, height=5, distance=3)
+        r = build_house_at_player("JavaTester", width=7, depth=7, height=5, distance=3)
     assert r.ok, r.error
     joined = "\n".join(calls)
     # house center 3 + 7//2 = 6 forward of player (+Z)
@@ -205,7 +205,7 @@ def test_build_wall_at_player_perpendicular_to_facing():
     replies = _facing_replies(20, 70, 30, 180.0) + ["Successfully filled 32 block(s)"]
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = build_wall_at_player("firecrab93", length=8, height=4, block="stone_bricks", distance=2)
+        r = build_wall_at_player("JavaTester", length=8, height=4, block="stone_bricks", distance=2)
     assert r.ok
     fill_cmd = [c for c in calls if c.startswith("fill ")][0]
     # 2 in front along -Z → z = 28. Wall spans X centered at 20 (half=3, extra=4).
@@ -227,31 +227,31 @@ def test_normalize_item_id_strips_namespace_and_aliases():
 
 
 def test_give_item_runs_vanilla_give_with_clamped_count():
-    calls, fake = _captured_rcon(["Gave 1 [Diamond Pickaxe] to firecrab93"])
+    calls, fake = _captured_rcon(["Gave 1 [Diamond Pickaxe] to JavaTester"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = give_item("firecrab93", "pickaxe", count=99)
+        r = give_item("JavaTester", "pickaxe", count=99)
     assert r.ok, r.error
-    assert calls == ["give firecrab93 diamond_pickaxe 64"]
+    assert calls == ["give JavaTester diamond_pickaxe 64"]
     assert r.block_estimate == 64
 
 
 def test_give_item_respects_components_string():
-    calls, fake = _captured_rcon(["Gave 1 [Diamond Sword] to firecrab93"])
+    calls, fake = _captured_rcon(["Gave 1 [Diamond Sword] to JavaTester"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = give_item(
-            "firecrab93",
+            "JavaTester",
             "diamond_sword",
             count=1,
             components="[minecraft:enchantments={\"minecraft:sharpness\":5}]",
         )
     assert r.ok
     assert calls == [
-        'give firecrab93 diamond_sword[minecraft:enchantments={"minecraft:sharpness":5}] 1'
+        'give JavaTester diamond_sword[minecraft:enchantments={"minecraft:sharpness":5}] 1'
     ]
 
 
 def test_give_item_refuses_denylisted_items():
-    r = give_item("firecrab93", "command_block")
+    r = give_item("JavaTester", "command_block")
     assert not r.ok
     assert "command_block" in r.error
 
@@ -259,7 +259,7 @@ def test_give_item_refuses_denylisted_items():
 def test_give_item_surfaces_rcon_error_text():
     calls, fake = _captured_rcon(["Unknown item 'minecraft:bogus_item'"])
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = give_item("firecrab93", "bogus_item")
+        r = give_item("JavaTester", "bogus_item")
     assert not r.ok
     assert "Unknown item" in r.output
 
@@ -273,7 +273,7 @@ def test_build_castle_at_player_produces_hollow_walls_and_towers():
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_castle_at_player(
-            "firecrab93",
+            "JavaTester",
             size=11,
             height=6,
             tower_height=10,
@@ -356,7 +356,7 @@ def test_build_animal_pen_open_air_has_fence_and_animals():
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_animal_pen_at_player(
-            "firecrab93",
+            "JavaTester",
             animal="chicken",
             count=4,
             width=5,
@@ -394,7 +394,7 @@ def test_build_animal_pen_with_roof_adds_walls_and_door():
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_animal_pen_at_player(
-            "firecrab93",
+            "JavaTester",
             animal="chicken",
             count=2,
             width=5,
@@ -422,7 +422,7 @@ def test_build_animal_pen_rejects_hostile_or_unknown_animal():
     replies = _facing_replies(0, 80, 0, 0.0)
     _, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
-        r = build_animal_pen_at_player("firecrab93", animal="zombie", count=4)
+        r = build_animal_pen_at_player("JavaTester", animal="zombie", count=4)
     assert not r.ok
     assert "zombie" in (r.error or "")
 
@@ -432,7 +432,7 @@ def test_build_animal_pen_clamps_counts_and_size():
     calls, fake = _captured_rcon(replies)
     with patch("agent.tools._monolith._rcon", side_effect=fake):
         r = build_animal_pen_at_player(
-            "firecrab93",
+            "JavaTester",
             animal="cow",
             count=99,
             width=99,

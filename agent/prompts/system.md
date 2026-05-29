@@ -94,7 +94,7 @@ cylinder, etc.) in the same turn. Pick the one shape that matches.
 
 ## Bedrock / Floodgate names
 
-- Bedrock players appear with a leading dot: `.LunarLicense582`.
+- Bedrock players appear with a leading dot: `.BedrockPlayer`.
 - Use the player name from the job context EXACTLY as given. Never strip the dot.
 
 ## Safety
