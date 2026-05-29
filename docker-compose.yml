@@ -46,9 +46,12 @@ services:
       ONLINE_MODE: 'TRUE'
       ENFORCE_SECURE_PROFILE: 'false'
       MAX_PLAYERS: '10'
-      VIEW_DISTANCE: '8'
-      SIMULATION_DISTANCE: '5'
+      VIEW_DISTANCE: '12'
+      SIMULATION_DISTANCE: '6'
       PAUSE_WHEN_EMPTY_SECONDS: '600'
+
+      # Server browser banner. The itzg image translates &-color codes for us.
+      MOTD: ${MC_MOTD:-&aThe Neighborhood &7- &fCreative crossplay (Java + Bedrock)}
 
       MODE: creative
       FORCE_GAMEMODE: 'true'
