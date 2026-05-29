@@ -8,7 +8,7 @@ services:
     stdin_open: true
     restart: unless-stopped
     stop_grace_period: 2m
-    mem_limit: 7g
+    mem_limit: 10g
 
     ports:
       - '25565:25565/tcp'
@@ -21,7 +21,7 @@ services:
       PAPER_CHANNEL: default
 
       INIT_MEMORY: 2G
-      MAX_MEMORY: 5G
+      MAX_MEMORY: 8G
       # MeowIce/Aikar flags target G1; on aarch64 + Java 25 they hit JDK-8359378
       # (HotSpot late G1 barrier expansion crash). Generational ZGC sidesteps
       # that entire code path, gives sub-ms pauses, and is well-suited to
@@ -56,14 +56,9 @@ services:
       OP_PERMISSION_LEVEL: '4'
       SPAWN_PROTECTION: '0'
 
-      # --- Flat test world ---
-      # We use a separate level name so the original `world/` is preserved
-      # on disk. To revert: set LEVEL back to `world` and restart.
-      LEVEL: ${MC_LEVEL:-world_flat}
-      LEVEL_TYPE: ${MC_LEVEL_TYPE:-FLAT}
-      GENERATE_STRUCTURES: ${MC_GENERATE_STRUCTURES:-false}
-      # Vanilla "Flat" preset: bedrock + 2 dirt + grass at y=4. Override via env.
-      GENERATOR_SETTINGS: ${MC_GENERATOR_SETTINGS:-{"layers":[{"block":"minecraft:bedrock","height":1},{"block":"minecraft:dirt","height":2},{"block":"minecraft:grass_block","height":1}],"biome":"minecraft:plains"}}
+      # --- Neighborhood world ---
+      # Override MC_LEVEL in .env when temporarily booting sandbox/test worlds.
+      LEVEL: ${MC_LEVEL:-world}
 
       ENABLE_AUTOPAUSE: 'false'
       ENABLE_RCON: 'true'
