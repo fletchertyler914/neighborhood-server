@@ -16,13 +16,19 @@ endif
 
 .PHONY: help bootstrap up down logs status restart \
         seed smoke eval test live-tools full-validation \
-        corpus corpus-quick triage train train-full deploy-model compare-models \
+        corpus corpus-quick triage feedback-report feedback-export training-data \
+        train train-full deploy-model compare-models \
         plugin metrics health \
         format clean generate-corpus corpus-export
 
 CORPUS_ENV = -e AGENT_EVAL_ALLOW_WORLD_MUTATION=1 \
   -e AGENT_API_TOKEN="$$(awk -F= '/^AGENT_API_TOKEN=/{print $$2}' .env 2>/dev/null || echo dev-change-me)" \
   -e AGENT_CORPUS_PLAYER="$${AGENT_CORPUS_PLAYER:-$$(./scripts/_detect_player.sh 2>/dev/null || true)}"
+
+TRAIN_MODEL ?= neighborhood-qwen2.5-7b:v1
+TRAIN_SFT ?= datasets/sft/train.jsonl
+TRAIN_DPO ?= datasets/preferences/train.jsonl
+TRAIN_MAX_LENGTH ?= 512
 
 help:
 	@echo "Neighborhood Minecraft Server"
@@ -48,10 +54,12 @@ help:
 	@echo "  $(COLOR_GREEN)make corpus$(COLOR_RESET)           Full NL corpus (~612 prompts, live world)"
 	@echo "  $(COLOR_GREEN)make corpus-quick$(COLOR_RESET)     Corpus smoke (30 prompts)"
 	@echo "  $(COLOR_GREEN)make triage$(COLOR_RESET)           Triage latest corpus run failures"
-	@echo "  $(COLOR_GREEN)make train$(COLOR_RESET)            Corpus → resample → export → LoRA (dry-run safe)"
-	@echo "  $(COLOR_GREEN)make train-full$(COLOR_RESET)       Full LoRA → GGUF → ollama create"
-	@echo "  $(COLOR_GREEN)make deploy-model$(COLOR_RESET)     Set OLLAMA_MODEL, restart, compare"
-	@echo "  $(COLOR_GREEN)make compare-models$(COLOR_RESET)   Base vs fine-tuned on corpus subset"
+	@echo "  $(COLOR_GREEN)make feedback-report$(COLOR_RESET)  Count /agent good|bad rows"
+	@echo "  $(COLOR_GREEN)make training-data$(COLOR_RESET)    Corpus + feedback → merged SFT/DPO"
+	@echo "  $(COLOR_GREEN)make train$(COLOR_RESET)            Training-data → LoRA dry-run"
+	@echo "  $(COLOR_GREEN)make train-full$(COLOR_RESET)       Full qwen2.5 LoRA → GGUF → ollama create"
+	@echo "  $(COLOR_GREEN)make deploy-model$(COLOR_RESET)     Set OLLAMA_MODEL, restart, compare vs base"
+	@echo "  $(COLOR_GREEN)make compare-models$(COLOR_RESET)   Stock qwen2.5 vs trained qwen2.5"
 	@echo ""
 	@echo "Observability"
 	@echo "  $(COLOR_GREEN)make health$(COLOR_RESET)           Hit /health"
@@ -131,28 +139,50 @@ corpus-baseline:
 corpus-export:
 	PYTHONPATH=. python3 -m agent.training build-datasets --run data/corpus-runs/latest
 
+feedback-report:
+	PYTHONPATH=. python3 -m agent.training feedback --report
+
+feedback-export:
+	PYTHONPATH=. python3 -m agent.training feedback \
+	  --sft-out datasets/sft/from-feedback.jsonl \
+	  --dpo-out datasets/preferences/from-feedback.jsonl
+
+training-data: corpus-export feedback-export
+	PYTHONPATH=. python3 -m agent.training merge-datasets \
+	  --sft datasets/sft/corpus.jsonl \
+	  --sft datasets/sft/from-feedback.jsonl \
+	  --dpo datasets/preferences/corpus.jsonl \
+	  --dpo datasets/preferences/from-feedback.jsonl \
+	  --sft-out $(TRAIN_SFT) \
+	  --dpo-out $(TRAIN_DPO)
+
 sample-diverse:
 	PYTHONPATH=. python3 -m agent.training sample-diverse --run data/corpus-runs/latest
 
-train: corpus-export
+train: training-data
 	PYTHONPATH=. python3 -m agent.training sample-diverse --run data/corpus-runs/latest || true
 	PYTHONPATH=. python3 -m agent.training build-datasets --run data/corpus-runs/latest
-	AGENT_TRAIN_DRY_RUN=1 PYTHONPATH=. python3 -m agent.training lora-finetune --dry-run --out models/lora/v1
-	PYTHONPATH=. python3 -m agent.training ollama-register --model-name neighborhood-qwen2.5-7b:v1 --adapter models/lora/v1/adapter || true
+	$(MAKE) training-data
+	AGENT_TRAIN_DRY_RUN=1 PYTHONPATH=. python3 -m agent.training lora-finetune --dry-run \
+	  --sft $(TRAIN_SFT) --dpo $(TRAIN_DPO) --out models/lora/v1 --max-length $(TRAIN_MAX_LENGTH)
+	PYTHONPATH=. python3 -m agent.training ollama-register --model-name $(TRAIN_MODEL) --adapter models/lora/v1/adapter || true
 
-train-full: corpus-export
+train-full: training-data
 	PYTHONPATH=. python3 -m agent.training sample-diverse --run data/corpus-runs/latest || true
 	PYTHONPATH=. python3 -m agent.training build-datasets --run data/corpus-runs/latest
-	PYTHONPATH=. python3 -m agent.training lora-finetune --out models/lora/v1
-	PYTHONPATH=. python3 -m agent.training ollama-register --auto-merge --model-name neighborhood-qwen2.5-7b:v1 --adapter models/lora/v1/adapter
+	$(MAKE) training-data
+	PYTHONPATH=. python3 -m agent.training lora-finetune \
+	  --sft $(TRAIN_SFT) --dpo $(TRAIN_DPO) --out models/lora/v1 --max-length $(TRAIN_MAX_LENGTH)
+	PYTHONPATH=. python3 -m agent.training ollama-register --auto-merge --model-name $(TRAIN_MODEL) --adapter models/lora/v1/adapter
 
 deploy-model:
-	./scripts/deploy-model.sh $${OLLAMA_MODEL:-neighborhood-qwen2.5-7b:v1}
+	./scripts/deploy-model.sh $${OLLAMA_MODEL:-$(TRAIN_MODEL)}
 	$(MAKE) compare-models
 
 compare-models:
-	docker compose exec -T $(CORPUS_ENV) -e AGENT_CORPUS_LIMIT=30 mc-agent \
-	  python -m agent.training.compare_models --limit 30
+	docker compose exec -T $(CORPUS_ENV) -e AGENT_CORPUS_LIMIT=51 mc-agent \
+	  python -m agent.training.compare_models --limit 51 \
+	  --models qwen2.5:7b-instruct,$(TRAIN_MODEL)
 
 health:
 	@docker compose exec -T mc-agent python -c \

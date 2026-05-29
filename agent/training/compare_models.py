@@ -79,12 +79,25 @@ def _markdown_table(results: dict[str, Any], *, skipped: list[str] | None = None
             + ", ".join(f"`{m}`" for m in skipped)
         )
         lines.append("")
-    lines.extend(["| Model | Passed | Total | Pass rate |", "| --- | ---: | ---: | ---: |"])
+    lines.extend(
+        [
+            "| Model | Passed | Total | Pass rate | p50 | p90 | mean | total |",
+            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        ]
+    )
     for model, summary in results.items():
         total = summary.get("total", 0)
         passed = summary.get("passed", 0)
         rate = summary.get("pass_rate", 0)
-        lines.append(f"| `{model}` | {passed} | {total} | {rate:.1%} |")
+        lat = summary.get("latency") or {}
+        p50 = lat.get("p50_ms", 0) / 1000.0
+        p90 = lat.get("p90_ms", 0) / 1000.0
+        mean = lat.get("mean_ms", 0) / 1000.0
+        total_s = lat.get("total_s", 0)
+        lines.append(
+            f"| `{model}` | {passed} | {total} | {rate:.1%} | "
+            f"{p50:.1f}s | {p90:.1f}s | {mean:.1f}s | {total_s:.0f}s |"
+        )
     lines.append("")
     lines.append("## By category")
     for model, summary in results.items():
@@ -106,7 +119,7 @@ def main() -> None:
             "qwen2.5:7b-instruct,neighborhood-qwen2.5-7b:v1",
         ),
     )
-    parser.add_argument("--limit", type=int, default=int(os.environ.get("AGENT_CORPUS_LIMIT", "50")))
+    parser.add_argument("--limit", type=int, default=int(os.environ.get("AGENT_CORPUS_LIMIT", "51")))
     parser.add_argument("--category")
     args = parser.parse_args()
     models = [m.strip() for m in args.models.split(",") if m.strip()]

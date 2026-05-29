@@ -76,6 +76,18 @@ def _cmd_build_datasets(args: argparse.Namespace) -> None:
     print(json.dumps(stats, indent=2))
 
 
+def _cmd_merge_datasets(args: argparse.Namespace) -> None:
+    from agent.training.merge_datasets import merge_training_datasets
+
+    stats = merge_training_datasets(
+        sft_inputs=[p.resolve() for p in args.sft],
+        dpo_inputs=[p.resolve() for p in args.dpo],
+        sft_out=args.sft_out.resolve(),
+        dpo_out=args.dpo_out.resolve(),
+    )
+    print(json.dumps(stats, indent=2))
+
+
 def _cmd_sample_diverse(args: argparse.Namespace) -> None:
     from agent.training.sample_diverse import sample_diverse
 
@@ -95,6 +107,7 @@ def _cmd_lora(args: argparse.Namespace) -> None:
         dpo_path=args.dpo.resolve(),
         output_dir=args.out.resolve(),
         max_samples=args.max_samples,
+        max_length=args.max_length,
     )
     print(json.dumps(run_lora_training(cfg), indent=2))
 
@@ -133,8 +146,8 @@ def main(argv: list[str] | None = None) -> None:
     fb_p = sub.add_parser("feedback", help="SFT + DPO from /agent good|bad ratings")
     fb_p.add_argument("--feedback", type=Path, default=None)
     fb_p.add_argument("--audit", type=Path, default=None)
-    fb_p.add_argument("--sft-out", type=Path, default=Path("training/sft-from-feedback.jsonl"))
-    fb_p.add_argument("--dpo-out", type=Path, default=Path("training/dpo-from-feedback.jsonl"))
+    fb_p.add_argument("--sft-out", type=Path, default=Path("datasets/sft/from-feedback.jsonl"))
+    fb_p.add_argument("--dpo-out", type=Path, default=Path("datasets/preferences/from-feedback.jsonl"))
     fb_p.add_argument("--system-prompt", type=Path, default=Path("agent/prompts/system.md"))
     fb_p.add_argument("--include-bad-as-negative", action="store_true")
     fb_p.add_argument("--report", action="store_true")
@@ -147,6 +160,13 @@ def main(argv: list[str] | None = None) -> None:
     bd_p.add_argument("--system-prompt", type=Path, default=Path("agent/prompts/system.md"))
     bd_p.set_defaults(func=_cmd_build_datasets)
 
+    md_p = sub.add_parser("merge-datasets", help="Merge corpus + feedback SFT/DPO JSONL")
+    md_p.add_argument("--sft", type=Path, action="append", default=[])
+    md_p.add_argument("--dpo", type=Path, action="append", default=[])
+    md_p.add_argument("--sft-out", type=Path, default=Path("datasets/sft/train.jsonl"))
+    md_p.add_argument("--dpo-out", type=Path, default=Path("datasets/preferences/train.jsonl"))
+    md_p.set_defaults(func=_cmd_merge_datasets)
+
     sd_p = sub.add_parser("sample-diverse", help="Resample failing corpus at varied temperatures")
     sd_p.add_argument("--run", type=Path, default=Path("data/corpus-runs/latest"))
     sd_p.add_argument("--temperatures", default="0.0,0.3,0.7")
@@ -158,6 +178,7 @@ def main(argv: list[str] | None = None) -> None:
     lf_p.add_argument("--dpo", type=Path, default=Path("datasets/preferences/corpus.jsonl"))
     lf_p.add_argument("--out", type=Path, default=Path("models/lora/latest"))
     lf_p.add_argument("--max-samples", type=int, default=None)
+    lf_p.add_argument("--max-length", type=int, default=int(os.environ.get("AGENT_TRAIN_MAX_LENGTH", "512")))
     lf_p.add_argument("--dry-run", action="store_true")
     lf_p.set_defaults(func=_cmd_lora)
 
@@ -170,7 +191,7 @@ def main(argv: list[str] | None = None) -> None:
 
     cm_p = sub.add_parser("compare-models", help="Compare models on corpus subset")
     cm_p.add_argument("--models", default="qwen2.5:7b-instruct,neighborhood-qwen2.5-7b:v1")
-    cm_p.add_argument("--limit", type=int, default=30)
+    cm_p.add_argument("--limit", type=int, default=51)
     cm_p.add_argument("--category")
     cm_p.set_defaults(func=_cmd_compare_models)
 

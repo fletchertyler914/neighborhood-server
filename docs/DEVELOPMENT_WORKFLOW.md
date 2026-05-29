@@ -166,23 +166,28 @@ PYTHONPATH=. python3 -m agent.training feedback --report
 
 ## 7. Dataset buildup
 
-Export eval/audit rows for human review:
+The end-to-end NL → tool → world corpus + DPO loop lives in
+`docs/CORPUS.md` and `docs/FINE_TUNING.md`. Quick entry points:
+
+```bash
+make corpus           # ~612 prompts, live world (~3h)
+make corpus-quick     # 30-prompt smoke
+make triage           # cluster failures from latest run
+make feedback-report  # count /agent good|bad rows captured so far
+make training-data    # corpus + feedback → datasets/sft/train.jsonl
+                      # + datasets/preferences/train.jsonl
+make train            # dry-run LoRA wiring against merged data
+make train-full       # real LoRA → GGUF → ollama create
+make compare-models   # stock qwen2.5 vs trained qwen2.5 (with latency)
+```
+
+Lower-level dataset helpers (still supported):
 
 ```bash
 ./scripts/export-dataset.sh datasets/reviews/raw/export.jsonl
-```
-
-Build preference pairs from manually reviewed rows:
-
-```bash
 PYTHONPATH=. python3 -m agent.training pairs \
   datasets/reviews/raw/export.jsonl \
   datasets/preferences/pairs.jsonl
-```
-
-Build SFT/DPO data from `/agent good|bad` feedback:
-
-```bash
 PYTHONPATH=. python3 -m agent.training feedback \
   --sft-out datasets/sft/from-feedback.jsonl \
   --dpo-out datasets/preferences/from-feedback.jsonl

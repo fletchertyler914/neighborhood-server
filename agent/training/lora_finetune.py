@@ -22,6 +22,7 @@ class TrainConfig:
     lora_r: int = 16
     lora_alpha: int = 32
     max_samples: int | None = None
+    max_length: int = 512
 
 
 def detect_backend() -> str:
@@ -95,8 +96,8 @@ def run_lora_training(cfg: TrainConfig) -> dict[str, Any]:
     import torch
     from datasets import Dataset
     from peft import LoraConfig, get_peft_model
-    from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
-    from trl import DPOTrainer, SFTTrainer
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from trl import DPOConfig, DPOTrainer, SFTConfig, SFTTrainer
 
     cfg.output_dir.mkdir(parents=True, exist_ok=True)
     load_in_4bit = backend == "cuda"
@@ -124,16 +125,24 @@ def run_lora_training(cfg: TrainConfig) -> dict[str, Any]:
     )
     model = get_peft_model(model, lora_cfg)
 
+    grad_accum = 1 if backend == "mps" else 4
+    grad_checkpointing = backend != "mps"
+    optim = "adamw_torch" if backend == "mps" else "adamw_torch_fused"
     adapter_dir = cfg.output_dir / "adapter"
     if sft_rows:
         sft_ds = Dataset.from_list([{"messages": r["messages"]} for r in sft_rows if r.get("messages")])
-        sft_args = TrainingArguments(
+        sft_args = SFTConfig(
             output_dir=str(cfg.output_dir / "sft"),
             num_train_epochs=cfg.sft_epochs,
             per_device_train_batch_size=1,
-            gradient_accumulation_steps=4,
+            gradient_accumulation_steps=grad_accum,
+            gradient_checkpointing=grad_checkpointing,
             learning_rate=2e-4,
-            logging_steps=10,
+            logging_steps=1,
+            logging_first_step=True,
+            max_length=cfg.max_length,
+            optim=optim,
+            dataloader_pin_memory=False,
             save_strategy="epoch",
             report_to=[],
         )
@@ -157,13 +166,18 @@ def run_lora_training(cfg: TrainConfig) -> dict[str, Any]:
                 if r.get("prompt")
             ]
         )
-        dpo_args = TrainingArguments(
+        dpo_args = DPOConfig(
             output_dir=str(cfg.output_dir / "dpo"),
             num_train_epochs=cfg.dpo_epochs,
             per_device_train_batch_size=1,
-            gradient_accumulation_steps=4,
+            gradient_accumulation_steps=grad_accum,
+            gradient_checkpointing=grad_checkpointing,
             learning_rate=5e-5,
-            logging_steps=10,
+            logging_steps=1,
+            logging_first_step=True,
+            max_length=cfg.max_length,
+            optim=optim,
+            dataloader_pin_memory=False,
             save_strategy="epoch",
             report_to=[],
         )
@@ -192,6 +206,7 @@ def main() -> None:
     parser.add_argument("--dpo", type=Path, default=Path("datasets/preferences/corpus.jsonl"))
     parser.add_argument("--out", type=Path, default=Path("models/lora/latest"))
     parser.add_argument("--max-samples", type=int, default=None)
+    parser.add_argument("--max-length", type=int, default=int(os.environ.get("AGENT_TRAIN_MAX_LENGTH", "512")))
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     if args.dry_run:
@@ -202,6 +217,7 @@ def main() -> None:
         dpo_path=args.dpo.resolve(),
         output_dir=args.out.resolve(),
         max_samples=args.max_samples,
+        max_length=args.max_length,
     )
     result = run_lora_training(cfg)
     print(json.dumps(result, indent=2))
