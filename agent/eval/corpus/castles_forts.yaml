@@ -128,7 +128,7 @@ cases:
   category: castle
   intent: build_castle_small_keep
   language_style: minimal
-  prompt: front of me
+  prompt: castle front of me
   expect:
     status: done
     max_steps: 14

@@ -474,13 +474,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: horse_stable_small
+      sample_blocks:
+      - oak_planks
+      - spruce_planks
+      min_matches: 1
   tags: []
 - id: pen.horse_stable_small.casual.022
   category: animal_pen
@@ -497,13 +497,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: horse_stable_small
+      sample_blocks:
+      - oak_planks
+      - spruce_planks
+      min_matches: 1
   tags: []
 - id: pen.horse_stable_small.polite.023
   category: animal_pen
@@ -520,13 +520,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: horse_stable_small
+      sample_blocks:
+      - oak_planks
+      - spruce_planks
+      min_matches: 1
   tags: []
 - id: pen.horse_stable_small.typoed.024
   category: animal_pen
@@ -543,13 +543,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: horse_stable_small
+      sample_blocks:
+      - oak_planks
+      - spruce_planks
+      min_matches: 1
   tags: []
 - id: pen.horse_stable_small.verbose.025
   category: animal_pen
@@ -566,13 +566,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: horse_stable_small
+      sample_blocks:
+      - oak_planks
+      - spruce_planks
+      min_matches: 1
   tags: []
 - id: pen.rabbit_hutch_small.direct.026
   category: animal_pen
@@ -693,24 +693,23 @@ cases:
   category: animal_pen
   intent: build_duck_pond_small
   language_style: direct
-  prompt: make me a chicken pen
+  prompt: Build a duck pond
   expect:
     tool_any:
     - name: paste_template_at_player
       arguments_any:
       - template_id: duck_pond_small
-      - template_id: chicken pen
+      - template_id: duck pond
     - name: build_animal_pen_at_player
       arguments_any:
-      - animal: chicken
+      - animal: duck
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: duck_pond_small
+      sample_blocks:
+      - water
+      min_matches: 1
   tags: []
 - id: pen.duck_pond_small.casual.032
   category: animal_pen
@@ -722,41 +721,39 @@ cases:
     - name: paste_template_at_player
       arguments_any:
       - template_id: duck_pond_small
-      - template_id: chicken pen
+      - template_id: duck pond
     - name: build_animal_pen_at_player
       arguments_any:
-      - animal: chicken
+      - animal: duck
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: duck_pond_small
+      sample_blocks:
+      - water
+      min_matches: 1
   tags: []
 - id: pen.duck_pond_small.polite.033
   category: animal_pen
   intent: build_duck_pond_small
   language_style: polite
-  prompt: Could you please build a chicken enclosure
+  prompt: Could you please build a duck pond
   expect:
     tool_any:
     - name: paste_template_at_player
       arguments_any:
       - template_id: duck_pond_small
-      - template_id: chicken pen
+      - template_id: duck pond
     - name: build_animal_pen_at_player
       arguments_any:
-      - animal: chicken
+      - animal: duck
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: duck_pond_small
+      sample_blocks:
+      - water
+      min_matches: 1
   tags: []
 - id: pen.duck_pond_small.typoed.034
   category: animal_pen
@@ -768,41 +765,39 @@ cases:
     - name: paste_template_at_player
       arguments_any:
       - template_id: duck_pond_small
-      - template_id: chicken pen
+      - template_id: duck pond
     - name: build_animal_pen_at_player
       arguments_any:
-      - animal: chicken
+      - animal: duck
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: duck_pond_small
+      sample_blocks:
+      - water
+      min_matches: 1
   tags: []
 - id: pen.duck_pond_small.verbose.035
   category: animal_pen
   intent: build_duck_pond_small
   language_style: verbose
-  prompt: I would really like it if you could a place for chickens to live
+  prompt: I would really like it if you could build a duck pond
   expect:
     tool_any:
     - name: paste_template_at_player
       arguments_any:
       - template_id: duck_pond_small
-      - template_id: chicken pen
+      - template_id: duck pond
     - name: build_animal_pen_at_player
       arguments_any:
-      - animal: chicken
+      - animal: duck
     world_probe:
-      kind: structural_check
-      check: min_palette_coverage
-      block: oak_fence
-      min_count: 8
-      bbox_width: 14
-      bbox_height: 8
-      bbox_depth: 14
+      kind: template_built
+      anchor: player_forward
+      template_id: duck_pond_small
+      sample_blocks:
+      - water
+      min_matches: 1
   tags: []
 - id: pen.goat_pen_small.direct.036
   category: animal_pen

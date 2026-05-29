@@ -73,12 +73,14 @@ Cases run in an isolated grid starting at `(10000, -60, 10000)` with 48-block
 stride. For each case the runner:
 
 1. Teleports the player one block above the cell center to load the chunk.
-2. Clears the cell box (`clear_box`).
-3. Lays a small `5x5` `grass_block` pad at the cell center so the player has
-   something to stand on (otherwise long `clear_box` calls drop them into the
-   void and subsequent builds fail with `That position is not loaded`).
-4. Re-teleports the player onto the pad and waits for the position to settle
+2. Clears the cell box (`clear_box`) in `/fill` chunks below vanilla's block
+   modification limit.
+3. Restores a flat floor across the whole cell (`dirt` under `grass_block`) so
+   eval runs do not leave void holes in the flat world.
+4. Re-teleports the player onto the restored floor and waits for position settle
    before sending the prompt.
+5. After the case, clears the expanded vertical build volume and restores the
+   flat floor again.
 
 `report.json` includes per-case `latency_ms` and a global `latency` block with
 `p50_ms`, `p90_ms`, `mean_ms`, and `total_s` so timing regressions show up

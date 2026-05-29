@@ -236,7 +236,7 @@ def gen_animal_pens() -> list[dict[str, Any]]:
         ("cow_barn_medium", "cow", "Build a cow barn", ["cow"]),
         ("horse_stable_small", "horse", "Build a horse stable", ["horse"]),
         ("rabbit_hutch_small", "rabbit", "Build a rabbit hutch", ["rabbit"]),
-        ("duck_pond_small", "chicken", "Build a duck pond", ["chicken"]),
+        ("duck_pond_small", "duck", "Build a duck pond", ["duck"]),
         ("goat_pen_small", "goat", "Build a goat pen", ["goat"]),
         ("turkey_pen_small", "chicken", "Build a turkey pen", ["chicken"]),
         ("bee_apiary_small", "bee", "Build a bee apiary", ["bee"]),
@@ -255,6 +255,53 @@ def gen_animal_pens() -> list[dict[str, Any]]:
             idx += 1
             phrase = alt_phrases[idx % len(alt_phrases)].format(animal=animal)
             prompt = _wrap(style, phrase if idx % 2 else base)
+            if tid == "duck_pond_small":
+                prompt = _wrap(style, base)
+                probe = {
+                    "kind": "template_built",
+                    "anchor": "player_forward",
+                    "template_id": tid,
+                    "sample_blocks": ["water"],
+                    "min_matches": 1,
+                }
+                tool_any = [
+                    {
+                        "name": "paste_template_at_player",
+                        "arguments_any": [{"template_id": tid}, {"template_id": "duck pond"}],
+                    }
+                ]
+            elif tid == "horse_stable_small":
+                probe = {
+                    "kind": "template_built",
+                    "anchor": "player_forward",
+                    "template_id": tid,
+                    "sample_blocks": ["oak_planks", "spruce_planks"],
+                    "min_matches": 1,
+                }
+                tool_any = [
+                    {
+                        "name": "paste_template_at_player",
+                        "arguments_any": [{"template_id": tid}, {"template_id": animal + " pen"}],
+                    },
+                    {"name": "build_animal_pen_at_player", "arguments_any": [{"animal": animal}]},
+                ]
+            else:
+                probe = {
+                    "kind": "structural_check",
+                    "check": "min_palette_coverage",
+                    "block": "oak_fence",
+                    "min_count": 8,
+                    "bbox_width": 14,
+                    "bbox_height": 8,
+                    "bbox_depth": 14,
+                }
+                tool_any = [
+                    {
+                        "name": "paste_template_at_player",
+                        "arguments_any": [{"template_id": tid}, {"template_id": animal + " pen"}],
+                    },
+                    {"name": "build_animal_pen_at_player", "arguments_any": [{"animal": animal}]},
+                ]
             cases.append(
                 _case(
                     prefix=f"pen.{tid}",
@@ -264,22 +311,8 @@ def gen_animal_pens() -> list[dict[str, Any]]:
                     idx=idx,
                     prompt=prompt,
                     expect={
-                        "tool_any": [
-                            {
-                                "name": "paste_template_at_player",
-                                "arguments_any": [{"template_id": tid}, {"template_id": animal + " pen"}],
-                            },
-                            {"name": "build_animal_pen_at_player", "arguments_any": [{"animal": animal}]},
-                        ],
-                        "world_probe": {
-                            "kind": "structural_check",
-                            "check": "min_palette_coverage",
-                            "block": "oak_fence",
-                            "min_count": 8,
-                            "bbox_width": 14,
-                            "bbox_height": 8,
-                            "bbox_depth": 14,
-                        },
+                        "tool_any": tool_any,
+                        "world_probe": probe,
                     },
                 )
             )

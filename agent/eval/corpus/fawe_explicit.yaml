@@ -496,7 +496,7 @@ cases:
   category: fawe
   intent: fawe_sphere
   language_style: minimal
-  prompt: at my feet
+  prompt: glass sphere at my feet
   expect:
     tool_any:
     - name: fawe_sphere_at_player

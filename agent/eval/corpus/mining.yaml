@@ -275,7 +275,7 @@ cases:
   category: mining
   intent: mine_shaft
   language_style: minimal
-  prompt: 1 block forward
+  prompt: mine a shaft 1 block forward
   expect:
     tool_any:
     - name: mine_shaft_at_player
