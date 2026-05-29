@@ -60,6 +60,9 @@ class SandboxGrid:
     COLS = 12
     COL_STRIDE = 48
     ROW_STRIDE = 64
+    XZ_PAD = 18
+    CLEAR_BELOW = 4
+    CLEAR_ABOVE = 96
 
     def __init__(self) -> None:
         self._next = 0
@@ -72,8 +75,15 @@ class SandboxGrid:
         cx = self.ORIGIN[0] + col * self.COL_STRIDE
         cy = self.ORIGIN[1]
         cz = self.ORIGIN[2] + row * self.ROW_STRIDE
-        pad = 18
-        box = Box(cx - pad, cy - 2, cz - pad, cx + pad, cy + 28, cz + pad).normalize()
+        pad = self.XZ_PAD
+        box = Box(
+            cx - pad,
+            cy - self.CLEAR_BELOW,
+            cz - pad,
+            cx + pad,
+            cy + self.CLEAR_ABOVE,
+            cz + pad,
+        ).normalize()
         return SandboxCell(index=idx, center=(cx, cy, cz), box=box)
 
 
@@ -120,7 +130,7 @@ def _prepare_cell(cell: SandboxCell, player: str) -> None:
     T.teleport_player(player, cx, cy + 1, cz)
     time.sleep(0.2)
     clear_box(cell.box)
-    rcon(f"fill {cx - 2} {cy} {cz - 2} {cx + 2} {cy} {cz + 2} grass_block replace", timeout=15)
+    _restore_cell_floor(cell)
     T.teleport_player(player, cx, cy + 1, cz)
     T._rcon(f"execute as {T._quote_player(player)} at @s run tp @s ~ ~ ~ 0 0", timeout=15)
     settle = float(os.environ.get("AGENT_CORPUS_SETTLE_SEC", "0.5"))
@@ -131,6 +141,15 @@ def _prepare_cell(cell: SandboxCell, player: str) -> None:
             break
         time.sleep(0.2)
     time.sleep(settle)
+
+
+def _restore_cell_floor(cell: SandboxCell) -> None:
+    """Restore a flat floor after sandbox clears so eval runs do not scar flat world."""
+
+    b = cell.box.normalize()
+    _, cy, _ = cell.center
+    rcon(f"fill {b.x1} {cy - 3} {b.z1} {b.x2} {cy - 1} {b.z2} dirt replace", timeout=30)
+    rcon(f"fill {b.x1} {cy} {b.z1} {b.x2} {cy} {b.z2} grass_block replace", timeout=30)
 
 
 def _live_player_pos(player: str) -> tuple[float, float, float]:
@@ -310,6 +329,7 @@ def run_corpus(
             )
             results.append(result)
             clear_box(cell.box)
+            _restore_cell_floor(cell)
 
     envelopes: list[dict[str, Any]] = []
     for r in results:

@@ -10,6 +10,7 @@ from agent import tools as T
 
 
 PASSABLE_BLOCKS = {"air", "cave_air", "void_air"}
+MAX_FILL_BLOCKS = 30_000
 
 
 def _normalize_block_id(block: str) -> str:
@@ -130,7 +131,17 @@ def has_escape_path(player: str, *, radius: int = 6) -> bool:
 
 def clear_box(box: Box) -> None:
     b = box.normalize()
-    rcon(f"fill {b.x1} {b.y1} {b.z1} {b.x2} {b.y2} {b.z2} air replace", timeout=60)
+    width = b.x2 - b.x1 + 1
+    depth = b.z2 - b.z1 + 1
+    layer_blocks = width * depth
+    if layer_blocks <= 0:
+        return
+    layers_per_fill = max(1, MAX_FILL_BLOCKS // layer_blocks)
+    y = b.y1
+    while y <= b.y2:
+        y2 = min(b.y2, y + layers_per_fill - 1)
+        rcon(f"fill {b.x1} {y} {b.z1} {b.x2} {y2} {b.z2} air replace", timeout=60)
+        y = y2 + 1
 
 
 def assert_blocks_present(specs: list[dict[str, Any]]) -> list[str]:
