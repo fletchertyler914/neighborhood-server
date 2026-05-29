@@ -106,6 +106,7 @@ def _cmd_ollama_register(args: argparse.Namespace) -> None:
         adapter_dir=args.adapter,
         model_name=args.model_name,
         gguf_path=args.gguf.resolve() if args.gguf else None,
+        auto_merge=args.auto_merge,
     )
     print(json.dumps(result, indent=2))
 
@@ -164,6 +165,7 @@ def main(argv: list[str] | None = None) -> None:
     or_p.add_argument("--adapter", type=Path, default=Path("models/lora/latest/adapter"))
     or_p.add_argument("--model-name", default="neighborhood-qwen2.5-7b:v1")
     or_p.add_argument("--gguf", type=Path, default=None)
+    or_p.add_argument("--auto-merge", action="store_true")
     or_p.set_defaults(func=_cmd_ollama_register)
 
     cm_p = sub.add_parser("compare-models", help="Compare models on corpus subset")

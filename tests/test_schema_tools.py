@@ -31,6 +31,9 @@ def test_mcp_exposes_registry_subset():
     mcp_names = set(mcp_tool_names())
     dispatch_names = set(TOOL_DISPATCH.keys())
     assert mcp_names.issubset(dispatch_names)
+    assert "count_blocks_in_box" in mcp_names
+    assert "palette_in_box" in mcp_names
+    assert "verify_structure" in mcp_names
     assert "fawe_cyl_at_player" in mcp_names
     assert "mine_shaft_at_player" in mcp_names
     assert "build_house" in mcp_names

@@ -16,7 +16,7 @@ endif
 
 .PHONY: help bootstrap up down logs status restart \
         seed smoke eval test live-tools full-validation \
-        corpus corpus-quick triage train compare-models \
+        corpus corpus-quick triage train train-full deploy-model compare-models \
         plugin metrics health \
         format clean generate-corpus corpus-export
 
@@ -49,6 +49,8 @@ help:
 	@echo "  $(COLOR_GREEN)make corpus-quick$(COLOR_RESET)     Corpus smoke (30 prompts)"
 	@echo "  $(COLOR_GREEN)make triage$(COLOR_RESET)           Triage latest corpus run failures"
 	@echo "  $(COLOR_GREEN)make train$(COLOR_RESET)            Corpus → resample → export → LoRA (dry-run safe)"
+	@echo "  $(COLOR_GREEN)make train-full$(COLOR_RESET)       Full LoRA → GGUF → ollama create"
+	@echo "  $(COLOR_GREEN)make deploy-model$(COLOR_RESET)     Set OLLAMA_MODEL, restart, compare"
 	@echo "  $(COLOR_GREEN)make compare-models$(COLOR_RESET)   Base vs fine-tuned on corpus subset"
 	@echo ""
 	@echo "Observability"
@@ -137,6 +139,16 @@ train: corpus-export
 	PYTHONPATH=. python3 -m agent.training build-datasets --run data/corpus-runs/latest
 	AGENT_TRAIN_DRY_RUN=1 PYTHONPATH=. python3 -m agent.training lora-finetune --dry-run --out models/lora/v1
 	PYTHONPATH=. python3 -m agent.training ollama-register --model-name neighborhood-qwen2.5-7b:v1 --adapter models/lora/v1/adapter || true
+
+train-full: corpus-export
+	PYTHONPATH=. python3 -m agent.training sample-diverse --run data/corpus-runs/latest || true
+	PYTHONPATH=. python3 -m agent.training build-datasets --run data/corpus-runs/latest
+	PYTHONPATH=. python3 -m agent.training lora-finetune --out models/lora/v1
+	PYTHONPATH=. python3 -m agent.training ollama-register --auto-merge --model-name neighborhood-qwen2.5-7b:v1 --adapter models/lora/v1/adapter
+
+deploy-model:
+	./scripts/deploy-model.sh $${OLLAMA_MODEL:-neighborhood-qwen2.5-7b:v1}
+	$(MAKE) compare-models
 
 compare-models:
 	docker compose exec -T $(CORPUS_ENV) -e AGENT_CORPUS_LIMIT=30 mc-agent \

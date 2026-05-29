@@ -271,7 +271,15 @@ def gen_animal_pens() -> list[dict[str, Any]]:
                             },
                             {"name": "build_animal_pen_at_player", "arguments_any": [{"animal": animal}]},
                         ],
-                        "world_probe": {"kind": "template_built", "min_matches": 1},
+                        "world_probe": {
+                            "kind": "structural_check",
+                            "check": "min_palette_coverage",
+                            "block": "oak_fence",
+                            "min_count": 8,
+                            "bbox_width": 14,
+                            "bbox_height": 8,
+                            "bbox_depth": 14,
+                        },
                     },
                 )
             )

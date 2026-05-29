@@ -142,6 +142,8 @@ class Job:
     steps: int = 0
     model: str = ""
     tool_calls: list[dict[str, Any]] = field(default_factory=list)
+    world_before: Any | None = None
+    world_box: Any | None = None
 
 
 _jobs = JobStore[Job]()
@@ -941,6 +943,89 @@ def _bind_request_player(name: str, args: dict[str, Any], req: JobRequest) -> No
         args["player"] = req.player
 
 
+_READ_ONLY_TOOLS = {
+    "server_status",
+    "preflight",
+    "list_players",
+    "get_player_position",
+    "get_player_dimension",
+    "count_blocks_in_box",
+    "palette_in_box",
+    "verify_structure",
+    "say",
+}
+
+
+def _bbox_for_tool_call(name: str, args: dict[str, Any], req: JobRequest) -> Any | None:
+    from agent.world_auditor.snapshot import SnapshotBox
+
+    try:
+        if name in ("fill_box", "clear_box"):
+            return SnapshotBox(args["x1"], args["y1"], args["z1"], args["x2"], args["y2"], args["z2"])
+        if name == "build_platform":
+            w = int(args.get("width") or 1)
+            d = int(args.get("depth") or 1)
+            cx = int(args["center_x"])
+            y = int(args["y"])
+            cz = int(args["center_z"])
+            return SnapshotBox(cx - w // 2, y, cz - d // 2, cx + w // 2, y, cz + d // 2)
+        if name == "build_sphere":
+            r = int(args.get("radius") or 1)
+            cx = int(args["center_x"])
+            cy = int(args["center_y"])
+            cz = int(args["center_z"])
+            return SnapshotBox(cx - r, cy - r, cz - r, cx + r, cy + r, cz + r)
+        if name == "build_cylinder":
+            r = int(args.get("radius") or 1)
+            h = int(args.get("height") or 1)
+            cx = int(args["center_x"])
+            y = int(args["y"])
+            cz = int(args["center_z"])
+            return SnapshotBox(cx - r, y, cz - r, cx + r, y + h - 1, cz + r)
+        if name.endswith("_at_player") or name in ("paste_template_at_player", "fawe_as_player"):
+            x = int(req.x)
+            y = int(req.y) - 4
+            z = int(req.z)
+            return SnapshotBox(x - 24, y, z - 8, x + 24, y + 32, z + 48)
+    except Exception:
+        return None
+    return None
+
+
+def _maybe_capture_world_before(job: Job, name: str, args: dict[str, Any]) -> None:
+    if job.world_before is not None or name in _READ_ONLY_TOOLS or job.request.dry_run:
+        return
+    box = _bbox_for_tool_call(name, args, job.request)
+    if box is None or box.volume > int(os.environ.get("WORLD_AUDITOR_JOB_MAX_BLOCKS", "50000")):
+        return
+    try:
+        from agent.world_auditor.snapshot import snapshot_box
+
+        job.world_box = box
+        job.world_before = snapshot_box(box, flush=True, include_sparse=False)
+    except Exception:
+        job.world_before = None
+        job.world_box = None
+
+
+def _world_verification_for_job(job: Job) -> dict[str, Any]:
+    if job.world_before is None or job.world_box is None:
+        return {}
+    try:
+        from agent.world_auditor.diff import diff_snapshots
+        from agent.world_auditor.hash import content_hash
+        from agent.world_auditor.snapshot import snapshot_box
+
+        after = snapshot_box(job.world_box, flush=True, include_sparse=False)
+        delta = diff_snapshots(job.world_before, after)
+        payload = delta.to_dict()
+        payload["content_hash"] = content_hash(after, include_positions=False)
+        payload["verified_ok"] = bool(job.tool_calls) and delta.changed_non_air > 0
+        return payload
+    except Exception as exc:
+        return {"verified_ok": False, "error": str(exc)}
+
+
 # Back-compat alias for tests that import the old name. Mutates args in
 # place when the tool name didn't change; name swaps are exercised via the
 # new helper which the orchestrator actually calls.
@@ -1089,6 +1174,7 @@ async def _run_agent_loop(job: Job) -> None:
 
                 import asyncio
 
+                await asyncio.to_thread(_maybe_capture_world_before, job, name, args)
                 result = await asyncio.to_thread(
                     T.execute_tool, name, args, dry_run=req.dry_run
                 )
@@ -1157,6 +1243,7 @@ async def _process_job(job_id: str) -> None:
         set_current_job(None)
         if rec:
             routing_meta = rec.to_dict()
+    world_verification = _world_verification_for_job(job)
     append_audit(
         AuditEntry(
             job_id=job.id,
@@ -1171,6 +1258,7 @@ async def _process_job(job_id: str) -> None:
             message=job.message,
             dry_run=job.request.dry_run,
             routing=routing_meta,
+            world_verification=world_verification,
         )
     )
     # Remember the last action per player so a follow-up "/agent good" or

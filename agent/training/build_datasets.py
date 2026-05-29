@@ -49,6 +49,18 @@ def _tool_signature(trace: list[dict[str, Any]]) -> str:
     )
 
 
+def _world_verification(row: dict[str, Any]) -> dict[str, Any] | None:
+    wv = row.get("world_verification")
+    return wv if isinstance(wv, dict) else None
+
+
+def _verified_ok(row: dict[str, Any]) -> bool:
+    wv = _world_verification(row)
+    if wv is not None and wv.get("verified_ok") is False:
+        return False
+    return bool(row.get("ok"))
+
+
 def _trace_to_openai_tool_calls(trace: list[dict[str, Any]], *, job_id: str) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for idx, tc in enumerate(trace):
@@ -76,7 +88,7 @@ def build_sft_from_envelopes(
     seen: set[str] = set()
     out: list[dict[str, Any]] = []
     for row in rows:
-        if not row.get("ok"):
+        if not _verified_ok(row):
             continue
         trace = row.get("trace") or []
         if not trace:
@@ -107,18 +119,17 @@ def build_sft_from_envelopes(
                     "content": json.dumps(result, ensure_ascii=False),
                 }
             )
-        out.append(
-            {
-                "messages": messages,
-                "meta": {
-                    "case_id": row.get("case_id"),
-                    "category": row.get("category"),
-                    "intent": row.get("intent"),
-                    "model": row.get("model"),
-                    "temperature": row.get("temperature"),
-                },
-            }
-        )
+        meta: dict[str, Any] = {
+            "case_id": row.get("case_id"),
+            "category": row.get("category"),
+            "intent": row.get("intent"),
+            "model": row.get("model"),
+            "temperature": row.get("temperature"),
+        }
+        wv = _world_verification(row)
+        if wv is not None:
+            meta["world_verification"] = wv
+        out.append({"messages": messages, "meta": meta})
     return out
 
 
@@ -130,7 +141,7 @@ def build_dpo_from_envelopes(rows: list[dict[str, Any]]) -> list[dict[str, Any]]
             continue
         key = _cluster_key(prompt)
         bucket = grouped.setdefault(key, {"pass": [], "fail": []})
-        if row.get("ok"):
+        if _verified_ok(row):
             bucket["pass"].append(row)
         else:
             bucket["fail"].append(row)
@@ -161,6 +172,7 @@ def build_dpo_from_envelopes(rows: list[dict[str, Any]]) -> list[dict[str, Any]]
                     "cluster_key": key,
                     "chosen_case_id": chosen.get("case_id"),
                     "rejected_case_id": rejected.get("case_id"),
+                    "rejected_world_verification": _world_verification(rejected),
                 },
             }
         )

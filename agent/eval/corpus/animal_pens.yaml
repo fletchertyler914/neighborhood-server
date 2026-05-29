@@ -14,8 +14,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.chicken_coop_small.casual.002
   category: animal_pen
@@ -32,8 +37,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.chicken_coop_small.polite.003
   category: animal_pen
@@ -50,8 +60,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.chicken_coop_small.typoed.004
   category: animal_pen
@@ -68,8 +83,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.chicken_coop_small.verbose.005
   category: animal_pen
@@ -86,8 +106,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.pig_pen_small.direct.006
   category: animal_pen
@@ -104,8 +129,13 @@ cases:
       arguments_any:
       - animal: pig
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.pig_pen_small.casual.007
   category: animal_pen
@@ -122,8 +152,13 @@ cases:
       arguments_any:
       - animal: pig
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.pig_pen_small.polite.008
   category: animal_pen
@@ -140,8 +175,13 @@ cases:
       arguments_any:
       - animal: pig
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.pig_pen_small.typoed.009
   category: animal_pen
@@ -158,8 +198,13 @@ cases:
       arguments_any:
       - animal: pig
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.pig_pen_small.verbose.010
   category: animal_pen
@@ -176,8 +221,13 @@ cases:
       arguments_any:
       - animal: pig
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.sheep_pen_medium.direct.011
   category: animal_pen
@@ -194,8 +244,13 @@ cases:
       arguments_any:
       - animal: sheep
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.sheep_pen_medium.casual.012
   category: animal_pen
@@ -212,8 +267,13 @@ cases:
       arguments_any:
       - animal: sheep
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.sheep_pen_medium.polite.013
   category: animal_pen
@@ -230,8 +290,13 @@ cases:
       arguments_any:
       - animal: sheep
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.sheep_pen_medium.typoed.014
   category: animal_pen
@@ -248,8 +313,13 @@ cases:
       arguments_any:
       - animal: sheep
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.sheep_pen_medium.verbose.015
   category: animal_pen
@@ -266,8 +336,13 @@ cases:
       arguments_any:
       - animal: sheep
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.cow_barn_medium.direct.016
   category: animal_pen
@@ -284,8 +359,13 @@ cases:
       arguments_any:
       - animal: cow
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.cow_barn_medium.casual.017
   category: animal_pen
@@ -302,8 +382,13 @@ cases:
       arguments_any:
       - animal: cow
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.cow_barn_medium.polite.018
   category: animal_pen
@@ -320,8 +405,13 @@ cases:
       arguments_any:
       - animal: cow
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.cow_barn_medium.typoed.019
   category: animal_pen
@@ -338,8 +428,13 @@ cases:
       arguments_any:
       - animal: cow
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.cow_barn_medium.verbose.020
   category: animal_pen
@@ -356,8 +451,13 @@ cases:
       arguments_any:
       - animal: cow
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.horse_stable_small.direct.021
   category: animal_pen
@@ -374,8 +474,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.horse_stable_small.casual.022
   category: animal_pen
@@ -392,8 +497,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.horse_stable_small.polite.023
   category: animal_pen
@@ -410,8 +520,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.horse_stable_small.typoed.024
   category: animal_pen
@@ -428,8 +543,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.horse_stable_small.verbose.025
   category: animal_pen
@@ -446,8 +566,13 @@ cases:
       arguments_any:
       - animal: horse
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.rabbit_hutch_small.direct.026
   category: animal_pen
@@ -464,8 +589,13 @@ cases:
       arguments_any:
       - animal: rabbit
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.rabbit_hutch_small.casual.027
   category: animal_pen
@@ -482,8 +612,13 @@ cases:
       arguments_any:
       - animal: rabbit
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.rabbit_hutch_small.polite.028
   category: animal_pen
@@ -500,8 +635,13 @@ cases:
       arguments_any:
       - animal: rabbit
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.rabbit_hutch_small.typoed.029
   category: animal_pen
@@ -518,8 +658,13 @@ cases:
       arguments_any:
       - animal: rabbit
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.rabbit_hutch_small.verbose.030
   category: animal_pen
@@ -536,8 +681,13 @@ cases:
       arguments_any:
       - animal: rabbit
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.duck_pond_small.direct.031
   category: animal_pen
@@ -554,8 +704,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.duck_pond_small.casual.032
   category: animal_pen
@@ -572,8 +727,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.duck_pond_small.polite.033
   category: animal_pen
@@ -590,8 +750,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.duck_pond_small.typoed.034
   category: animal_pen
@@ -608,8 +773,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.duck_pond_small.verbose.035
   category: animal_pen
@@ -626,8 +796,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.goat_pen_small.direct.036
   category: animal_pen
@@ -644,8 +819,13 @@ cases:
       arguments_any:
       - animal: goat
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.goat_pen_small.casual.037
   category: animal_pen
@@ -662,8 +842,13 @@ cases:
       arguments_any:
       - animal: goat
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.goat_pen_small.polite.038
   category: animal_pen
@@ -680,8 +865,13 @@ cases:
       arguments_any:
       - animal: goat
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.goat_pen_small.typoed.039
   category: animal_pen
@@ -698,8 +888,13 @@ cases:
       arguments_any:
       - animal: goat
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.goat_pen_small.verbose.040
   category: animal_pen
@@ -716,8 +911,13 @@ cases:
       arguments_any:
       - animal: goat
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.turkey_pen_small.direct.041
   category: animal_pen
@@ -734,8 +934,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.turkey_pen_small.casual.042
   category: animal_pen
@@ -752,8 +957,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.turkey_pen_small.polite.043
   category: animal_pen
@@ -770,8 +980,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.turkey_pen_small.typoed.044
   category: animal_pen
@@ -788,8 +1003,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.turkey_pen_small.verbose.045
   category: animal_pen
@@ -806,8 +1026,13 @@ cases:
       arguments_any:
       - animal: chicken
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.bee_apiary_small.direct.046
   category: animal_pen
@@ -824,8 +1049,13 @@ cases:
       arguments_any:
       - animal: bee
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.bee_apiary_small.casual.047
   category: animal_pen
@@ -842,8 +1072,13 @@ cases:
       arguments_any:
       - animal: bee
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.bee_apiary_small.polite.048
   category: animal_pen
@@ -860,8 +1095,13 @@ cases:
       arguments_any:
       - animal: bee
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.bee_apiary_small.typoed.049
   category: animal_pen
@@ -878,8 +1118,13 @@ cases:
       arguments_any:
       - animal: bee
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []
 - id: pen.bee_apiary_small.verbose.050
   category: animal_pen
@@ -896,6 +1141,11 @@ cases:
       arguments_any:
       - animal: bee
     world_probe:
-      kind: template_built
-      min_matches: 1
+      kind: structural_check
+      check: min_palette_coverage
+      block: oak_fence
+      min_count: 8
+      bbox_width: 14
+      bbox_height: 8
+      bbox_depth: 14
   tags: []

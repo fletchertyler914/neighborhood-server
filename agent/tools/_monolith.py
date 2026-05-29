@@ -674,6 +674,90 @@ def clear_box(x1: int, y1: int, z1: int, x2: int, y2: int, z2: int) -> ToolResul
     return _rename_tool(fill_box(x1, y1, z1, x2, y2, z2, "air", "replace"), "clear_box")
 
 
+def count_blocks_in_box(
+    block: str,
+    x1: int,
+    y1: int,
+    z1: int,
+    x2: int,
+    y2: int,
+    z2: int,
+) -> ToolResult:
+    try:
+        from agent.world_auditor.snapshot import SnapshotBox, snapshot_box
+
+        a, b = Vec3(x1, y1, z1), Vec3(x2, y2, z2)
+        volume = _volume(a, b)
+        if volume > int(os.environ.get("WORLD_AUDITOR_TOOL_MAX_BLOCKS", "50000")):
+            raise ValueError(f"refusing to inspect {volume:,} blocks")
+        block_id = block if ":" in block else f"minecraft:{block}"
+        snap = snapshot_box(SnapshotBox(x1, y1, z1, x2, y2, z2), include_sparse=False)
+        count = snap.palette.get(block_id, 0)
+        payload = {
+            "block": block_id,
+            "count": count,
+            "bbox": list(snap.box.as_tuple()),
+            "source": snap.source,
+        }
+        return _ok("count_blocks_in_box", json.dumps(payload, sort_keys=True), blocks=volume)
+    except Exception as e:
+        return _err("count_blocks_in_box", e)
+
+
+def palette_in_box(x1: int, y1: int, z1: int, x2: int, y2: int, z2: int) -> ToolResult:
+    try:
+        from agent.world_auditor.snapshot import SnapshotBox, snapshot_box
+
+        a, b = Vec3(x1, y1, z1), Vec3(x2, y2, z2)
+        volume = _volume(a, b)
+        if volume > int(os.environ.get("WORLD_AUDITOR_TOOL_MAX_BLOCKS", "50000")):
+            raise ValueError(f"refusing to inspect {volume:,} blocks")
+        snap = snapshot_box(SnapshotBox(x1, y1, z1, x2, y2, z2), include_sparse=False)
+        payload = {
+            "bbox": list(snap.box.as_tuple()),
+            "palette": dict(sorted(snap.palette.items())),
+            "source": snap.source,
+        }
+        return _ok("palette_in_box", json.dumps(payload, sort_keys=True), blocks=volume)
+    except Exception as e:
+        return _err("palette_in_box", e)
+
+
+def verify_structure(
+    check: str,
+    x1: int,
+    y1: int,
+    z1: int,
+    x2: int,
+    y2: int,
+    z2: int,
+    block: str | None = None,
+    min_count: int | None = None,
+    min_ratio: float | None = None,
+    entity: str | None = None,
+) -> ToolResult:
+    try:
+        from agent.world_auditor.invariants import verify_structure as run_check
+        from agent.world_auditor.snapshot import SnapshotBox, snapshot_box
+
+        a, b = Vec3(x1, y1, z1), Vec3(x2, y2, z2)
+        volume = _volume(a, b)
+        if volume > int(os.environ.get("WORLD_AUDITOR_TOOL_MAX_BLOCKS", "50000")):
+            raise ValueError(f"refusing to inspect {volume:,} blocks")
+        snap = snapshot_box(SnapshotBox(x1, y1, z1, x2, y2, z2), include_sparse=True)
+        result = run_check(
+            check,
+            snap,
+            block=block,
+            min_count=min_count,
+            min_ratio=min_ratio,
+            entity=entity,
+        )
+        return _ok("verify_structure", json.dumps(result.to_dict(), sort_keys=True), blocks=volume)
+    except Exception as e:
+        return _err("verify_structure", e)
+
+
 def build_platform(
     center_x: int, y: int, center_z: int, width: int, depth: int, block: str
 ) -> ToolResult:

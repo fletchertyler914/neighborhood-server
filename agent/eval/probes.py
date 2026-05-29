@@ -17,6 +17,9 @@ from agent.eval.world import (
     _player_pos,
 )
 from agent import tools as T
+from agent.world_auditor.hash import content_hash
+from agent.world_auditor.invariants import verify_structure
+from agent.world_auditor.snapshot import SnapshotBox, snapshot_box
 
 _PASTE_ANCHOR_RE = re.compile(
     r"pasted template .+ at \((-?\d+),\s*(-?\d+),\s*(-?\d+)\)", re.IGNORECASE
@@ -377,6 +380,89 @@ def probe_inventory_has(
     )
 
 
+def _auditor_box(probe: WorldProbe, anchor: tuple[int, int, int]) -> SnapshotBox:
+    width = max(1, probe.bbox_width or probe.width or (probe.radius or 4) * 2 + 1)
+    height = max(1, probe.bbox_height or probe.height or 6)
+    depth = max(1, probe.bbox_depth or probe.platform_depth or probe.width or width)
+    x1 = anchor[0] - width // 2
+    z1 = anchor[2] - depth // 2
+    return SnapshotBox(x1, anchor[1], z1, x1 + width - 1, anchor[1] + height - 1, z1 + depth - 1)
+
+
+def probe_palette_histogram(
+    probe: WorldProbe,
+    *,
+    anchor: tuple[int, int, int],
+) -> ProbeResult:
+    snap = snapshot_box(_auditor_box(probe, anchor), flush=True, include_sparse=False)
+    failures: list[str] = []
+    for block, minimum in probe.min_counts.items():
+        count = snap.palette.get(_normalize_block(block), 0)
+        if count < minimum:
+            failures.append(f"{block}={count}<min{minimum}")
+    for block, maximum in probe.max_counts.items():
+        count = snap.palette.get(_normalize_block(block), 0)
+        if count > maximum:
+            failures.append(f"{block}={count}>max{maximum}")
+    ok = not failures
+    return ProbeResult(
+        ok=ok,
+        message="palette_histogram ok" if ok else "; ".join(failures),
+        details=snap.to_dict(),
+    )
+
+
+def probe_count_block_in_box(
+    probe: WorldProbe,
+    *,
+    anchor: tuple[int, int, int],
+) -> ProbeResult:
+    block = _normalize_block(probe.block or "air")
+    snap = snapshot_box(_auditor_box(probe, anchor), flush=True, include_sparse=False)
+    count = snap.palette.get(block, 0)
+    ok = count >= probe.min_count
+    if probe.count_max is not None:
+        ok = ok and count <= probe.count_max
+    return ProbeResult(
+        ok=ok,
+        message=f"count_block_in_box {block}: {count}",
+        details={"block": block, "count": count, "snapshot": snap.to_dict()},
+    )
+
+
+def probe_structural_check(
+    probe: WorldProbe,
+    *,
+    anchor: tuple[int, int, int],
+) -> ProbeResult:
+    snap = snapshot_box(_auditor_box(probe, anchor), flush=True, include_sparse=True)
+    result = verify_structure(
+        probe.check or "footprint_filled_ratio",
+        snap,
+        block=probe.block,
+        min_count=probe.min_count,
+        min_ratio=None,
+        entity=probe.entity,
+        radius=probe.search_radius,
+    )
+    return ProbeResult(ok=result.ok, message=result.message, details=result.to_dict())
+
+
+def probe_region_hash_matches(
+    probe: WorldProbe,
+    *,
+    anchor: tuple[int, int, int],
+) -> ProbeResult:
+    snap = snapshot_box(_auditor_box(probe, anchor), flush=True, include_sparse=True)
+    actual = content_hash(snap)
+    ok = bool(probe.content_hash and actual == probe.content_hash)
+    return ProbeResult(
+        ok=ok,
+        message=f"region_hash_matches actual={actual}",
+        details={"actual": actual, "expected": probe.content_hash},
+    )
+
+
 def _tool_result_blocks(result: dict[str, Any]) -> int:
     try:
         return int(result.get("block_estimate") or 0)
@@ -478,10 +564,23 @@ def run_world_probe(
         return probe_shape_built(probe, anchor=anchor)
     if probe.kind == "mob_count":
         return probe_mob_count(probe, near=anchor)
+    if probe.kind == "entity_count_in_box":
+        return probe_structural_check(
+            probe.model_copy(update={"kind": "structural_check", "check": "entity_count"}),
+            anchor=anchor,
+        )
     if probe.kind == "shaft_dug":
         return probe_shaft_dug(probe, player=player)
     if probe.kind == "setting":
         return probe_setting(probe, tool_calls=tool_calls)
     if probe.kind == "inventory_has":
         return probe_inventory_has(probe, player=player, tool_calls=tool_calls)
+    if probe.kind == "palette_histogram":
+        return probe_palette_histogram(probe, anchor=anchor)
+    if probe.kind == "count_block_in_box":
+        return probe_count_block_in_box(probe, anchor=anchor)
+    if probe.kind == "structural_check":
+        return probe_structural_check(probe, anchor=anchor)
+    if probe.kind == "region_hash_matches":
+        return probe_region_hash_matches(probe, anchor=anchor)
     return ProbeResult(ok=False, message=f"unknown probe kind {probe.kind!r}")

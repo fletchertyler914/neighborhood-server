@@ -69,4 +69,4 @@ def test_execute_tool_deterministic_dry_run_has_signature():
 def test_server_capabilities_exposes_versions():
     caps = server_capabilities()
     assert caps["mcp_core_version"] == "1.0.0"
-    assert caps["tools_version"] == "2.8.0"
+    assert caps["tools_version"] == "2.9.0"

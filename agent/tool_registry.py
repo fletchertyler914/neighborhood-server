@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
-TOOLS_VERSION = "2.8.0"
+TOOLS_VERSION = "2.9.0"
 TOOLS_SCHEMA_VERSION = 1
 
 # Shared JSON-schema fragments
@@ -139,6 +139,76 @@ TOOL_DEFINITIONS: tuple[ToolDefinition, ...] = (
         impl="clear_box",
         category="build",
         risk="high",
+    ),
+    ToolDefinition(
+        name="count_blocks_in_box",
+        description="Read-only world audit: count one block id inside a guarded cuboid.",
+        parameters=_obj(
+            {
+                "block": BLOCK_ID,
+                "x1": COORD,
+                "y1": Y_COORD,
+                "z1": COORD,
+                "x2": COORD,
+                "y2": Y_COORD,
+                "z2": COORD,
+            },
+            ["block", "x1", "y1", "z1", "x2", "y2", "z2"],
+        ),
+        impl="count_blocks_in_box",
+        category="inspect",
+    ),
+    ToolDefinition(
+        name="palette_in_box",
+        description="Read-only world audit: return palette histogram for a guarded cuboid.",
+        parameters=_obj(
+            {
+                "x1": COORD,
+                "y1": Y_COORD,
+                "z1": COORD,
+                "x2": COORD,
+                "y2": Y_COORD,
+                "z2": COORD,
+            },
+            ["x1", "y1", "z1", "x2", "y2", "z2"],
+        ),
+        impl="palette_in_box",
+        category="inspect",
+    ),
+    ToolDefinition(
+        name="verify_structure",
+        description=(
+            "Read-only world audit: run a structural invariant such as "
+            "wall_perimeter, min_palette_coverage, footprint_filled_ratio, "
+            "no_floating_blocks, or entity_count over a cuboid."
+        ),
+        parameters=_obj(
+            {
+                "check": {
+                    "type": "string",
+                    "enum": [
+                        "wall_perimeter",
+                        "min_palette_coverage",
+                        "footprint_filled_ratio",
+                        "no_floating_blocks",
+                        "entity_count",
+                    ],
+                },
+                "x1": COORD,
+                "y1": Y_COORD,
+                "z1": COORD,
+                "x2": COORD,
+                "y2": Y_COORD,
+                "z2": COORD,
+                "block": {"type": ["string", "null"], "default": None},
+                "min_count": {"type": ["integer", "null"], "minimum": 0, "default": None},
+                "min_ratio": {"type": ["number", "null"], "default": None},
+                "entity": {"type": ["string", "null"], "default": None},
+            },
+            ["check", "x1", "y1", "z1", "x2", "y2", "z2"],
+        ),
+        impl="verify_structure",
+        category="inspect",
     ),
     ToolDefinition(
         name="build_platform",

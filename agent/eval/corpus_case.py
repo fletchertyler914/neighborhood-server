@@ -22,9 +22,14 @@ WorldProbeKind = Literal[
     "template_built",
     "shape_built",
     "mob_count",
+    "entity_count_in_box",
     "shaft_dug",
     "setting",
     "inventory_has",
+    "palette_histogram",
+    "count_block_in_box",
+    "structural_check",
+    "region_hash_matches",
     "none",
 ]
 
@@ -50,6 +55,14 @@ class WorldProbe(BaseModel):
     platform_depth: int | None = None
     height: int | None = None
     hollow: bool | None = None
+    # auditor bbox / structural checks
+    bbox_width: int | None = None
+    bbox_height: int | None = None
+    bbox_depth: int | None = None
+    min_counts: dict[str, int] = Field(default_factory=dict)
+    max_counts: dict[str, int] = Field(default_factory=dict)
+    check: str | None = None
+    content_hash: str | None = None
     # mob_count
     entity: str | None = None
     count_min: int = 1

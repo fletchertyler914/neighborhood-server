@@ -33,6 +33,7 @@ def register_ollama_model(
     adapter_dir: Path,
     model_name: str = "neighborhood-qwen2.5-7b:v1",
     gguf_path: Path | None = None,
+    auto_merge: bool = False,
 ) -> dict[str, str]:
     """Create Ollama model from GGUF or emit instructions if conversion tools missing."""
 
@@ -49,16 +50,46 @@ def register_ollama_model(
         gguf_path = models_dir / f"{model_name.replace(':', '_')}.gguf"
 
     if not gguf_path.exists():
-        return {
-            "status": "needs_gguf",
-            "message": (
-                "GGUF not found. Merge LoRA adapter to GGUF with llama.cpp, e.g.:\n"
-                "  python convert.py models/lora/latest/adapter --outfile models/ollama/neighborhood.gguf\n"
-                "  ./quantize models/ollama/neighborhood.gguf models/ollama/neighborhood-q4.gguf Q4_K_M\n"
-                f"Then re-run with --gguf {gguf_path}"
-            ),
-            "adapter_dir": str(adapter_dir),
-        }
+        if auto_merge:
+            script = _repo_root() / "scripts" / "merge-lora-to-gguf.sh"
+            if script.exists():
+                try:
+                    subprocess.run(
+                        [str(script), str(adapter_dir), str(gguf_path)],
+                        check=True,
+                    )
+                except subprocess.CalledProcessError as exc:
+                    return {
+                        "status": "merge_failed",
+                        "message": str(exc),
+                        "adapter_dir": str(adapter_dir),
+                        "gguf_path": str(gguf_path),
+                    }
+            if gguf_path.exists():
+                # Continue below and create the Ollama model.
+                pass
+            else:
+                return {
+                    "status": "needs_gguf",
+                    "message": (
+                        "GGUF not found after auto-merge. Set LLAMA_CPP_DIR or pass --gguf."
+                    ),
+                    "adapter_dir": str(adapter_dir),
+                    "gguf_path": str(gguf_path),
+                }
+        if gguf_path.exists():
+            pass
+        else:
+            return {
+                "status": "needs_gguf",
+                "message": (
+                    "GGUF not found. Merge LoRA adapter to GGUF with llama.cpp, e.g.:\n"
+                    "  python convert.py models/lora/latest/adapter --outfile models/ollama/neighborhood.gguf\n"
+                    "  ./quantize models/ollama/neighborhood.gguf models/ollama/neighborhood-q4.gguf Q4_K_M\n"
+                    f"Then re-run with --gguf {gguf_path}"
+                ),
+                "adapter_dir": str(adapter_dir),
+            }
 
     modelfile = write_modelfile(
         gguf_path=gguf_path,
@@ -86,11 +117,13 @@ def main() -> None:
     parser.add_argument("--adapter", type=Path, default=Path("models/lora/latest/adapter"))
     parser.add_argument("--model-name", default="neighborhood-qwen2.5-7b:v1")
     parser.add_argument("--gguf", type=Path, default=None)
+    parser.add_argument("--auto-merge", action="store_true")
     args = parser.parse_args()
     result = register_ollama_model(
         adapter_dir=args.adapter,
         model_name=args.model_name,
         gguf_path=args.gguf.resolve() if args.gguf else None,
+        auto_merge=args.auto_merge,
     )
     print(json.dumps(result, indent=2))
 

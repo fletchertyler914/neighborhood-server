@@ -111,6 +111,15 @@ def validate_against_schema(
             raise SchemaValidationError(f"{path}: above maximum {schema['maximum']}")
         return
 
+    if stype == "number":
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            raise SchemaValidationError(f"{path}: expected number")
+        if "minimum" in schema and value < schema["minimum"]:
+            raise SchemaValidationError(f"{path}: below minimum {schema['minimum']}")
+        if "maximum" in schema and value > schema["maximum"]:
+            raise SchemaValidationError(f"{path}: above maximum {schema['maximum']}")
+        return
+
     if stype == "boolean":
         if not isinstance(value, bool):
             raise SchemaValidationError(f"{path}: expected boolean")
@@ -124,6 +133,8 @@ def _matches_type(value: Any, stype: str) -> bool:
         return isinstance(value, str)
     if stype == "integer":
         return isinstance(value, int) and not isinstance(value, bool)
+    if stype == "number":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
     if stype == "boolean":
         return isinstance(value, bool)
     if stype == "array":

@@ -59,6 +59,7 @@ class AuditEntry:
     dry_run: bool = False
     job_id: str | None = None
     routing: dict[str, Any] = field(default_factory=dict)
+    world_verification: dict[str, Any] = field(default_factory=dict)
 
     def to_json(self) -> str:
         payload: dict[str, Any] = {
@@ -76,6 +77,8 @@ class AuditEntry:
         }
         if self.routing:
             payload["routing"] = self.routing
+        if self.world_verification:
+            payload["world_verification"] = self.world_verification
         return json.dumps(payload, ensure_ascii=False)
 
 

@@ -111,3 +111,33 @@ def test_build_datasets_from_synthetic_envelope():
     assert len(sft) == 1
     assert len(dpo) == 1
     assert sft[0]["messages"][0]["role"] == "user"
+
+
+def test_world_verification_false_mines_negative_pair():
+    from agent.training.build_datasets import build_dpo_from_envelopes, build_sft_from_envelopes
+
+    rows = [
+        {
+            "ok": True,
+            "prompt": "build a cabin",
+            "case_id": "good",
+            "trace": [{"name": "paste_template_at_player", "arguments": {"template_id": "cabin"}}],
+            "job_id": "j1",
+            "world_verification": {"verified_ok": True},
+        },
+        {
+            "ok": True,
+            "prompt": "build a cabin",
+            "case_id": "bad-world",
+            "trace": [{"name": "build_platform", "arguments": {"block": "dirt"}}],
+            "job_id": "j2",
+            "world_verification": {"verified_ok": False, "reason": "roof missing"},
+        },
+    ]
+
+    sft = build_sft_from_envelopes(rows)
+    dpo = build_dpo_from_envelopes(rows)
+
+    assert len(sft) == 1
+    assert len(dpo) == 1
+    assert dpo[0]["meta"]["rejected_world_verification"]["reason"] == "roof missing"

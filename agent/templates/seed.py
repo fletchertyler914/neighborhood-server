@@ -38,6 +38,8 @@ from agent.executor import execute_tool_deterministic as call
 from agent.templates import catalog as template_catalog
 from agent.templates.anchor import resolve_step_args
 from agent.templates.pack_spec import file_content_hash
+from agent.world_auditor.hash import content_hash as world_content_hash
+from agent.world_auditor.snapshot import SnapshotBox, snapshot_box
 
 _REPO = Path(__file__).resolve().parents[2]
 _SEED_X = int(os.environ.get("AGENT_SEED_SANDBOX_X", "9500"))
@@ -236,15 +238,26 @@ def seed_one(template_id: str, player: str, *, keep_build: bool = False, dry_run
             pass
 
     digest = file_content_hash(local)
+    try:
+        world_snapshot = snapshot_box(
+            SnapshotBox(x1, y1, z1, x2, y2, z2),
+            flush=True,
+            include_sparse=True,
+            allow_rcon_fallback=True,
+        )
+        world_digest = world_content_hash(world_snapshot)
+    except Exception:
+        world_digest = ""
     if not keep_build:
         call("clear_box", {"x1": wx1, "y1": wy1, "z1": wz1, "x2": wx2, "y2": wy2, "z2": wz2}, dry_run=False)
 
-    _update_seed_manifest(template_id, digest=digest, ok=True)
+    _update_seed_manifest(template_id, digest=digest, world_digest=world_digest, ok=True)
     return {
         "template_id": template_id,
         "ok": True,
         "size_bytes": local.stat().st_size,
         "content_hash": digest,
+        "world_content_hash": world_digest,
         "box": [x1, y1, z1, x2, y2, z2],
         "saved_as": save_name,
     }
@@ -254,7 +267,14 @@ def _manifest_path() -> Path:
     return Path(__file__).resolve().parent / ".seed_manifest.json"
 
 
-def _update_seed_manifest(template_id: str, *, digest: str = "", ok: bool, error: str = "") -> None:
+def _update_seed_manifest(
+    template_id: str,
+    *,
+    digest: str = "",
+    world_digest: str = "",
+    ok: bool,
+    error: str = "",
+) -> None:
     import json
     from datetime import datetime, timezone
 
@@ -271,6 +291,8 @@ def _update_seed_manifest(template_id: str, *, digest: str = "", ok: bool, error
     row["ok"] = ok
     if digest:
         row["content_hash"] = digest
+    if world_digest:
+        row["world_content_hash"] = world_digest
     if error:
         row["error"] = error
         row["attempts"] = int(row.get("attempts") or 0) + 1

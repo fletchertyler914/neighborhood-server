@@ -191,6 +191,11 @@ def to_sft_example(row: JoinedRow, *, system_prompt: str | None = None) -> dict[
         "note": row.feedback.get("note"),
         "timestamp": row.feedback.get("timestamp"),
     }
+    world_verification = row.audit.get("world_verification")
+    if isinstance(world_verification, dict):
+        meta["world_verification"] = world_verification
+        if world_verification.get("verified_ok") is False and row.rating == "good":
+            meta["subjective_override"] = True
     for key in (
         "intent_family",
         "selected_tool",

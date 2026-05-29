@@ -14,10 +14,29 @@ from agent.eval.loader import load_cases
 from agent.schema_validate import SchemaValidationError, validate_against_schema
 from agent.templates import catalog as template_catalog
 from agent.tool_registry import TOOLS_VERSION
+from agent.safety import AuditEntry
 
 
 def test_mcp_tools_version_matches_registry():
     assert mcp_core.TOOLS_VERSION_EXPECTED == TOOLS_VERSION
+
+
+def test_audit_entry_serializes_world_verification():
+    entry = AuditEntry(
+        timestamp="t",
+        player="Steve",
+        uuid="u",
+        prompt="build",
+        status="done",
+        model="m",
+        steps=1,
+        world_verification={"verified_ok": True, "changed_blocks": 10},
+    )
+
+    import json
+
+    payload = json.loads(entry.to_json())
+    assert payload["world_verification"]["verified_ok"] is True
 
 
 def test_say_max_length_enforced():
