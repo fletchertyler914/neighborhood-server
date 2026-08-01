@@ -1,59 +1,50 @@
-# Tool Contract Lifecycle
+# Tool Contract
 
-## Registry
+`protocol/envelope.schema.json` and `protocol/tools.schema.json` are the
+language-neutral contracts between the companion runtime and Paper plugin.
 
-Tools are defined once in [`agent/tool_registry.py`](../agent/tool_registry.py).
+Every message includes protocol version, type, trace ID, sequence, timestamp,
+optional job/deadline, and a typed payload. Every mutation includes a stable
+action ID and idempotency key.
 
-When adding or changing a tool:
+Completion has three distinct meanings:
 
-1. Add a `ToolDefinition` entry (name, description, parameters, `impl`, risk, `mcp`).
-2. Implement `impl` function in [`agent/tools/`](../agent/tools/) (admin,
-   builders, fawe, inspection, or templates submodule as appropriate).
-3. Bump `TOOLS_VERSION` in `tool_registry.py` **and** `TOOLS_VERSION_EXPECTED`
-   in `agent/mcp_core.py` (they must match).
-4. Add/update eval cases in `agent/eval/cases/`.
-5. Update `agent/eval/coverage.yaml` if the case is required for merge gates.
-6. Refresh `agent/eval/baseline.strict.json` on self-hosted runner after intentional behavior changes.
-7. Update `agent/eval/fixtures/gate.spec.json` for new spec cases (CI fixture gate).
-8. Rebuild `mc-agent`: `docker compose up -d --build mc-agent` (or `make up`).
+- accepted: durable and queued
+- executed: the native API operation completed
+- verified: a tool-specific world probe confirmed the postcondition
 
-## Sync guarantees
+`job.complete` payload fields:
 
-- Import-time: `validate_registry()` + `build_dispatch()` wiring
-- Tests: `tests/test_schema_tools.py` (schema == dispatch == registry)
-- MCP: registers every tool with `mcp=True` in the registry
+| Field | Purpose |
+| --- | --- |
+| `ok` | overall success after verification |
+| `message` | chat-facing reply (may be slightly richer) |
+| `spoken_text` | short jargon-free sentence for a future TTS path (no timing/route names) |
+| `verified` | world postcondition confirmed |
+| `route` / `total_ms` | observability only — not for kids |
 
-## Version fields
+The plugin currently uses `message` for chat and ignores `spoken_text` until
+TTS lands. The plugin must not report exact build success unless verification
+passes.
 
-| Field | Location |
-|-------|----------|
-| `TOOLS_VERSION` | registry, baselines, export rows, `/health` |
-| `TOOLS_SCHEMA_VERSION` | registry, baselines |
-| Eval `schema_version` | baseline JSON files |
+Adding or changing a tool requires:
 
-Current `TOOLS_VERSION` is `2.9.0`. The 2.8.0 → 2.9.0 series widened the
-parametric builders so deterministic output now matches the catalog's
-advertised footprint heights:
+1. Update the canonical schema.
+2. Add the native Java executor and capability advertisement.
+3. Add runtime routing or skill access.
+4. Add policy, idempotency, verification, and undo behavior.
+5. Add offline, live-world, failure, and latency cases.
+6. Rebuild the plugin and pass all release gates.
 
-- `build_house_at_player` accepts `height` up to 16 and adds an interior
-  staircase + floor dividers when `height >= 7` (`floor_block`, `stair_block`,
-  `add_floors` parameters added).
-- `build_bridge_at_player` adds material-matched railings and vertical support
-  pillars by default (`support_block`, `support_every`, `support_drop`,
-  `add_supports`, `add_rails`).
-- `build_castle_at_player` carves an interior staircase up to the wall-walk
-  and a ladder up the first corner tower so the parapet is reachable.
+### Perception messages
 
-If you bump `TOOLS_VERSION`, also bump the assertion in
-`tests/test_executor.py::test_server_capabilities_exposes_versions`.
+| Type | Direction | Purpose |
+| --- | --- | --- |
+| `job.submit.observation` | plugin → companion | `FastObservationV1` (gaze/held/policy) |
+| `observation.request` | companion → plugin | lazy Level-1 inspect by purpose |
+| `observation.result` | plugin → companion | `SemanticSceneV1` or stale/busy failure |
 
-## Risk tiers
+Coordinates may exist in the trusted envelope for audit. Model context may only
+include the compact semantic summary from `companion.perception.model_safe_summary`.
 
-| Risk | Examples | Policy |
-|------|----------|--------|
-| low | preflight, list_players, set_time | No confirm |
-| medium | fill_box, fawe_as_player, teleport | Volume limits |
-| high | clear_box, run_command, op_player | Confirm + audit |
-| destructive | //regen (blocked unless confirm token) | Safety layer |
-
-Formal semver policy for external consumers is deferred until OSS polish.
+Models never receive a raw command, RCON, shell, or unrestricted tool.

@@ -1,4 +1,4 @@
-"""Destructive-action confirmation tokens with TTL and binding."""
+"""Destructive-action confirmation tokens with TTL, binding, and payload replay."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ import hashlib
 import json
 import os
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 CONFIRM_TTL_SEC = float(os.environ.get("AGENT_CONFIRM_TTL_SEC", "60"))
@@ -19,6 +19,7 @@ class PendingConfirm:
     tool: str
     args_hash: str
     expires_at: float
+    arguments: dict[str, Any] | None = None
 
 
 _pending: dict[str, PendingConfirm] = {}
@@ -50,7 +51,21 @@ def issue_confirm_token(
         tool=tool,
         args_hash=_hash_text(json.dumps(arguments, sort_keys=True)),
         expires_at=time.monotonic() + CONFIRM_TTL_SEC,
+        arguments=dict(arguments),
     )
+
+
+def store_confirm_payload(token: str, arguments: dict[str, Any]) -> None:
+    """Ensure arguments are retained for confirm-replay (issue already stores them)."""
+
+    row = _pending.get(token)
+    if row is not None:
+        row.arguments = dict(arguments)
+
+
+def get_pending_confirm(token: str) -> PendingConfirm | None:
+    _purge_expired()
+    return _pending.get(token)
 
 
 def consume_confirm_token(

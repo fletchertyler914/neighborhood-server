@@ -5,8 +5,8 @@ alwaysApply: true
 
 # Neighborhood Minecraft Server
 
-Self-hosted crossplay Paper server with an in-game AI `/agent` and a Cursor
-MCP integration. The whole stack is defined by `docker-compose.yml` and
+Self-hosted crossplay Paper server with a local in-game AI `/agent` sidekick.
+The whole stack is defined by `docker-compose.yml` and
 spun up via `make up`.
 
 ## Stack
@@ -14,7 +14,7 @@ spun up via `make up`.
 | Service | Image | Container | Purpose |
 | --- | --- | --- | --- |
 | `mc` | `itzg/minecraft-server:java25` | `mc-lan` | Paper 26.1.2 + Geyser + Floodgate + FAWE |
-| `mc-agent` | local build (`agent/Dockerfile`) | `mc-agent` | FastAPI orchestrator behind `/agent` (no published port) |
+| `mc-agent` | local build (`companion/Dockerfile`) | `mc-agent` | Private companion runtime and WebSocket gateway |
 | `playit` | `ghcr.io/playit-cloud/playit-agent` | `playit-agent` | TCP/UDP relay for public crossplay |
 | `backup` | `itzg/mc-backup` | `mc-backup` | RCON-coordinated `save-off`/`save-on`, 2h interval, 14d retention |
 | `ollama` (profile `ollama`) | `ollama/ollama` | `mc-ollama` | Optional bundled LLM; default is host Ollama |
@@ -46,14 +46,11 @@ spun up via `make up`.
 - `.env` — `PLAYIT_SECRET_KEY`, `AGENT_API_TOKEN`, `MC_ENFORCE_WHITELIST`, `OLLAMA_BASE_URL`, `COMPOSE_PROFILES`, etc. (gitignored)
 - `.env.example` — public template; copied by `make bootstrap`
 - `secrets/rcon_password` — RCON password (Docker secret, gitignored)
-- `agent/` — orchestrator package, tools package, tool registry, eval harness, templates, training
-  - `agent/orchestrator/app.py` — FastAPI app (runs as `mc-agent`)
-  - `agent/tools/` — typed RCON tools (admin, builders, FAWE, templates, inspection)
-  - `agent/tool_registry.py` — single source of truth (`TOOLS_VERSION = "2.9.0"`)
-  - `agent/templates/catalog.json` + `agent/templates/schematics/*.schem` — 101 verified schematics
-- `plugins/neighborhood-agent/` — Paper `/agent` Java plugin source
-- `mcp/minecraft_build_mcp.py` — thin Cursor MCP adapter (re-uses `agent/tools/`)
-- `.cursor/mcp.json` — registers the `minecraft-builder` MCP
+- `companion/` — async routing, local model compiler, SQLite jobs
+- `protocol/` — versioned WebSocket envelopes and tool contracts
+- `skills/` — declarative, evaluated sidekick skills
+- `agent/templates/catalog.json` + `agent/templates/schematics/*.schem` — 101 curated assets
+- `plugins/neighborhood-agent/` — trusted Paper gateway and native executors
 - `mc.sh`, `op.sh`, `scripts/build-plugin.sh`, `scripts/bootstrap.sh`, etc.
 - `data/` — world + plugins (gitignored)
 - `backups/` — mc-backup archives (gitignored)
@@ -63,5 +60,5 @@ spun up via `make up`.
 - `25565/tcp` published — Java
 - `19132/udp` published — Bedrock (Geyser)
 - `25575/tcp` **not published** — RCON, container-internal only by design
-- `8787/tcp` **not published** — `mc-agent` orchestrator, Compose-network only
+- `8787/tcp` **not published** — companion runtime, Compose-network only
 - `11434/tcp` (when `--profile ollama` active) **not published** — bundled Ollama

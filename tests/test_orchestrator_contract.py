@@ -72,11 +72,11 @@ def test_house_in_front_of_me_rewrites_to_at_player():
         "build_house",
         {"center_x": 9000, "y": 60, "center_z": 9000, "width": 7},
     )
-    assert name == "build_house_at_player"
+    # Named, unsized buildings are curated template pastes, not generated
+    # parametric houses.
+    assert name == "paste_template_at_player"
     assert args["player"] == "JavaTester"
-    assert args["width"] == 7
-    assert args["wall_block"] == "sandstone"
-    assert args["roof_block"] == "sandstone_slab"
+    assert args["template_id"] == "castle_small_keep"
     assert "center_x" not in args
 
 

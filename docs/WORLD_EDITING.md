@@ -1,6 +1,6 @@
 # World editing cheat sheet
 
-Prefer **typed MCP tools** over raw `fawe_as_player` / `run_command`.
+Prefer typed native sidekick actions over raw FAWE text or console commands.
 
 ## Inspection
 

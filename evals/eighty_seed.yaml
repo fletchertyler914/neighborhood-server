@@ -1,0 +1,1519 @@
+# Grounded synthetic 80% seed corpus (kid + adult paraphrases).
+# Each case: prompt → expect tool or clarify/refuse. Tier S/A only.
+# Revise cases set prior: {tool, arguments} for session.resolve_revise.
+# See evals/CORPUS_SOURCES.md for source_ids.
+version: 1
+holdout_fraction: 0.134
+description: Grounded synthetic ~80% seed corpus (kid + adult paraphrases). Tier S/A routing expectations; revise cases use
+  prior last-action.
+cases:
+- id: world.time.1
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.time
+  prompt: make it day
+  expect:
+    tool: set_time
+    time: day
+  intent_id: world.time
+- id: world.time.2
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.time
+  prompt: yo make it daytime
+  expect:
+    tool: set_time
+    time: day
+  intent_id: world.time
+- id: world.time.3
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.time
+  prompt: please make it night
+  expect:
+    tool: set_time
+    time: night
+  intent_id: world.time
+- id: world.time.4
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.time
+  prompt: can you please make it nighttime
+  expect:
+    tool: set_time
+    time: night
+  intent_id: world.time
+- id: world.time.5
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.time
+  prompt: set time to noon
+  expect:
+    tool: set_time
+    time: noon
+  holdout: true
+  intent_id: world.time
+- id: world.time.6
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.time
+  prompt: please make it day
+  expect:
+    tool: set_time
+    time: day
+  holdout: true
+  intent_id: world.time
+- id: world.weather.1
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.weather
+  prompt: make it sunny
+  expect:
+    tool: set_weather
+    weather: clear
+  intent_id: world.weather
+- id: world.weather.2
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.weather
+  prompt: make it rain
+  expect:
+    tool: set_weather
+    weather: rain
+  intent_id: world.weather
+- id: world.weather.3
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.weather
+  prompt: please clear the weather
+  expect:
+    tool: set_weather
+    weather: clear
+  intent_id: world.weather
+- id: world.weather.4
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.weather
+  prompt: make it clear
+  expect:
+    tool: set_weather
+    weather: clear
+  intent_id: world.weather
+- id: world.weather.5
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.weather
+  prompt: clear the weather
+  expect:
+    tool: set_weather
+    weather: clear
+  holdout: true
+  intent_id: world.weather
+- id: give.item.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: give
+  prompt: give me 16 diamonds
+  expect:
+    tool: give_item
+  intent_id: give
+- id: give.item.2
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: give
+  prompt: please give me 64 oak planks
+  expect:
+    tool: give_item
+  intent_id: give
+- id: give.item.3
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: give
+  prompt: give me 32 cobblestone
+  expect:
+    tool: give_item
+  intent_id: give
+- id: give.item.4
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: give
+  prompt: give me diamonds
+  expect:
+    tool: give_item
+  intent_id: give
+- id: give.item.5
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: give
+  prompt: yo give me 8 torches
+  expect:
+    tool: give_item
+  holdout: true
+  intent_id: give
+- id: summon.passive.1
+  source_ids:
+  - builds.farm_animals
+  - research.basalt
+  paraphrase_family: summon
+  prompt: spawn three chickens
+  expect:
+    tool: summon_entity
+  intent_id: summon
+- id: summon.passive.2
+  source_ids:
+  - builds.farm_animals
+  - research.basalt
+  paraphrase_family: summon
+  prompt: spawn 5 cows
+  expect:
+    tool: summon_entity
+  intent_id: summon
+- id: summon.passive.3
+  source_ids:
+  - builds.farm_animals
+  - research.basalt
+  paraphrase_family: summon
+  prompt: spawn two pigs
+  expect:
+    tool: summon_entity
+  intent_id: summon
+- id: summon.passive.4
+  source_ids:
+  - builds.farm_animals
+  - research.basalt
+  paraphrase_family: summon
+  prompt: spawn 3 sheep
+  expect:
+    tool: summon_entity
+  intent_id: summon
+- id: summon.passive.5
+  source_ids:
+  - builds.farm_animals
+  - research.basalt
+  paraphrase_family: summon
+  prompt: please spawn 4 chickens
+  expect:
+    tool: summon_entity
+  holdout: true
+  intent_id: summon
+- id: refuse.safety.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: spawn a creeper
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: refuse.safety.2
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: summon zombies here
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: refuse.safety.3
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: dig a 5x5 hole
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: refuse.safety.4
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: dig a big pit
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: refuse.safety.5
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: quarry out a tunnel
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: refuse.safety.6
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: build a 100x100 platform
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: refuse.safety.7
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: wall 60 long 40 high
+  expect:
+    refuse: true
+  holdout: true
+  intent_id: refuse
+- id: finish.wall.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall
+  prompt: finish this wall
+  expect:
+    tool: finish_wall
+  intent_id: finish.wall
+- id: finish.wall.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall
+  prompt: finish this wall 12 blocks high
+  expect:
+    tool: finish_wall
+    height: 12
+  intent_id: finish.wall
+- id: finish.wall.3
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall
+  prompt: please finish the wall in front of me
+  expect:
+    tool: finish_wall
+  intent_id: finish.wall
+- id: finish.wall.4
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall
+  prompt: finsh the wall
+  expect:
+    tool: finish_wall
+  intent_id: finish.wall
+- id: finish.wall.5
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall
+  prompt: finish the quartz wall in front of me
+  expect:
+    tool: finish_wall
+  intent_id: finish.wall
+- id: finish.wall.6
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall
+  prompt: finish this wall 8 blocks high
+  expect:
+    tool: finish_wall
+    height: 8
+  holdout: true
+  intent_id: finish.wall
+- id: finish.floor.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.floor
+  prompt: finish the second floor
+  expect:
+    tool: finish_floor
+  intent_id: finish.floor
+- id: finish.floor.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.floor
+  prompt: build a second floor for my castle
+  expect:
+    tool: finish_floor
+  intent_id: finish.floor
+- id: finish.floor.3
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.floor
+  prompt: make a second floor on my house
+  expect:
+    tool: finish_floor
+  intent_id: finish.floor
+- id: finish.floor.4
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.floor
+  prompt: finish the floor
+  expect:
+    tool: finish_floor
+  intent_id: finish.floor
+- id: finish.floor.5
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.floor
+  prompt: finish this floor with glass
+  expect:
+    tool: finish_floor
+  intent_id: finish.floor
+- id: finish.floor.6
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.floor
+  prompt: build a second floor please
+  expect:
+    tool: finish_floor
+  holdout: true
+  intent_id: finish.floor
+- id: place.wall.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: build a wall 20 long 5 high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 20
+    height: 5
+  intent_id: place.wall
+- id: place.wall.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: make a stone wall 10 blocks high
+  expect:
+    tool: place_shape
+    kind: wall
+    height: 10
+    material: stone
+  intent_id: place.wall
+- id: place.wall.3
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: please build a wall 8 high
+  expect:
+    tool: place_shape
+    kind: wall
+    height: 8
+  intent_id: place.wall
+- id: place.wall.4
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: curtain wall 20 by 8
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 20
+    height: 8
+  intent_id: place.wall
+- id: place.wall.5
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: 20x8 stone curtain wall
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 20
+    height: 8
+    material: stone
+  intent_id: place.wall
+- id: place.wall.6
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: build a cobblestone wall 8 long 4 high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 8
+    height: 4
+    material: cobblestone
+  intent_id: place.wall
+- id: place.wall.7
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: make a long wall 16 long 6 high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 16
+    height: 6
+  intent_id: place.wall
+- id: place.wall.8
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: yo build a wall 12 long 3 high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 12
+    height: 3
+  intent_id: place.wall
+- id: place.wall.9
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: could you make a quartz wall 10 long 5 high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 10
+    height: 5
+    material: quartz_block
+  intent_id: place.wall
+- id: place.wall.10
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: wall 15 long 4 high please
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 15
+    height: 4
+  intent_id: place.wall
+- id: place.wall.11
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall
+  prompt: build a wall 10 blocks high
+  expect:
+    tool: place_shape
+    kind: wall
+    height: 10
+  holdout: true
+  intent_id: place.wall
+- id: place.wall_ambiguous.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall_ambiguous
+  prompt: build a wall 20x20
+  expect:
+    clarify: true
+  intent_id: place.wall_ambiguous
+- id: place.wall_ambiguous.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall_ambiguous
+  prompt: 20x20 wall
+  expect:
+    clarify: true
+  intent_id: place.wall_ambiguous
+- id: place.wall_ambiguous.3
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall_ambiguous
+  prompt: make a wall 10x10
+  expect:
+    clarify: true
+  intent_id: place.wall_ambiguous
+- id: place.wall_ambiguous.4
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall_ambiguous
+  prompt: please build a wall 12x12
+  expect:
+    clarify: true
+  intent_id: place.wall_ambiguous
+- id: place.wall_ambiguous.5
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall_ambiguous
+  prompt: wall 15x15
+  expect:
+    clarify: true
+  holdout: true
+  intent_id: place.wall_ambiguous
+- id: place.platform.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: build a 5x5 platform
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 5
+    depth: 5
+  intent_id: place.platform
+- id: place.platform.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: make a 10 by 10 oak platform
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 10
+    depth: 10
+    material: oak_planks
+  intent_id: place.platform
+- id: place.platform.3
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: 5x5 platform
+  expect:
+    tool: place_shape
+    kind: platform
+  intent_id: place.platform
+- id: place.platform.4
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: yo make a 5x5 platform
+  expect:
+    tool: place_shape
+    kind: platform
+  intent_id: place.platform
+- id: place.platform.5
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: build a 5x5 oak planks platform
+  expect:
+    tool: place_shape
+    kind: platform
+    material: oak_planks
+  intent_id: place.platform
+- id: place.platform.6
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: make me an 8x8 stone pad
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 8
+    depth: 8
+    material: stone
+  intent_id: place.platform
+- id: place.platform.7
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: could you build a 6x6 platform please
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 6
+    depth: 6
+  intent_id: place.platform
+- id: place.platform.8
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: 12 by 12 platform
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 12
+    depth: 12
+  intent_id: place.platform
+- id: place.platform.9
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform
+  prompt: build a 4x4 pad
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 4
+    depth: 4
+  holdout: true
+  intent_id: place.platform
+- id: place.box.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: build a 7x7x5 stone box
+  expect:
+    tool: place_shape
+    kind: box_shell
+    material: stone
+  intent_id: place.box
+- id: place.box.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: could you build a 7x7x5 box
+  expect:
+    tool: place_shape
+    kind: box_shell
+  intent_id: place.box
+- id: place.box.3
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: make a glass box 5x5x4
+  expect:
+    tool: place_shape
+    kind: box_shell
+    material: glass
+  intent_id: place.box
+- id: place.box.4
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: build a solid stone box 4x4x3
+  expect:
+    tool: place_shape
+    kind: solid_box
+    material: stone
+  intent_id: place.box
+- id: place.box.5
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: hollow box 12x12x8
+  expect:
+    tool: place_shape
+    kind: box_shell
+  intent_id: place.box
+- id: place.box.6
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: hollow box 12 cubed
+  expect:
+    tool: place_shape
+    kind: box_shell
+  intent_id: place.box
+- id: place.box.7
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: solid stone cube 8
+  expect:
+    tool: place_shape
+    kind: solid_box
+    material: stone
+  intent_id: place.box
+- id: place.box.8
+  source_ids:
+  - builds.landmark
+  paraphrase_family: place.box
+  prompt: build a tower 10 tall
+  expect:
+    tool: place_shape
+    kind: box_shell
+  intent_id: place.box
+- id: place.box.9
+  source_ids:
+  - builds.landmark
+  paraphrase_family: place.box
+  prompt: tower 15 tall please
+  expect:
+    tool: place_shape
+    kind: box_shell
+  intent_id: place.box
+- id: place.box.10
+  source_ids:
+  - builds.landmark
+  paraphrase_family: place.box
+  prompt: make a stone tower 12 high
+  expect:
+    tool: place_shape
+    kind: box_shell
+    material: stone
+  intent_id: place.box
+- id: place.box.11
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: build a cylinder radius 3 height 12
+  expect:
+    tool: place_shape
+    kind: cylinder
+  intent_id: place.box
+- id: place.box.12
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: build a quartz cylinder radius 3 height 4
+  expect:
+    tool: place_shape
+    kind: cylinder
+    material: quartz_block
+  intent_id: place.box
+- id: place.box.13
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box
+  prompt: make a cyl radius 2 height 8
+  expect:
+    tool: place_shape
+    kind: cylinder
+  holdout: true
+  intent_id: place.box
+- id: paste.gold.1
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: build a little castle
+  expect:
+    tool: paste_template
+    template_id: castle_small_keep
+  intent_id: paste.gold
+- id: paste.gold.2
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: please make a small castle
+  expect:
+    tool: paste_template
+    template_id: castle_small_keep
+  intent_id: paste.gold
+- id: paste.gold.3
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold
+  prompt: house for my chickens
+  expect:
+    tool: paste_template
+    template_id: chicken_coop_small
+  intent_id: paste.gold
+- id: paste.gold.4
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold
+  prompt: build me a small chicken coop
+  expect:
+    tool: paste_template
+    template_id: chicken_coop_small
+  intent_id: paste.gold
+- id: paste.gold.5
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: build a wooden bridge
+  expect:
+    tool: paste_template
+    template_id: bridge_oak_short
+  intent_id: paste.gold
+- id: paste.gold.6
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: make an oak bridge please
+  expect:
+    tool: paste_template
+    template_id: bridge_oak_short
+  intent_id: paste.gold
+- id: paste.gold.7
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: build a watchtower
+  expect:
+    tool: paste_template
+    template_id: watchtower_tall
+  intent_id: paste.gold
+- id: paste.gold.8
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: watchtower please
+  expect:
+    tool: paste_template
+    template_id: watchtower_tall
+  intent_id: paste.gold
+- id: paste.gold.9
+  source_ids:
+  - builds.house_base
+  paraphrase_family: paste.gold
+  prompt: build a small cottage
+  expect:
+    tool: paste_template
+    template_id: house_cottage_small
+  intent_id: paste.gold
+- id: paste.gold.10
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold
+  prompt: make me a bee house
+  expect:
+    tool: paste_template
+    template_id: bee_apiary_small
+  intent_id: paste.gold
+- id: paste.gold.11
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold
+  prompt: build a horse stable
+  expect:
+    tool: paste_template
+    template_id: horse_stable_small
+  intent_id: paste.gold
+- id: paste.gold.12
+  source_ids:
+  - builds.house_base
+  paraphrase_family: paste.gold
+  prompt: make a log cabin
+  expect:
+    tool: paste_template
+    template_id: cabin_log
+  intent_id: paste.gold
+- id: paste.gold.13
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: build a lighthouse
+  expect:
+    tool: paste_template
+    template_id: lighthouse_short
+  intent_id: paste.gold
+- id: paste.gold.14
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: yo build a windmill
+  expect:
+    tool: paste_template
+    template_id: windmill_small
+  intent_id: paste.gold
+- id: paste.gold.15
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold
+  prompt: make a duck pond
+  expect:
+    tool: paste_template
+    template_id: duck_pond_small
+  intent_id: paste.gold
+- id: paste.gold.16
+  source_ids:
+  - builds.house_base
+  paraphrase_family: paste.gold
+  prompt: build a storage shed
+  expect:
+    tool: paste_template
+    template_id: storage_shed
+  intent_id: paste.gold
+- id: paste.gold.17
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold
+  prompt: please build a fountain
+  expect:
+    tool: paste_template
+    template_id: fountain_small
+  intent_id: paste.gold
+- id: paste.gold.18
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold
+  prompt: make a sheep pen
+  expect:
+    tool: paste_template
+    template_id: sheep_pen_medium
+  intent_id: paste.gold
+- id: paste.gold.19
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold
+  prompt: build a pig pen
+  expect:
+    tool: paste_template
+    template_id: pig_pen_small
+  holdout: true
+  intent_id: paste.gold
+- id: paste.gold.20
+  source_ids:
+  - builds.house_base
+  paraphrase_family: paste.gold
+  prompt: make a treehouse
+  expect:
+    tool: paste_template
+    template_id: treehouse_oak
+  holdout: true
+  intent_id: paste.gold
+- id: paste.nongold.1
+  source_ids:
+  - builds.landmark
+  - builds.house_base
+  paraphrase_family: paste.nongold
+  prompt: build an igloo
+  expect:
+    clarify: true
+  intent_id: paste.nongold
+- id: paste.nongold.2
+  source_ids:
+  - builds.landmark
+  - builds.house_base
+  paraphrase_family: paste.nongold
+  prompt: build a wizard tower
+  expect:
+    clarify: true
+  intent_id: paste.nongold
+- id: paste.nongold.3
+  source_ids:
+  - builds.landmark
+  - builds.house_base
+  paraphrase_family: paste.nongold
+  prompt: make an observatory
+  expect:
+    clarify: true
+  intent_id: paste.nongold
+- id: paste.nongold.4
+  source_ids:
+  - builds.landmark
+  - builds.house_base
+  paraphrase_family: paste.nongold
+  prompt: build an armory
+  expect:
+    clarify: true
+  intent_id: paste.nongold
+- id: paste.nongold.5
+  source_ids:
+  - builds.landmark
+  - builds.house_base
+  paraphrase_family: paste.nongold
+  prompt: modern house please
+  expect:
+    clarify: true
+  holdout: true
+  intent_id: paste.nongold
+- id: paste.clarify.house.1
+  source_ids:
+  - builds.house_base
+  paraphrase_family: paste.clarify
+  prompt: build me a house
+  expect:
+    clarify: true
+  intent_id: paste.clarify
+- id: undo.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: undo
+  prompt: undo that
+  expect:
+    tool: undo_last
+  intent_id: undo
+- id: undo.2
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: undo
+  prompt: put it back
+  expect:
+    tool: undo_last
+  intent_id: undo
+- id: undo.3
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: undo
+  prompt: please undo
+  expect:
+    tool: undo_last
+  intent_id: undo
+- id: cancel.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: cancel
+  prompt: never mind
+  expect:
+    cancel: true
+  intent_id: cancel
+- id: cancel.2
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: cancel
+  prompt: nevermind
+  expect:
+    cancel: true
+  intent_id: cancel
+- id: hard.modifier.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: hard.20pct
+  prompt: move the castle left 3 and add a red roof
+  expect:
+    unresolved_or_clarify: true
+  intent_id: hard
+- id: hard.modifier.2
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: hard.20pct
+  prompt: build a huge redstone computer
+  expect:
+    unresolved_or_clarify: true
+  intent_id: hard
+- id: hard.modifier.3
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: hard.20pct
+  prompt: sculpt a gentle hill here
+  expect:
+    unresolved_or_clarify: true
+  intent_id: hard
+- id: refuse.other_player.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse.other_player
+  prompt: teleport my friend here
+  expect:
+    unresolved_or_clarify: true
+  intent_id: refuse.other_player
+- id: refuse.other_player.2
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse.other_player
+  prompt: give diamonds to steve
+  expect:
+    unresolved_or_clarify: true
+  intent_id: refuse.other_player
+- id: revise.place.taller.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: make it taller
+  expect:
+    tool: place_shape
+    kind: wall
+    height: 9
+  prior:
+    tool: place_shape
+    arguments:
+      kind: wall
+      length: 20
+      height: 5
+  intent_id: revise
+- id: revise.place.bigger.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: make it bigger
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 7
+    depth: 7
+  prior:
+    tool: place_shape
+    arguments:
+      kind: platform
+      width: 5
+      depth: 5
+  intent_id: revise
+- id: revise.place.material.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: use oak
+  expect:
+    tool: place_shape
+    kind: wall
+    material: oak_planks
+  prior:
+    tool: place_shape
+    arguments:
+      kind: wall
+      length: 10
+      height: 4
+      material: stone
+  intent_id: revise
+- id: revise.wall.taller.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: make it taller
+  expect:
+    tool: finish_wall
+    height: 12
+  holdout: true
+  prior:
+    tool: finish_wall
+    arguments:
+      height: 8
+      material: oak_planks
+  intent_id: revise
+- id: revise.floor.material.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: use stone
+  expect:
+    tool: finish_floor
+    material: stone
+  prior:
+    tool: finish_floor
+    arguments:
+      mode: fill
+      material: glass
+  intent_id: revise
+- id: finish.wall.opening.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall.opening
+  prompt: build a quartz wall 20 long 8 high
+  perception:
+    finishable_opening: true
+  expect:
+    tool: finish_wall
+    height: 8
+    material: quartz_block
+  intent_id: finish.wall
+- id: finish.wall.opening.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall.opening
+  prompt: please make a cobblestone wall 12 long 6 high
+  perception:
+    finishable_opening: true
+  expect:
+    tool: finish_wall
+    height: 6
+    material: cobblestone
+  holdout: true
+  intent_id: finish.wall
+- id: finish.wall.opening.3
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall.opening
+  prompt: build a stone wall 8 long 6 high
+  perception:
+    finishable_opening: true
+  expect:
+    tool: finish_wall
+    height: 6
+    material: stone
+  intent_id: finish.wall
+- id: finish.wall.opening.4
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall.opening
+  prompt: make a wall 15 long 5 tall with oak planks
+  perception:
+    finishable_opening: true
+  expect:
+    tool: finish_wall
+    height: 5
+    material: oak_planks
+  intent_id: finish.wall
+- id: finish.wall.opening.held.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: finish.wall.opening
+  prompt: build a wall 10 long 4 high
+  perception:
+    finishable_opening: true
+  expect:
+    tool: finish_wall
+    height: 4
+  intent_id: finish.wall
+- id: place.wall.adult.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall.adult
+  prompt: erect a stone curtain wall 24 by 6
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 24
+    height: 6
+    material: stone
+  intent_id: place.wall
+- id: place.wall.kidtypo.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.wall.kidtypo
+  prompt: pls make a cobblestone wall 9 long 3 tall
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 9
+    height: 3
+    material: cobblestone
+  intent_id: place.wall
+- id: place.wall.adversarial.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: build a wall 49 long 32 high
+  expect:
+    refuse: true
+  holdout: true
+  intent_id: refuse
+- id: place.platform.adult.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform.adult
+  prompt: lay a 16 by 8 quartz platform
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 16
+    depth: 8
+    material: quartz_block
+  intent_id: place.platform
+- id: place.platform.kidtypo.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.platform.kidtypo
+  prompt: plz put a 3x3 glass pad here
+  expect:
+    tool: place_shape
+    kind: platform
+    width: 3
+    depth: 3
+    material: glass
+  intent_id: place.platform
+- id: place.platform.budget.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: can you make a 33x33 platform please
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: place.box.adult.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box.adult
+  prompt: construct a hollow quartz room 8 by 6 by 5
+  expect:
+    tool: place_shape
+    kind: box_shell
+    material: quartz_block
+  intent_id: place.box
+- id: place.box.kidtypo.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.box.kidtypo
+  prompt: make a solid cobble cube 6
+  expect:
+    tool: place_shape
+    kind: solid_box
+    material: cobblestone
+  intent_id: place.box
+- id: place.box.budget.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: make a hollow box 25x25x25
+  expect:
+    refuse: true
+  holdout: true
+  intent_id: refuse
+- id: place.cylinder.adult.1
+  source_ids:
+  - builds.sitework
+  paraphrase_family: place.cylinder
+  prompt: create a stone cylinder radius 4 height 10
+  expect:
+    tool: place_shape
+    kind: cylinder
+    material: stone
+  intent_id: place.cylinder
+- id: place.cylinder.budget.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse
+  prompt: build a cylinder radius 17 height 2
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: paste.gold.adult.1
+  source_ids:
+  - builds.house_base
+  paraphrase_family: paste.gold.adult
+  prompt: could you construct a cozy log cabin
+  expect:
+    tool: paste_template
+    template_id: cabin_log
+  intent_id: paste.gold
+- id: paste.gold.kidtypo.1
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: paste.gold.kidtypo
+  prompt: plz make a chicken hous
+  expect:
+    tool: paste_template
+    template_id: chicken_coop_small
+  intent_id: paste.gold
+- id: paste.gold.polite.1
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.gold.polite
+  prompt: would you please build a little castle
+  expect:
+    tool: paste_template
+    template_id: castle_small_keep
+  holdout: true
+  intent_id: paste.gold
+- id: paste.nongold.adult.1
+  source_ids:
+  - builds.landmark
+  paraphrase_family: paste.nongold
+  prompt: could you construct an igloo
+  expect:
+    clarify: true
+  intent_id: paste.nongold
+- id: world.time.adult.1
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.time.adult
+  prompt: change the time to midnight
+  expect:
+    tool: set_time
+    time: midnight
+  intent_id: world.time
+- id: world.weather.polite.1
+  source_ids:
+  - play.creative_mode
+  paraphrase_family: world.weather.polite
+  prompt: could you make it sunny please
+  expect:
+    tool: set_weather
+    weather: clear
+  holdout: true
+  intent_id: world.weather
+- id: give.item.kidtypo.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: give.kidtypo
+  prompt: plz give me tree torches
+  expect:
+    tool: give_item
+  intent_id: give
+- id: summon.passive.polite.1
+  source_ids:
+  - builds.farm_animals
+  paraphrase_family: summon.polite
+  prompt: please spawn four sheep
+  expect:
+    tool: summon_entity
+  intent_id: summon
+- id: refuse.dig.adversarial.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse.dig
+  prompt: mine out a 20x20 tunnel
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: refuse.hostile.adversarial.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse.hostile
+  prompt: please give me tnt
+  expect:
+    refuse: true
+  intent_id: refuse
+- id: revise.place.taller.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: make it taller
+  expect:
+    tool: place_shape
+    kind: box_shell
+    height: 12
+  prior:
+    tool: place_shape
+    arguments:
+      kind: box_shell
+      width: 5
+      depth: 5
+      height: 8
+  intent_id: revise
+- id: revise.place.bigger.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: make it bigger
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 14
+    height: 6
+  holdout: true
+  prior:
+    tool: place_shape
+    arguments:
+      kind: wall
+      length: 10
+      height: 4
+  intent_id: revise
+- id: revise.place.material.2
+  source_ids:
+  - builds.sitework
+  paraphrase_family: revise
+  prompt: use glass
+  expect:
+    tool: place_shape
+    kind: platform
+    material: glass
+  prior:
+    tool: place_shape
+    arguments:
+      kind: platform
+      width: 6
+      depth: 6
+      material: stone
+  intent_id: revise
+- id: cancel.polite.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: cancel
+  prompt: please cancel
+  expect:
+    cancel: true
+  intent_id: cancel
+# --- Weekly triage seeds (from known failure modes / empty-feedback fallback) ---
+- id: triage.wrong_build.opening.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: finish.wall.opening
+  prompt: build me a quartz wall 18 long 7 high
+  perception:
+    finishable_opening: true
+  expect:
+    tool: finish_wall
+    height: 7
+    material: quartz_block
+  intent_id: finish.wall
+- id: triage.wrong_place.wall.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.wall
+  prompt: build a cobblestone wall 10 long 5 high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 10
+    height: 5
+    material: cobblestone
+  intent_id: place.wall
+- id: triage.wrong_size.nxn.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: clarify.wall
+  prompt: make a wall 16x16
+  expect:
+    clarify: true
+  intent_id: clarify.wall
+- id: triage.wrong_build.nongold.1
+  source_ids:
+  - builds.landmark
+  - product.neighborhood
+  paraphrase_family: paste.nongold
+  prompt: build me an armory please
+  expect:
+    clarify: true
+  intent_id: paste.nongold
+- id: triage.paste.gold.new.1
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.gold
+  prompt: build a greenhouse
+  expect:
+    tool: paste_template
+    template_id: greenhouse_small
+  intent_id: paste.gold
+- id: triage.paste.gold.new.2
+  source_ids:
+  - builds.house_base
+  - product.neighborhood
+  paraphrase_family: paste.gold
+  prompt: make a playground
+  expect:
+    tool: paste_template
+    template_id: playground_small
+  intent_id: paste.gold

@@ -23,18 +23,13 @@ make test              # 170+ unit / contract tests, no live server needed
 
 ## Development workflow
 
-1. Change tool contracts in `agent/tool_registry.py` only (not duplicate lists elsewhere).
-2. Implement behavior in the appropriate submodule under `agent/tools/`
-   (`admin.py`, `builders.py`, `fawe.py`, `inspection.py`, `templates.py`,
-   or `_monolith.py` for the still-unsplit shared helpers).
-3. Bump `TOOLS_VERSION` (registry) and `TOOLS_VERSION_EXPECTED`
-   (`agent/mcp_core.py`) — they must match.
-4. Add eval cases under `agent/eval/cases/`.
-5. Run tests: `make test` (or `PYTHONPATH=. pytest -q --ignore=tests/integration`).
-6. Run spec eval locally: `make eval` — it auto-detects an online player
-   and compares against `agent/eval/baseline.strict.json`.
-7. Rebuild the orchestrator: `docker compose up -d --build mc-agent` (or
-   `make up`).
+1. Change the canonical contract under `protocol/`.
+2. Implement the native executor under `plugins/neighborhood-agent/`.
+3. Add deterministic routing or declarative skill access under `companion/`
+   and `skills/`.
+4. Add offline, policy, live-world postcondition, failure, and latency cases.
+5. Run `make test`, compile the plugin, and run `make companion-gate`.
+6. Deploy with `make companion-deploy` and verify the real world result.
 
 For the full local loop (Docker spin-up, template seeding, live validation,
 agent smoke, feedback capture, dataset export, and local trained-model usage),

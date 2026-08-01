@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neighborhood.local/protocol/tools.schema.json",
+  "title": "Neighborhood Companion Tool Catalog",
+  "version": "1.2.0",
+  "tools": [
+    {
+      "name": "set_time",
+      "risk": "safe",
+      "permission": "neighborhood.agent.world",
+      "arguments": {
+        "type": "object",
+        "required": ["time"],
+        "properties": {
+          "time": {
+            "type": "string",
+            "enum": ["day", "noon", "night", "midnight"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "set_weather",
+      "risk": "safe",
+      "permission": "neighborhood.agent.world",
+      "arguments": {
+        "type": "object",
+        "required": ["weather"],
+        "properties": {
+          "weather": {
+            "type": "string",
+            "enum": ["clear", "rain", "thunder"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "give_item",
+      "risk": "safe",
+      "permission": "neighborhood.agent.inventory",
+      "arguments": {
+        "type": "object",
+        "required": ["material", "amount"],
+        "properties": {
+          "material": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "amount": {"type": "integer", "minimum": 1, "maximum": 64}
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "summon_entity",
+      "risk": "bounded",
+      "permission": "neighborhood.agent.mobs",
+      "arguments": {
+        "type": "object",
+        "required": ["entity", "count"],
+        "properties": {
+          "entity": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "count": {"type": "integer", "minimum": 1, "maximum": 20}
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "undo_last",
+      "risk": "safe",
+      "permission": "neighborhood.agent.undo",
+      "arguments": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "paste_template",
+      "risk": "bounded",
+      "permission": "neighborhood.agent.build",
+      "arguments": {
+        "type": "object",
+        "required": ["template_id"],
+        "properties": {
+          "template_id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]{0,63}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finish_wall",
+      "risk": "bounded",
+      "permission": "neighborhood.agent.build",
+      "arguments": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "height": {"type": "integer", "minimum": 0, "maximum": 128},
+          "material": {"type": "string", "pattern": "^[a-z0-9_]+$"}
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "finish_floor",
+      "risk": "bounded",
+      "permission": "neighborhood.agent.build",
+      "arguments": {
+        "type": "object",
+        "required": [],
+        "properties": {
+          "material": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+          "mode": {"type": "string", "enum": ["fill", "replace", "clear"]}
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "place_shape",
+      "risk": "bounded",
+      "permission": "neighborhood.agent.build",
+      "arguments": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["wall", "platform", "box_shell", "solid_box", "cylinder"]
+          },
+          "length": {"type": "integer", "minimum": 2, "maximum": 48},
+          "height": {"type": "integer", "minimum": 1, "maximum": 32},
+          "width": {"type": "integer", "minimum": 1, "maximum": 32},
+          "depth": {"type": "integer", "minimum": 1, "maximum": 32},
+          "roof": {"type": "boolean"},
+          "material": {"type": "string", "pattern": "^[a-z0-9_]+$"}
+        },
+        "additionalProperties": false
+      }
+    }
+  ]
+}

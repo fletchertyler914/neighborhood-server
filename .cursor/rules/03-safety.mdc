@@ -7,9 +7,9 @@ alwaysApply: true
 
 ## Secrets
 
-- `secrets/rcon_password` — never echo, never paste into commit messages,
-  never embed in `.cursor/mcp.json`. The MCP and `mc.sh` deliberately use
-  `docker exec` so the password stays in the container's secret mount.
+- `secrets/rcon_password` — never echo or paste into commit messages.
+  Operator scripts keep it in the container's secret mount; the sidekick
+  never receives or uses it.
 - `.env` holds `PLAYIT_SECRET_KEY`, `AGENT_API_TOKEN`, and optional
   `OPENAI_API_KEY` — same rules. The file is gitignored; keep it that way.
 - `AGENT_API_TOKEN` is required: `docker-compose.yml` interpolates it with
@@ -35,11 +35,20 @@ alwaysApply: true
   (JDK-8359378). Use the existing ZGC `JVM_XX_OPTS`. Only re-enable
   MeowIce flags after confirming a Temurin patch.
 
+## Paper / config patches
+
+- `PATCH_DEFINITIONS=/patches` is mounted from `./config/patches` and is
+  what keeps `bukkit.yml`'s `connection-throttle` at `-1` across reboots.
+  Geyser + Floodgate + playit all collapse player source IPs, so the
+  default 4 s throttle drops legitimate joins as "Connection throttled!"
+  Don't remove the mount or the env. If you need additional persistent
+  Paper/Bukkit/Spigot tweaks, add another `*.json` file to that directory
+  (each file is a single `PatchDefinition`: `{file, ops:[{$set:{...}}]}`).
+
 ## Builds
 
-- Respect the MCP guardrails (200k blocks, 20k commands). If a request is
-  bigger, propose splitting it or using FAWE chunk operations instead of
-  silently raising `MINECRAFT_MCP_MAX_BLOCKS` / `MINECRAFT_MCP_MAX_COMMANDS`.
+- Respect native sidekick edit budgets. If a request is bigger, split it or
+  use bounded FAWE operations instead of silently raising limits.
 - Before destructive ops (`clear_box`, `//set air`, `//regen`, large
   `fill_box` with `mode: replace`), confirm coordinates and rough volume
   with the user.

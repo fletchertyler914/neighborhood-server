@@ -71,7 +71,8 @@ cases:
   language_style: direct
   prompt: build a chiken coop
   expect:
-    tool_any: []
+    tool_any:
+    - name: paste_template
     world_probe:
       kind: none
   tags:
@@ -82,7 +83,8 @@ cases:
   language_style: casual
   prompt: yo build a chiken coop
   expect:
-    tool_any: []
+    tool_any:
+    - name: paste_template
     world_probe:
       kind: none
   tags:

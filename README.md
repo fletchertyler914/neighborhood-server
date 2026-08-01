@@ -1,28 +1,35 @@
 # Neighborhood Minecraft Server
 
-> **Self-hosted, free, crossplay Minecraft server with a magical AI agent
-> that runs *locally*.**  Talk to the world in plain English from
-> Minecraft chat — `/agent build me a small cabin` — and watch it happen.
-> All tools, all builds, all routing run on your own machine. No cloud
-> required (but optional cloud fallback is supported).
+> **Self-hosted, free, crossplay Minecraft with a local AI sidekick.**
+> Kids and friends type plain English in chat — `/agent build me a small
+> chicken coop` — and the Paper plugin does it natively. Inference stays on
+> your machine (Ollama). No cloud required.
 >
-> Status: experimental, working great on a single Mac mini. License: MIT.
+> Status: supervised family / home-server beta. License: MIT.
 
 ## What you get
 
 - A Paper Minecraft server (Java + Bedrock crossplay via Geyser + Floodgate)
-- An in-game `/agent <prompt>` command backed by a local LLM (Ollama)
-- 60+ typed tools the agent can call — `build_platform`, `build_house_at_player`,
-  `fawe_cyl_at_player`, `summon_entity`, etc. — the same registry that drives
-  the Cursor MCP integration
-- A 101-template `.schem` corpus with hybrid (lexical + semantic + policy)
-  ranking so natural prompts ("a place for chickens to live") map to the
-  right schematic
-- An eval harness (19 strict spec cases, 26 NL smoke prompts, ~612-prompt
-  live corpus) that ships with a baseline so regressions show up as PR diffs
+- An in-game `/agent <prompt>` **sidekick** (local LLM + deterministic fast paths)
+- Native typed actions over a private WebSocket (`mc-agent` ↔ Paper plugin) —
+  **RCON is not used for `/agent`**
+- 101 curated `.schem` templates with lexical ranking for natural build asks
+- Companion gates: `make companion-gate` (offline) and `make companion-live`
+  (world e2e with a player online)
+- Sidekick triage: `make companion-feedback-export` / `make companion-triage`
+  for the weekly feedback→corpus loop; `make metrics` for live counters
 - Audit log, Prometheus `/metrics`, deep `/health`, RCON-coordinated backups
-- Optional bundled Ollama Compose profile so Linux/Windows users can run the
-  whole stack with no host install
+- Optional bundled Ollama Compose profile for Linux/Windows hosts
+
+### What `/agent` can do today
+
+Time/weather, give safe items, summon friendly animals, paste gold-curated
+templates, finish a visible wall opening, and make bounded player-relative
+shapes: walls, platforms, hollow/solid boxes, and cylinders. “Watchtower”
+uses a gold template; “tower 10 tall” makes a simple shape. Every build uses
+a bounded FAWE changeset, is claim-checked, verified, undoable, and supports short revisions such as
+“make it taller” or “use oak.” It does **not** dig, clear large areas, use
+FAVS/heightmaps, or run arbitrary WorldEdit.
 
 ## 30-second start
 
@@ -30,14 +37,17 @@
 git clone <this repo> neighborhood-server
 cd neighborhood-server
 make bootstrap            # secrets, .env + AGENT_API_TOKEN, Ollama path choice
-make up                   # boots Paper + agent (+ bundled Ollama if chosen)
+# Mac: ollama pull gemma4:12b-mlx
+make up                   # boots Paper + companion (+ bundled Ollama if chosen)
 make plugin && make seed  # in-game plugin + schematic corpus
-./mc.sh op <yourname>     # whitelist is on by default — add yourself first
-# /agent build me a hollow stone cylinder around me radius 6
+./mc.sh cmd "whitelist add <yourname>"
+./mc.sh op <yourname>     # optional; kids do not need op for /agent
+# /agent build me a small chicken coop
 ```
 
-`make help` lists every target. Read on for the full setup story, or jump to
-[docs/PUBLIC_QUICKSTART.md](docs/PUBLIC_QUICKSTART.md) for the condensed version.
+`make help` lists every target. Condensed path:
+[docs/PUBLIC_QUICKSTART.md](docs/PUBLIC_QUICKSTART.md). Party ops:
+[docs/HOSTING.md](docs/HOSTING.md).
 
 ## Stack at a glance
 
@@ -45,9 +55,10 @@ make plugin && make seed  # in-game plugin + schematic corpus
 - **Crossplay**: GeyserMC + Floodgate (Bedrock players join with their Xbox account)
 - **External access**: official `playit-agent` sidecar (free tier covers Java + Bedrock)
 - **Backups**: `itzg/mc-backup` sidecar, RCON-coordinated, every 2h, 14-day retention
-- **Agent**: FastAPI orchestrator (`mc-agent`) → Ollama (host or bundled) → typed tools → RCON
-- **Building plugin**: FastAsyncWorldEdit (FAWE) `2.15.1`
-
+- **Sidekick**: FastAPI companion (`mc-agent`) → Ollama → typed actions →
+  native Bukkit/FAWE execution in the Paper plugin (WebSocket gateway)
+- **Building plugin**: FastAsyncWorldEdit (FAWE) `2.15.x`
+- **Build protection**: GriefPrevention player claims (sidekick honors claims)
 ## Why playit.gg (and not something else)?
 
 | Option | Java (TCP) | Bedrock (UDP) | Public friends? | Cost |
@@ -68,10 +79,10 @@ If your players already use Tailscale, that's the highest-quality path
 - Docker Desktop 4.x or Docker Engine + Compose v2
 - ~6 GB RAM and ~5 GB disk free (more if you bundle Ollama)
 - Python 3.11+ on the host (for `make bootstrap` and the eval/training scripts)
-- A local LLM for `/agent`: either [Ollama](https://ollama.com) on the host
-  (recommended on Mac Apple Silicon — uses Metal GPU) **or** the bundled
-  Compose `ollama` profile. Without either, set `OPENAI_API_KEY` in `.env`
-  to fall back to cloud.
+- A local LLM for `/agent`: [Ollama](https://ollama.com) on the host
+  (recommended on Mac Apple Silicon — `gemma4:12b-mlx` for Metal/MLX) **or**
+  the bundled Compose `ollama` profile. There is no cloud fallback in the
+  greenfield companion.
 - (Optional) A free [playit.gg account](https://playit.gg/login) for public
   crossplay tunnels.
 
@@ -100,13 +111,12 @@ If you want playit.gg crossplay, add `PLAYIT_SECRET_KEY=pit-...` to `.env`
 
 | Path | Best for | What to do |
 | --- | --- | --- |
-| **Host Ollama** | macOS (Metal GPU), or you already run Ollama | `ollama pull qwen2.5:7b-instruct`, keep `OLLAMA_BASE_URL=http://host.docker.internal:11434`, `make up` |
-| **Bundled Ollama** | Linux/Windows, "zero install" deploys | bootstrap chooses this for you, then `make up` (first boot pulls ~5 GB into the `ollama-models` volume) |
-| **Cloud only** | No GPU and no spare RAM | Set `OPENAI_API_KEY` (and optionally `CLOUD_BASE_URL`, `CLOUD_MODEL`) in `.env`. The orchestrator will use cloud when local Ollama is unreachable. |
+| **Host Ollama** | macOS Apple Silicon (Metal / MLX) | `ollama pull gemma4:12b-mlx`, `LOCAL_LLM_BASE_URL=http://host.docker.internal:11434`, `make up` |
+| **Bundled Ollama** | Linux/Windows, zero host install | bootstrap can set `COMPOSE_PROFILES=ollama`; first boot pulls the model into `ollama-models` |
+| **Non-Mac local fallback** | No MLX | e.g. `qwen2.5:7b-instruct` — works, but expect slower Tier-B (model) latency; common/fast-path asks stay snappy |
 
-NVIDIA Linux: add the standard `deploy.resources.reservations.devices`
-GPU block to the `ollama` service if you want CUDA. The host-network/host
-extra hosts already handle Mac/Windows.
+There is **no cloud LLM path** for the sidekick. NVIDIA Linux: add a Compose
+GPU reservation on the `ollama` service if you want CUDA.
 
 ## 3. Start the stack
 
@@ -163,15 +173,27 @@ in `docker-compose.yml`.
 
 ## 7. playit tunnels (for public crossplay)
 
-The `playit` service starts automatically. On first boot it registers with
-the secret key from `.env` — you don't need to claim a link manually. Confirm:
+`PLAYIT_SECRET_KEY` is the only thing playit needs from you — once it's in
+`.env`, the rest is automated:
 
 ```bash
-docker compose logs playit
-# look for: "agent online"  /  "tunnel ... ready"
+# One-time agent registration (browser, free):
+#   https://playit.gg/account/agents → "Download for Docker" → copy the key
+echo "PLAYIT_SECRET_KEY=pit-XXXXXXXX..." >> .env
+
+# Auto-create the standard Java + Bedrock tunnels via the playit API:
+make tunnels
+
+# Generate a printable invite sheet with the resulting addresses:
+make invite          # writes ~/Desktop/neighborhood-invite.html
 ```
 
-Then open <https://playit.gg/account/tunnels> and add **two tunnels**:
+`make bootstrap` runs `make tunnels` for you automatically when it detects a
+secret in `.env`, so a fresh clone with the secret in place needs no manual
+playit dashboard work. The script is idempotent — it leaves existing tunnels
+alone and only creates what's missing.
+
+The tunnels are created as:
 
 | Tunnel | Type | Local IP | Local Port | Proxy Protocol |
 | --- | --- | --- | --- | --- |
@@ -183,15 +205,22 @@ Then open <https://playit.gg/account/tunnels> and add **two tunnels**:
 > Bedrock clients to speak proxy protocol — which would break your LAN
 > connections. Keep it off unless you stop using LAN.
 
-playit will display two public addresses, e.g.
+Confirm the agent is online with:
+
+```bash
+docker compose logs playit
+# look for: "agent online"  /  "tunnel ... ready"
+```
+
+playit will assign two public addresses, e.g.
 
 ```
-ply.gg:54321                         (Java)
-visiting-phone.gl.at.ply.gg:6695     (Bedrock)
+regular-nbc.gl.joinmc.link                (Java)
+levels-tartly.gl.at.ply.gg:4116           (Bedrock)
 ```
 
-- **Java friends** connect to the playit Java address.
-- **Bedrock friends** add a server with the playit Bedrock host and port.
+- **Java friends** connect to the Java address.
+- **Bedrock friends** add a server with the Bedrock host and port.
 
 That's it — no router configuration, no exposing your home IP.
 
@@ -233,158 +262,95 @@ docker compose pull && docker compose up -d      # pull updates and roll forward
 For party operations (preflight, recovery, post-party cleanup) see
 [docs/HOSTING.md](docs/HOSTING.md).
 
-## 9. AI building with Cursor (MCP)
+## 9. Host operations
 
-This repo ships a project-local MCP server at `.cursor/mcp.json`:
+The AI sidekick has no external AI-control interface. Server operators use the
+auditable shell wrappers for maintenance:
 
-- MCP name: `minecraft-builder`
-- Implementation: `mcp/minecraft_build_mcp.py`
-- Transport: stdio via `uv run --script`
-- Auth: no RCON password in Cursor config; tools shell into `mc-lan` and use
-  the container's built-in `rcon-cli`
-
-After opening this project in Cursor, go to **Cursor Settings -> MCP** and make
-sure `minecraft-builder` is enabled. If Cursor was already open before the MCP
-file was added, restart Cursor or reload the window.
-
-Example things to ask Cursor:
-
-```text
-Use minecraft-builder to list online players.
-Use minecraft-builder to build a 21x21 quartz platform at 0 80 0.
-Use minecraft-builder to build a hollow glass sphere of radius 10 around 25 90 25.
-Use minecraft-builder to build a spiral staircase at 50 70 50.
-Use minecraft-builder to teleport .BedrockPlayer to 0 90 0.
-Use minecraft-builder to run the raw command time set day.
+```bash
+./mc.sh status
+./mc.sh list
+./mc.sh backup
+./mc.sh op <player>
+./mc.sh cmd "<explicit server command>"
 ```
 
-The MCP has guardrails:
+RCON remains private and is not used by `/agent`.
 
-- max cuboid size defaults to `200000` blocks
-- max generated command count defaults to `20000`
-- RCON is not exposed on a host port
-- raw commands exist as an escape hatch, but purpose-built build tools are safer
-
-FastAsyncWorldEdit is also installed. The MCP exposes `fawe_as_player` for
-commands that need a player context/location/selection, for example running
-WorldEdit commands as `.BedrockPlayer`.
-
-### Cursor rules (so new chats just know what to do)
+### Cursor rules
 
 The repo ships project-scoped Cursor rules at `.cursor/rules/`:
 
 - `01-server-overview.mdc` — stack, container names, ports, defaults
-- `02-minecraft-tools.mdc` — MCP first, then `mc.sh` / `op.sh`, then raw
-  `docker exec`; building patterns and guardrails
+- `02-minecraft-tools.mdc` — host scripts, native sidekick boundaries, and
+  world-edit guardrails
 - `03-safety.mdc` — secrets, RCON internal-only, JVM-flag pinning,
   whitelist + AGENT_API_TOKEN rules
-- `04-in-game-agent.mdc` — `/agent` command, orchestrator, model routing
+- `04-in-game-agent.mdc` — `/agent` sidekick, companion runtime, validation
 
 All four are `alwaysApply: true`, so any new Cursor chat in this workspace
-already has the context. You can just say things like:
+already has the context.
+
+## 10. In-game `/agent` sidekick
+
+Players talk to the sidekick only through Minecraft chat (no cheats required;
+family defaults grant `/agent` to all players). The Paper plugin maintains an
+authenticated outbound WebSocket to the private `mc-agent` runtime. Common
+requests use deterministic routing; ambiguous requests use one bounded
+local-model compile. The plugin revalidates and executes every action through
+Bukkit or FAWE APIs and honors GriefPrevention claims.
 
 ```text
-Build me a 31x31 quartz platform centered at 100 80 -50, hollow walls 4 blocks tall.
-Op .NewBedrockPlayer and put them in creative.
-Backup now, then run //regen on .BedrockPlayer's selection.
-```
-
-## 10. In-game `/agent` (local AI + shared MCP tools)
-
-Type prompts in Minecraft chat — same tool core as the Cursor MCP, routed
-through the Compose-managed `mc-agent` orchestrator and local model (Ollama),
-with optional cloud fallback.
-
-```text
-/agent build a 21x21 quartz platform at my feet
-/agent dig a shaft 32 blocks below me
-/agent give me haste and set time to day
-/agent build a chicken coop in front of me
-/agent good                              # rate the previous job good
-/agent bad bridge was too high           # rate it bad (training signal)
-/agent confirm <token> clear this area   # destructive ops require a token
+/agent make it daytime
+/agent give me three dirt blocks
+/agent spawn three chickens here
+/agent build me a small chicken coop
+/agent finish this wall in front of me 8 blocks high
+/agent undo that
 ```
 
 The plugin config (auto-generated in `data/plugins/NeighborhoodAgent/config.yml`)
 points at the Compose service:
 
 ```yaml
-orchestrator-url: http://mc-agent:8787
+gateway-url: ws://mc-agent:8787/v1/gateway
 api-token: env:AGENT_API_TOKEN
-job-timeout-seconds: 90
+server-id: neighborhood
 ```
 
-**Routing**: local Ollama → bounded local fallback (`OLLAMA_FALLBACK_MODEL`)
-→ cloud if `OPENAI_API_KEY` is set. Cloud is third-tier; the live default is
-host Ollama.
+**Model**: `gemma4:12b-mlx` through Ollama (Metal/MLX on Apple Silicon).
+Constrained structured output; no cloud cascade.
 
-### Models that work well (2026)
+### Validation / release checklist
 
-| Tier | Ollama tag | RAM | Notes |
-| --- | --- | --- | --- |
-| Default | `qwen2.5:7b-instruct` | ~5 GB | Reliable fast path on this host |
-| Bounded fallback | `qwen3:8b` | ~5 GB | Smarter in theory; bounded by timeout |
-| Baseline | `llama3.1:8b` | ~5.5 GB | Battle-tested, no thinking quirks |
-| Step up | `qwen3:14b` / `qwen2.5:14b` | ~9 GB | Better multi-tool reasoning if you have headroom |
-| Avoid | MoE / "elastic" tags | — | Multi-step tool chains tend to fragment on routing |
+```bash
+make companion-gate              # offline accuracy + latency floors
+make companion-live              # world e2e (needs an online player)
+make companion-live-dialogue     # compound + multi-turn clarifies
+make companion-triage            # weekly feedback buckets → corpus next steps
+```
 
-There is no useful Minecraft-specific Ollama model for tool-calling agents.
-We make a generalist Minecraft-smart instead via prompt strategies + RAG-lite
-(see [docs/FINE_TUNING.md](docs/FINE_TUNING.md) for the training loop).
+Weekly loop (export → bucket → seed/alias fix → gate): see
+[evals/CORPUS_SOURCES.md](evals/CORPUS_SOURCES.md#weekly-feedback--corpus-loop).
 
-### Smart context (server-side, every job)
-
-`agent/context.py` pulls a snapshot from your running server and injects it
-into the system prompt:
-
-- online players, current time of day, player facing direction
-- ground block under the player
-- last few `/agent` actions for follow-up prompts ("make it taller")
-
-### Knowledge base (`agent/knowledge/`)
-
-- `blocks.md` — curated Minecraft block IDs by category (stops the model
-  from hallucinating `quartz` instead of `quartz_block`)
-- `fawe.md` — FastAsyncWorldEdit cheatsheet (`//set`, `//walls`, `//hsphere`,
-  selections, brushes, schematics)
-- `patterns.md` — recipe library (platform, dome, tower, bunker, mining)
-
-`agent/retrieval.py` keyword-ranks chunks against the prompt and injects the
-top matches into context. Edit any `*.md` and restart the orchestrator
-(`docker compose restart mc-agent`) to pick up changes.
+Honest SLOs on a warm Mac Mini-class host: common asks ≤500ms; builds
+~0.2–2s; model path ~3–6s when needed.
 
 ### Safety
 
-Destructive ops require `/agent confirm <token> ...`. Rate limit, audit log
-(`data/agent-audit.log`), RCON denylist. `mc-agent` does not publish ports
-to the host or playit; the plugin reaches it on the private Compose network.
+The plugin is the trust boundary: permissions, GriefPrevention claims, edit
+budgets, deadlines, idempotency, verification, and undo are enforced after
+model output. `mc-agent` publishes no host port. Prompts and inference stay
+local.
 
-### Hybrid template ranker
+### Template ranking
 
-Natural-language prompts like *"a place for chickens to live"* or *"build a
-fortress"* are resolved by `agent/templates/ranking.py` (lexical + local-CPU
-semantic + policy reranker → confidence gate) before `paste_template_at_player`
-runs. The catalog ships 101 verified `.schem` files; multi-story house,
-bridge, and castle builders include real interiors, railings, and stairs by
-default. See [docs/TEMPLATE_RANKING.md](docs/TEMPLATE_RANKING.md).
+Natural-language prompts like *"a place for chickens to live"* resolve through
+the companion template ranker against the curated catalog (101 `.schem`
+files). See [docs/TEMPLATE_RANKING.md](docs/TEMPLATE_RANKING.md).
 
-### Agent framework (eval, registry, training prep)
-
-- **Tool contracts** — single registry in `agent/tool_registry.py`
-  (schema, dispatch, MCP stay in sync); current `TOOLS_VERSION` is `2.9.0`
-- **Validation tiers** — `make test | smoke | eval | live-tools |
-  full-validation | corpus-quick | corpus`
-- **Auto-detected player** — `scripts/_detect_player.sh` finds an online
-  player so `make smoke` and friends Just Work
-- **Fine-tuning loop** — `make train` (SFT + DPO export + LoRA dry-run) and
-  `make train-full` (full LoRA → GGUF → Ollama register) — see
-  [docs/FINE_TUNING.md](docs/FINE_TUNING.md)
-- **Feedback capture** — `/agent good|bad` writes to `data/agent-feedback.jsonl`
-- **Model comparison** — `make compare-models` (stock qwen2.5 vs trained tag)
-- **More docs** — [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md),
-  [docs/TOOL_CONTRACT.md](docs/TOOL_CONTRACT.md),
-  [docs/DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md),
-  [docs/HOSTING.md](docs/HOSTING.md), [CONTRIBUTING.md](CONTRIBUTING.md)
+Obsolete RCON-orchestrator surfaces are listed in
+[docs/DEPRECATED.md](docs/DEPRECATED.md).
 
 ## 11. Backups
 
@@ -438,6 +404,13 @@ If a major version requires a newer Java, also bump
   and update `.env`.
 - **Bedrock friend can't join via playit** — confirm the tunnel type is
   *Minecraft Bedrock* (not custom UDP) and that *Proxy Protocol* is *None*.
+- **`Connection throttled! Please wait before reconnecting.`** — Geyser
+  presents every Bedrock player and playit collapses Java IPs through one
+  gateway, so Paper's default 4 s join cooldown drops the second person.
+  `config/patches/bukkit-overrides.json` disables this on every boot; if
+  you see it, check that `data/bukkit.yml` has `connection-throttle: -1`
+  after the next restart and that `PATCH_DEFINITIONS=/patches` is still
+  set on the `mc` service.
 
 ## File layout
 
@@ -451,22 +424,20 @@ neighborhood-server/
 ├── LICENSE
 ├── .env.example                # template; `make bootstrap` produces .env
 ├── .gitignore / .dockerignore
-├── agent/                      # Python: orchestrator, tools, registry, eval, templates, training
-│   ├── orchestrator/app.py     # FastAPI app (runs as mc-agent)
-│   ├── tools/                  # admin, builders, fawe, inspection, templates
-│   ├── tool_registry.py        # single source of truth (TOOLS_VERSION)
-│   ├── templates/
-│   │   ├── catalog.json
-│   │   └── schematics/*.schem  # 101 verified
-│   ├── knowledge/*.md          # blocks / fawe / patterns RAG-lite
-│   └── eval/                   # spec + corpus eval harness
-├── plugins/neighborhood-agent/ # Paper /agent plugin source (Java)
-├── mcp/minecraft_build_mcp.py  # Cursor MCP adapter
+├── companion/                  # Greenfield async runtime, routing, model, SQLite
+├── protocol/                   # Language-neutral envelopes and tool contracts
+├── skills/                     # Declarative, evaluated sidekick skills
+├── evals/                      # Locked scorecard and release gates
+├── agent/templates/            # Curated assets retained during migration
+│   ├── catalog.json
+│   └── schematics/*.schem      # 101 verified
+├── plugins/neighborhood-agent/ # Native Paper gateway and tool executors
 ├── mc.sh, op.sh                # RCON / admin wrappers
-├── scripts/                    # bootstrap, build-plugin, agent-smoke, eval, seed, etc.
+├── scripts/                    # bootstrap, build-plugin, agent-smoke, eval, seed,
+│                               # playit_setup, print_invite, etc.
 ├── tests/                      # 170+ unit / contract tests
 ├── docs/                       # ARCHITECTURE, TOOL_CONTRACT, HOSTING, CORPUS, ...
-├── .cursor/                    # mcp.json + rules (alwaysApply)
+├── .cursor/                    # project rules (alwaysApply)
 ├── secrets/rcon_password       # gitignored
 ├── .env                        # gitignored
 ├── data/                       # world + plugins (gitignored)

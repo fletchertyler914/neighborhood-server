@@ -1,0 +1,181 @@
+# Extra offline companion-gate cases beyond legacy CORE_TOOLS sampling.
+# Expectations are routing-level (tool / clarify / refuse), not live world probes.
+cases:
+  - id: extra.undo.01
+    prompt: undo that
+    expect:
+      tool: undo_last
+      tier: S
+
+  - id: extra.undo.02
+    prompt: put it back
+    expect:
+      tool: undo_last
+      tier: S
+
+  - id: extra.cancel.01
+    prompt: never mind
+    expect:
+      refuse: true
+      route_contains: cancel
+      tier: S
+
+  - id: extra.floor.01
+    prompt: finish this floor with glass
+    expect:
+      tool: finish_floor
+      arguments:
+        material: glass
+        mode: fill
+      tier: A
+
+  - id: extra.floor.02
+    prompt: finish the floor
+    expect:
+      tool: finish_floor
+      arguments:
+        mode: fill
+      tier: A
+
+  - id: extra.floor.03
+    prompt: make this floor oak planks
+    expect:
+      tool: finish_floor
+      arguments:
+        material: oak_planks
+        mode: replace
+      tier: A
+
+  - id: extra.floor.04
+    prompt: clear the floor
+    expect:
+      tool: finish_floor
+      arguments:
+        mode: clear
+      tier: A
+
+  - id: extra.floor.05
+    prompt: finish the second floor
+    expect:
+      tool: finish_floor
+      arguments:
+        mode: fill
+      tier: A
+
+  - id: extra.floor.06
+    prompt: build a second floor for my castle
+    expect:
+      tool: finish_floor
+      arguments:
+        mode: fill
+      tier: A
+
+  - id: extra.floor.07
+    prompt: make a second floor on my castle
+    expect:
+      tool: finish_floor
+      arguments:
+        mode: fill
+      tier: A
+
+  - id: extra.wall.01
+    prompt: finish this wall 8 blocks high
+    expect:
+      tool: finish_wall
+      arguments:
+        height: 8
+      tier: A
+
+  - id: extra.wall.02
+    prompt: finish the wall in front of me 12 blocks tall
+    expect:
+      tool: finish_wall
+      arguments:
+        height: 12
+      tier: A
+
+  - id: extra.wall.03
+    prompt: finish this wall
+    expect:
+      tool: finish_wall
+      tier: A
+
+  - id: extra.wall.04
+    prompt: finsh the wall in front of me
+    expect:
+      tool: finish_wall
+      tier: A
+
+  - id: extra.wall.05
+    prompt: finish the quartz wall in front of me
+    expect:
+      tool: finish_wall
+      arguments:
+        material: quartz_block
+      tier: A
+
+  - id: extra.wall.06
+    prompt: build a quartz block wall between the oak planks
+    expect:
+      tool: finish_wall
+      arguments:
+        material: quartz_block
+      tier: A
+
+  - id: extra.compound.01
+    prompt: make it daytime and clear the weather
+    expect:
+      compound_tools: [set_time, set_weather]
+      tier: A
+
+  - id: extra.compound.02
+    prompt: make it night then spawn three chickens
+    expect:
+      compound_tools: [set_time, summon_entity]
+      tier: A
+
+  - id: extra.clarify_give.01
+    prompt: can i have torch
+    expect:
+      clarify: true
+      pending_kind: give
+      tier: S
+
+  - id: extra.clarify_build.01
+    prompt: build me a house
+    expect:
+      clarify: true
+      pending_kind: template
+      tier: S
+
+  - id: extra.refuse.hostile.01
+    prompt: spawn a creeper
+    expect:
+      refuse: true
+      route_contains: refuse
+      tier: S
+
+  - id: extra.refuse.hostile.02
+    prompt: summon zombies here
+    expect:
+      refuse: true
+      route_contains: refuse
+      tier: S
+
+  - id: extra.template.01
+    prompt: build me a small chicken coop
+    expect:
+      tool: paste_template
+      tier: A
+
+  - id: extra.template.02
+    prompt: make a cottage in front of me
+    expect:
+      tool: paste_template
+      tier: A
+
+  - id: extra.template.03
+    prompt: build a bridge please
+    expect:
+      tool: paste_template
+      tier: A

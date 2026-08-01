@@ -2,14 +2,13 @@
 
 Designed to run from inside the mc-agent container (where the deterministic
 tools talk to mc-lan via RCON). All actions go through `agent.tools` so
-this exercises exactly the same code path that MCP / the in-game agent uses.
+this validates the curated assets consumed by the in-game sidekick.
 
-Layout (flat world, surface y=-60):
+Layout (dedicated remote pad, far from spawn / normal play):
 
-    Templates: 11-column grid starting at (200, -60, 200), spacing 32 blocks
-               in x and 64 blocks in z. Player TPs in front of each cell.
-    Mob pen:   centered around (200, -60, 1500). Each mob spawned 4 blocks
-               apart on a clean grass slab.
+    Templates: 11-column grid starting at (13000, 96, 13000), spacing 36/64.
+               Player TPs onto a solid grass platform in front of each cell.
+    Mob pen:   centered around (13000, 96, 14500).
 """
 
 from __future__ import annotations
@@ -25,26 +24,40 @@ from agent.tools import _rcon, paste_template_at_player, summon_entity, clear_bo
 
 
 def _detect_online_player() -> str:
+    """Operator-only — never fall back to a random friend online."""
+    preferred = (
+        os.environ.get("AGENT_LIVE_PLAYER")
+        or os.environ.get("AGENT_VALIDATION_PLAYER")
+        or "firecrab93"
+    ).strip()
     raw = _rcon("list", timeout=10) or ""
-    match = re.search(r"online:?\s*(.+)$", raw)
+    match = re.search(r"online:?\s*(.+)$", raw, re.I)
     if not match:
         return ""
-    first = match.group(1).split(",")[0].strip()
-    return first
+    names = [n.strip() for n in match.group(1).split(",") if n.strip()]
+    for name in names:
+        if name.lower() == preferred.lower():
+            return name
+    return ""
 
 
-PLAYER = os.environ.get("AGENT_VALIDATION_PLAYER") or _detect_online_player()
+PLAYER = (
+    os.environ.get("AGENT_VALIDATION_PLAYER")
+    or os.environ.get("AGENT_LIVE_PLAYER")
+    or _detect_online_player()
+)
 if not PLAYER:
     raise SystemExit(
-        "no online player detected. Join the server (Java or Bedrock) and re-run, "
-        "or set AGENT_VALIDATION_PLAYER=<name> explicitly."
+        "validation player firecrab93 is not online. Join as that account "
+        "(do not use friends), then re-run, or set AGENT_LIVE_PLAYER=<name>."
     )
-GRID_ORIGIN = (200, -60, 200)
+# Dedicated remote validation pad (aligned with evals/run_live.py).
+GRID_ORIGIN = (13000, 96, 13000)
 COL_STRIDE = 36
 ROW_STRIDE = 64
 COLUMNS = 11
 
-PEN_CENTER = (200, -60, 1500)
+PEN_CENTER = (13000, 96, 14500)
 PEN_RADIUS = 60
 
 
@@ -84,9 +97,17 @@ def _prepare_flat_area(
     surface_y: int,
     clear_height: int,
 ) -> None:
-    """Restore the flat-world grass plane and clear only above it."""
+    """Carve a solid floating pad and clear only the air above it."""
 
-    _fill_chunked(x1, surface_y, z1, x2, surface_y + clear_height, z2, "air")
+    _rcon(
+        f"forceload add {min(x1, x2)} {min(z1, z2)} {max(x1, x2)} {max(z1, z2)}",
+        timeout=60,
+    )
+    # Clear pad volume then lay thick stone + grass top (feet at surface_y).
+    _fill_chunked(
+        x1, surface_y - 4, z1, x2, surface_y + clear_height, z2, "air"
+    )
+    _fill_chunked(x1, surface_y - 4, z1, x2, surface_y - 1, z2, "stone")
     _fill_chunked(x1, surface_y - 1, z1, x2, surface_y - 1, z2, "grass_block")
 
 
@@ -100,7 +121,9 @@ class CellResult:
 
 
 def _tp_facing_south(x: int, y: int, z: int) -> None:
-    _rcon(f"tp {PLAYER} {x} {y} {z} 0 0")
+    # Stand on grass at y-1; ensure a local pad underfoot before each cell TP.
+    _rcon(f"fill {x - 1} {y - 1} {z - 1} {x + 1} {y - 1} {z + 1} grass_block")
+    _rcon(f"tp {PLAYER} {x + 0.5} {y} {z + 0.5} 0 0")
     time.sleep(0.3)
 
 

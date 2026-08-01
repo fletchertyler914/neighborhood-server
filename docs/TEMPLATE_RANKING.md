@@ -1,7 +1,7 @@
 # Hybrid Template Ranking
 
-Natural-language build requests (`/agent build a small chicken coop`, MCP
-`paste_template_at_player`) resolve through a **deterministic hybrid ranker**
+Natural-language build requests such as `/agent build a small chicken coop`
+resolve through a **deterministic ranker**
 so small local models do not need to memorize snake_case template ids.
 
 ## Flow
@@ -18,7 +18,7 @@ prompt → resolve_template() → confidence gate → paste_template_at_player /
 
 Single entrypoint: `agent/templates/ranking.py` → `resolve_template(query, context)`.
 
-## MCP / agent portability
+## Runtime / gateway portability
 
 | Tool | Role |
 | --- | --- |
@@ -26,7 +26,7 @@ Single entrypoint: `agent/templates/ranking.py` → `resolve_template(query, con
 | `paste_template_at_player` | Build; `template_id` accepts NL or catalog id |
 | `list_templates` | Browse catalog by category/tags |
 
-All MCP clients share the `agent/tools/` package and the same ranker — no hidden prompt hacks.
+All player requests share the same deterministic ranker and native gateway path.
 
 ## Configuration
 

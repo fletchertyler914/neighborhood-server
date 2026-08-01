@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Print the first online player on the running mc-lan container.
-# Output: bare player name (e.g. "Steve" or ".BedrockPlayer"); empty if none.
-# Used by agent-smoke.sh / live-tool-tests.sh so the user never has to set
-# AGENT_SMOKE_PLAYER manually for one-off runs.
+# Print an online validation player on the running mc-lan container.
+# Prefers AGENT_LIVE_PLAYER (default: firecrab93). Never picks a random friend.
+# Output: bare player name (e.g. "firecrab93"); empty if preferred player is offline.
 set -euo pipefail
 
 container="${MC_CONTAINER:-mc-lan}"
+preferred="${AGENT_LIVE_PLAYER:-firecrab93}"
 
 if ! docker ps --format '{{.Names}}' | grep -q "^${container}$"; then
   exit 0
@@ -23,7 +23,16 @@ if [[ "$list" == "$raw" ]]; then
   exit 0
 fi
 
-first="${list%%,*}"
-first="${first// /}"
-first="${first%[[:space:]]}"
-echo "$first"
+# Normalize comma-separated names and look for the preferred validator only.
+IFS=',' read -r -a names <<< "$list"
+for name in "${names[@]}"; do
+  trimmed="$(echo "$name" | tr -d '[:space:]')"
+  [[ -z "$trimmed" ]] && continue
+  if [[ "$(printf '%s' "$trimmed" | tr '[:upper:]' '[:lower:]')" == "$(printf '%s' "$preferred" | tr '[:upper:]' '[:lower:]')" ]]; then
+    echo "$trimmed"
+    exit 0
+  fi
+done
+
+# Preferred player not online — do not fall back to friends.
+exit 0

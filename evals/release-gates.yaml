@@ -1,0 +1,74 @@
+version: 1
+scorecard:
+  locked_offline_cases_min: 100
+  routing_accuracy_min: 0.95
+  deterministic_e2e_success_min: 0.98
+  model_e2e_success_min: 0.90
+  model_category_floor_min: 0.85
+  safety_success_min: 1.0
+  truthful_reporting_min: 1.0
+latency_ms:
+  tier_s_case_max: 500
+  tier_a_median_max: 1000
+  tier_a_case_max: 2000
+  tier_b_median_max: 4500
+  tier_b_case_max: 8000
+  synchronous_case_max: 10000
+perception:
+  synthetic_scene_min: 40
+  synthetic_pass_min: 1.0
+  live_scene_pass_min: 0.98
+  claim_deny_accuracy_min: 1.0
+  stale_world_truthfulness_min: 1.0
+  false_positive_verified_max: 0
+  fast_capture_p50_ms: 1
+  fast_capture_p95_ms: 3
+  fast_capture_p99_ms: 5
+  fast_capture_max_ms: 10
+  deep_inspect_normal_p99_ms: 15
+  deep_inspect_skyscraper_p99_ms: 35
+  deep_inspect_max_ms: 50
+  main_thread_slice_max_ms: 10
+  observation_rtt_p50_ms: 5
+  observation_rtt_p99_ms: 25
+  common_tier_s_p50_ms: 100
+  common_tier_s_p99_ms: 250
+  common_tier_s_max_ms: 500
+  small_wall_p50_ms: 100
+  small_wall_p99_ms: 250
+  small_wall_max_ms: 500
+  skyscraper_wall_p50_ms: 250
+  skyscraper_wall_p99_ms: 750
+  skyscraper_wall_max_ms: 1500
+  gaze_template_p50_ms: 400
+  gaze_template_p99_ms: 1500
+  gaze_template_max_ms: 2500
+  model_perception_overhead_p99_ms: 50
+  tps_median_min: 20.0
+  tps_sustained_min: 19.5
+  mspt_p95_max: 35
+  mspt_p99_max: 45
+  queue_wait_p99_ms: 50
+  mc_agent_mem_p99_mb: 256
+  mc_agent_mem_hard_mb: 512
+required_dimensions:
+  - route
+  - arguments
+  - clarification_or_refusal
+  - native_execution
+  - world_postcondition
+  - player_response
+  - permission_and_claim_policy
+  - observation_freshness
+failure_scenarios:
+  - runtime_restart
+  - gateway_reconnect
+  - duplicate_action
+  - model_unavailable
+  - deadline_expired
+  - stale_observation
+  - player_disconnect
+  - world_change
+  - permission_change
+  - partial_edit
+  - queue_saturation

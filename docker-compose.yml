@@ -13,10 +13,18 @@ services:
     ports:
       - '25565:25565/tcp'
       - '19132:19132/udp'
+      # BlueMap web UI — localhost only. Open http://127.0.0.1:8100 in a
+      # browser after the next `docker compose restart mc`. To share with
+      # the home LAN, change the left side to '0.0.0.0:8100'. To share
+      # publicly, add a third playit TCP tunnel pointing at 127.0.0.1:8100.
+      - '127.0.0.1:8100:8100/tcp'
 
     environment:
       EULA: 'TRUE'
       TYPE: PAPER
+      # Paper stable release for this stack. Use "26.2" + PAPER_CHANNEL: experimental
+      # only after Modrinth ships FAWE/BlueMap/GriefPrevention for 26.2.
+      # Omit PAPER_BUILD to auto-fetch the newest Paper build for VERSION on start.
       VERSION: '26.1.2'
       PAPER_CHANNEL: default
 
@@ -34,6 +42,13 @@ services:
         -XX:+DisableExplicitGC
         -XX:+PerfDisableSharedMem
 
+      # NOTE: CoreProtect is intentionally absent. Its free Community Edition
+      # lags one Minecraft version on purpose and hard-gates internally — the
+      # latest public build (23.2) self-disables on 26.1.2 with "Minecraft
+      # 26.1.2 is not supported", and Modrinth has no 26.1.2-tagged file, so
+      # listing it anywhere either fails the mc container or loads a dead jar.
+      # Re-add it (MODRINTH_PROJECTS, or a direct CDN jar URL here) once a
+      # 26.1.x-compatible CoreProtect build is published.
       PLUGINS: |
         https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
         https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
@@ -41,9 +56,24 @@ services:
       # Modrinth-managed plugins (auto-update on container restart).
       # FastAsyncWorldEdit gives /set, /sphere, /cyl, /pyramid, schematic
       # loading, and copy/paste - the foundation for AI-driven building.
-      MODRINTH_PROJECTS: fastasyncworldedit
+      # BlueMap renders a 3D web map of all worlds and live player markers,
+      # served by its bundled webserver on port 8100. Exposed to 127.0.0.1
+      # only (see ports: below) and pre-configured in data/plugins/BlueMap/.
+      # GriefPrevention lets players protect their own creative builds.
+      # (CoreProtect block-logging is unavailable on 26.1.2 — see the PLUGINS
+      # note above.)
+      # ViaVersion lets Geyser's emulated 26.2 Java client join this 26.1.2
+      # server, which unblocks Bedrock 26.2 (iPad) players without waiting for
+      # FAWE/GriefPrevention to ship 26.2 builds.
+      MODRINTH_PROJECTS: |
+        viaversion
+        fastasyncworldedit
+        bluemap
+        griefprevention
 
-      ONLINE_MODE: 'TRUE'
+      # Mojang session auth. Set MC_ONLINE_MODE=false in .env for offline/LAN
+      # play during auth outages (UUIDs/ops can drift — flip back after).
+      ONLINE_MODE: ${MC_ONLINE_MODE:-TRUE}
       ENFORCE_SECURE_PROFILE: 'false'
       MAX_PLAYERS: '10'
       VIEW_DISTANCE: '12'
@@ -69,6 +99,13 @@ services:
       ENABLE_RCON: 'true'
       RCON_PASSWORD_FILE: /run/secrets/rcon_pass
       AGENT_API_TOKEN: ${AGENT_API_TOKEN:?Set AGENT_API_TOKEN in .env — run make bootstrap}
+
+      # Apply server config patches every boot. Currently disables Paper's
+      # connection-throttle so Geyser/Floodgate Bedrock players sharing the
+      # same source IP, and playit-routed Java players sharing one gateway,
+      # don't get "Connection throttled!" on rapid reconnect. See
+      # config/patches/bukkit-overrides.json for the full rationale.
+      PATCH_DEFINITIONS: /patches
 
       # Suppress RCON/console command echoes to ops chat. The agent shells
       # out RCON for every tool call (build, teleport, give, summon, etc.);
@@ -99,6 +136,17 @@ services:
       - ./data:/data
       # Curated agent templates → FAWE schematics (namespace: neighborhood/)
       - ./agent/templates/schematics:/data/plugins/FastAsyncWorldEdit/schematics/neighborhood
+      # Kid-facing titles + follow_up summons for native paste
+      - ./agent/templates/catalog.json:/data/plugins/NeighborhoodAgent/catalog.json:ro
+      # itzg PATCH_DEFINITIONS — applied on every boot (see above)
+      - ./config/patches:/patches:ro
+      # BlueMap config (only the keys we care about — accept-download, the
+      # webserver bind, render-thread cap). BlueMap fills in defaults for
+      # everything else on first boot and writes per-world configs into
+      # data/plugins/BlueMap/maps/ as usual. File-level binds so BlueMap
+      # can still write its own state in the same directory.
+      - ./config/bluemap/core.conf:/data/plugins/BlueMap/core.conf
+      - ./config/bluemap/webserver.conf:/data/plugins/BlueMap/webserver.conf
 
     extra_hosts:
       - host.docker.internal:host-gateway
@@ -115,9 +163,10 @@ services:
   mc-agent:
     build:
       context: .
-      dockerfile: agent/Dockerfile
+      dockerfile: companion/Dockerfile
     container_name: mc-agent
     restart: unless-stopped
+    mem_limit: 512m
     depends_on:
       mc:
         condition: service_healthy
@@ -126,25 +175,23 @@ services:
       # Binds all interfaces inside the container; safe — no host ports: mapping.
       AGENT_BIND_HOST: 0.0.0.0
       AGENT_BIND_PORT: '8787'
-      AGENT_JOB_TIMEOUT_SEC: '75'
-      AGENT_LOCAL_MODEL_TIMEOUT_SEC: '30'
+      # Named volume (not virtiofs bind) — SQLite WAL under ./data hit disk I/O
+      # errors under live-eval load on Docker Desktop macOS.
+      COMPANION_DB_PATH: /var/lib/companion/companion.sqlite3
+      COMPANION_JOB_DEADLINE_MS: '10000'
+      AGENT_LOCAL_MODEL_TIMEOUT_SEC: '5'
       # Eval mode runs deterministic scripted scenarios; bigger reasoning
       # models (qwen3:8b with think:false) need >15s on cold tool-schema
       # load. In-game flow is unaffected.
       AGENT_EVAL_LOCAL_MODEL_TIMEOUT_SEC: '120'
-      AGENT_MAX_STEPS: '14'
-      RCON_MODE: tcp
-      RCON_HOST: mc
-      RCON_PORT: '25575'
-      RCON_PASSWORD_FILE: /run/secrets/rcon_pass
+      # Greenfield companion compiler (host Ollama / Apple MLX).
+      LOCAL_LLM_BASE_URL: ${LOCAL_LLM_BASE_URL:-http://host.docker.internal:11434}
+      LOCAL_LLM_MODEL: ${LOCAL_LLM_MODEL:-gemma4:12b-mlx}
+      LOCAL_LLM_NUM_CTX: ${LOCAL_LLM_NUM_CTX:-2048}
+      LOCAL_LLM_NUM_PREDICT: ${LOCAL_LLM_NUM_PREDICT:-192}
+      LOCAL_LLM_KEEP_ALIVE: ${LOCAL_LLM_KEEP_ALIVE:-30m}
       OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
-      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
-      OLLAMA_FALLBACK_MODEL: ${OLLAMA_FALLBACK_MODEL:-qwen3:8b}
-      OLLAMA_NUM_CTX: ${OLLAMA_NUM_CTX:-4096}
-      OLLAMA_NUM_PREDICT: ${OLLAMA_NUM_PREDICT:-512}
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
-      CLOUD_BASE_URL: ${CLOUD_BASE_URL:-https://api.openai.com/v1}
-      CLOUD_MODEL: ${CLOUD_MODEL:-gpt-4o-mini}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-gemma4:12b-mlx}
       TEMPLATE_RANKER_MODE: ${TEMPLATE_RANKER_MODE:-hybrid}
       TEMPLATE_EMBEDDING_BACKEND: ${TEMPLATE_EMBEDDING_BACKEND:-local}
       TEMPLATE_RANK_TOP_K: ${TEMPLATE_RANK_TOP_K:-8}
@@ -162,12 +209,8 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
-      - ./data:/app/data
-      # Same schematic bind as mc-lan, so the agent can probe and stage
-      # .schem files without needing a docker socket.
-      - ./agent/templates/schematics:/app/data/plugins/FastAsyncWorldEdit/schematics/neighborhood
-    secrets:
-      - rcon_pass
+      - companion-db:/var/lib/companion
+      - ./agent/templates/catalog.json:/app/assets/catalog.json:ro
     healthcheck:
       test:
         [
@@ -219,12 +262,12 @@ services:
   ollama:
     image: ollama/ollama:latest
     container_name: mc-ollama
-    profiles: ["ollama"]
+    profiles: ['ollama']
     restart: unless-stopped
     volumes:
       - ollama-models:/root/.ollama
     healthcheck:
-      test: ["CMD", "ollama", "list"]
+      test: ['CMD', 'ollama', 'list']
       interval: 15s
       timeout: 10s
       retries: 10
@@ -233,16 +276,16 @@ services:
   ollama-pull:
     image: ollama/ollama:latest
     container_name: mc-ollama-pull
-    profiles: ["ollama"]
+    profiles: ['ollama']
     depends_on:
       ollama:
         condition: service_healthy
-    entrypoint: ["/bin/sh", "-ec"]
+    entrypoint: ['/bin/sh', '-ec']
     command:
-      - ollama pull ${OLLAMA_MODEL:-qwen2.5:7b-instruct}
+      - ollama pull ${OLLAMA_MODEL:-gemma4:12b-mlx}
     environment:
       OLLAMA_HOST: http://ollama:11434
-    restart: "no"
+    restart: 'no'
 
 secrets:
   rcon_pass:
@@ -250,3 +293,4 @@ secrets:
 
 volumes:
   ollama-models:
+  companion-db:

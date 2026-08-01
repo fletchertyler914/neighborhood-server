@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neighborhood.local/protocol/perception.schema.json",
+  "title": "Neighborhood Sidekick Perception",
+  "description": "Typed Level-0 fast observation and Level-1 lazy semantic scene for the companion WebSocket.",
+  "$defs": {
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "none"]
+    },
+    "blockPos": {
+      "type": "object",
+      "required": ["x", "y", "z"],
+      "properties": {
+        "x": {"type": "integer"},
+        "y": {"type": "integer"},
+        "z": {"type": "integer"}
+      },
+      "additionalProperties": false
+    },
+    "materialName": {
+      "type": ["string", "null"],
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "pose": {
+      "type": "object",
+      "required": ["x", "y", "z", "yaw", "pitch"],
+      "properties": {
+        "x": {"type": "number"},
+        "y": {"type": "number"},
+        "z": {"type": "number"},
+        "yaw": {"type": "number"},
+        "pitch": {"type": "number"}
+      },
+      "additionalProperties": false
+    },
+    "gaze": {
+      "type": "object",
+      "required": ["hit", "distance_blocks"],
+      "properties": {
+        "hit": {"type": "boolean"},
+        "material": {"$ref": "#/$defs/materialName"},
+        "face": {
+          "type": ["string", "null"],
+          "enum": ["north", "south", "east", "west", "up", "down", null]
+        },
+        "pos": {"oneOf": [{"$ref": "#/$defs/blockPos"}, {"type": "null"}]},
+        "distance_blocks": {"type": "number", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "held": {
+      "type": "object",
+      "required": ["material", "is_block"],
+      "properties": {
+        "material": {"$ref": "#/$defs/materialName"},
+        "is_block": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "required": ["can_build_at_target", "in_claim", "has_build_permission"],
+      "properties": {
+        "can_build_at_target": {"type": "boolean"},
+        "in_claim": {"type": "boolean"},
+        "has_build_permission": {"type": "boolean"},
+        "deny_reason": {"type": ["string", "null"], "maxLength": 160}
+      },
+      "additionalProperties": false
+    },
+    "budgetUsed": {
+      "type": "object",
+      "required": ["cells_sampled", "elapsed_ms", "truncated", "bytes"],
+      "properties": {
+        "cells_sampled": {"type": "integer", "minimum": 0},
+        "elapsed_ms": {"type": "integer", "minimum": 0},
+        "truncated": {"type": "boolean"},
+        "bytes": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "opening": {
+      "type": "object",
+      "required": [
+        "axis",
+        "min_x",
+        "max_x",
+        "min_y",
+        "max_y",
+        "min_z",
+        "max_z",
+        "length",
+        "height",
+        "air_cells",
+        "confidence"
+      ],
+      "properties": {
+        "axis": {"type": "string", "enum": ["x", "z"]},
+        "min_x": {"type": "integer"},
+        "max_x": {"type": "integer"},
+        "min_y": {"type": "integer"},
+        "max_y": {"type": "integer"},
+        "min_z": {"type": "integer"},
+        "max_z": {"type": "integer"},
+        "length": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "air_cells": {"type": "integer", "minimum": 0},
+        "end_a_material": {"$ref": "#/$defs/materialName"},
+        "end_b_material": {"$ref": "#/$defs/materialName"},
+        "suggested_material": {"$ref": "#/$defs/materialName"},
+        "confidence": {"$ref": "#/$defs/confidence"}
+      },
+      "additionalProperties": false
+    },
+    "surface": {
+      "type": "object",
+      "required": ["axis", "normal", "width", "height", "confidence"],
+      "properties": {
+        "axis": {"type": "string", "enum": ["x", "y", "z"]},
+        "normal": {
+          "type": "string",
+          "enum": ["north", "south", "east", "west", "up", "down"]
+        },
+        "min_x": {"type": "integer"},
+        "max_x": {"type": "integer"},
+        "min_y": {"type": "integer"},
+        "max_y": {"type": "integer"},
+        "min_z": {"type": "integer"},
+        "max_z": {"type": "integer"},
+        "width": {"type": "integer", "minimum": 1},
+        "height": {"type": "integer", "minimum": 1},
+        "material": {"$ref": "#/$defs/materialName"},
+        "confidence": {"$ref": "#/$defs/confidence"}
+      },
+      "additionalProperties": false
+    },
+    "clearance": {
+      "type": "object",
+      "required": ["width", "height", "depth", "air_cells", "confidence"],
+      "properties": {
+        "min_x": {"type": "integer"},
+        "max_x": {"type": "integer"},
+        "min_y": {"type": "integer"},
+        "max_y": {"type": "integer"},
+        "min_z": {"type": "integer"},
+        "max_z": {"type": "integer"},
+        "width": {"type": "integer", "minimum": 0},
+        "height": {"type": "integer", "minimum": 0},
+        "depth": {"type": "integer", "minimum": 0},
+        "air_cells": {"type": "integer", "minimum": 0},
+        "confidence": {"$ref": "#/$defs/confidence"}
+      },
+      "additionalProperties": false
+    },
+    "paletteEntry": {
+      "type": "object",
+      "required": ["material", "count"],
+      "properties": {
+        "material": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+        "count": {"type": "integer", "minimum": 1}
+      },
+      "additionalProperties": false
+    },
+    "nearby": {
+      "type": "object",
+      "required": ["friendly_count", "hostile_count"],
+      "properties": {
+        "friendly_count": {"type": "integer", "minimum": 0},
+        "hostile_count": {"type": "integer", "minimum": 0},
+        "interactable": {
+          "type": ["string", "null"],
+          "enum": ["chest", "door", "button", "lever", "sign", null]
+        }
+      },
+      "additionalProperties": false
+    },
+    "FastObservationV1": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "observation_id",
+        "captured_at_ms",
+        "world",
+        "pose",
+        "gaze",
+        "held",
+        "policy",
+        "fingerprint",
+        "capture_ms"
+      ],
+      "properties": {
+        "schema_version": {"const": "1.0"},
+        "observation_id": {"type": "string", "format": "uuid"},
+        "captured_at_ms": {"type": "integer", "minimum": 0},
+        "world": {"type": "string", "minLength": 1},
+        "pose": {"$ref": "#/$defs/pose"},
+        "gaze": {"$ref": "#/$defs/gaze"},
+        "held": {"$ref": "#/$defs/held"},
+        "policy": {"$ref": "#/$defs/policy"},
+        "fingerprint": {"type": "string", "minLength": 8, "maxLength": 64},
+        "capture_ms": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "SemanticSceneV1": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "observation_id",
+        "parent_observation_id",
+        "captured_at_ms",
+        "purpose",
+        "budget",
+        "fingerprint",
+        "confidence"
+      ],
+      "properties": {
+        "schema_version": {"const": "1.0"},
+        "observation_id": {"type": "string", "format": "uuid"},
+        "parent_observation_id": {"type": "string", "format": "uuid"},
+        "captured_at_ms": {"type": "integer", "minimum": 0},
+        "purpose": {
+          "type": "string",
+          "enum": ["finish_wall", "paste_template", "interact", "model_context"]
+        },
+        "budget": {"$ref": "#/$defs/budgetUsed"},
+        "surface": {"oneOf": [{"$ref": "#/$defs/surface"}, {"type": "null"}]},
+        "openings": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {"$ref": "#/$defs/opening"}
+        },
+        "clearance": {"oneOf": [{"$ref": "#/$defs/clearance"}, {"type": "null"}]},
+        "palette": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {"$ref": "#/$defs/paletteEntry"}
+        },
+        "nearby": {"oneOf": [{"$ref": "#/$defs/nearby"}, {"type": "null"}]},
+        "policy": {"oneOf": [{"$ref": "#/$defs/policy"}, {"type": "null"}]},
+        "fingerprint": {"type": "string", "minLength": 8, "maxLength": 64},
+        "confidence": {"$ref": "#/$defs/confidence"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/FastObservationV1"},
+    {"$ref": "#/$defs/SemanticSceneV1"}
+  ]
+}

@@ -13,7 +13,13 @@
       ],
       "aliases": [
         "apartment building",
-        "apartment"
+        "apartment",
+        "apartments",
+        "big apartment",
+        "apartment building please",
+        "tall apartments",
+        "place to live with lots of rooms",
+        "my apartment"
       ],
       "schematic": "apartment_block.schem",
       "footprint": [
@@ -53,7 +59,17 @@
         "stone archway",
         "arch",
         "stone arch",
-        "entry arch"
+        "entry arch",
+        "stone doorway",
+        "pretty arch",
+        "arch to walk through",
+        "little arch",
+        "arch please",
+        "gate arch",
+        "little archway",
+        "my archway",
+        "my stone archway",
+        "little stone archway"
       ],
       "schematic": "archway_stone.schem",
       "footprint": [
@@ -81,7 +97,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "armory_small",
@@ -95,7 +112,13 @@
       "aliases": [
         "armory",
         "weapons shop",
-        "small armory"
+        "small armory",
+        "weapon room",
+        "sword shop",
+        "place for swords",
+        "armor shop",
+        "weapons room",
+        "little armory"
       ],
       "schematic": "armory_small.schem",
       "footprint": [
@@ -137,7 +160,13 @@
         "bakery",
         "bread shop",
         "baker",
-        "small bakery"
+        "small bakery",
+        "bread store",
+        "cookie shop",
+        "place that makes bread",
+        "bake shop",
+        "little bakery",
+        "my bakery"
       ],
       "schematic": "bakery_small.schem",
       "footprint": [
@@ -162,7 +191,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "barn_red_large",
@@ -175,7 +205,16 @@
       ],
       "aliases": [
         "red barn",
-        "red barn"
+        "red barn",
+        "big barn",
+        "big red barn",
+        "farm barn",
+        "huge barn",
+        "my barn",
+        "barn please",
+        "large barn",
+        "my red barn",
+        "little red barn"
       ],
       "schematic": "barn_red_large.schem",
       "footprint": [
@@ -200,11 +239,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "bastion_corner",
-      "title": "Bastion",
+      "title": "Castle corner tower",
       "category": "fortress",
       "complexity": "complex",
       "tags": [
@@ -216,7 +256,13 @@
         "bastion",
         "bastion",
         "corner bastion",
-        "bastion tower"
+        "bastion tower",
+        "castle corner",
+        "stone corner tower",
+        "fort corner",
+        "corner tower",
+        "big stone corner",
+        "nether looking tower"
       ],
       "schematic": "bastion_corner.schem",
       "footprint": [
@@ -253,7 +299,14 @@
       ],
       "aliases": [
         "beach hut",
-        "beach hut"
+        "beach house",
+        "hut on the beach",
+        "sand hut",
+        "little beach house",
+        "beach shack",
+        "my beach hut",
+        "surf shack",
+        "little beach hut"
       ],
       "schematic": "beach_hut.schem",
       "footprint": [
@@ -278,11 +331,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "bee_apiary_small",
-      "title": "Bee apiary",
+      "title": "Bee house",
       "category": "farm",
       "complexity": "basic",
       "tags": [
@@ -294,7 +348,17 @@
         "bee apiary",
         "apiary",
         "bee farm",
-        "bee box"
+        "bee box",
+        "bee house",
+        "house for bees",
+        "bees",
+        "place for bees",
+        "bee nest house",
+        "little bee farm",
+        "bee hive house",
+        "home for bees",
+        "my bee house",
+        "little bee house"
       ],
       "schematic": "bee_apiary_small.schem",
       "footprint": [
@@ -319,7 +383,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "bell_tower",
@@ -332,7 +397,12 @@
       ],
       "aliases": [
         "bell tower",
-        "bell tower"
+        "tower with a bell",
+        "church bell tower",
+        "bell building",
+        "little bell tower",
+        "tower for the bell",
+        "my bell tower"
       ],
       "schematic": "bell_tower.schem",
       "footprint": [
@@ -356,11 +426,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "bench_row",
-      "title": "Bench row",
+      "title": "Park bench",
       "category": "decoration",
       "complexity": "basic",
       "tags": [
@@ -371,7 +442,15 @@
         "benches",
         "bench",
         "park bench",
-        "wooden bench"
+        "wooden bench",
+        "park benches",
+        "sitting benches",
+        "benches to sit on",
+        "row of benches",
+        "benches please",
+        "place to sit",
+        "my park bench",
+        "little park bench"
       ],
       "schematic": "bench_row.schem",
       "footprint": [
@@ -399,7 +478,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "berry_farm_small",
@@ -411,7 +491,14 @@
         "crop"
       ],
       "aliases": [
-        "berry farm"
+        "berry farm",
+        "berry patch",
+        "berry garden",
+        "place for berries",
+        "sweet berry farm",
+        "little berry farm",
+        "berry field",
+        "my berry farm"
       ],
       "schematic": "berry_farm_small.schem",
       "footprint": [
@@ -439,7 +526,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "blacksmith_shop",
@@ -453,7 +541,13 @@
       ],
       "aliases": [
         "blacksmith",
-        "blacksmith"
+        "blacksmith shop",
+        "smithy",
+        "forge",
+        "place that makes swords",
+        "anvil shop",
+        "little blacksmith",
+        "my blacksmith"
       ],
       "schematic": "blacksmith_shop.schem",
       "footprint": [
@@ -479,11 +573,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "brewing_station",
-      "title": "Brewing station",
+      "title": "Potion station",
       "category": "utility",
       "complexity": "common",
       "tags": [
@@ -494,7 +589,18 @@
         "brewing",
         "potion station",
         "potion lab",
-        "brewery"
+        "brewery",
+        "potion place",
+        "place for potions",
+        "magic potion room",
+        "brew stand",
+        "little brewery",
+        "potion house",
+        "brewing station",
+        "little brewing station",
+        "my brewing station",
+        "my potion station",
+        "little potion station"
       ],
       "schematic": "brewing_station.schem",
       "footprint": [
@@ -520,7 +626,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "bridge_oak_short",
@@ -536,7 +643,16 @@
         "wooden bridge",
         "oak bridge",
         "wood bridge",
-        "small bridge"
+        "small bridge",
+        "a bridge",
+        "bridge please",
+        "bridge over there",
+        "little bridge",
+        "my bridge",
+        "short bridge",
+        "tiny bridge",
+        "my short oak bridge",
+        "little short oak bridge"
       ],
       "schematic": "bridge_oak_short.schem",
       "footprint": [
@@ -562,7 +678,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "bridge_rope",
@@ -574,7 +691,16 @@
         "path"
       ],
       "aliases": [
-        "rope bridge"
+        "rope bridge",
+        "ropey bridge",
+        "swingy bridge",
+        "bridge made of rope",
+        "scary rope bridge",
+        "little rope bridge",
+        "adventure bridge",
+        "swinging bridge",
+        "vine bridge",
+        "my rope bridge"
       ],
       "schematic": "bridge_rope.schem",
       "footprint": [
@@ -599,7 +725,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "bridge_stone_long",
@@ -612,7 +739,12 @@
       ],
       "aliases": [
         "stone bridge",
-        "long bridge"
+        "long bridge",
+        "long stone bridge",
+        "big stone bridge",
+        "stone bridge please",
+        "bridge made of stone",
+        "long bridge please"
       ],
       "schematic": "bridge_stone_long.schem",
       "footprint": [
@@ -650,7 +782,13 @@
       ],
       "aliases": [
         "suspension bridge",
-        "long wooden bridge"
+        "long wooden bridge",
+        "hanging bridge",
+        "swing bridge",
+        "long wood bridge",
+        "bridge that hangs",
+        "fancy wood bridge",
+        "suspension wood bridge"
       ],
       "schematic": "bridge_wood_suspension.schem",
       "footprint": [
@@ -690,7 +828,14 @@
         "log cabin",
         "log cabin",
         "log house",
-        "wood cabin"
+        "wood cabin",
+        "wood house",
+        "cabin in the woods",
+        "little log cabin",
+        "my cabin",
+        "log home",
+        "cabin please",
+        "my log cabin"
       ],
       "schematic": "cabin_log.schem",
       "footprint": [
@@ -715,7 +860,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "cabin_stone",
@@ -728,8 +874,15 @@
       ],
       "aliases": [
         "stone cabin",
-        "stone cabin",
-        "stone house"
+        "stone house",
+        "little stone house",
+        "stone home",
+        "my stone cabin",
+        "rock house",
+        "cabin made of stone",
+        "rock cabin",
+        "stone house cabin",
+        "little stone cabin"
       ],
       "schematic": "cabin_stone.schem",
       "footprint": [
@@ -754,7 +907,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "campground",
@@ -767,7 +921,16 @@
       ],
       "aliases": [
         "campground",
-        "campground"
+        "camp",
+        "camping spot",
+        "camp site",
+        "tents and campfire",
+        "place to camp",
+        "camping place",
+        "my camp",
+        "camping ground",
+        "little campground",
+        "my campground"
       ],
       "schematic": "campground.schem",
       "footprint": [
@@ -795,7 +958,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "carrot_farm_small",
@@ -807,7 +971,14 @@
         "crop"
       ],
       "aliases": [
-        "carrot farm"
+        "carrot farm",
+        "carrot patch",
+        "carrot garden",
+        "place for carrots",
+        "carrot field",
+        "little carrot farm",
+        "farm for carrots",
+        "my carrot farm"
       ],
       "schematic": "carrot_farm_small.schem",
       "footprint": [
@@ -835,7 +1006,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "castle_gate_large",
@@ -848,7 +1020,13 @@
       ],
       "aliases": [
         "castle gate",
-        "castle gate"
+        "castle gate",
+        "big castle gate",
+        "giant gate",
+        "castle door",
+        "huge castle entrance",
+        "big gate for the castle",
+        "castle doorway"
       ],
       "schematic": "castle_gate_large.schem",
       "footprint": [
@@ -876,7 +1054,7 @@
     },
     {
       "id": "castle_small_keep",
-      "title": "Small stone keep",
+      "title": "Little castle",
       "category": "fortress",
       "tags": [
         "castle",
@@ -892,7 +1070,18 @@
         "fortress",
         "keep",
         "tower keep",
-        "small keep"
+        "small keep",
+        "little castle",
+        "my castle",
+        "castle please",
+        "fort",
+        "a castle",
+        "tiny castle",
+        "castle for me",
+        "build a castle",
+        "kid castle",
+        "my little castle",
+        "little little castle"
       ],
       "schematic": "castle_small_keep.schem",
       "footprint": [
@@ -918,7 +1107,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "chicken_coop_large",
@@ -932,7 +1122,12 @@
       ],
       "aliases": [
         "big chicken coop",
-        "large chicken coop"
+        "large chicken coop",
+        "huge chicken house",
+        "big house for chickens",
+        "giant chicken coop",
+        "big place for chickens",
+        "large chicken house"
       ],
       "schematic": "chicken_coop_large.schem",
       "footprint": [
@@ -981,7 +1176,21 @@
         "small chicken pen",
         "place for chickens",
         "place for chickens to live",
-        "home for chickens"
+        "home for chickens",
+        "home for my chickens",
+        "little home for my chickens",
+        "little home for chickens",
+        "house for my chickens",
+        "house for chickens",
+        "place for chicks",
+        "chicken home",
+        "coop for chickens",
+        "little chicken house",
+        "chick house",
+        "chiken coop",
+        "chicken cooop",
+        "my small chicken coop",
+        "little small chicken coop"
       ],
       "schematic": "chicken_coop_small.schem",
       "footprint": [
@@ -1014,7 +1223,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "church_small",
@@ -1028,7 +1238,12 @@
       ],
       "aliases": [
         "church",
-        "church"
+        "little church",
+        "chapel",
+        "my church",
+        "church please",
+        "small church",
+        "pretty church"
       ],
       "schematic": "church_small.schem",
       "footprint": [
@@ -1054,7 +1269,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "cottage_medium",
@@ -1067,7 +1283,15 @@
       ],
       "aliases": [
         "medium cottage",
-        "medium cottage"
+        "medium cottage",
+        "medium house",
+        "nice cottage",
+        "cozy house",
+        "pretty cottage",
+        "my cottage",
+        "cottage please",
+        "my medium cottage",
+        "little medium cottage"
       ],
       "schematic": "cottage_medium.schem",
       "footprint": [
@@ -1092,7 +1316,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "cow_barn_medium",
@@ -1113,7 +1338,14 @@
         "small barn",
         "animal pen",
         "farm pen",
-        "livestock pen"
+        "livestock pen",
+        "house for cows",
+        "cow house",
+        "place for cows",
+        "barn for cows",
+        "cow shed",
+        "my cow barn",
+        "little cow barn"
       ],
       "schematic": "cow_barn_medium.schem",
       "footprint": [
@@ -1138,7 +1370,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "desert_house_small",
@@ -1151,10 +1384,14 @@
       ],
       "aliases": [
         "desert house",
-        "desert house",
         "sand house",
         "sandstone house",
-        "desert hut"
+        "desert hut",
+        "house in the desert",
+        "sandy house",
+        "desert home",
+        "little desert house",
+        "my desert house"
       ],
       "schematic": "desert_house_small.schem",
       "footprint": [
@@ -1179,7 +1416,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "dock_small",
@@ -1194,7 +1432,13 @@
         "pier",
         "wharf",
         "small dock",
-        "boat dock"
+        "boat dock",
+        "place for boats",
+        "dock for boats",
+        "little dock",
+        "boat place",
+        "fishing dock",
+        "my dock"
       ],
       "schematic": "dock_small.schem",
       "footprint": [
@@ -1222,7 +1466,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "duck_pond_small",
@@ -1236,7 +1481,13 @@
       ],
       "aliases": [
         "duck pond",
-        "duck pond"
+        "duck pond",
+        "pond for ducks",
+        "duck pool",
+        "place for ducks",
+        "little duck pond",
+        "ducks pond",
+        "my duck pond"
       ],
       "schematic": "duck_pond_small.schem",
       "footprint": [
@@ -1262,7 +1513,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "enchanting_room",
@@ -1277,7 +1529,16 @@
         "enchanting",
         "enchanting table room",
         "enchant room",
-        "enchantment room"
+        "enchantment room",
+        "magic room",
+        "enchant room please",
+        "place to enchant",
+        "xp room",
+        "enchanting table house",
+        "little enchant room",
+        "enchanting room",
+        "little enchanting room",
+        "my enchanting room"
       ],
       "schematic": "enchanting_room.schem",
       "footprint": [
@@ -1303,7 +1564,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "fishing_hut",
@@ -1316,7 +1578,14 @@
       ],
       "aliases": [
         "fishing hut",
-        "fishing hut"
+        "fishing house",
+        "hut for fishing",
+        "fisherman hut",
+        "little fishing house",
+        "place to fish",
+        "my fishing hut",
+        "fishing shack",
+        "little fishing hut"
       ],
       "schematic": "fishing_hut.schem",
       "footprint": [
@@ -1341,7 +1610,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "flag_pole",
@@ -1355,7 +1625,16 @@
       "aliases": [
         "flag pole",
         "flagpole",
-        "banner pole"
+        "banner pole",
+        "flag",
+        "flag stick",
+        "pole with a flag",
+        "banner stick",
+        "my flag",
+        "flag please",
+        "flag post",
+        "little flag pole",
+        "my flag pole"
       ],
       "schematic": "flag_pole.schem",
       "footprint": [
@@ -1383,7 +1662,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "fortress_medium",
@@ -1398,7 +1678,14 @@
       "aliases": [
         "medium fortress",
         "big fortress",
-        "large fortress"
+        "large fortress",
+        "big fort",
+        "huge fortress",
+        "giant fort",
+        "big stone fort",
+        "medium fort",
+        "my fortress",
+        "fortress please"
       ],
       "schematic": "fortress_medium.schem",
       "footprint": [
@@ -1437,7 +1724,12 @@
         "fountain",
         "small fountain",
         "water fountain",
-        "park fountain"
+        "park fountain",
+        "pretty fountain",
+        "little fountain",
+        "fountain please",
+        "my fountain",
+        "splash fountain"
       ],
       "schematic": "fountain_small.schem",
       "footprint": [
@@ -1466,7 +1758,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "garden_plot",
@@ -1481,7 +1774,18 @@
         "garden plot",
         "small garden",
         "flower garden",
-        "garden bed"
+        "garden bed",
+        "garden",
+        "flower bed",
+        "little garden",
+        "my garden",
+        "garden please",
+        "pretty garden",
+        "plants garden",
+        "veggie garden",
+        "vegetable garden",
+        "my garden plot",
+        "little garden plot"
       ],
       "schematic": "garden_plot.schem",
       "footprint": [
@@ -1509,7 +1813,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "gatehouse",
@@ -1526,7 +1831,14 @@
         "castle gate",
         "main gate",
         "entrance gate",
-        "medieval gate"
+        "medieval gate",
+        "gate house",
+        "gate building",
+        "entrance building",
+        "little gatehouse",
+        "guard gate house",
+        "castle gatehouse",
+        "my gatehouse"
       ],
       "schematic": "gatehouse.schem",
       "footprint": [
@@ -1550,7 +1862,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "gazebo_oak",
@@ -1566,7 +1879,14 @@
         "pavilion",
         "wood gazebo",
         "garden gazebo",
-        "gazebo in the garden"
+        "gazebo in the garden",
+        "garden hut",
+        "pretty gazebo",
+        "little gazebo",
+        "wood pavilion",
+        "gazebo please",
+        "my gazebo",
+        "oak gazebo"
       ],
       "schematic": "gazebo_oak.schem",
       "footprint": [
@@ -1595,7 +1915,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "goat_pen_small",
@@ -1609,7 +1930,13 @@
       ],
       "aliases": [
         "goat pen",
-        "goat pen"
+        "goat pen",
+        "house for goats",
+        "goat house",
+        "place for goats",
+        "little goat pen",
+        "goat yard",
+        "my goat pen"
       ],
       "schematic": "goat_pen_small.schem",
       "footprint": [
@@ -1635,7 +1962,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "graveyard_small",
@@ -1648,7 +1976,13 @@
       ],
       "aliases": [
         "graveyard",
-        "graveyard"
+        "graveyard",
+        "cemetery",
+        "grave yard",
+        "spooky graveyard",
+        "little graveyard",
+        "tombstones",
+        "halloween graveyard"
       ],
       "schematic": "graveyard_small.schem",
       "footprint": [
@@ -1689,7 +2023,13 @@
       ],
       "aliases": [
         "greenhouse",
-        "greenhouse"
+        "glass garden",
+        "plant house",
+        "house for plants",
+        "little greenhouse",
+        "glass house for plants",
+        "my greenhouse",
+        "glass greenhouse"
       ],
       "schematic": "greenhouse_small.schem",
       "footprint": [
@@ -1714,7 +2054,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "guard_post",
@@ -1728,10 +2069,17 @@
       ],
       "aliases": [
         "guard post",
-        "guard post",
         "sentry post",
         "guard hut",
-        "watch post"
+        "watch post",
+        "guard house",
+        "little guard house",
+        "soldier post",
+        "guard shack",
+        "place for guards",
+        "guard tower small",
+        "little guard post",
+        "my guard post"
       ],
       "schematic": "guard_post.schem",
       "footprint": [
@@ -1755,7 +2103,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "herb_garden",
@@ -1768,7 +2117,12 @@
       ],
       "aliases": [
         "herb garden",
-        "herb garden"
+        "herb patch",
+        "spice garden",
+        "little herb garden",
+        "garden of herbs",
+        "my herb garden",
+        "herbs"
       ],
       "schematic": "herb_garden.schem",
       "footprint": [
@@ -1796,7 +2150,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "horse_stable_small",
@@ -1812,7 +2167,16 @@
         "pony stable",
         "horse pen",
         "stable",
-        "stables"
+        "stables",
+        "house for horses",
+        "horse house",
+        "place for horses",
+        "pony house",
+        "little stable",
+        "my stable",
+        "horse barn",
+        "my horse stable",
+        "little horse stable"
       ],
       "schematic": "horse_stable_small.schem",
       "footprint": [
@@ -1846,7 +2210,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "house_cottage_small",
@@ -1864,7 +2229,18 @@
         "cabin",
         "small house",
         "tiny house",
-        "starter house"
+        "starter house",
+        "a house",
+        "my house",
+        "little house",
+        "home",
+        "house please",
+        "tiny home",
+        "starter home",
+        "a home",
+        "build a house",
+        "my small cottage",
+        "little small cottage"
       ],
       "schematic": "house_cottage_small.schem",
       "footprint": [
@@ -1890,7 +2266,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "igloo_small",
@@ -1903,7 +2280,13 @@
       ],
       "aliases": [
         "igloo",
-        "igloo"
+        "igloo",
+        "snow house",
+        "ice house",
+        "little igloo",
+        "igloo please",
+        "my igloo",
+        "house made of snow"
       ],
       "schematic": "igloo_small.schem",
       "footprint": [
@@ -1941,9 +2324,16 @@
       ],
       "aliases": [
         "inn",
-        "inn",
         "small inn",
-        "lodge"
+        "lodge",
+        "hotel",
+        "place to sleep",
+        "little inn",
+        "travel inn",
+        "my inn",
+        "inn please",
+        "guest house",
+        "tavern inn"
       ],
       "schematic": "inn_small.schem",
       "footprint": [
@@ -1968,7 +2358,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "kelp_farm_small",
@@ -1983,7 +2374,12 @@
       "aliases": [
         "kelp farm",
         "kelp plot",
-        "underwater farm"
+        "underwater farm",
+        "kelp garden",
+        "underwater plants",
+        "place for kelp",
+        "little kelp farm",
+        "ocean farm"
       ],
       "schematic": "kelp_farm_small.schem",
       "footprint": [
@@ -2024,7 +2420,14 @@
       ],
       "aliases": [
         "koi pond",
-        "koi pond"
+        "fish pond with fancy fish",
+        "koi fish pond",
+        "pretty fish pond",
+        "little koi pond",
+        "pond with orange fish",
+        "fish pond fancy",
+        "koi pool",
+        "my koi pond"
       ],
       "schematic": "koi_pond.schem",
       "footprint": [
@@ -2052,7 +2455,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "lamp_post_iron",
@@ -2066,7 +2470,16 @@
       "aliases": [
         "lamp post",
         "street light",
-        "lantern post"
+        "lantern post",
+        "streetlamp",
+        "light post",
+        "lamp",
+        "glowing lamp post",
+        "street lamp",
+        "lantern on a stick",
+        "iron lamp",
+        "my lamp post",
+        "little lamp post"
       ],
       "schematic": "lamp_post_iron.schem",
       "footprint": [
@@ -2094,7 +2507,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "library_small",
@@ -2108,7 +2522,13 @@
       ],
       "aliases": [
         "library",
-        "library"
+        "book house",
+        "place with books",
+        "little library",
+        "my library",
+        "library please",
+        "book room building",
+        "small library"
       ],
       "schematic": "library_small.schem",
       "footprint": [
@@ -2134,7 +2554,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "lighthouse_short",
@@ -2150,7 +2571,13 @@
         "lighthouse",
         "lighthouse",
         "small lighthouse",
-        "beacon tower"
+        "beacon tower",
+        "light house",
+        "tower with a light",
+        "little lighthouse",
+        "beacon",
+        "my lighthouse",
+        "lighthouse please"
       ],
       "schematic": "lighthouse_short.schem",
       "footprint": [
@@ -2174,7 +2601,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "market_stall",
@@ -2188,7 +2616,15 @@
       ],
       "aliases": [
         "market stall",
-        "market stall"
+        "market stall",
+        "market stand",
+        "shop stall",
+        "selling stall",
+        "little market",
+        "vendor stall",
+        "market booth",
+        "my market stall",
+        "little market stall"
       ],
       "schematic": "market_stall.schem",
       "footprint": [
@@ -2214,11 +2650,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "maze_hedge_small",
-      "title": "Hedge maze",
+      "title": "Maze",
       "category": "decoration",
       "complexity": "basic",
       "tags": [
@@ -2227,7 +2664,14 @@
       ],
       "aliases": [
         "hedge maze",
-        "hedge maze"
+        "hedge maze",
+        "maze",
+        "bush maze",
+        "hedge labyrinth",
+        "little maze",
+        "maze please",
+        "my maze",
+        "plant maze"
       ],
       "schematic": "maze_hedge_small.schem",
       "footprint": [
@@ -2270,7 +2714,13 @@
       "aliases": [
         "melon farm",
         "melon plot",
-        "watermelon farm"
+        "watermelon farm",
+        "melon patch",
+        "watermelon patch",
+        "place for melons",
+        "little melon farm",
+        "melon garden",
+        "my melon farm"
       ],
       "schematic": "melon_farm_small.schem",
       "footprint": [
@@ -2298,7 +2748,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "mill_water",
@@ -2311,7 +2762,15 @@
       ],
       "aliases": [
         "water mill",
-        "water mill"
+        "waterwheel",
+        "mill by the water",
+        "little water mill",
+        "flour mill",
+        "wheel mill",
+        "my mill",
+        "watermill",
+        "mill",
+        "my water mill"
       ],
       "schematic": "mill_water.schem",
       "footprint": [
@@ -2336,7 +2795,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "moat_bridge",
@@ -2348,7 +2808,12 @@
         "path"
       ],
       "aliases": [
-        "moat bridge"
+        "moat bridge",
+        "bridge over the moat",
+        "castle moat bridge",
+        "drawbridge looking bridge",
+        "bridge across the moat",
+        "little moat bridge"
       ],
       "schematic": "moat_bridge.schem",
       "footprint": [
@@ -2386,7 +2851,13 @@
       ],
       "aliases": [
         "modern house",
-        "modern house"
+        "modern house",
+        "modern home",
+        "flat roof house",
+        "cool modern house",
+        "new looking house",
+        "my modern house",
+        "fancy modern house"
       ],
       "schematic": "modern_house_flat.schem",
       "footprint": [
@@ -2426,7 +2897,12 @@
       "aliases": [
         "mushroom farm",
         "mushroom plot",
-        "shroom farm"
+        "shroom farm",
+        "mushroom patch",
+        "place for mushrooms",
+        "shroom patch",
+        "little mushroom farm",
+        "dark mushroom garden"
       ],
       "schematic": "mushroom_farm_dark.schem",
       "footprint": [
@@ -2467,7 +2943,12 @@
       ],
       "aliases": [
         "mushroom house",
-        "mushroom house"
+        "house made of mushrooms",
+        "toadstool house",
+        "little mushroom house",
+        "my mushroom house",
+        "fungus house",
+        "mushroom home"
       ],
       "schematic": "mushroom_house.schem",
       "footprint": [
@@ -2492,7 +2973,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "observatory_small",
@@ -2505,7 +2987,13 @@
       ],
       "aliases": [
         "observatory",
-        "observatory"
+        "observatory",
+        "star tower",
+        "telescope house",
+        "place to look at stars",
+        "little observatory",
+        "space tower",
+        "star watching house"
       ],
       "schematic": "observatory_small.schem",
       "footprint": [
@@ -2542,7 +3030,14 @@
       ],
       "aliases": [
         "picnic area",
-        "picnic area"
+        "picnic spot",
+        "place for a picnic",
+        "picnic tables",
+        "little picnic area",
+        "park picnic",
+        "my picnic spot",
+        "picnic table area",
+        "my picnic area"
       ],
       "schematic": "picnic_area.schem",
       "footprint": [
@@ -2570,7 +3065,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "pier_long",
@@ -2582,7 +3078,17 @@
         "path"
       ],
       "aliases": [
-        "pier"
+        "pier",
+        "long dock",
+        "fishing pier",
+        "long boardwalk",
+        "pier into the water",
+        "big pier",
+        "my pier",
+        "long pier",
+        "dock pier",
+        "my long pier",
+        "little long pier"
       ],
       "schematic": "pier_long.schem",
       "footprint": [
@@ -2607,7 +3113,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "pig_pen_large",
@@ -2621,7 +3128,12 @@
       ],
       "aliases": [
         "big pig pen",
-        "large pig pen"
+        "large pig pen",
+        "big pig house",
+        "huge pig pen",
+        "giant place for pigs",
+        "big house for pigs",
+        "large pig sty"
       ],
       "schematic": "pig_pen_large.schem",
       "footprint": [
@@ -2664,7 +3176,16 @@
         "pig sty",
         "hog pen",
         "pigpen",
-        "small pig pen"
+        "small pig pen",
+        "house for pigs",
+        "pig house",
+        "place for pigs",
+        "little pig pen",
+        "my pig pen",
+        "piggy pen",
+        "pig yard",
+        "my small pig pen",
+        "little small pig pen"
       ],
       "schematic": "pig_pen_small.schem",
       "footprint": [
@@ -2697,7 +3218,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "playground_small",
@@ -2710,7 +3232,12 @@
       ],
       "aliases": [
         "playground",
-        "playground"
+        "play area",
+        "kids playground",
+        "place to play",
+        "little playground",
+        "my playground",
+        "playground please"
       ],
       "schematic": "playground_small.schem",
       "footprint": [
@@ -2738,7 +3265,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "plaza_stone",
@@ -2753,7 +3281,15 @@
         "plaza",
         "square",
         "courtyard",
-        "town plaza"
+        "town plaza",
+        "town square",
+        "open plaza",
+        "stone square",
+        "little plaza",
+        "meeting square",
+        "plaza please",
+        "my stone plaza",
+        "little stone plaza"
       ],
       "schematic": "plaza_stone.schem",
       "footprint": [
@@ -2781,7 +3317,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "pond_small",
@@ -2796,7 +3333,13 @@
         "pond",
         "small pond",
         "water pond",
-        "fish pond"
+        "fish pond",
+        "little pond",
+        "water pond please",
+        "my pond",
+        "tiny pond",
+        "pond please",
+        "small water pond"
       ],
       "schematic": "pond_small.schem",
       "footprint": [
@@ -2825,7 +3368,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "potato_farm_small",
@@ -2837,7 +3381,14 @@
         "crop"
       ],
       "aliases": [
-        "potato farm"
+        "potato farm",
+        "potato patch",
+        "potato garden",
+        "place for potatoes",
+        "potato field",
+        "little potato farm",
+        "farm for potatoes",
+        "my potato farm"
       ],
       "schematic": "potato_farm_small.schem",
       "footprint": [
@@ -2865,7 +3416,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "pumpkin_farm_small",
@@ -2879,7 +3431,13 @@
       "aliases": [
         "pumpkin farm",
         "pumpkin patch",
-        "pumpkin field"
+        "pumpkin field",
+        "pumpkin garden",
+        "place for pumpkins",
+        "halloween pumpkins",
+        "little pumpkin farm",
+        "pumpkin patch please",
+        "my pumpkin farm"
       ],
       "schematic": "pumpkin_farm_small.schem",
       "footprint": [
@@ -2907,7 +3465,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "rabbit_hutch_small",
@@ -2923,7 +3482,16 @@
         "bunny hutch",
         "bunny pen",
         "rabbit pen",
-        "bunny cage"
+        "bunny cage",
+        "house for rabbits",
+        "bunny house",
+        "place for bunnies",
+        "rabbit house",
+        "little bunny hutch",
+        "my rabbit pen",
+        "bunny home",
+        "my rabbit hutch",
+        "little rabbit hutch"
       ],
       "schematic": "rabbit_hutch_small.schem",
       "footprint": [
@@ -2956,11 +3524,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "rail_segment",
-      "title": "Rail segment",
+      "title": "Train track",
       "category": "infrastructure",
       "complexity": "common",
       "tags": [
@@ -2971,7 +3540,14 @@
         "rail",
         "railway",
         "rail track",
-        "track"
+        "track",
+        "train tracks",
+        "minecart track",
+        "tracks",
+        "railroad",
+        "train rail",
+        "tracks please",
+        "minecart rails"
       ],
       "schematic": "rail_segment.schem",
       "footprint": [
@@ -3000,7 +3576,7 @@
     },
     {
       "id": "road_segment",
-      "title": "Road segment",
+      "title": "Road",
       "category": "infrastructure",
       "complexity": "basic",
       "tags": [
@@ -3010,7 +3586,14 @@
       "aliases": [
         "road",
         "path",
-        "stone road"
+        "stone road",
+        "a road",
+        "path please",
+        "street",
+        "walkway",
+        "road please",
+        "stone path",
+        "my road"
       ],
       "schematic": "road_segment.schem",
       "footprint": [
@@ -3050,7 +3633,12 @@
         "rock arch",
         "natural arch",
         "stone rock arch",
-        "boulder arch"
+        "boulder arch",
+        "rock doorway",
+        "natural stone arch",
+        "boulder doorway",
+        "cool rock arch",
+        "little rock arch"
       ],
       "schematic": "rock_arch.schem",
       "footprint": [
@@ -3096,7 +3684,14 @@
         "sheep enclosure",
         "ram pen",
         "small sheep pen",
-        "sheep field"
+        "sheep field",
+        "house for sheep",
+        "sheep house",
+        "place for sheep",
+        "sheep yard",
+        "little sheep pen",
+        "my sheep pen",
+        "sheep farm pen"
       ],
       "schematic": "sheep_pen_medium.schem",
       "footprint": [
@@ -3121,7 +3716,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "shrine_small",
@@ -3134,7 +3730,13 @@
       ],
       "aliases": [
         "shrine",
-        "shrine"
+        "shrine",
+        "little shrine",
+        "prayer shrine",
+        "holy place",
+        "tiny shrine",
+        "my shrine",
+        "shrine please"
       ],
       "schematic": "shrine_small.schem",
       "footprint": [
@@ -3175,7 +3777,16 @@
       ],
       "aliases": [
         "silo",
-        "grain silo"
+        "grain silo",
+        "grain tower",
+        "tall silo",
+        "farm silo",
+        "little silo",
+        "my silo",
+        "silo please",
+        "corn silo",
+        "my grain silo",
+        "little grain silo"
       ],
       "schematic": "silo_grain.schem",
       "footprint": [
@@ -3200,11 +3811,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "smelter_array",
-      "title": "Smelter array",
+      "title": "Furnace room",
       "category": "utility",
       "complexity": "common",
       "tags": [
@@ -3215,7 +3827,14 @@
         "smelter",
         "smelter row",
         "furnace array",
-        "smelting station"
+        "smelting station",
+        "furnaces",
+        "furnace room",
+        "lots of furnaces",
+        "smelting room",
+        "furnace place",
+        "place to smelt",
+        "my furnaces"
       ],
       "schematic": "smelter_array.schem",
       "footprint": [
@@ -3254,7 +3873,12 @@
       ],
       "aliases": [
         "big horse stable",
-        "large stable"
+        "large stable",
+        "big stable",
+        "huge horse house",
+        "big house for horses",
+        "giant stable",
+        "large horse barn"
       ],
       "schematic": "stable_large.schem",
       "footprint": [
@@ -3283,7 +3907,7 @@
     },
     {
       "id": "statue_pillar",
-      "title": "Statue pillar",
+      "title": "Statue",
       "category": "decoration",
       "complexity": "basic",
       "tags": [
@@ -3293,7 +3917,13 @@
       "aliases": [
         "statue",
         "monument",
-        "pillar statue"
+        "pillar statue",
+        "stone statue",
+        "pretty statue",
+        "statue please",
+        "my statue",
+        "pillar with a statue",
+        "little statue"
       ],
       "schematic": "statue_pillar.schem",
       "footprint": [
@@ -3337,7 +3967,15 @@
         "small shed",
         "shed",
         "storage hut",
-        "tool shed"
+        "tool shed",
+        "tool house",
+        "little shed",
+        "storage house",
+        "my shed",
+        "shed please",
+        "place to store stuff",
+        "my storage shed",
+        "little storage shed"
       ],
       "schematic": "storage_shed.schem",
       "footprint": [
@@ -3363,7 +4001,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "sugarcane_farm_small",
@@ -3379,7 +4018,15 @@
         "sugar cane farm",
         "sugar farm",
         "cane farm",
-        "reed farm"
+        "reed farm",
+        "sugarcane patch",
+        "reed patch",
+        "place for sugar cane",
+        "cane patch",
+        "little sugarcane farm",
+        "sugar cane garden",
+        "sugarcane farm",
+        "my sugarcane farm"
       ],
       "schematic": "sugarcane_farm_small.schem",
       "footprint": [
@@ -3407,7 +4054,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "tavern_small",
@@ -3423,7 +4071,13 @@
         "tavern",
         "pub",
         "alehouse",
-        "small tavern"
+        "small tavern",
+        "little tavern",
+        "food tavern",
+        "cozy tavern",
+        "my tavern",
+        "tavern please",
+        "ale house"
       ],
       "schematic": "tavern_small.schem",
       "footprint": [
@@ -3448,7 +4102,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "tent_camp",
@@ -3461,7 +4116,14 @@
       ],
       "aliases": [
         "tent camp",
-        "tent camp"
+        "tents",
+        "camping tents",
+        "tent",
+        "little camp",
+        "tent village",
+        "my tent camp",
+        "camp tents",
+        "little tent camp"
       ],
       "schematic": "tent_camp.schem",
       "footprint": [
@@ -3489,7 +4151,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "townhouse_2story",
@@ -3502,12 +4165,19 @@
       ],
       "aliases": [
         "townhouse",
-        "townhouse",
         "two story house",
         "2 story house",
         "tall house",
         "row house",
-        "townhome"
+        "townhome",
+        "two floor house",
+        "house with two floors",
+        "tall townhouse",
+        "city house",
+        "my townhouse",
+        "skinny tall house",
+        "town house",
+        "little townhouse"
       ],
       "schematic": "townhouse_2story.schem",
       "footprint": [
@@ -3532,7 +4202,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "tree_dark_oak",
@@ -3546,7 +4217,12 @@
       "aliases": [
         "dark oak tree",
         "dark oak",
-        "jungle tree"
+        "jungle tree",
+        "dark tree",
+        "big dark oak",
+        "shadowy oak tree",
+        "dark oak please",
+        "my dark oak tree"
       ],
       "schematic": "tree_dark_oak.schem",
       "footprint": [
@@ -3588,7 +4264,18 @@
         "big oak",
         "large oak",
         "huge tree",
-        "big tree"
+        "big tree",
+        "a tree",
+        "big tree please",
+        "oak please",
+        "giant oak",
+        "my tree",
+        "huge oak tree",
+        "tree please",
+        "large oak tree",
+        "my oak tree",
+        "my large oak tree",
+        "little large oak tree"
       ],
       "schematic": "tree_oak_large.schem",
       "footprint": [
@@ -3613,7 +4300,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "tree_spruce_pine",
@@ -3629,7 +4317,16 @@
         "pine tree",
         "pine",
         "spruce",
-        "evergreen"
+        "evergreen",
+        "christmas tree",
+        "pine please",
+        "tall pine",
+        "spruce please",
+        "my pine tree",
+        "evergreen tree",
+        "spruce pine",
+        "my spruce pine",
+        "little spruce pine"
       ],
       "schematic": "tree_spruce_pine.schem",
       "footprint": [
@@ -3654,7 +4351,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "treehouse_oak",
@@ -3667,7 +4365,13 @@
       ],
       "aliases": [
         "treehouse",
-        "treehouse"
+        "treehouse",
+        "tree house",
+        "house in a tree",
+        "little treehouse",
+        "my treehouse",
+        "treehouse please",
+        "fort in a tree"
       ],
       "schematic": "treehouse_oak.schem",
       "footprint": [
@@ -3692,7 +4396,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "turkey_pen_small",
@@ -3706,7 +4411,14 @@
       ],
       "aliases": [
         "turkey pen",
-        "turkey pen"
+        "house for turkeys",
+        "turkey house",
+        "place for turkeys",
+        "little turkey pen",
+        "my turkey pen",
+        "turkey yard",
+        "turkey coop",
+        "pen for turkeys"
       ],
       "schematic": "turkey_pen_small.schem",
       "footprint": [
@@ -3732,11 +4444,12 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "wall_segment_stone",
-      "title": "Wall segment",
+      "title": "Stone wall",
       "category": "fortress",
       "complexity": "basic",
       "tags": [
@@ -3750,7 +4463,13 @@
         "wall",
         "stone wall",
         "perimeter wall",
-        "small wall"
+        "small wall",
+        "stone fence wall",
+        "castle stone wall",
+        "defensive wall",
+        "little stone wall",
+        "wall please",
+        "my wall"
       ],
       "schematic": "wall_segment_stone.schem",
       "footprint": [
@@ -3787,7 +4506,14 @@
       ],
       "aliases": [
         "warehouse",
-        "warehouse"
+        "storage building",
+        "big storage",
+        "little warehouse",
+        "stuff warehouse",
+        "my warehouse",
+        "warehouse please",
+        "storage warehouse",
+        "goods warehouse"
       ],
       "schematic": "warehouse_small.schem",
       "footprint": [
@@ -3812,7 +4538,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "watchtower_tall",
@@ -3830,7 +4557,13 @@
         "tower",
         "guard tower",
         "lookout tower",
-        "tall tower"
+        "tall tower",
+        "lookout",
+        "tall lookout",
+        "guard lookout",
+        "little watchtower",
+        "my watchtower",
+        "spy tower"
       ],
       "schematic": "watchtower_tall.schem",
       "footprint": [
@@ -3854,7 +4587,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "well_village",
@@ -3869,7 +4603,15 @@
         "well",
         "water well",
         "town well",
-        "stone well"
+        "stone well",
+        "wishing well",
+        "village water well",
+        "little well",
+        "my well",
+        "well please",
+        "water hole well",
+        "my village well",
+        "little village well"
       ],
       "schematic": "well_village.schem",
       "footprint": [
@@ -3899,7 +4641,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "wheat_farm_small",
@@ -3916,7 +4659,13 @@
         "wheat plot",
         "grain farm",
         "wheat field",
-        "field of wheat"
+        "field of wheat",
+        "wheat patch",
+        "wheat garden",
+        "place for wheat",
+        "little wheat farm",
+        "farm for wheat",
+        "my wheat farm"
       ],
       "schematic": "wheat_farm_small.schem",
       "footprint": [
@@ -3944,7 +4693,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "windmill_small",
@@ -3957,7 +4707,13 @@
       ],
       "aliases": [
         "windmill",
-        "windmill"
+        "windmill",
+        "wind mill",
+        "little windmill",
+        "farm windmill",
+        "my windmill",
+        "windmill please",
+        "spinning windmill"
       ],
       "schematic": "windmill_small.schem",
       "footprint": [
@@ -3982,7 +4738,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "wizard_tower",
@@ -3995,7 +4752,13 @@
       ],
       "aliases": [
         "wizard tower",
-        "wizard tower"
+        "wizard tower",
+        "magic tower",
+        "wizard house",
+        "mage tower",
+        "little wizard tower",
+        "my wizard tower",
+        "sorcerer tower"
       ],
       "schematic": "wizard_tower.schem",
       "footprint": [
@@ -4023,7 +4786,7 @@
     },
     {
       "id": "wooden_palisade",
-      "title": "Wooden palisade",
+      "title": "Wood wall",
       "category": "infrastructure",
       "complexity": "basic",
       "tags": [
@@ -4031,7 +4794,19 @@
         "path"
       ],
       "aliases": [
-        "palisade wall"
+        "palisade wall",
+        "wood wall",
+        "wooden wall",
+        "log wall",
+        "stick wall",
+        "wood fence wall",
+        "little wood wall",
+        "palisade",
+        "wooden fence wall",
+        "wooden wall fence",
+        "wood palisade",
+        "my palisade",
+        "my wood wall"
       ],
       "schematic": "wooden_palisade.schem",
       "footprint": [
@@ -4059,7 +4834,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "workshop_small",
@@ -4074,7 +4850,15 @@
         "workshop",
         "small workshop",
         "crafting hut",
-        "craft shop"
+        "craft shop",
+        "craft house",
+        "making shop",
+        "little workshop",
+        "my workshop",
+        "workshop please",
+        "building workshop",
+        "craft workshop",
+        "work shed"
       ],
       "schematic": "workshop_small.schem",
       "footprint": [
@@ -4100,7 +4884,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "zen_garden",
@@ -4113,7 +4898,14 @@
       ],
       "aliases": [
         "zen garden",
-        "zen garden"
+        "calm garden",
+        "rock garden",
+        "peaceful garden",
+        "little zen garden",
+        "my zen garden",
+        "quiet garden",
+        "japanese garden",
+        "rock garden zen"
       ],
       "schematic": "zen_garden.schem",
       "footprint": [
@@ -4141,7 +4933,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     }
   ]
 }

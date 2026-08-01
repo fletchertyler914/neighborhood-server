@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://neighborhood.local/protocol/envelope.schema.json",
+  "title": "Neighborhood Companion Envelope",
+  "type": "object",
+  "required": ["protocol", "type", "trace_id", "sequence", "sent_at_ms", "payload"],
+  "properties": {
+    "protocol": {"const": "1.0"},
+    "type": {
+      "enum": [
+        "hello",
+        "hello.ack",
+        "heartbeat",
+        "job.submit",
+        "job.cancel",
+        "job.ask",
+        "job.complete",
+        "action.execute",
+        "action.progress",
+        "action.result",
+        "observation.request",
+        "observation.result",
+        "feedback.submit",
+        "capabilities.changed"
+      ]
+    },
+    "trace_id": {"type": "string", "format": "uuid"},
+    "job_id": {"type": ["string", "null"], "format": "uuid"},
+    "sequence": {"type": "integer", "minimum": 0},
+    "sent_at_ms": {"type": "integer", "minimum": 0},
+    "deadline_ms": {"type": ["integer", "null"], "minimum": 0},
+    "payload": {"type": "object"}
+  },
+  "additionalProperties": false
+}

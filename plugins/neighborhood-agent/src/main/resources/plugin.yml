@@ -2,21 +2,38 @@ name: NeighborhoodAgent
 version: ${version}
 main: com.neighborhood.agent.NeighborhoodAgentPlugin
 api-version: '1.21'
-description: In-game /agent command wired to the host orchestrator
+description: Local-first in-game Minecraft sidekick
 author: neighborhood-server
+depend: [FastAsyncWorldEdit]
+softdepend: [GriefPrevention]
 commands:
   agent:
-    description: Ask the AI agent to build, mine, or run server actions
-    usage: /agent <prompt> | /agent confirm <token> <prompt>
+    description: Ask your Minecraft sidekick for help
+    usage: /agent <what you want>
     permission: neighborhood.agent
-  agentexec:
-    description: (Console only) Dispatch a Bukkit command as a target player. Used by the orchestrator for FAWE.
-    usage: /agentexec <player> <command...>
-    permission: neighborhood.agentexec
+  agent-as:
+    description: Console/RCON live-validation hook that runs a sidekick job as a player
+    usage: /agent-as <player> <prompt...>
+    permission: neighborhood.agent.eval
 permissions:
+  neighborhood.agent.eval:
+    description: Run agent-as live validation from console/RCON
+    default: op
   neighborhood.agent:
     description: Use /agent
-    default: op
-  neighborhood.agentexec:
-    description: Use /agentexec (console-only)
-    default: op
+    default: true
+  neighborhood.agent.world:
+    description: Let the sidekick change time and weather
+    default: true
+  neighborhood.agent.inventory:
+    description: Let the sidekick give the player items
+    default: true
+  neighborhood.agent.mobs:
+    description: Let the sidekick summon bounded friendly mobs
+    default: true
+  neighborhood.agent.undo:
+    description: Undo the player's most recent sidekick action
+    default: true
+  neighborhood.agent.build:
+    description: Let the sidekick build and paste curated templates where the player may edit
+    default: true

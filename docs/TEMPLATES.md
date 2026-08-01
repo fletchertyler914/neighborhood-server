@@ -1,7 +1,7 @@
 # Template library workflow
 
 The elite builder stack stores reusable FAWE schematics plus metadata so
-`/agent` and Cursor MCP paste high-quality structures instead of guessing
+The in-game `/agent` sidekick pastes high-quality structures instead of guessing
 parametric shapes.
 
 ## Layout

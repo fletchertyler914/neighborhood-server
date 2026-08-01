@@ -1,0 +1,28 @@
+id: neighborhood.core
+version: 1.0.0
+description: Fast, kid-friendly everyday Minecraft help
+intents:
+  - set time
+  - set weather
+  - give an item to the requesting player
+  - summon a bounded friendly animal
+  - paste a curated named structure
+  - finish a wall from two visible endpoints
+  - finish a room floor from matching walls
+  - undo the player's latest sidekick action
+latency_tier: B
+risk: bounded
+tools:
+  - set_time
+  - set_weather
+  - give_item
+  - summon_entity
+  - paste_template
+  - finish_wall
+  - finish_floor
+  - undo_last
+limits:
+  max_actions: 1
+  max_entities: 20
+  max_items: 64
+  deadline_ms: 5000

@@ -4,13 +4,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class NeighborhoodAgentPlugin extends JavaPlugin {
 
-    private OrchestratorClient orchestrator;
+    private CompanionGateway gateway;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        orchestrator = new OrchestratorClient(this);
-        AgentCommand agentCommand = new AgentCommand(this, orchestrator);
+        gateway = new CompanionGateway(this);
+        AgentCommand agentCommand = new AgentCommand(this, gateway);
         var cmd = getCommand("agent");
         if (cmd != null) {
             cmd.setExecutor(agentCommand);
@@ -19,25 +19,26 @@ public final class NeighborhoodAgentPlugin extends JavaPlugin {
             getLogger().severe("Command 'agent' missing from plugin.yml");
         }
 
-        AgentExecCommand execCommand = new AgentExecCommand(this);
-        var execCmd = getCommand("agentexec");
-        if (execCmd != null) {
-            execCmd.setExecutor(execCommand);
+        AgentAsCommand agentAsCommand = new AgentAsCommand(this, gateway);
+        var agentAs = getCommand("agent-as");
+        if (agentAs != null) {
+            agentAs.setExecutor(agentAsCommand);
         } else {
-            getLogger().severe("Command 'agentexec' missing from plugin.yml");
+            getLogger().severe("Command 'agent-as' missing from plugin.yml");
         }
 
-        getLogger().info("NeighborhoodAgent enabled -> " + orchestrator.getBaseUrl());
+        gateway.start();
+        getLogger().info("Neighborhood sidekick enabled -> " + gateway.getGatewayUrl());
     }
 
     @Override
     public void onDisable() {
-        if (orchestrator != null) {
-            orchestrator.close();
+        if (gateway != null) {
+            gateway.close();
         }
     }
 
-    public OrchestratorClient getOrchestrator() {
-        return orchestrator;
+    public CompanionGateway getGateway() {
+        return gateway;
     }
 }

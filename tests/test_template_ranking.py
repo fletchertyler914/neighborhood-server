@@ -55,6 +55,23 @@ def test_resolve_hen_house_legacy_exact():
     assert r.score_breakdown.get("mode") == "legacy_exact"
 
 
+def test_resolve_kid_voice_aliases():
+    from agent.templates.ranking import resolve_template
+
+    cases = [
+        ("little castle", "castle_small_keep"),
+        ("chicken house", "chicken_coop_small"),
+        ("place for chicks", "chicken_coop_small"),
+        ("bee house", "bee_apiary_small"),
+        ("wood wall", "wooden_palisade"),
+        ("furnaces", "smelter_array"),
+    ]
+    for prompt, expected in cases:
+        r = resolve_template(prompt)
+        assert r.selected_template_id == expected, (prompt, r.selected_template_id)
+        assert r.confidence in ("high", "medium"), (prompt, r.confidence)
+
+
 def test_search_templates_tool():
     from agent.tools import search_templates
 

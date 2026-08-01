@@ -1,124 +1,40 @@
 ---
-description: How to drive the Minecraft server - MCP first, scripts next, raw docker last
+description: Native in-game sidekick and operator shell boundaries
 alwaysApply: true
 ---
 
 # Driving the Minecraft Server
 
-When the user asks for in-game actions (build something, op a player,
-teleport, set time/weather, run a command), use this priority order.
+## Player sidekick
 
-## 1. Shared tool core — MCP and `/agent`
+Players use only `/agent <prompt>` in Minecraft chat. The Paper plugin opens an
+authenticated outbound WebSocket to `mc-agent`; the Python runtime routes typed
+actions back to native Bukkit/FAWE executors.
 
-All in-world actions go through the typed tool registry in
-`agent/tool_registry.py` and the dispatch package in `agent/tools/`
-(guardrailed RCON via `docker exec mc-lan rcon-cli`). Two entry points
-use the same code:
+- Do not add MCP, external AI-control APIs, model-visible console commands, or
+  RCON dispatch to the sidekick.
+- Deterministic Tier S/A routes must run before the local model.
+- The plugin revalidates permissions, GriefPrevention claims, deadlines, edit
+  budgets, and idempotency for every mutation.
+- Builds must be verified and undoable. Never teleport a player to paste or
+  load a build.
+- Bedrock names retain their leading Floodgate dot.
 
-- **Cursor**: `minecraft-builder` MCP (`mcp/minecraft_build_mcp.py`)
-- **In-game**: `/agent <prompt>` → Paper plugin → `mc-agent` orchestrator → Ollama/cloud
+Canonical contracts live in `protocol/`; runtime code lives in `companion/`;
+native executors live in `plugins/neighborhood-agent/`; declarative skills live
+in `skills/`.
 
-Current `TOOLS_VERSION` is `2.9.0` (`agent/tool_registry.py`,
-mirrored in `agent/mcp_core.py`). Bump both when you change a parameter
-or semantics.
+## Host operations
 
-Always prefer typed tools for in-world actions:
-
-- Inspection: `server_status`, `preflight`, `list_players`,
-  `get_player_position`, `get_player_dimension`
-- Admin: `op_player`, `say`, `teleport_player`, `set_gamemode`, `set_time`,
-  `set_weather`, `give_haste`, `give_item`, `backup_now`,
-  `run_command` (escape hatch)
-- Building: `fill_box`, `clear_box`, `build_platform`, `build_sphere`,
-  `build_cylinder`, `build_spiral_staircase`
-- **Templates (quality-first):** `list_templates`, `paste_template_at_player`,
-  `create_template_from_selection` — FAWE schematics from
-  `agent/templates/catalog.json` + `agent/templates/schematics/` (mounted
-  into `mc-lan` at `.../schematics/neighborhood/`). Named structures
-  (coop, castle, barn, well, bridge) should use `paste_template_at_player`
-  unless the player gives explicit WxH / radius constraints.
-- Player-relative builds (parametric fallback): `build_house_at_player`,
-  `build_castle_at_player`, `build_bridge_at_player`,
-  `build_wall_at_player`, `build_animal_pen_at_player`. As of
-  `TOOLS_VERSION=2.9.0` these builders ship with real interiors:
-  `build_house_at_player(height>=7)` lays a floor divider every 4 blocks
-  and a 2-wide staircase against the back-left wall;
-  `build_bridge_at_player` adds material-matched railings + support
-  pillars by default (`add_rails=false` / `add_supports=false` to opt
-  out); `build_castle_at_player` adds an interior staircase to the
-  wall-walk plus a ladder up one tower. Don't manually splice extra
-  stairs/rails on top.
-- Mobs / world: `summon_entity` (raw `/summon`),
-  `build_animal_pen_at_player` (fenced pen + summoned animals)
-- FAWE: `fawe_as_player`, `fawe_sphere_at_player`, `fawe_cyl_at_player`,
-  `mine_shaft_at_player`
-
-### Guardrails (don't bypass without asking)
-
-- `fill_box` / shape builders cap at **200,000** blocks
-- generated commands cap at **20,000**
-- Raw `run_command` is the escape hatch — prefer typed tools
-
-### Bedrock vs Java names
-
-Bedrock players show up via Floodgate with a leading `.`. When a request
-mentions a player by short nickname, confirm whether they mean the
-Bedrock account (leading dot, e.g. `.BedrockPlayer`) or a Java handle.
-The dot is part of the name in commands.
-
-## 2. Shell wrappers — for terminal work
-
-When working from the host shell, use the project scripts instead of
-hand-writing `docker exec`:
+For operator terminal work use:
 
 - `./mc.sh status | list | logs | console | backup`
 - `./mc.sh op <name>` / `./mc.sh deop <name>`
-- `./op.sh <name> [name...]` — bulk op
 - `./mc.sh say "<message>"`
 - `./mc.sh gamemode <mode> <player>`
-- `./mc.sh cmd "<rcon command>"` — escape hatch
+- `./mc.sh cmd "<explicit command>"` only as an operator escape hatch
+- `make companion-gate` for the locked accuracy/latency suite
+- `make companion-deploy` to build and deploy runtime + plugin
 
-Or the Makefile (calls the above + `docker compose`):
-
-- `make up | down | restart | logs | status | health | metrics`
-- `make plugin` — build & install the Paper plugin JAR
-- `make seed` — pre-build every schematic in-world (one-time)
-- `make test | smoke | eval | live-tools | full-validation`
-- `make corpus | corpus-quick | triage`
-- `make train | train-full | deploy-model | compare-models`
-
-## 3. Raw `docker exec` — last resort
-
-Only fall back to `docker exec -i mc-lan rcon-cli "<cmd>"` if neither MCP
-nor the scripts can express what's needed.
-
-## Building patterns
-
-- Rectangular volumes → `fill_box` (`mode: replace|keep|hollow|outline`)
-- Spheres / domes → `build_sphere` (`hollow: true` for shells)
-- Towers / wells → `build_cylinder`
-- Stairs → `build_spiral_staircase`
-- Chicken coop / pig pen / castle / cottage / well / bridge →
-  `paste_template_at_player` first (catalog id or alias). The catalog
-  ships **101 verified `.schem` files** (`agent/templates/schematics/`)
-  bind-mounted at `mc-lan:/data/plugins/FastAsyncWorldEdit/schematics/
-  neighborhood/` and at `mc-agent:/app/data/...`. If the schematic is
-  somehow missing, the tool runs the catalog `fallback` parametric
-  builder + any `follow_up` (e.g. summon chickens). Explicit sizes
-  (`21x21`, `radius 12`) → parametric tools instead.
-- Re-seeding schematics (e.g. after a builder change): use
-  `python3 -m agent.templates.seed --player <op> --only <id> --all`. The
-  pipeline deletes the existing `.schem` first because FAWE's
-  `//schem save` is silently no-overwrite, and waits between
-  `//pos1`/`//pos2`/`//copy`/`//schem save` because `agentexec`
-  dispatches one FAWE command per server tick.
-- Publish a build: player FAWE selection → `create_template_from_selection`,
-  then commit `catalog.json` + `schematics/*.schem` for git-curated sharing.
-- Spawn a mob at coords → `summon_entity(entity, x, y, z, count)`
-- Selections, copy/paste, `//regen`, brushes, schematics →
-  `fawe_as_player` so the operation runs with that player's selection
-- For absolute coordinates from console, vanilla `/fill` and `/setblock`
-  via `run_command` is fine
-
-Before any large or destructive op (clearing, replacing, regen), restate
-the coordinates and approximate block count back to the user.
+Raw `docker exec ... rcon-cli` is a last resort. Before destructive world
+operations, restate coordinates and approximate block count, then back up.

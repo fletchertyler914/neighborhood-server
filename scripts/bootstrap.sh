@@ -132,15 +132,15 @@ AGENT_API_TOKEN=$(python3 -c 'import secrets; print(secrets.token_urlsafe(32))')
 AGENT_BIND_HOST=0.0.0.0
 AGENT_BIND_PORT=8787
 OLLAMA_BASE_URL=http://host.docker.internal:11434
-OLLAMA_MODEL=qwen2.5:7b-instruct
-OLLAMA_FALLBACK_MODEL=qwen3:8b
-AGENT_LOCAL_MODEL_TIMEOUT_SEC=15
-OLLAMA_NUM_CTX=4096
-OLLAMA_NUM_PREDICT=512
+LOCAL_LLM_BASE_URL=http://host.docker.internal:11434
+OLLAMA_MODEL=gemma4:12b-mlx
+LOCAL_LLM_MODEL=gemma4:12b-mlx
+AGENT_LOCAL_MODEL_TIMEOUT_SEC=5
+LOCAL_LLM_NUM_CTX=2048
+LOCAL_LLM_NUM_PREDICT=192
 EOF
     ok "wrote a minimal .env"
   fi
-  warn "If you want playit.gg crossplay, add PLAYIT_SECRET_KEY=... to .env"
 else
   ok ".env exists"
 fi
@@ -166,15 +166,37 @@ case "$OLLAMA_MODE" in
 esac
 
 if (( HAS_OLLAMA == 1 )) && [[ "$OLLAMA_MODE" == host ]]; then
-  if ! ollama list 2>/dev/null | awk 'NR>1{print $1}' | grep -q "^qwen2.5:7b-instruct$"; then
-    warn "qwen2.5:7b-instruct not pulled. Run: ollama pull qwen2.5:7b-instruct"
+  if ! ollama list 2>/dev/null | awk 'NR>1{print $1}' | grep -q "^gemma4:12b-mlx$"; then
+    warn "gemma4:12b-mlx not pulled. On Apple Silicon run: ollama pull gemma4:12b-mlx"
+    warn "Non-Mac fallback (slower Tier B): ollama pull qwen2.5:7b-instruct"
   else
-    ok "qwen2.5:7b-instruct already pulled"
+    ok "gemma4:12b-mlx already pulled"
   fi
+  # Align primary model keys when writing a fresh or legacy .env
+  set_env_value "OLLAMA_MODEL" "gemma4:12b-mlx"
+  set_env_value "LOCAL_LLM_MODEL" "gemma4:12b-mlx"
 fi
 
 if (( USE_OLLAMA_PROFILE == 1 )); then
-  warn "First boot with bundled Ollama pulls ~5GB; COMPOSE_PROFILES=ollama is set in .env"
+  warn "First boot with bundled Ollama pulls the model; COMPOSE_PROFILES=ollama is set in .env"
+  set_env_value "OLLAMA_MODEL" "gemma4:12b-mlx"
+  set_env_value "LOCAL_LLM_MODEL" "gemma4:12b-mlx"
+fi
+
+# Make sure the env var the script reads from is current.
+PLAYIT_SECRET_KEY="$(awk -F= '/^PLAYIT_SECRET_KEY=/{print $2}' .env 2>/dev/null | tr -d '"' | tr -d "'" | head -1)"
+if [[ -n "${PLAYIT_SECRET_KEY:-}" ]]; then
+  export PLAYIT_SECRET_KEY
+  echo
+  echo "Checking playit tunnels..."
+  if ! PLAYIT_SECRET_KEY="$PLAYIT_SECRET_KEY" python3 scripts/playit_setup.py; then
+    warn "playit_setup.py exited non-zero — you may need to create tunnels manually at https://playit.gg/account/tunnels"
+  fi
+else
+  warn "PLAYIT_SECRET_KEY is not in .env. To enable public crossplay:"
+  warn "  1. Create a free playit.gg agent: https://playit.gg/account/agents"
+  warn "  2. Add PLAYIT_SECRET_KEY=pit-... to .env"
+  warn "  3. Run: ./scripts/playit_setup.py   (auto-creates Java + Bedrock tunnels)"
 fi
 
 echo

@@ -33,3 +33,10 @@ if [[ "$dry_run" == 0 && "$has_player_arg" == 0 && -z "${AGENT_SEED_PLAYER:-}" ]
 fi
 
 python3 -m agent.templates.seed "$@"
+
+# Seed capture includes the temporary stone pad and historically left a one-block
+# air gap under many buildings. Compact gaps + land entrance stairs on the pad.
+if [[ "$dry_run" == 0 ]]; then
+  python3 "$ROOT/scripts/fix_schematic_ground_gaps.py" --fix
+  python3 "$ROOT/scripts/fix_schematic_ground_gaps.py" --check
+fi

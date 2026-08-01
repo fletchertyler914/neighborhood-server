@@ -1,0 +1,8 @@
+[
+  "set_time",
+  "set_weather",
+  "give_item",
+  "preflight",
+  "list_players",
+  "run_command"
+]

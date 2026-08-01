@@ -11,6 +11,26 @@ documented here. Follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/
   `OLLAMA_BASE_URL=http://ollama:11434` in `.env` so plain `make up` works.
 - `MC_ENFORCE_WHITELIST` env override for friends-server mode (default is
   `true` for safe public deploys).
+- `scripts/playit_setup.py` + `make tunnels`: idempotently creates the
+  standard Minecraft Java (TCP 25565) + Bedrock (UDP 19132) tunnels in
+  playit.gg via the official API. `make bootstrap` calls it automatically
+  when `PLAYIT_SECRET_KEY` is set, so a fresh clone needs zero clicks in
+  the playit dashboard.
+- `scripts/print_invite.py` + `make invite`: queries the playit API for
+  current tunnel addresses and writes a print-ready HTML guest sheet to
+  the user's Desktop.
+- `config/patches/bukkit-overrides.json` (itzg `PATCH_DEFINITIONS`):
+  permanently disables Paper's `connection-throttle` so Geyser/Floodgate
+  Bedrock players and playit-routed Java players sharing the same upstream
+  source IP don't get hit with `Connection throttled!` on rapid reconnect.
+  Applied on every boot, survives `data/` resets.
+- BlueMap web map: installed via `MODRINTH_PROJECTS: bluemap`, served on
+  `http://127.0.0.1:8100` after the next `docker compose restart mc`.
+  Baseline config (`accept-download`, render-thread cap, webserver bind)
+  ships in `config/bluemap/` and is file-bind-mounted on top of BlueMap's
+  defaults so a fresh clone needs no manual config edits. Host port is
+  locked to `127.0.0.1` — see `config/bluemap/README.md` to share on LAN
+  or expose publicly via a third playit tunnel.
 - Documentation sync pass: `.cursor/rules/*.mdc`, `README.md`,
   `docs/PUBLIC_QUICKSTART.md`, `docs/HOSTING.md`, `docs/DEVELOPMENT_WORKFLOW.md`,
   `docs/ARCHITECTURE.md`, `docs/TOOL_CONTRACT.md`, `docs/TEMPLATE_RANKING.md`,

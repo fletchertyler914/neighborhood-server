@@ -3,15 +3,21 @@ plugins {
 }
 
 group = "com.neighborhood"
-version = "1.0.0"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://maven.enginehub.org/repo/")
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    compileOnly("com.google.code.gson:gson:2.11.0")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core:2.15.3")
+    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.15.3") {
+        isTransitive = false
+    }
 }
 
 java {

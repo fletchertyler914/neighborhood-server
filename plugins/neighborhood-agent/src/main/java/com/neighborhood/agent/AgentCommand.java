@@ -3,7 +3,6 @@ package com.neighborhood.agent;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,12 +17,21 @@ import java.util.List;
 
 public final class AgentCommand implements CommandExecutor, TabCompleter {
 
-    private final NeighborhoodAgentPlugin plugin;
-    private final OrchestratorClient orchestrator;
+    private static final List<String> CAPABILITY_EXAMPLES = List.of(
+            "make it daytime",
+            "give me three dirt",
+            "spawn three chickens",
+            "build me a chicken coop",
+            "finish this wall 8 blocks high",
+            "undo that"
+    );
 
-    public AgentCommand(NeighborhoodAgentPlugin plugin, OrchestratorClient orchestrator) {
+    private final NeighborhoodAgentPlugin plugin;
+    private final CompanionGateway gateway;
+
+    public AgentCommand(NeighborhoodAgentPlugin plugin, CompanionGateway gateway) {
         this.plugin = plugin;
-        this.orchestrator = orchestrator;
+        this.gateway = gateway;
     }
 
     @Override
@@ -38,37 +46,37 @@ public final class AgentCommand implements CommandExecutor, TabCompleter {
             return true;
         }
         if (!player.hasPermission("neighborhood.agent")) {
-            player.sendMessage(Component.text("You don't have permission.", NamedTextColor.RED));
+            player.sendMessage(Component.text(
+                    "You can't use the sidekick here. Try: ask a grown-up for help.",
+                    NamedTextColor.RED
+            ));
             return true;
         }
         if (args.length == 0) {
-            player.sendMessage(Component.text("Usage: /agent <prompt>", NamedTextColor.YELLOW));
-            player.sendMessage(
-                    Component.text("Example: /agent build a 21x21 quartz platform at my feet", NamedTextColor.GRAY)
-            );
+            player.sendMessage(Component.text("Hi! I'm your Minecraft sidekick.", NamedTextColor.AQUA));
+            player.sendMessage(Component.text("Try one of these:", NamedTextColor.YELLOW));
+            for (String example : CAPABILITY_EXAMPLES) {
+                player.sendMessage(Component.text("  /agent " + example, NamedTextColor.GRAY));
+            }
             return true;
         }
 
         String prompt = String.join(" ", args);
-        var loc = player.getLocation();
-        String world = player.getWorld().getKey().toString();
-        GameMode gm = player.getGameMode();
-        String gamemode = gm.name().toLowerCase();
 
         long startMs = System.currentTimeMillis();
         String shortPrompt = prompt.length() > 48 ? prompt.substring(0, 45) + "..." : prompt;
 
         BossBar bossBar = BossBar.bossBar(
-                Component.text("Agent thinking...", NamedTextColor.AQUA),
+                Component.text("Sidekick working...", NamedTextColor.AQUA),
                 0.05f,
                 BossBar.Color.BLUE,
                 BossBar.Overlay.PROGRESS
         );
         player.showBossBar(bossBar);
-        player.sendActionBar(Component.text("Agent received: " + shortPrompt, NamedTextColor.AQUA));
+        player.sendActionBar(Component.text("Got it: " + shortPrompt, NamedTextColor.AQUA));
 
         // Spinner + pulsing progress so it's clearly "working" (we don't know
-        // the real progress from the orchestrator, so we animate).
+        // the real progress from the companion, so we animate).
         final char[] frames = {'\u2599', '\u259B', '\u259C', '\u259F'}; // quadrant blocks rotation
         BukkitTask animator = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
             long elapsed = (System.currentTimeMillis() - startMs) / 1000;
@@ -79,49 +87,46 @@ public final class AgentCommand implements CommandExecutor, TabCompleter {
             if (progress > 1.0f) progress = 1.0f;
 
             bossBar.name(Component.text(frames[frame] + " ", NamedTextColor.AQUA)
-                    .append(Component.text("Agent · ", NamedTextColor.AQUA))
+                    .append(Component.text("Sidekick · ", NamedTextColor.AQUA))
                     .append(Component.text(shortPrompt, NamedTextColor.WHITE))
                     .append(Component.text(" · " + elapsed + "s", NamedTextColor.GRAY)));
             bossBar.progress(progress);
         }, 0L, 4L); // every 4 ticks (200ms)
 
-        OrchestratorClient.JobPayload payload = new OrchestratorClient.JobPayload(
-                player.getName(),
-                player.getUniqueId().toString(),
-                world,
-                loc.getX(),
-                loc.getY(),
-                loc.getZ(),
-                gamemode,
-                prompt
+        CompanionGateway.JobPayload payload = CompanionGateway.JobPayload.from(
+                player,
+                prompt,
+                gateway.perception()
         );
 
-        orchestrator.submitJob(payload).whenComplete((result, throwable) ->
+        gateway.submitJob(payload).whenComplete((result, throwable) ->
                 plugin.getServer().getScheduler().runTask(plugin, () -> {
                     animator.cancel();
                     long total = (System.currentTimeMillis() - startMs) / 1000;
-                    boolean ok = throwable == null && result != null && result.ok;
+                    boolean ok = throwable == null && result != null && result.ok();
                     String message = throwable != null
-                            ? "Agent error: " + throwable.getMessage()
-                            : (result != null ? result.message : "Unknown error");
+                            ? "Something went wrong. Try: make it daytime"
+                            : (result != null ? result.message() : "Something went wrong. Try: make it daytime");
 
+                    // Instant denials: hide the bar quickly so kids aren't stuck waiting.
+                    long hideDelayTicks = ok ? 50L : 20L;
                     bossBar.progress(1.0f);
                     if (ok) {
                         bossBar.color(BossBar.Color.GREEN);
-                        bossBar.name(Component.text("Agent done · " + total + "s", NamedTextColor.GREEN));
+                        bossBar.name(Component.text("Sidekick done · " + total + "s", NamedTextColor.GREEN));
                     } else {
                         bossBar.color(BossBar.Color.RED);
-                        bossBar.name(Component.text("Agent failed · " + total + "s", NamedTextColor.RED));
+                        bossBar.name(Component.text("Sidekick paused", NamedTextColor.RED));
                     }
                     plugin.getServer().getScheduler().runTaskLater(
-                            plugin, () -> player.hideBossBar(bossBar), 50L); // 2.5s
+                            plugin, () -> player.hideBossBar(bossBar), hideDelayTicks);
 
                     NamedTextColor msgColor = ok ? NamedTextColor.GREEN : NamedTextColor.RED;
-                    player.sendMessage(Component.text("[Agent] ", NamedTextColor.DARK_AQUA)
+                    player.sendMessage(Component.text("[Sidekick] ", NamedTextColor.DARK_AQUA)
                             .append(Component.text(message, msgColor)));
-                    if (ok && result != null && !result.model.isEmpty()) {
+                    if (ok && result != null) {
                         player.sendActionBar(Component.text(
-                                result.model + " · " + result.steps + " steps · " + total + "s",
+                                "All set · " + total + "s",
                                 NamedTextColor.GRAY
                         ));
                     }
@@ -138,19 +143,9 @@ public final class AgentCommand implements CommandExecutor, TabCompleter {
             @NotNull String[] args
     ) {
         if (args.length == 1) {
-            List<String> hints = List.of(
-                    "build",
-                    "confirm",
-                    "mine",
-                    "dig",
-                    "sphere",
-                    "platform",
-                    "haste",
-                    "backup"
-            );
             String prefix = args[0].toLowerCase();
             List<String> out = new ArrayList<>();
-            for (String h : hints) {
+            for (String h : CAPABILITY_EXAMPLES) {
                 if (h.startsWith(prefix)) {
                     out.add(h);
                 }

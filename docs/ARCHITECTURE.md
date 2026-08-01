@@ -1,91 +1,82 @@
-# Neighborhood Agent Architecture
+# Sidekick Architecture
 
-## Overview
-
-The in-game agent stack connects players, an LLM orchestrator, typed
-Minecraft tools, and an evaluation harness.
+The sidekick is a local, in-game control system. It is not a general chatbot
+and does not expose an external AI-control interface.
 
 ```text
-Player (/agent) ─► Paper plugin ─► mc-agent orchestrator ─► agent.tools ─► RCON ─► Paper server
-Cursor MCP      ─► minecraft_build_mcp.py ─────────────────┘
-Eval harness    ─► agent.eval ─────────────────────────────┘
+Player /agent
+  -> Paper plugin context snapshot
+  -> authenticated private WebSocket
+  -> deterministic router or bounded local model compiler
+  -> typed action
+  -> Paper permission/claim/deadline validation
+  -> native Bukkit or FAWE execution
+  -> world postcondition verification
+  -> short player response
 ```
 
-## Compose services
+## Trust boundary
 
-| Service | Image | Container | Role |
-| --- | --- | --- | --- |
-| `mc` | `itzg/minecraft-server:java25` | `mc-lan` | Paper 26.1.2 + Geyser + Floodgate + FAWE |
-| `mc-agent` | local build (`agent/Dockerfile`) | `mc-agent` | FastAPI orchestrator — no host port |
-| `playit` | `ghcr.io/playit-cloud/playit-agent` | `playit-agent` | TCP/UDP relay (host network) |
-| `backup` | `itzg/mc-backup` | `mc-backup` | RCON-coordinated 2h snapshots |
-| `ollama` (profile `ollama`) | `ollama/ollama` | `mc-ollama` | Optional bundled LLM (no host install) |
-| `ollama-pull` (profile `ollama`) | `ollama/ollama` | `mc-ollama-pull` | One-shot model pull on first boot |
+The Python runtime is not trusted to mutate the world. The Paper plugin checks
+the protocol schema, player identity, permissions, GriefPrevention claims,
+deadlines, edit limits, restricted items/entities, and idempotency before each
+action. It journals action results so reconnects cannot repeat mutations.
 
-Mac Apple Silicon: keep `--profile ollama` off and run host Ollama (Metal
-GPU). Linux/Windows: turn the profile on via `make bootstrap` (writes
-`COMPOSE_PROFILES=ollama` and `OLLAMA_BASE_URL=http://ollama:11434` to `.env`).
+RCON remains private for operator scripts and backups. It is never an agent
+transport.
 
-## Single source of truth: tool registry
+## Runtime
 
-All tool contracts live in [`agent/tool_registry.py`](../agent/tool_registry.py):
+`companion/` is one async process:
 
-- `TOOL_DEFINITIONS` — name, description, JSON parameters, risk, category
-- `build_openai_schemas()` → LLM tool schemas ([`agent/schema.py`](../agent/schema.py))
-- `build_dispatch()` → runtime handlers in [`agent/tools/`](../agent/tools/) package
-- `mcp_tool_names()` → MCP exposure ([`mcp/minecraft_build_mcp.py`](../mcp/minecraft_build_mcp.py))
+- `routing.py` handles deterministic Tier S/A requests first.
+- `templates.py` resolves high-confidence curated structures.
+- `provider.py` uses Ollama's native API and validates structured output.
+- `storage.py` persists jobs, actions, feedback, timings, and idempotency
+  correlations in SQLite WAL.
+- `app.py` owns the private WebSocket, health, and metrics endpoints.
 
-Current `TOOLS_VERSION` is `2.9.0`. Bump it (in both `agent/tool_registry.py`
-and `agent/mcp_core.py::TOOLS_VERSION_EXPECTED`) when changing tool
-parameters or semantics. Eval baselines and export rows record this version.
+No Redis, external queue, vector database, cloud fallback, or multi-agent
+framework is required.
 
-## Orchestrator
+## Native gateway
 
-- Package: [`agent/orchestrator/`](../agent/orchestrator/)
-- Entrypoint: `python -m agent.orchestrator` (run as the `mc-agent` Compose
-  service from `agent/Dockerfile`)
-- Endpoints: `POST /v1/jobs`, `GET /health`, `GET /capabilities`,
-  `GET /metrics` (Prometheus)
-- Auth: `Authorization: Bearer ${AGENT_API_TOKEN}` — required, no fallback.
-  Compose interpolates with `${AGENT_API_TOKEN:?...}` so boot fails fast if
-  the variable is missing.
+`plugins/neighborhood-agent/` maintains the outbound connection and executes
+typed actions. Direct FAWE API calls paste schematics without player
+teleportation, selections, or text commands.
 
-## Evaluation harness
+## Perception (eyes)
 
-| Tier | Command | Gates |
-|------|---------|-------|
-| Unit | `make test` (`pytest`) | Assertions, coverage matrix, schema sync, fixture replay |
-| Tool integration (live) | `AGENT_LIVE_TOOL_PLAYER=<name> ./scripts/live-tool-tests.sh` or `make live-tools` | Direct `agent.tools` calls against Paper + RCON state probes |
-| Spec (live) | `make eval` / `./scripts/eval.sh spec` | Dry-run tool trajectories vs baseline |
-| Agent smoke (live) | `make smoke` | Real `/v1/jobs` with the local model on 26 NL prompts |
-| Full world (live) | `make full-validation` / `python3 scripts/full_validation.py` | Paste every catalog template + summon every supported mob |
-| World corpus (live) | `make corpus-quick` / `make corpus` | 612-prompt NL corpus with world probes |
+Latency-first, two-level observation:
 
-Tool integration tests are the contract for whether the typed tools execute
-correctly on a real server. Agent evals should only answer whether a model
-chooses the right tool and arguments from natural language.
+1. **FastObservationV1** on every `job.submit` — gaze, held block, policy,
+   fingerprint (sub-tick).
+2. **SemanticSceneV1** via private `observation.request` / `observation.result`
+   — openings, surfaces, clearance, palette, nearby (lazy, purpose-specific).
 
-Supporting modules:
+Paper remains authoritative: native tools re-sense before mutation and reject
+stale pose/geometry. The model receives only a coordinate-free summary such as
+`looking_at=oak_planks; holding=quartz_block; opening=31×86 high`.
 
-- `agent/eval/coverage.yaml` — required case IDs by intent family
-- `agent/eval/quarantine.yaml` — temporarily skipped cases
-- `agent/eval/strategy.py` — prompt strategy presets for experiments
-- `agent/eval/compare.py` — multi-model comparison
-- `agent/eval/export.py` — JSONL export for training/review
+## Player response seam
 
-## Training loop (foundation)
+When a job finishes, the runtime emits `job.complete` with both `message`
+(chat) and `spoken_text` (short speakable sentence). TTS audio is intentionally
+out of scope; clients may ignore `spoken_text` until a playback feature exists.
 
-1. Run eval or production → audit log + eval reports
-2. `make corpus` or `./scripts/export-dataset.sh` → JSONL exports under `datasets/`
-3. `/agent good|bad` ratings → `data/agent-feedback.jsonl` (linked by `job_id`)
-4. `make training-data` → merged SFT + DPO JSONL
-5. `make train` (dry-run) or `make train-full` (LoRA → GGUF → Ollama register)
+## Validation
 
-See [docs/FINE_TUNING.md](FINE_TUNING.md) for the full pipeline.
+`make test`, `make metal-check`, and `make companion-gate` enforce protocol,
+runtime, model, safety, and latency requirements. A capability is complete only
+after its real-world mutation is executed and its postcondition is verified.
 
-## CI workflows
+Release checklist for family beta:
 
-- `eval-spec.yml` — unit tests + fixture gate + coverage (every PR)
-- `eval-spec-live.yml` — live spec + strict baseline (self-hosted)
-- `eval-live-tools.yml` — deterministic direct tool execution checks (self-hosted)
-- `eval-world.yml` — live world eval (self-hosted, scheduled)
+```bash
+make companion-gate
+make companion-live
+make companion-live-dialogue
+```
+
+Honest SLOs on a warm Apple Silicon host: common ≤500ms; builds ~0.2–2s;
+model path ~3–6s (Tier B median ≤4500ms / case ≤8000ms).
