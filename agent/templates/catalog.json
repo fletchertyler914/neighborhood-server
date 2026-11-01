@@ -3,6 +3,51 @@
   "schematics_namespace": "neighborhood",
   "templates": [
     {
+      "id": "adventure_time_house",
+      "title": "Adventure time house",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "adventure time house",
+        "adventure time",
+        "adventure",
+        "little adventure time",
+        "small adventure time",
+        "build a adventure time",
+        "make a adventure time",
+        "build me a adventure time",
+        "adventure time please"
+      ],
+      "schematic": "adventure_time_house.schem",
+      "footprint": [
+        96,
+        80,
+        112
+      ],
+      "max_blocks": 52191,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 94,
+          "depth": 110,
+          "height": 78
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/adventure-time-house",
+      "source_id": "bloxelizer_145b7148-a727-41ef-954e-6871666e1124",
+      "source_ref": "bloxelizer:adventure-time-house",
+      "license": "CC-BY-4.0",
+      "author": "ItsRealZoroX",
+      "attribution": "Adventure time house by ItsRealZoroX (CC-BY-4.0) — via Bloxelizer"
+    },
+    {
       "id": "apartment_block",
       "title": "Apartment",
       "category": "house",
@@ -69,7 +114,22 @@
         "little archway",
         "my archway",
         "my stone archway",
-        "little stone archway"
+        "little stone archway",
+        "archway stone",
+        "small stone archway",
+        "build a stone archway",
+        "make a stone archway",
+        "build me a stone archway",
+        "make me a stone archway",
+        "can you build a stone archway",
+        "please build a stone archway",
+        "i want a stone archway",
+        "i need a stone archway",
+        "stone archway please",
+        "stone archway for me",
+        "stone archway over there",
+        "stone archway right here",
+        "stone archway nearby"
       ],
       "schematic": "archway_stone.schem",
       "footprint": [
@@ -147,6 +207,56 @@
       "deterministic_seed_version": "1"
     },
     {
+      "id": "arts_and_crafts_woodland_manor",
+      "title": "Arts and Crafts Woodland Manor",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "arts and crafts woodland manor",
+        "woodland manor",
+        "arts and crafts manor",
+        "woodland mansion",
+        "arts and crafts house",
+        "build a woodland manor",
+        "make a woodland manor",
+        "build me a woodland manor",
+        "i want a woodland manor",
+        "woodland manor please",
+        "woodland manor nearby",
+        "manor house",
+        "build a manor",
+        "make a manor house"
+      ],
+      "schematic": "arts_and_crafts_woodland_manor.schem",
+      "footprint": [
+        96,
+        55,
+        96
+      ],
+      "max_blocks": 506880,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 94,
+          "depth": 94,
+          "height": 53
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://www.schemcraft.com/schematics/arts-and-crafts-woodland-manor",
+      "source_id": "schemcraft_arts_and_crafts_woodland_manor",
+      "source_ref": "schemcraft:arts-and-crafts-woodland-manor",
+      "license": "CC-BY-4.0",
+      "author": "BuildSchem",
+      "attribution": "Arts and Crafts Woodland Manor by BuildSchem — via SchemCraft (CC-BY-4.0)"
+    },
+    {
       "id": "bakery_small",
       "title": "Bakery",
       "category": "house",
@@ -157,7 +267,6 @@
       ],
       "aliases": [
         "bakery",
-        "bakery",
         "bread shop",
         "baker",
         "small bakery",
@@ -166,7 +275,21 @@
         "place that makes bread",
         "bake shop",
         "little bakery",
-        "my bakery"
+        "my bakery",
+        "bakery small",
+        "build a bakery",
+        "make a bakery",
+        "build me a bakery",
+        "make me a bakery",
+        "can you build a bakery",
+        "please build a bakery",
+        "i want a bakery",
+        "i need a bakery",
+        "bakery please",
+        "bakery for me",
+        "bakery over there",
+        "bakery right here",
+        "bakery nearby"
       ],
       "schematic": "bakery_small.schem",
       "footprint": [
@@ -205,7 +328,6 @@
       ],
       "aliases": [
         "red barn",
-        "red barn",
         "big barn",
         "big red barn",
         "farm barn",
@@ -214,7 +336,26 @@
         "barn please",
         "large barn",
         "my red barn",
-        "little red barn"
+        "little red barn",
+        "barn red large",
+        "small red barn",
+        "build a red barn",
+        "make a red barn",
+        "build me a red barn",
+        "make me a red barn",
+        "can you build a red barn",
+        "please build a red barn",
+        "i want a red barn",
+        "i need a red barn",
+        "red barn please",
+        "red barn for me",
+        "red barn over there",
+        "red barn right here",
+        "red barn nearby",
+        "barn",
+        "little barn",
+        "barn house",
+        "barn building"
       ],
       "schematic": "barn_red_large.schem",
       "footprint": [
@@ -253,7 +394,6 @@
         "defense"
       ],
       "aliases": [
-        "bastion",
         "bastion",
         "corner bastion",
         "bastion tower",
@@ -306,7 +446,21 @@
         "beach shack",
         "my beach hut",
         "surf shack",
-        "little beach hut"
+        "little beach hut",
+        "small beach hut",
+        "build a beach hut",
+        "make a beach hut",
+        "build me a beach hut",
+        "make me a beach hut",
+        "can you build a beach hut",
+        "please build a beach hut",
+        "i want a beach hut",
+        "i need a beach hut",
+        "beach hut please",
+        "beach hut for me",
+        "beach hut over there",
+        "beach hut right here",
+        "beach hut nearby"
       ],
       "schematic": "beach_hut.schem",
       "footprint": [
@@ -358,7 +512,23 @@
         "bee hive house",
         "home for bees",
         "my bee house",
-        "little bee house"
+        "little bee house",
+        "bee apiary small",
+        "small bee house",
+        "build a bee house",
+        "make a bee house",
+        "build me a bee house",
+        "make me a bee house",
+        "can you build a bee house",
+        "please build a bee house",
+        "i want a bee house",
+        "i need a bee house",
+        "bee house please",
+        "bee house for me",
+        "bee house over there",
+        "bee house right here",
+        "bee house nearby",
+        "beehive house"
       ],
       "schematic": "bee_apiary_small.schem",
       "footprint": [
@@ -402,7 +572,21 @@
         "bell building",
         "little bell tower",
         "tower for the bell",
-        "my bell tower"
+        "my bell tower",
+        "small bell tower",
+        "build a bell tower",
+        "make a bell tower",
+        "build me a bell tower",
+        "make me a bell tower",
+        "can you build a bell tower",
+        "please build a bell tower",
+        "i want a bell tower",
+        "i need a bell tower",
+        "bell tower please",
+        "bell tower for me",
+        "bell tower over there",
+        "bell tower right here",
+        "bell tower nearby"
       ],
       "schematic": "bell_tower.schem",
       "footprint": [
@@ -450,7 +634,22 @@
         "benches please",
         "place to sit",
         "my park bench",
-        "little park bench"
+        "little park bench",
+        "bench row",
+        "small park bench",
+        "build a park bench",
+        "make a park bench",
+        "build me a park bench",
+        "make me a park bench",
+        "can you build a park bench",
+        "please build a park bench",
+        "i want a park bench",
+        "i need a park bench",
+        "park bench please",
+        "park bench for me",
+        "park bench over there",
+        "park bench right here",
+        "park bench nearby"
       ],
       "schematic": "bench_row.schem",
       "footprint": [
@@ -488,7 +687,8 @@
       "complexity": "basic",
       "tags": [
         "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "berry farm",
@@ -498,7 +698,27 @@
         "sweet berry farm",
         "little berry farm",
         "berry field",
-        "my berry farm"
+        "my berry farm",
+        "berry farm small",
+        "small berry farm",
+        "build a berry farm",
+        "make a berry farm",
+        "build me a berry farm",
+        "make me a berry farm",
+        "can you build a berry farm",
+        "please build a berry farm",
+        "i want a berry farm",
+        "i need a berry farm",
+        "berry farm please",
+        "berry farm for me",
+        "berry farm over there",
+        "berry farm right here",
+        "berry farm nearby",
+        "berries",
+        "grow berries",
+        "plant berries",
+        "build a berry garden",
+        "make a berry garden"
       ],
       "schematic": "berry_farm_small.schem",
       "footprint": [
@@ -515,8 +735,8 @@
           "center_x": "${ax}",
           "y": "${ay}",
           "center_z": "${az}",
-          "width": 9,
-          "depth": 9,
+          "width": 11,
+          "depth": 11,
           "block": "farmland"
         }
       },
@@ -547,7 +767,21 @@
         "place that makes swords",
         "anvil shop",
         "little blacksmith",
-        "my blacksmith"
+        "my blacksmith",
+        "small blacksmith",
+        "build a blacksmith",
+        "make a blacksmith",
+        "build me a blacksmith",
+        "make me a blacksmith",
+        "can you build a blacksmith",
+        "please build a blacksmith",
+        "i want a blacksmith",
+        "i need a blacksmith",
+        "blacksmith please",
+        "blacksmith for me",
+        "blacksmith over there",
+        "blacksmith right here",
+        "blacksmith nearby"
       ],
       "schematic": "blacksmith_shop.schem",
       "footprint": [
@@ -577,6 +811,60 @@
       "gold": true
     },
     {
+      "id": "borgital_strike_cube",
+      "title": "Borgital",
+      "category": "utility",
+      "complexity": "common",
+      "tags": [
+        "redstone",
+        "utility",
+        "contraption",
+        "borgital"
+      ],
+      "aliases": [
+        "borgital",
+        "borgital strike cube",
+        "borgital cannon",
+        "baonam borgital",
+        "build a borgital",
+        "make a borgital",
+        "build me a borgital",
+        "make me a borgital",
+        "i want a borgital",
+        "borgital please",
+        "borgital nearby",
+        "borgital strike cube please"
+      ],
+      "schematic": "borgital_strike_cube.schem",
+      "footprint": [
+        9,
+        15,
+        9
+      ],
+      "max_blocks": 1215,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_platform",
+        "args": {
+          "center_x": "${ax}",
+          "y": "${ay}",
+          "center_z": "${az}",
+          "width": 9,
+          "depth": 9,
+          "block": "stone_bricks"
+        }
+      },
+      "source_id": "shulkr_borgital_strike_cube",
+      "source_url": "https://www.shulkr.com/schematics/1bff31X1F3Ve/borgital-strike-cube-by-baonam7910",
+      "source_ref": "shulkr:1bff31X1F3Ve",
+      "license": "All-Rights-Reserved",
+      "author": "Kajofajo / baonam7910",
+      "attribution": "Borgital Strike Cube by Kajofajo/baonam — via Shulkr (friends-server curated)",
+      "deterministic_seed_version": "1",
+      "gold": true
+    },
+    {
       "id": "brewing_station",
       "title": "Potion station",
       "category": "utility",
@@ -600,7 +888,21 @@
         "little brewing station",
         "my brewing station",
         "my potion station",
-        "little potion station"
+        "little potion station",
+        "small potion station",
+        "build a potion station",
+        "make a potion station",
+        "build me a potion station",
+        "make me a potion station",
+        "can you build a potion station",
+        "please build a potion station",
+        "i want a potion station",
+        "i need a potion station",
+        "potion station please",
+        "potion station for me",
+        "potion station over there",
+        "potion station right here",
+        "potion station nearby"
       ],
       "schematic": "brewing_station.schem",
       "footprint": [
@@ -652,7 +954,23 @@
         "short bridge",
         "tiny bridge",
         "my short oak bridge",
-        "little short oak bridge"
+        "little short oak bridge",
+        "short oak bridge",
+        "bridge oak short",
+        "small short oak bridge",
+        "build a short oak bridge",
+        "make a short oak bridge",
+        "build me a short oak bridge",
+        "make me a short oak bridge",
+        "can you build a short oak bridge",
+        "please build a short oak bridge",
+        "i want a short oak bridge",
+        "i need a short oak bridge",
+        "short oak bridge please",
+        "short oak bridge for me",
+        "short oak bridge over there",
+        "short oak bridge right here",
+        "short oak bridge nearby"
       ],
       "schematic": "bridge_oak_short.schem",
       "footprint": [
@@ -700,7 +1018,22 @@
         "adventure bridge",
         "swinging bridge",
         "vine bridge",
-        "my rope bridge"
+        "my rope bridge",
+        "bridge rope",
+        "small rope bridge",
+        "build a rope bridge",
+        "make a rope bridge",
+        "build me a rope bridge",
+        "make me a rope bridge",
+        "can you build a rope bridge",
+        "please build a rope bridge",
+        "i want a rope bridge",
+        "i need a rope bridge",
+        "rope bridge please",
+        "rope bridge for me",
+        "rope bridge over there",
+        "rope bridge right here",
+        "rope bridge nearby"
       ],
       "schematic": "bridge_rope.schem",
       "footprint": [
@@ -826,7 +1159,6 @@
       ],
       "aliases": [
         "log cabin",
-        "log cabin",
         "log house",
         "wood cabin",
         "wood house",
@@ -835,7 +1167,26 @@
         "my cabin",
         "log home",
         "cabin please",
-        "my log cabin"
+        "my log cabin",
+        "cabin log",
+        "small log cabin",
+        "build a log cabin",
+        "make a log cabin",
+        "build me a log cabin",
+        "make me a log cabin",
+        "can you build a log cabin",
+        "please build a log cabin",
+        "i want a log cabin",
+        "i need a log cabin",
+        "log cabin please",
+        "log cabin for me",
+        "log cabin over there",
+        "log cabin right here",
+        "log cabin nearby",
+        "cabin",
+        "wooden cabin",
+        "little cabin",
+        "forest cabin"
       ],
       "schematic": "cabin_log.schem",
       "footprint": [
@@ -882,7 +1233,22 @@
         "cabin made of stone",
         "rock cabin",
         "stone house cabin",
-        "little stone cabin"
+        "little stone cabin",
+        "cabin stone",
+        "small stone cabin",
+        "build a stone cabin",
+        "make a stone cabin",
+        "build me a stone cabin",
+        "make me a stone cabin",
+        "can you build a stone cabin",
+        "please build a stone cabin",
+        "i want a stone cabin",
+        "i need a stone cabin",
+        "stone cabin please",
+        "stone cabin for me",
+        "stone cabin over there",
+        "stone cabin right here",
+        "stone cabin nearby"
       ],
       "schematic": "cabin_stone.schem",
       "footprint": [
@@ -930,7 +1296,21 @@
         "my camp",
         "camping ground",
         "little campground",
-        "my campground"
+        "my campground",
+        "small campground",
+        "build a campground",
+        "make a campground",
+        "build me a campground",
+        "make me a campground",
+        "can you build a campground",
+        "please build a campground",
+        "i want a campground",
+        "i need a campground",
+        "campground please",
+        "campground for me",
+        "campground over there",
+        "campground right here",
+        "campground nearby"
       ],
       "schematic": "campground.schem",
       "footprint": [
@@ -968,7 +1348,8 @@
       "complexity": "basic",
       "tags": [
         "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "carrot farm",
@@ -978,7 +1359,30 @@
         "carrot field",
         "little carrot farm",
         "farm for carrots",
-        "my carrot farm"
+        "my carrot farm",
+        "carrot farm small",
+        "small carrot farm",
+        "build a carrot farm",
+        "make a carrot farm",
+        "build me a carrot farm",
+        "make me a carrot farm",
+        "can you build a carrot farm",
+        "please build a carrot farm",
+        "i want a carrot farm",
+        "i need a carrot farm",
+        "carrot farm please",
+        "carrot farm for me",
+        "carrot farm over there",
+        "carrot farm right here",
+        "carrot farm nearby",
+        "carrots",
+        "grow carrots",
+        "plant carrots",
+        "carrot garden please",
+        "build a carrot garden",
+        "make a carrot garden",
+        "carrot type garden",
+        "garden of carrots"
       ],
       "schematic": "carrot_farm_small.schem",
       "footprint": [
@@ -995,8 +1399,8 @@
           "center_x": "${ax}",
           "y": "${ay}",
           "center_z": "${az}",
-          "width": 9,
-          "depth": 9,
+          "width": 11,
+          "depth": 11,
           "block": "farmland"
         }
       },
@@ -1010,6 +1414,49 @@
       "gold": true
     },
     {
+      "id": "castle",
+      "title": "Castle",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "castle",
+        "little castle",
+        "small castle",
+        "build a castle",
+        "make a castle",
+        "build me a castle",
+        "castle please"
+      ],
+      "schematic": "castle.schem",
+      "footprint": [
+        320,
+        208,
+        176
+      ],
+      "max_blocks": 707978,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 318,
+          "depth": 174,
+          "height": 206
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/castle-25",
+      "source_id": "bloxelizer_3d2dce7b-73b8-4f14-9a94-8506d4cb62cb",
+      "source_ref": "bloxelizer:castle-25",
+      "license": "CC-BY-4.0",
+      "author": "ItsRealZoroX",
+      "attribution": "Castle by ItsRealZoroX (CC-BY-4.0) — via Bloxelizer"
+    },
+    {
       "id": "castle_gate_large",
       "title": "Castle gate",
       "category": "fortress",
@@ -1019,7 +1466,6 @@
         "tower"
       ],
       "aliases": [
-        "castle gate",
         "castle gate",
         "big castle gate",
         "giant gate",
@@ -1081,7 +1527,24 @@
         "build a castle",
         "kid castle",
         "my little castle",
-        "little little castle"
+        "little little castle",
+        "castle small keep",
+        "small little castle",
+        "build a little castle",
+        "make a little castle",
+        "build me a little castle",
+        "make me a little castle",
+        "can you build a little castle",
+        "please build a little castle",
+        "i want a little castle",
+        "i need a little castle",
+        "little castle please",
+        "little castle for me",
+        "little castle over there",
+        "little castle right here",
+        "little castle nearby",
+        "medieval castle",
+        "castle keep"
       ],
       "schematic": "castle_small_keep.schem",
       "footprint": [
@@ -1127,7 +1590,24 @@
         "big house for chickens",
         "giant chicken coop",
         "big place for chickens",
-        "large chicken house"
+        "large chicken house",
+        "chicken coop large",
+        "little large chicken coop",
+        "small large chicken coop",
+        "my large chicken coop",
+        "build a large chicken coop",
+        "make a large chicken coop",
+        "build me a large chicken coop",
+        "make me a large chicken coop",
+        "can you build a large chicken coop",
+        "please build a large chicken coop",
+        "i want a large chicken coop",
+        "i need a large chicken coop",
+        "large chicken coop please",
+        "large chicken coop for me",
+        "large chicken coop over there",
+        "large chicken coop right here",
+        "large chicken coop nearby"
       ],
       "schematic": "chicken_coop_large.schem",
       "footprint": [
@@ -1154,7 +1634,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "chicken_coop_small",
@@ -1190,7 +1671,26 @@
         "chiken coop",
         "chicken cooop",
         "my small chicken coop",
-        "little small chicken coop"
+        "little small chicken coop",
+        "small chicken coop",
+        "chicken coop small",
+        "small small chicken coop",
+        "build a small chicken coop",
+        "make a small chicken coop",
+        "build me a small chicken coop",
+        "make me a small chicken coop",
+        "can you build a small chicken coop",
+        "please build a small chicken coop",
+        "i want a small chicken coop",
+        "i need a small chicken coop",
+        "small chicken coop please",
+        "small chicken coop for me",
+        "small chicken coop over there",
+        "small chicken coop right here",
+        "small chicken coop nearby",
+        "my chicken coop",
+        "little chicken coop",
+        "chicks"
       ],
       "schematic": "chicken_coop_small.schem",
       "footprint": [
@@ -1243,7 +1743,20 @@
         "my church",
         "church please",
         "small church",
-        "pretty church"
+        "pretty church",
+        "church small",
+        "build a church",
+        "make a church",
+        "build me a church",
+        "make me a church",
+        "can you build a church",
+        "please build a church",
+        "i want a church",
+        "i need a church",
+        "church for me",
+        "church over there",
+        "church right here",
+        "church nearby"
       ],
       "schematic": "church_small.schem",
       "footprint": [
@@ -1283,7 +1796,6 @@
       ],
       "aliases": [
         "medium cottage",
-        "medium cottage",
         "medium house",
         "nice cottage",
         "cozy house",
@@ -1291,7 +1803,25 @@
         "my cottage",
         "cottage please",
         "my medium cottage",
-        "little medium cottage"
+        "little medium cottage",
+        "cottage medium",
+        "small medium cottage",
+        "build a medium cottage",
+        "make a medium cottage",
+        "build me a medium cottage",
+        "make me a medium cottage",
+        "can you build a medium cottage",
+        "please build a medium cottage",
+        "i want a medium cottage",
+        "i need a medium cottage",
+        "medium cottage please",
+        "medium cottage for me",
+        "medium cottage over there",
+        "medium cottage right here",
+        "medium cottage nearby",
+        "bigger cottage",
+        "large cottage",
+        "family cottage"
       ],
       "schematic": "cottage_medium.schem",
       "footprint": [
@@ -1345,7 +1875,23 @@
         "barn for cows",
         "cow shed",
         "my cow barn",
-        "little cow barn"
+        "little cow barn",
+        "cow barn medium",
+        "small cow barn",
+        "build a cow barn",
+        "make a cow barn",
+        "build me a cow barn",
+        "make me a cow barn",
+        "can you build a cow barn",
+        "please build a cow barn",
+        "i want a cow barn",
+        "i need a cow barn",
+        "cow barn please",
+        "cow barn for me",
+        "cow barn over there",
+        "cow barn right here",
+        "cow barn nearby",
+        "home for cows"
       ],
       "schematic": "cow_barn_medium.schem",
       "footprint": [
@@ -1391,7 +1937,22 @@
         "sandy house",
         "desert home",
         "little desert house",
-        "my desert house"
+        "my desert house",
+        "desert house small",
+        "small desert house",
+        "build a desert house",
+        "make a desert house",
+        "build me a desert house",
+        "make me a desert house",
+        "can you build a desert house",
+        "please build a desert house",
+        "i want a desert house",
+        "i need a desert house",
+        "desert house please",
+        "desert house for me",
+        "desert house over there",
+        "desert house right here",
+        "desert house nearby"
       ],
       "schematic": "desert_house_small.schem",
       "footprint": [
@@ -1438,7 +1999,21 @@
         "little dock",
         "boat place",
         "fishing dock",
-        "my dock"
+        "my dock",
+        "dock small",
+        "build a dock",
+        "make a dock",
+        "build me a dock",
+        "make me a dock",
+        "can you build a dock",
+        "please build a dock",
+        "i want a dock",
+        "i need a dock",
+        "dock please",
+        "dock for me",
+        "dock over there",
+        "dock right here",
+        "dock nearby"
       ],
       "schematic": "dock_small.schem",
       "footprint": [
@@ -1481,13 +2056,27 @@
       ],
       "aliases": [
         "duck pond",
-        "duck pond",
         "pond for ducks",
         "duck pool",
         "place for ducks",
         "little duck pond",
         "ducks pond",
-        "my duck pond"
+        "my duck pond",
+        "duck pond small",
+        "small duck pond",
+        "build a duck pond",
+        "make a duck pond",
+        "build me a duck pond",
+        "make me a duck pond",
+        "can you build a duck pond",
+        "please build a duck pond",
+        "i want a duck pond",
+        "i need a duck pond",
+        "duck pond please",
+        "duck pond for me",
+        "duck pond over there",
+        "duck pond right here",
+        "duck pond nearby"
       ],
       "schematic": "duck_pond_small.schem",
       "footprint": [
@@ -1538,7 +2127,21 @@
         "little enchant room",
         "enchanting room",
         "little enchanting room",
-        "my enchanting room"
+        "my enchanting room",
+        "small enchanting room",
+        "build a enchanting room",
+        "make a enchanting room",
+        "build me a enchanting room",
+        "make me a enchanting room",
+        "can you build a enchanting room",
+        "please build a enchanting room",
+        "i want a enchanting room",
+        "i need a enchanting room",
+        "enchanting room please",
+        "enchanting room for me",
+        "enchanting room over there",
+        "enchanting room right here",
+        "enchanting room nearby"
       ],
       "schematic": "enchanting_room.schem",
       "footprint": [
@@ -1585,7 +2188,21 @@
         "place to fish",
         "my fishing hut",
         "fishing shack",
-        "little fishing hut"
+        "little fishing hut",
+        "small fishing hut",
+        "build a fishing hut",
+        "make a fishing hut",
+        "build me a fishing hut",
+        "make me a fishing hut",
+        "can you build a fishing hut",
+        "please build a fishing hut",
+        "i want a fishing hut",
+        "i need a fishing hut",
+        "fishing hut please",
+        "fishing hut for me",
+        "fishing hut over there",
+        "fishing hut right here",
+        "fishing hut nearby"
       ],
       "schematic": "fishing_hut.schem",
       "footprint": [
@@ -1634,7 +2251,21 @@
         "flag please",
         "flag post",
         "little flag pole",
-        "my flag pole"
+        "my flag pole",
+        "small flag pole",
+        "build a flag pole",
+        "make a flag pole",
+        "build me a flag pole",
+        "make me a flag pole",
+        "can you build a flag pole",
+        "please build a flag pole",
+        "i want a flag pole",
+        "i need a flag pole",
+        "flag pole please",
+        "flag pole for me",
+        "flag pole over there",
+        "flag pole right here",
+        "flag pole nearby"
       ],
       "schematic": "flag_pole.schem",
       "footprint": [
@@ -1729,7 +2360,22 @@
         "little fountain",
         "fountain please",
         "my fountain",
-        "splash fountain"
+        "splash fountain",
+        "fountain small",
+        "build a fountain",
+        "make a fountain",
+        "build me a fountain",
+        "make me a fountain",
+        "can you build a fountain",
+        "please build a fountain",
+        "i want a fountain",
+        "i need a fountain",
+        "fountain for me",
+        "fountain over there",
+        "fountain right here",
+        "fountain nearby",
+        "town fountain",
+        "plaza fountain"
       ],
       "schematic": "fountain_small.schem",
       "footprint": [
@@ -1764,11 +2410,14 @@
     {
       "id": "garden_plot",
       "title": "Garden plot",
-      "category": "decoration",
+      "category": "farm",
       "complexity": "basic",
       "tags": [
-        "decoration",
-        "village"
+        "garden",
+        "farm",
+        "crop",
+        "plants",
+        "decoration"
       ],
       "aliases": [
         "garden plot",
@@ -1785,12 +2434,64 @@
         "veggie garden",
         "vegetable garden",
         "my garden plot",
-        "little garden plot"
+        "little garden plot",
+        "small garden plot",
+        "build a garden plot",
+        "make a garden plot",
+        "build me a garden plot",
+        "make me a garden plot",
+        "can you build a garden plot",
+        "please build a garden plot",
+        "i want a garden plot",
+        "i need a garden plot",
+        "garden plot please",
+        "garden plot for me",
+        "garden plot over there",
+        "garden plot right here",
+        "garden plot nearby",
+        "large garden",
+        "big garden",
+        "huge garden",
+        "nice garden",
+        "plant garden",
+        "plants",
+        "plant bed",
+        "garden patch",
+        "starter garden",
+        "build a garden",
+        "make a garden",
+        "plant a garden",
+        "grow a garden",
+        "flowers please",
+        "flower patch",
+        "crop garden",
+        "allotment",
+        "allotment garden",
+        "kitchen garden",
+        "backyard garden",
+        "yard garden",
+        "combo garden",
+        "mixed garden",
+        "combination garden",
+        "variety garden",
+        "mixed flower garden",
+        "mixed veggie garden",
+        "combo veggie garden",
+        "everything garden",
+        "assorted garden",
+        "mixed plant garden",
+        "flower and veggie garden",
+        "flowers and crops",
+        "mixed bed garden",
+        "build a combo garden",
+        "make a mixed garden",
+        "combo garden please",
+        "mixed garden please"
       ],
       "schematic": "garden_plot.schem",
       "footprint": [
         9,
-        2,
+        3,
         9
       ],
       "max_blocks": 500,
@@ -1804,7 +2505,7 @@
           "center_z": "${az}",
           "width": 9,
           "depth": 9,
-          "block": "stone_bricks"
+          "block": "grass_block"
         }
       },
       "source_id": "neighborhood_internal",
@@ -1838,7 +2539,21 @@
         "little gatehouse",
         "guard gate house",
         "castle gatehouse",
-        "my gatehouse"
+        "my gatehouse",
+        "small gatehouse",
+        "build a gatehouse",
+        "make a gatehouse",
+        "build me a gatehouse",
+        "make me a gatehouse",
+        "can you build a gatehouse",
+        "please build a gatehouse",
+        "i want a gatehouse",
+        "i need a gatehouse",
+        "gatehouse please",
+        "gatehouse for me",
+        "gatehouse over there",
+        "gatehouse right here",
+        "gatehouse nearby"
       ],
       "schematic": "gatehouse.schem",
       "footprint": [
@@ -1876,7 +2591,6 @@
       ],
       "aliases": [
         "gazebo",
-        "pavilion",
         "wood gazebo",
         "garden gazebo",
         "gazebo in the garden",
@@ -1886,7 +2600,21 @@
         "wood pavilion",
         "gazebo please",
         "my gazebo",
-        "oak gazebo"
+        "oak gazebo",
+        "gazebo oak",
+        "small gazebo",
+        "build a gazebo",
+        "make a gazebo",
+        "build me a gazebo",
+        "make me a gazebo",
+        "can you build a gazebo",
+        "please build a gazebo",
+        "i want a gazebo",
+        "i need a gazebo",
+        "gazebo for me",
+        "gazebo over there",
+        "gazebo right here",
+        "gazebo nearby"
       ],
       "schematic": "gazebo_oak.schem",
       "footprint": [
@@ -1919,6 +2647,82 @@
       "gold": true
     },
     {
+      "id": "giant_flower_house",
+      "title": "Ultimate Giant Flower House",
+      "category": "house",
+      "complexity": "complex",
+      "tags": [
+        "house",
+        "building",
+        "fantasy",
+        "flower",
+        "mega",
+        "survival"
+      ],
+      "aliases": [
+        "flower house",
+        "giant flower",
+        "flower home",
+        "big flower house",
+        "giant flower house",
+        "huge flower house",
+        "giant flower home",
+        "big flower home",
+        "ultimate giant flower house",
+        "ultimate flower house",
+        "giant flower house survival base",
+        "flower house survival base",
+        "survival flower house",
+        "flower base house",
+        "build a flower house",
+        "make a flower house",
+        "build me a flower house",
+        "make me a flower house",
+        "build a giant flower house",
+        "make a giant flower house",
+        "build me a giant flower house",
+        "make me a giant flower",
+        "build a giant flower",
+        "make a giant flower",
+        "i want a flower house",
+        "i need a flower house",
+        "i want a giant flower house",
+        "i want a giant flower",
+        "flower house please",
+        "giant flower house please",
+        "giant flower please",
+        "flower house nearby",
+        "giant flower house nearby",
+        "giant flower nearby"
+      ],
+      "schematic": "giant_flower_house.schem",
+      "footprint": [
+        128,
+        88,
+        128
+      ],
+      "max_blocks": 1441792,
+      "distance_default": 12,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 16,
+          "depth": 16,
+          "height": 10,
+          "wall_block": "pink_concrete"
+        }
+      },
+      "source_id": "schemcraft_giant_flower_house",
+      "source_url": "https://www.schemcraft.com/schematics/ultimate-giant-flower-house-survival-base",
+      "source_ref": "schemcraft:ultimate-giant-flower-house-survival-base",
+      "license": "CC-BY-4.0",
+      "author": "BuildSchem",
+      "attribution": "Ultimate Giant Flower House Survival Base by BuildSchem — via SchemCraft (~153,897 blocks; CC-BY-4.0)",
+      "deterministic_seed_version": "1",
+      "gold": true
+    },
+    {
       "id": "goat_pen_small",
       "title": "Goat pen",
       "category": "farm",
@@ -1930,13 +2734,27 @@
       ],
       "aliases": [
         "goat pen",
-        "goat pen",
         "house for goats",
         "goat house",
         "place for goats",
         "little goat pen",
         "goat yard",
-        "my goat pen"
+        "my goat pen",
+        "goat pen small",
+        "small goat pen",
+        "build a goat pen",
+        "make a goat pen",
+        "build me a goat pen",
+        "make me a goat pen",
+        "can you build a goat pen",
+        "please build a goat pen",
+        "i want a goat pen",
+        "i need a goat pen",
+        "goat pen please",
+        "goat pen for me",
+        "goat pen over there",
+        "goat pen right here",
+        "goat pen nearby"
       ],
       "schematic": "goat_pen_small.schem",
       "footprint": [
@@ -1966,6 +2784,110 @@
       "gold": true
     },
     {
+      "id": "gothic_cathedral",
+      "title": "Gothic Cathedral",
+      "category": "house",
+      "complexity": "complex",
+      "tags": [
+        "landmark",
+        "building",
+        "church",
+        "gothic",
+        "mega"
+      ],
+      "aliases": [
+        "gothic cathedral",
+        "cathedral",
+        "gothic church",
+        "big cathedral",
+        "huge cathedral",
+        "giant cathedral",
+        "mega cathedral",
+        "kiga cathedral",
+        "build a gothic cathedral",
+        "make a gothic cathedral",
+        "build me a cathedral",
+        "make me a gothic church",
+        "i want a gothic cathedral",
+        "i need a cathedral",
+        "cathedral please",
+        "gothic cathedral please",
+        "gothic cathedral nearby",
+        "build a cathedral",
+        "make a cathedral"
+      ],
+      "schematic": "gothic_cathedral.schem",
+      "footprint": [
+        147,
+        133,
+        85
+      ],
+      "max_blocks": 1661835,
+      "distance_default": 12,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 20,
+          "depth": 30,
+          "height": 18,
+          "wall_block": "stone_bricks"
+        }
+      },
+      "source_id": "shulkr_gothic_cathedral",
+      "source_url": "https://www.shulkr.com/schematics/hAJIPr3Ctcur/gothic-cathedral",
+      "source_ref": "shulkr:hAJIPr3Ctcur",
+      "license": "All-Rights-Reserved",
+      "author": "Kiga",
+      "attribution": "Gothic Cathedral by Kiga — via Shulkr (~155k blocks; friends-server curated)",
+      "deterministic_seed_version": "1",
+      "gold": true
+    },
+    {
+      "id": "gothy_tower",
+      "title": "gothy tower",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "gothy tower",
+        "gothy",
+        "little gothy tower",
+        "small gothy tower",
+        "build a gothy tower",
+        "make a gothy tower",
+        "build me a gothy tower",
+        "gothy tower please"
+      ],
+      "schematic": "gothy_tower.schem",
+      "footprint": [
+        48,
+        160,
+        48
+      ],
+      "max_blocks": 27992,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 46,
+          "depth": 46,
+          "height": 158
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/gothy-tower",
+      "source_id": "bloxelizer_57b8e1f2-4cc1-4d26-b527-c0c5b7e15624",
+      "source_ref": "bloxelizer:gothy-tower",
+      "license": "CC-BY-4.0",
+      "author": "GraniteFox458",
+      "attribution": "gothy tower by GraniteFox458 (CC-BY-4.0) — via Bloxelizer"
+    },
+    {
       "id": "graveyard_small",
       "title": "Graveyard",
       "category": "decoration",
@@ -1975,7 +2897,6 @@
         "village"
       ],
       "aliases": [
-        "graveyard",
         "graveyard",
         "cemetery",
         "grave yard",
@@ -2029,7 +2950,25 @@
         "little greenhouse",
         "glass house for plants",
         "my greenhouse",
-        "glass greenhouse"
+        "glass greenhouse",
+        "greenhouse small",
+        "small greenhouse",
+        "build a greenhouse",
+        "make a greenhouse",
+        "build me a greenhouse",
+        "make me a greenhouse",
+        "can you build a greenhouse",
+        "please build a greenhouse",
+        "i want a greenhouse",
+        "i need a greenhouse",
+        "greenhouse please",
+        "greenhouse for me",
+        "greenhouse over there",
+        "greenhouse right here",
+        "greenhouse nearby",
+        "hothouse",
+        "grow house",
+        "glass plant house"
       ],
       "schematic": "greenhouse_small.schem",
       "footprint": [
@@ -2079,7 +3018,21 @@
         "place for guards",
         "guard tower small",
         "little guard post",
-        "my guard post"
+        "my guard post",
+        "small guard post",
+        "build a guard post",
+        "make a guard post",
+        "build me a guard post",
+        "make me a guard post",
+        "can you build a guard post",
+        "please build a guard post",
+        "i want a guard post",
+        "i need a guard post",
+        "guard post please",
+        "guard post for me",
+        "guard post over there",
+        "guard post right here",
+        "guard post nearby"
       ],
       "schematic": "guard_post.schem",
       "footprint": [
@@ -2109,11 +3062,13 @@
     {
       "id": "herb_garden",
       "title": "Herb garden",
-      "category": "decoration",
+      "category": "farm",
       "complexity": "basic",
       "tags": [
-        "decoration",
-        "village"
+        "garden",
+        "farm",
+        "plants",
+        "decoration"
       ],
       "aliases": [
         "herb garden",
@@ -2122,12 +3077,29 @@
         "little herb garden",
         "garden of herbs",
         "my herb garden",
-        "herbs"
+        "herbs",
+        "small herb garden",
+        "build a herb garden",
+        "make a herb garden",
+        "build me a herb garden",
+        "make me a herb garden",
+        "can you build a herb garden",
+        "please build a herb garden",
+        "i want a herb garden",
+        "i need a herb garden",
+        "herb garden please",
+        "herb garden for me",
+        "herb garden over there",
+        "herb garden right here",
+        "herb garden nearby",
+        "herb bed",
+        "plant herbs",
+        "grow herbs"
       ],
       "schematic": "herb_garden.schem",
       "footprint": [
         8,
-        2,
+        3,
         8
       ],
       "max_blocks": 500,
@@ -2141,7 +3113,7 @@
           "center_z": "${az}",
           "width": 8,
           "depth": 8,
-          "block": "moss_block"
+          "block": "podzol"
         }
       },
       "source_id": "neighborhood_internal",
@@ -2176,7 +3148,23 @@
         "my stable",
         "horse barn",
         "my horse stable",
-        "little horse stable"
+        "little horse stable",
+        "horse stable small",
+        "small horse stable",
+        "build a horse stable",
+        "make a horse stable",
+        "build me a horse stable",
+        "make me a horse stable",
+        "can you build a horse stable",
+        "please build a horse stable",
+        "i want a horse stable",
+        "i need a horse stable",
+        "horse stable please",
+        "horse stable for me",
+        "horse stable over there",
+        "horse stable right here",
+        "horse stable nearby",
+        "home for horses"
       ],
       "schematic": "horse_stable_small.schem",
       "footprint": [
@@ -2240,7 +3228,27 @@
         "a home",
         "build a house",
         "my small cottage",
-        "little small cottage"
+        "little small cottage",
+        "small cottage",
+        "house cottage small",
+        "small small cottage",
+        "build a small cottage",
+        "make a small cottage",
+        "build me a small cottage",
+        "make me a small cottage",
+        "can you build a small cottage",
+        "please build a small cottage",
+        "i want a small cottage",
+        "i need a small cottage",
+        "small cottage please",
+        "small cottage for me",
+        "small cottage over there",
+        "small cottage right here",
+        "small cottage nearby",
+        "cozy house",
+        "cozy cottage",
+        "my cottage",
+        "little cottage"
       ],
       "schematic": "house_cottage_small.schem",
       "footprint": [
@@ -2279,7 +3287,6 @@
         "building"
       ],
       "aliases": [
-        "igloo",
         "igloo",
         "snow house",
         "ice house",
@@ -2333,7 +3340,20 @@
         "my inn",
         "inn please",
         "guest house",
-        "tavern inn"
+        "tavern inn",
+        "inn small",
+        "build a inn",
+        "make a inn",
+        "build me a inn",
+        "make me a inn",
+        "can you build a inn",
+        "please build a inn",
+        "i want a inn",
+        "i need a inn",
+        "inn for me",
+        "inn over there",
+        "inn right here",
+        "inn nearby"
       ],
       "schematic": "inn_small.schem",
       "footprint": [
@@ -2368,8 +3388,8 @@
       "complexity": "basic",
       "tags": [
         "farm",
-        "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "kelp farm",
@@ -2379,13 +3399,29 @@
         "underwater plants",
         "place for kelp",
         "little kelp farm",
-        "ocean farm"
+        "ocean farm",
+        "kelp farm small",
+        "small kelp farm",
+        "my kelp farm",
+        "build a kelp farm",
+        "make a kelp farm",
+        "build me a kelp farm",
+        "make me a kelp farm",
+        "can you build a kelp farm",
+        "please build a kelp farm",
+        "i want a kelp farm",
+        "i need a kelp farm",
+        "kelp farm please",
+        "kelp farm for me",
+        "kelp farm over there",
+        "kelp farm right here",
+        "kelp farm nearby"
       ],
       "schematic": "kelp_farm_small.schem",
       "footprint": [
-        13,
+        11,
         3,
-        13
+        11
       ],
       "max_blocks": 507,
       "distance_default": 4,
@@ -2407,7 +3443,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "koi_pond",
@@ -2427,7 +3464,23 @@
         "pond with orange fish",
         "fish pond fancy",
         "koi pool",
-        "my koi pond"
+        "my koi pond",
+        "small koi pond",
+        "build a koi pond",
+        "make a koi pond",
+        "build me a koi pond",
+        "make me a koi pond",
+        "can you build a koi pond",
+        "please build a koi pond",
+        "i want a koi pond",
+        "i need a koi pond",
+        "koi pond please",
+        "koi pond for me",
+        "koi pond over there",
+        "koi pond right here",
+        "koi pond nearby",
+        "fish pond",
+        "japanese pond"
       ],
       "schematic": "koi_pond.schem",
       "footprint": [
@@ -2479,7 +3532,22 @@
         "lantern on a stick",
         "iron lamp",
         "my lamp post",
-        "little lamp post"
+        "little lamp post",
+        "lamp post iron",
+        "small lamp post",
+        "build a lamp post",
+        "make a lamp post",
+        "build me a lamp post",
+        "make me a lamp post",
+        "can you build a lamp post",
+        "please build a lamp post",
+        "i want a lamp post",
+        "i need a lamp post",
+        "lamp post please",
+        "lamp post for me",
+        "lamp post over there",
+        "lamp post right here",
+        "lamp post nearby"
       ],
       "schematic": "lamp_post_iron.schem",
       "footprint": [
@@ -2511,6 +3579,65 @@
       "gold": true
     },
     {
+      "id": "large_spruce_house",
+      "title": "Large spruce house",
+      "category": "house",
+      "complexity": "complex",
+      "tags": [
+        "house",
+        "building",
+        "spruce",
+        "mansion",
+        "mega"
+      ],
+      "aliases": [
+        "large spruce house",
+        "spruce mansion",
+        "big spruce house",
+        "huge spruce house",
+        "giant spruce house",
+        "spruce manor",
+        "large spruce home",
+        "big spruce mansion",
+        "ben spruce house",
+        "build a large spruce house",
+        "make a large spruce house",
+        "build me a spruce mansion",
+        "make me a large spruce house",
+        "i want a spruce mansion",
+        "i need a large spruce house",
+        "spruce mansion please",
+        "large spruce house please",
+        "large spruce house nearby"
+      ],
+      "schematic": "large_spruce_house.schem",
+      "footprint": [
+        83,
+        43,
+        107
+      ],
+      "max_blocks": 381883,
+      "distance_default": 10,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 16,
+          "depth": 16,
+          "height": 10,
+          "wall_block": "spruce_planks"
+        }
+      },
+      "source_id": "shulkr_large_spruce_house",
+      "source_url": "https://www.shulkr.com/schematics/0L8OFKu7FnFa/large-spruce-house",
+      "source_ref": "shulkr:0L8OFKu7FnFa",
+      "license": "All-Rights-Reserved",
+      "author": "ben",
+      "attribution": "Large spruce house by ben — via Shulkr (~54k blocks; friends-server curated)",
+      "deterministic_seed_version": "1",
+      "gold": true
+    },
+    {
       "id": "library_small",
       "title": "Library",
       "category": "house",
@@ -2528,7 +3655,20 @@
         "my library",
         "library please",
         "book room building",
-        "small library"
+        "small library",
+        "library small",
+        "build a library",
+        "make a library",
+        "build me a library",
+        "make me a library",
+        "can you build a library",
+        "please build a library",
+        "i want a library",
+        "i need a library",
+        "library for me",
+        "library over there",
+        "library right here",
+        "library nearby"
       ],
       "schematic": "library_small.schem",
       "footprint": [
@@ -2569,7 +3709,6 @@
       ],
       "aliases": [
         "lighthouse",
-        "lighthouse",
         "small lighthouse",
         "beacon tower",
         "light house",
@@ -2577,7 +3716,20 @@
         "little lighthouse",
         "beacon",
         "my lighthouse",
-        "lighthouse please"
+        "lighthouse please",
+        "lighthouse short",
+        "build a lighthouse",
+        "make a lighthouse",
+        "build me a lighthouse",
+        "make me a lighthouse",
+        "can you build a lighthouse",
+        "please build a lighthouse",
+        "i want a lighthouse",
+        "i need a lighthouse",
+        "lighthouse for me",
+        "lighthouse over there",
+        "lighthouse right here",
+        "lighthouse nearby"
       ],
       "schematic": "lighthouse_short.schem",
       "footprint": [
@@ -2607,15 +3759,17 @@
     {
       "id": "market_stall",
       "title": "Market stall",
-      "category": "house",
+      "category": "infrastructure",
       "complexity": "common",
       "tags": [
         "village",
         "shop",
-        "building"
+        "market",
+        "stall",
+        "vendor",
+        "booth"
       ],
       "aliases": [
-        "market stall",
         "market stall",
         "market stand",
         "shop stall",
@@ -2623,8 +3777,27 @@
         "little market",
         "vendor stall",
         "market booth",
+        "markket stall",
+        "markett stall",
+        "maket stall",
+        "marcket stall",
+        "market",
         "my market stall",
-        "little market stall"
+        "little market stall",
+        "small market stall",
+        "build a market stall",
+        "make a market stall",
+        "build me a market stall",
+        "make me a market stall",
+        "can you build a market stall",
+        "please build a market stall",
+        "i want a market stall",
+        "i need a market stall",
+        "market stall please",
+        "market stall for me",
+        "market stall over there",
+        "market stall right here",
+        "market stall nearby"
       ],
       "schematic": "market_stall.schem",
       "footprint": [
@@ -2638,10 +3811,10 @@
       "fallback": {
         "tool": "build_house_at_player",
         "args": {
-          "width": 10,
-          "depth": 10,
-          "height": 7,
-          "wall_block": "stone_bricks"
+          "width": 8,
+          "depth": 6,
+          "height": 4,
+          "wall_block": "oak_planks"
         }
       },
       "source_id": "neighborhood_internal",
@@ -2664,14 +3837,27 @@
       ],
       "aliases": [
         "hedge maze",
-        "hedge maze",
         "maze",
         "bush maze",
         "hedge labyrinth",
         "little maze",
         "maze please",
         "my maze",
-        "plant maze"
+        "plant maze",
+        "maze hedge small",
+        "small maze",
+        "build a maze",
+        "make a maze",
+        "build me a maze",
+        "make me a maze",
+        "can you build a maze",
+        "please build a maze",
+        "i want a maze",
+        "i need a maze",
+        "maze for me",
+        "maze over there",
+        "maze right here",
+        "maze nearby"
       ],
       "schematic": "maze_hedge_small.schem",
       "footprint": [
@@ -2699,7 +3885,96 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
+    },
+    {
+      "id": "medieval_mansion",
+      "title": "Medieval mansion",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "medieval mansion",
+        "medieval",
+        "little medieval mansion",
+        "small medieval mansion",
+        "build a medieval mansion",
+        "make a medieval mansion",
+        "build me a medieval mansion",
+        "medieval mansion please"
+      ],
+      "schematic": "medieval_mansion.schem",
+      "footprint": [
+        48,
+        48,
+        48
+      ],
+      "max_blocks": 10475,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 46,
+          "depth": 46,
+          "height": 46
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/medieval-mansion-3",
+      "source_id": "bloxelizer_e3624331-d56e-47d6-a827-c0d2a0fc1cc6",
+      "source_ref": "bloxelizer:medieval-mansion-3",
+      "license": "CC-BY-4.0",
+      "author": "papa_galaxy",
+      "attribution": "Medieval mansion by papa_galaxy (CC-BY-4.0) — via Bloxelizer"
+    },
+    {
+      "id": "mega_castle",
+      "title": "Mega castle",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "mega castle",
+        "mega",
+        "little mega castle",
+        "small mega castle",
+        "build a mega castle",
+        "make a mega castle",
+        "build me a mega castle",
+        "mega castle please"
+      ],
+      "schematic": "mega_castle.schem",
+      "footprint": [
+        416,
+        256,
+        528
+      ],
+      "max_blocks": 5072825,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 414,
+          "depth": 526,
+          "height": 254
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/mega-castle",
+      "source_id": "bloxelizer_554d2995-0eab-4170-9ca6-fb98e770a797",
+      "source_ref": "bloxelizer:mega-castle",
+      "license": "CC-BY-4.0",
+      "author": "SilverRobin199",
+      "attribution": "Mega castle by SilverRobin199 (CC-BY-4.0) — via Bloxelizer"
     },
     {
       "id": "melon_farm_small",
@@ -2708,8 +3983,8 @@
       "complexity": "basic",
       "tags": [
         "farm",
-        "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "melon farm",
@@ -2720,13 +3995,33 @@
         "place for melons",
         "little melon farm",
         "melon garden",
-        "my melon farm"
+        "my melon farm",
+        "melon farm small",
+        "small melon farm",
+        "build a melon farm",
+        "make a melon farm",
+        "build me a melon farm",
+        "make me a melon farm",
+        "can you build a melon farm",
+        "please build a melon farm",
+        "i want a melon farm",
+        "i need a melon farm",
+        "melon farm please",
+        "melon farm for me",
+        "melon farm over there",
+        "melon farm right here",
+        "melon farm nearby",
+        "melons",
+        "grow melons",
+        "plant melons",
+        "build a melon garden",
+        "make a melon garden"
       ],
       "schematic": "melon_farm_small.schem",
       "footprint": [
-        13,
+        11,
         3,
-        13
+        11
       ],
       "max_blocks": 507,
       "distance_default": 4,
@@ -2770,7 +4065,22 @@
         "my mill",
         "watermill",
         "mill",
-        "my water mill"
+        "my water mill",
+        "mill water",
+        "small water mill",
+        "build a water mill",
+        "make a water mill",
+        "build me a water mill",
+        "make me a water mill",
+        "can you build a water mill",
+        "please build a water mill",
+        "i want a water mill",
+        "i need a water mill",
+        "water mill please",
+        "water mill for me",
+        "water mill over there",
+        "water mill right here",
+        "water mill nearby"
       ],
       "schematic": "mill_water.schem",
       "footprint": [
@@ -2851,7 +4161,6 @@
       ],
       "aliases": [
         "modern house",
-        "modern house",
         "modern home",
         "flat roof house",
         "cool modern house",
@@ -2885,6 +4194,86 @@
       "deterministic_seed_version": "1"
     },
     {
+      "id": "mossy_hobbit_hole",
+      "title": "Mossy Hobbit Hole",
+      "category": "house",
+      "complexity": "complex",
+      "tags": [
+        "house",
+        "building",
+        "fantasy",
+        "hobbit",
+        "underground",
+        "mossy",
+        "mega"
+      ],
+      "aliases": [
+        "hobbit hole",
+        "mossy hobbit hole",
+        "mossy hobbit",
+        "hobbit house",
+        "hobbit home",
+        "hobbit hole house",
+        "mossy hobbit house",
+        "mossy hobbit home",
+        "ultimate mossy hobbit hole",
+        "underground hobbit hole",
+        "underground hobbit house",
+        "underground house",
+        "hillside hobbit hole",
+        "hillside hobbit house",
+        "cozy hobbit hole",
+        "little hobbit hole",
+        "my hobbit hole",
+        "bag end style house",
+        "bag endish hobbit hole",
+        "hobbit hole survival base",
+        "build a hobbit hole",
+        "make a hobbit hole",
+        "build me a hobbit hole",
+        "make me a hobbit hole",
+        "build a mossy hobbit hole",
+        "make a mossy hobbit hole",
+        "build me a mossy hobbit hole",
+        "i want a hobbit hole",
+        "i need a hobbit hole",
+        "i want a mossy hobbit hole",
+        "hobbit hole please",
+        "mossy hobbit hole please",
+        "hobbit hole nearby",
+        "mossy hobbit hole nearby",
+        "build an underground house",
+        "make an underground house",
+        "build me an underground house"
+      ],
+      "schematic": "mossy_hobbit_hole.schem",
+      "footprint": [
+        112,
+        64,
+        96
+      ],
+      "max_blocks": 688128,
+      "distance_default": 12,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 14,
+          "depth": 16,
+          "height": 6,
+          "wall_block": "mossy_cobblestone"
+        }
+      },
+      "source_id": "schemcraft_mossy_hobbit_hole",
+      "source_url": "https://www.schemcraft.com/schematics/ultimate-mossy-hobbit-hole-survival-base",
+      "source_ref": "schemcraft:ultimate-mossy-hobbit-hole-survival-base",
+      "license": "CC-BY-4.0",
+      "author": "BuildSchem",
+      "attribution": "Ultimate Mossy Hobbit Hole Survival Base by BuildSchem — via SchemCraft (~82,820 blocks; CC-BY-4.0)",
+      "deterministic_seed_version": "1",
+      "gold": true
+    },
+    {
       "id": "mushroom_farm_dark",
       "title": "Mushroom farm",
       "category": "farm",
@@ -2902,7 +4291,23 @@
         "place for mushrooms",
         "shroom patch",
         "little mushroom farm",
-        "dark mushroom garden"
+        "dark mushroom garden",
+        "mushroom farm dark",
+        "small mushroom farm",
+        "my mushroom farm",
+        "build a mushroom farm",
+        "make a mushroom farm",
+        "build me a mushroom farm",
+        "make me a mushroom farm",
+        "can you build a mushroom farm",
+        "please build a mushroom farm",
+        "i want a mushroom farm",
+        "i need a mushroom farm",
+        "mushroom farm please",
+        "mushroom farm for me",
+        "mushroom farm over there",
+        "mushroom farm right here",
+        "mushroom farm nearby"
       ],
       "schematic": "mushroom_farm_dark.schem",
       "footprint": [
@@ -2930,7 +4335,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "mushroom_house",
@@ -2948,7 +4354,21 @@
         "little mushroom house",
         "my mushroom house",
         "fungus house",
-        "mushroom home"
+        "mushroom home",
+        "small mushroom house",
+        "build a mushroom house",
+        "make a mushroom house",
+        "build me a mushroom house",
+        "make me a mushroom house",
+        "can you build a mushroom house",
+        "please build a mushroom house",
+        "i want a mushroom house",
+        "i need a mushroom house",
+        "mushroom house please",
+        "mushroom house for me",
+        "mushroom house over there",
+        "mushroom house right here",
+        "mushroom house nearby"
       ],
       "schematic": "mushroom_house.schem",
       "footprint": [
@@ -2977,6 +4397,55 @@
       "gold": true
     },
     {
+      "id": "neuschwanstein_fairy_castle",
+      "title": "Neuschwanstein Fairy Castle",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "neuschwanstein",
+        "neuschwanstein castle",
+        "fairy castle",
+        "neuschwanstein fairy castle",
+        "fantasy castle",
+        "build a fairy castle",
+        "make a fairy castle",
+        "build me a fairy castle",
+        "i want a fairy castle",
+        "fairy castle please",
+        "neuschwanstein nearby",
+        "build neuschwanstein",
+        "make neuschwanstein"
+      ],
+      "schematic": "neuschwanstein_fairy_castle.schem",
+      "footprint": [
+        128,
+        96,
+        128
+      ],
+      "max_blocks": 1572864,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 126,
+          "depth": 126,
+          "height": 94
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://www.schemcraft.com/schematics/neuschwanstein-fairy-castle",
+      "source_id": "schemcraft_neuschwanstein_fairy_castle",
+      "source_ref": "schemcraft:neuschwanstein-fairy-castle",
+      "license": "CC-BY-NC-4.0",
+      "author": "BuildSchem",
+      "attribution": "Neuschwanstein Fairy Castle by BuildSchem — via SchemCraft (CC-BY-NC-4.0)"
+    },
+    {
       "id": "observatory_small",
       "title": "Observatory",
       "category": "fortress",
@@ -2986,7 +4455,6 @@
         "tower"
       ],
       "aliases": [
-        "observatory",
         "observatory",
         "star tower",
         "telescope house",
@@ -3037,7 +4505,22 @@
         "park picnic",
         "my picnic spot",
         "picnic table area",
-        "my picnic area"
+        "my picnic area",
+        "small picnic area",
+        "build a picnic area",
+        "make a picnic area",
+        "build me a picnic area",
+        "make me a picnic area",
+        "can you build a picnic area",
+        "please build a picnic area",
+        "i want a picnic area",
+        "i need a picnic area",
+        "picnic area please",
+        "picnic area for me",
+        "picnic area over there",
+        "picnic area right here",
+        "picnic area nearby",
+        "picnic place"
       ],
       "schematic": "picnic_area.schem",
       "footprint": [
@@ -3088,7 +4571,22 @@
         "long pier",
         "dock pier",
         "my long pier",
-        "little long pier"
+        "little long pier",
+        "pier long",
+        "small long pier",
+        "build a long pier",
+        "make a long pier",
+        "build me a long pier",
+        "make me a long pier",
+        "can you build a long pier",
+        "please build a long pier",
+        "i want a long pier",
+        "i need a long pier",
+        "long pier please",
+        "long pier for me",
+        "long pier over there",
+        "long pier right here",
+        "long pier nearby"
       ],
       "schematic": "pier_long.schem",
       "footprint": [
@@ -3133,7 +4631,24 @@
         "huge pig pen",
         "giant place for pigs",
         "big house for pigs",
-        "large pig sty"
+        "large pig sty",
+        "pig pen large",
+        "little large pig pen",
+        "small large pig pen",
+        "my large pig pen",
+        "build a large pig pen",
+        "make a large pig pen",
+        "build me a large pig pen",
+        "make me a large pig pen",
+        "can you build a large pig pen",
+        "please build a large pig pen",
+        "i want a large pig pen",
+        "i need a large pig pen",
+        "large pig pen please",
+        "large pig pen for me",
+        "large pig pen over there",
+        "large pig pen right here",
+        "large pig pen nearby"
       ],
       "schematic": "pig_pen_large.schem",
       "footprint": [
@@ -3160,7 +4675,8 @@
       "license": "CC-BY-4.0",
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
-      "deterministic_seed_version": "1"
+      "deterministic_seed_version": "1",
+      "gold": true
     },
     {
       "id": "pig_pen_small",
@@ -3185,7 +4701,23 @@
         "piggy pen",
         "pig yard",
         "my small pig pen",
-        "little small pig pen"
+        "little small pig pen",
+        "pig pen small",
+        "small small pig pen",
+        "build a small pig pen",
+        "make a small pig pen",
+        "build me a small pig pen",
+        "make me a small pig pen",
+        "can you build a small pig pen",
+        "please build a small pig pen",
+        "i want a small pig pen",
+        "i need a small pig pen",
+        "small pig pen please",
+        "small pig pen for me",
+        "small pig pen over there",
+        "small pig pen right here",
+        "small pig pen nearby",
+        "home for pigs"
       ],
       "schematic": "pig_pen_small.schem",
       "footprint": [
@@ -3237,7 +4769,22 @@
         "place to play",
         "little playground",
         "my playground",
-        "playground please"
+        "playground please",
+        "playground small",
+        "small playground",
+        "build a playground",
+        "make a playground",
+        "build me a playground",
+        "make me a playground",
+        "can you build a playground",
+        "please build a playground",
+        "i want a playground",
+        "i need a playground",
+        "playground for me",
+        "playground over there",
+        "playground right here",
+        "playground nearby",
+        "play place"
       ],
       "schematic": "playground_small.schem",
       "footprint": [
@@ -3279,8 +4826,6 @@
       ],
       "aliases": [
         "plaza",
-        "square",
-        "courtyard",
         "town plaza",
         "town square",
         "open plaza",
@@ -3289,7 +4834,25 @@
         "meeting square",
         "plaza please",
         "my stone plaza",
-        "little stone plaza"
+        "little stone plaza",
+        "stone plaza",
+        "plaza stone",
+        "small stone plaza",
+        "build a stone plaza",
+        "make a stone plaza",
+        "build me a stone plaza",
+        "make me a stone plaza",
+        "can you build a stone plaza",
+        "please build a stone plaza",
+        "i want a stone plaza",
+        "i need a stone plaza",
+        "stone plaza please",
+        "stone plaza for me",
+        "stone plaza over there",
+        "stone plaza right here",
+        "stone plaza nearby",
+        "courtyard plaza",
+        "my plaza"
       ],
       "schematic": "plaza_stone.schem",
       "footprint": [
@@ -3339,7 +4902,21 @@
         "my pond",
         "tiny pond",
         "pond please",
-        "small water pond"
+        "small water pond",
+        "pond small",
+        "build a pond",
+        "make a pond",
+        "build me a pond",
+        "make me a pond",
+        "can you build a pond",
+        "please build a pond",
+        "i want a pond",
+        "i need a pond",
+        "pond for me",
+        "pond over there",
+        "pond right here",
+        "pond nearby",
+        "garden pond"
       ],
       "schematic": "pond_small.schem",
       "footprint": [
@@ -3378,7 +4955,8 @@
       "complexity": "basic",
       "tags": [
         "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "potato farm",
@@ -3388,7 +4966,27 @@
         "potato field",
         "little potato farm",
         "farm for potatoes",
-        "my potato farm"
+        "my potato farm",
+        "potato farm small",
+        "small potato farm",
+        "build a potato farm",
+        "make a potato farm",
+        "build me a potato farm",
+        "make me a potato farm",
+        "can you build a potato farm",
+        "please build a potato farm",
+        "i want a potato farm",
+        "i need a potato farm",
+        "potato farm please",
+        "potato farm for me",
+        "potato farm over there",
+        "potato farm right here",
+        "potato farm nearby",
+        "potatoes",
+        "grow potatoes",
+        "plant potatoes",
+        "build a potato garden",
+        "make a potato garden"
       ],
       "schematic": "potato_farm_small.schem",
       "footprint": [
@@ -3405,8 +5003,8 @@
           "center_x": "${ax}",
           "y": "${ay}",
           "center_z": "${az}",
-          "width": 9,
-          "depth": 9,
+          "width": 11,
+          "depth": 11,
           "block": "farmland"
         }
       },
@@ -3426,7 +5024,8 @@
       "complexity": "basic",
       "tags": [
         "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "pumpkin farm",
@@ -3437,7 +5036,28 @@
         "halloween pumpkins",
         "little pumpkin farm",
         "pumpkin patch please",
-        "my pumpkin farm"
+        "my pumpkin farm",
+        "pumpkin farm small",
+        "small pumpkin farm",
+        "build a pumpkin farm",
+        "make a pumpkin farm",
+        "build me a pumpkin farm",
+        "make me a pumpkin farm",
+        "can you build a pumpkin farm",
+        "please build a pumpkin farm",
+        "i want a pumpkin farm",
+        "i need a pumpkin farm",
+        "pumpkin farm please",
+        "pumpkin farm for me",
+        "pumpkin farm over there",
+        "pumpkin farm right here",
+        "pumpkin farm nearby",
+        "pumpkins",
+        "grow pumpkins",
+        "plant pumpkins",
+        "halloween farm",
+        "build a pumpkin garden",
+        "make a pumpkin garden"
       ],
       "schematic": "pumpkin_farm_small.schem",
       "footprint": [
@@ -3454,8 +5074,8 @@
           "center_x": "${ax}",
           "y": "${ay}",
           "center_z": "${az}",
-          "width": 9,
-          "depth": 9,
+          "width": 11,
+          "depth": 11,
           "block": "farmland"
         }
       },
@@ -3491,7 +5111,22 @@
         "my rabbit pen",
         "bunny home",
         "my rabbit hutch",
-        "little rabbit hutch"
+        "little rabbit hutch",
+        "rabbit hutch small",
+        "small rabbit hutch",
+        "build a rabbit hutch",
+        "make a rabbit hutch",
+        "build me a rabbit hutch",
+        "make me a rabbit hutch",
+        "can you build a rabbit hutch",
+        "please build a rabbit hutch",
+        "i want a rabbit hutch",
+        "i need a rabbit hutch",
+        "rabbit hutch please",
+        "rabbit hutch for me",
+        "rabbit hutch over there",
+        "rabbit hutch right here",
+        "rabbit hutch nearby"
       ],
       "schematic": "rabbit_hutch_small.schem",
       "footprint": [
@@ -3670,6 +5305,49 @@
       "deterministic_seed_version": "1"
     },
     {
+      "id": "shack",
+      "title": "shack",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "shack",
+        "little shack",
+        "small shack",
+        "build a shack",
+        "make a shack",
+        "build me a shack",
+        "shack please"
+      ],
+      "schematic": "shack.schem",
+      "footprint": [
+        48,
+        48,
+        48
+      ],
+      "max_blocks": 10908,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 46,
+          "depth": 46,
+          "height": 46
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/shack",
+      "source_id": "bloxelizer_7d0a984b-4dbe-4115-ae1a-e3f0256c0dd7",
+      "source_ref": "bloxelizer:shack",
+      "license": "CC-BY-4.0",
+      "author": "SilverRobin199",
+      "attribution": "shack by SilverRobin199 (CC-BY-4.0) — via Bloxelizer"
+    },
+    {
       "id": "sheep_pen_medium",
       "title": "Sheep pen",
       "category": "farm",
@@ -3691,7 +5369,22 @@
         "sheep yard",
         "little sheep pen",
         "my sheep pen",
-        "sheep farm pen"
+        "sheep farm pen",
+        "sheep pen medium",
+        "build a sheep pen",
+        "make a sheep pen",
+        "build me a sheep pen",
+        "make me a sheep pen",
+        "can you build a sheep pen",
+        "please build a sheep pen",
+        "i want a sheep pen",
+        "i need a sheep pen",
+        "sheep pen please",
+        "sheep pen for me",
+        "sheep pen over there",
+        "sheep pen right here",
+        "sheep pen nearby",
+        "home for sheep"
       ],
       "schematic": "sheep_pen_medium.schem",
       "footprint": [
@@ -3729,7 +5422,6 @@
         "village"
       ],
       "aliases": [
-        "shrine",
         "shrine",
         "little shrine",
         "prayer shrine",
@@ -3786,7 +5478,23 @@
         "silo please",
         "corn silo",
         "my grain silo",
-        "little grain silo"
+        "little grain silo",
+        "silo grain",
+        "small grain silo",
+        "build a grain silo",
+        "make a grain silo",
+        "build me a grain silo",
+        "make me a grain silo",
+        "can you build a grain silo",
+        "please build a grain silo",
+        "i want a grain silo",
+        "i need a grain silo",
+        "grain silo please",
+        "grain silo for me",
+        "grain silo over there",
+        "grain silo right here",
+        "grain silo nearby",
+        "wheat silo"
       ],
       "schematic": "silo_grain.schem",
       "footprint": [
@@ -3861,6 +5569,52 @@
       "author": "neighborhood",
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
       "deterministic_seed_version": "1"
+    },
+    {
+      "id": "spanish_castle_from_age_of_empires_ii",
+      "title": "Spanish Castle from Age of Empires II",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "spanish castle from age of empires ii",
+        "spanish castle age empires ii",
+        "spanish castle",
+        "spanish",
+        "little spanish castle age empires ii",
+        "small spanish castle age empires ii",
+        "build a spanish castle age empires ii",
+        "make a spanish castle age empires ii",
+        "build me a spanish castle age empires ii",
+        "spanish castle age empires ii please"
+      ],
+      "schematic": "spanish_castle_from_age_of_empires_ii.schem",
+      "footprint": [
+        48,
+        32,
+        48
+      ],
+      "max_blocks": 6305,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 46,
+          "depth": 46,
+          "height": 30
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/spanish-castle-from-age-of-empires-ii",
+      "source_id": "bloxelizer_567c86ed-466f-41d4-86ec-7536a213d45a",
+      "source_ref": "bloxelizer:spanish-castle-from-age-of-empires-ii",
+      "license": "CC-BY-4.0",
+      "author": "SilverRobin199",
+      "attribution": "Spanish Castle from Age of Empires II by SilverRobin199 (CC-BY-4.0) — via Bloxelizer"
     },
     {
       "id": "stable_large",
@@ -3975,7 +5729,21 @@
         "shed please",
         "place to store stuff",
         "my storage shed",
-        "little storage shed"
+        "little storage shed",
+        "small storage shed",
+        "build a storage shed",
+        "make a storage shed",
+        "build me a storage shed",
+        "make me a storage shed",
+        "can you build a storage shed",
+        "please build a storage shed",
+        "i want a storage shed",
+        "i need a storage shed",
+        "storage shed please",
+        "storage shed for me",
+        "storage shed over there",
+        "storage shed right here",
+        "storage shed nearby"
       ],
       "schematic": "storage_shed.schem",
       "footprint": [
@@ -4005,14 +5773,58 @@
       "gold": true
     },
     {
+      "id": "strawberry_house",
+      "title": "Strawberry House",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "strawberry house",
+        "strawberry",
+        "little strawberry house",
+        "small strawberry house",
+        "build a strawberry house",
+        "make a strawberry house",
+        "build me a strawberry house",
+        "strawberry house please"
+      ],
+      "schematic": "strawberry_house.schem",
+      "footprint": [
+        80,
+        32,
+        64
+      ],
+      "max_blocks": 12868,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 78,
+          "depth": 62,
+          "height": 30
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/strawberry-house-2",
+      "source_id": "bloxelizer_2e50e7ca-6b9a-4f0a-9049-50a1603b6a8b",
+      "source_ref": "bloxelizer:strawberry-house-2",
+      "license": "CC-BY-4.0",
+      "author": "papa_galaxy",
+      "attribution": "Strawberry House by papa_galaxy (CC-BY-4.0) — via Bloxelizer"
+    },
+    {
       "id": "sugarcane_farm_small",
       "title": "Sugarcane farm",
       "category": "farm",
       "complexity": "basic",
       "tags": [
         "farm",
-        "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "sugar cane farm",
@@ -4026,13 +5838,32 @@
         "little sugarcane farm",
         "sugar cane garden",
         "sugarcane farm",
-        "my sugarcane farm"
+        "my sugarcane farm",
+        "sugarcane farm small",
+        "small sugarcane farm",
+        "build a sugarcane farm",
+        "make a sugarcane farm",
+        "build me a sugarcane farm",
+        "make me a sugarcane farm",
+        "can you build a sugarcane farm",
+        "please build a sugarcane farm",
+        "i want a sugarcane farm",
+        "i need a sugarcane farm",
+        "sugarcane farm please",
+        "sugarcane farm for me",
+        "sugarcane farm over there",
+        "sugarcane farm right here",
+        "sugarcane farm nearby",
+        "sugarcane",
+        "sugar cane",
+        "grow sugarcane",
+        "plant sugarcane"
       ],
       "schematic": "sugarcane_farm_small.schem",
       "footprint": [
-        13,
+        11,
         3,
-        13
+        11
       ],
       "max_blocks": 507,
       "distance_default": 4,
@@ -4068,7 +5899,6 @@
       ],
       "aliases": [
         "tavern",
-        "tavern",
         "pub",
         "alehouse",
         "small tavern",
@@ -4077,7 +5907,20 @@
         "cozy tavern",
         "my tavern",
         "tavern please",
-        "ale house"
+        "ale house",
+        "tavern small",
+        "build a tavern",
+        "make a tavern",
+        "build me a tavern",
+        "make me a tavern",
+        "can you build a tavern",
+        "please build a tavern",
+        "i want a tavern",
+        "i need a tavern",
+        "tavern for me",
+        "tavern over there",
+        "tavern right here",
+        "tavern nearby"
       ],
       "schematic": "tavern_small.schem",
       "footprint": [
@@ -4123,7 +5966,24 @@
         "tent village",
         "my tent camp",
         "camp tents",
-        "little tent camp"
+        "little tent camp",
+        "small tent camp",
+        "build a tent camp",
+        "make a tent camp",
+        "build me a tent camp",
+        "make me a tent camp",
+        "can you build a tent camp",
+        "please build a tent camp",
+        "i want a tent camp",
+        "i need a tent camp",
+        "tent camp please",
+        "tent camp for me",
+        "tent camp over there",
+        "tent camp right here",
+        "tent camp nearby",
+        "camp tent",
+        "my tent",
+        "little tent"
       ],
       "schematic": "tent_camp.schem",
       "footprint": [
@@ -4177,7 +6037,22 @@
         "my townhouse",
         "skinny tall house",
         "town house",
-        "little townhouse"
+        "little townhouse",
+        "townhouse 2story",
+        "small townhouse",
+        "build a townhouse",
+        "make a townhouse",
+        "build me a townhouse",
+        "make me a townhouse",
+        "can you build a townhouse",
+        "please build a townhouse",
+        "i want a townhouse",
+        "i need a townhouse",
+        "townhouse please",
+        "townhouse for me",
+        "townhouse over there",
+        "townhouse right here",
+        "townhouse nearby"
       ],
       "schematic": "townhouse_2story.schem",
       "footprint": [
@@ -4275,7 +6150,23 @@
         "large oak tree",
         "my oak tree",
         "my large oak tree",
-        "little large oak tree"
+        "little large oak tree",
+        "tree oak large",
+        "small large oak tree",
+        "build a large oak tree",
+        "make a large oak tree",
+        "build me a large oak tree",
+        "make me a large oak tree",
+        "can you build a large oak tree",
+        "please build a large oak tree",
+        "i want a large oak tree",
+        "i need a large oak tree",
+        "large oak tree please",
+        "large oak tree for me",
+        "large oak tree over there",
+        "large oak tree right here",
+        "large oak tree nearby",
+        "large tree"
       ],
       "schematic": "tree_oak_large.schem",
       "footprint": [
@@ -4326,7 +6217,22 @@
         "evergreen tree",
         "spruce pine",
         "my spruce pine",
-        "little spruce pine"
+        "little spruce pine",
+        "tree spruce pine",
+        "small spruce pine",
+        "build a spruce pine",
+        "make a spruce pine",
+        "build me a spruce pine",
+        "make me a spruce pine",
+        "can you build a spruce pine",
+        "please build a spruce pine",
+        "i want a spruce pine",
+        "i need a spruce pine",
+        "spruce pine please",
+        "spruce pine for me",
+        "spruce pine over there",
+        "spruce pine right here",
+        "spruce pine nearby"
       ],
       "schematic": "tree_spruce_pine.schem",
       "footprint": [
@@ -4365,13 +6271,27 @@
       ],
       "aliases": [
         "treehouse",
-        "treehouse",
         "tree house",
         "house in a tree",
         "little treehouse",
         "my treehouse",
         "treehouse please",
-        "fort in a tree"
+        "fort in a tree",
+        "treehouse oak",
+        "small treehouse",
+        "build a treehouse",
+        "make a treehouse",
+        "build me a treehouse",
+        "make me a treehouse",
+        "can you build a treehouse",
+        "please build a treehouse",
+        "i want a treehouse",
+        "i need a treehouse",
+        "treehouse for me",
+        "treehouse over there",
+        "treehouse right here",
+        "treehouse nearby",
+        "oak treehouse"
       ],
       "schematic": "treehouse_oak.schem",
       "footprint": [
@@ -4418,7 +6338,22 @@
         "my turkey pen",
         "turkey yard",
         "turkey coop",
-        "pen for turkeys"
+        "pen for turkeys",
+        "turkey pen small",
+        "small turkey pen",
+        "build a turkey pen",
+        "make a turkey pen",
+        "build me a turkey pen",
+        "make me a turkey pen",
+        "can you build a turkey pen",
+        "please build a turkey pen",
+        "i want a turkey pen",
+        "i need a turkey pen",
+        "turkey pen please",
+        "turkey pen for me",
+        "turkey pen over there",
+        "turkey pen right here",
+        "turkey pen nearby"
       ],
       "schematic": "turkey_pen_small.schem",
       "footprint": [
@@ -4446,6 +6381,52 @@
       "attribution": "Neighborhood Minecraft Server (CC-BY-4.0)",
       "deterministic_seed_version": "1",
       "gold": true
+    },
+    {
+      "id": "ultimate_player_favorite_totem_survival_house",
+      "title": "Ultimate Player Favorite Totem Survival House",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "ultimate player favorite totem survival house",
+        "player favorite totem house",
+        "player favorite",
+        "player",
+        "little player favorite totem house",
+        "small player favorite totem house",
+        "build a player favorite totem house",
+        "make a player favorite totem house",
+        "build me a player favorite totem house",
+        "player favorite totem house please"
+      ],
+      "schematic": "ultimate_player_favorite_totem_survival_house.schem",
+      "footprint": [
+        128,
+        104,
+        128
+      ],
+      "max_blocks": 190921,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 126,
+          "depth": 126,
+          "height": 102
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://www.schemcraft.com/schematics/ultimate-player-favorite-totem-survival-house",
+      "source_id": "schemcraft_ultimate_player_favorite_totem_survival_house",
+      "source_ref": "schemcraft:ultimate-player-favorite-totem-survival-house",
+      "license": "CC-BY-4.0",
+      "author": "BuildSchem",
+      "attribution": "Ultimate Player Favorite Totem Survival House by BuildSchem (CC-BY-4.0) — via SchemCraft"
     },
     {
       "id": "wall_segment_stone",
@@ -4513,7 +6494,21 @@
         "my warehouse",
         "warehouse please",
         "storage warehouse",
-        "goods warehouse"
+        "goods warehouse",
+        "warehouse small",
+        "small warehouse",
+        "build a warehouse",
+        "make a warehouse",
+        "build me a warehouse",
+        "make me a warehouse",
+        "can you build a warehouse",
+        "please build a warehouse",
+        "i want a warehouse",
+        "i need a warehouse",
+        "warehouse for me",
+        "warehouse over there",
+        "warehouse right here",
+        "warehouse nearby"
       ],
       "schematic": "warehouse_small.schem",
       "footprint": [
@@ -4553,7 +6548,6 @@
       ],
       "aliases": [
         "watchtower",
-        "watchtower",
         "tower",
         "guard tower",
         "lookout tower",
@@ -4563,7 +6557,23 @@
         "guard lookout",
         "little watchtower",
         "my watchtower",
-        "spy tower"
+        "spy tower",
+        "watchtower tall",
+        "small watchtower",
+        "build a watchtower",
+        "make a watchtower",
+        "build me a watchtower",
+        "make me a watchtower",
+        "can you build a watchtower",
+        "please build a watchtower",
+        "i want a watchtower",
+        "i need a watchtower",
+        "watchtower please",
+        "watchtower for me",
+        "watchtower over there",
+        "watchtower right here",
+        "watchtower nearby",
+        "watch tower"
       ],
       "schematic": "watchtower_tall.schem",
       "footprint": [
@@ -4611,7 +6621,23 @@
         "well please",
         "water hole well",
         "my village well",
-        "little village well"
+        "little village well",
+        "village well",
+        "well village",
+        "small village well",
+        "build a village well",
+        "make a village well",
+        "build me a village well",
+        "make me a village well",
+        "can you build a village well",
+        "please build a village well",
+        "i want a village well",
+        "i need a village well",
+        "village well please",
+        "village well for me",
+        "village well over there",
+        "village well right here",
+        "village well nearby"
       ],
       "schematic": "well_village.schem",
       "footprint": [
@@ -4651,8 +6677,8 @@
       "complexity": "basic",
       "tags": [
         "farm",
-        "farm",
-        "crop"
+        "crop",
+        "plants"
       ],
       "aliases": [
         "wheat farm",
@@ -4665,13 +6691,60 @@
         "place for wheat",
         "little wheat farm",
         "farm for wheat",
-        "my wheat farm"
+        "my wheat farm",
+        "wheat farm small",
+        "small wheat farm",
+        "build a wheat farm",
+        "make a wheat farm",
+        "build me a wheat farm",
+        "make me a wheat farm",
+        "can you build a wheat farm",
+        "please build a wheat farm",
+        "i want a wheat farm",
+        "i need a wheat farm",
+        "wheat farm please",
+        "wheat farm for me",
+        "wheat farm over there",
+        "wheat farm right here",
+        "wheat farm nearby",
+        "farm",
+        "crop farm",
+        "crops",
+        "crop field",
+        "farmland",
+        "farm plot",
+        "farm field",
+        "grain field",
+        "large farm",
+        "big farm",
+        "huge farm",
+        "my farm",
+        "little farm",
+        "small farm",
+        "starter farm",
+        "plant a farm",
+        "grow a farm",
+        "build a farm",
+        "make a farm",
+        "farm please",
+        "place for crops",
+        "crop garden",
+        "combo farm",
+        "mixed farm",
+        "mixed crop farm",
+        "variety farm",
+        "assorted farm",
+        "combination farm",
+        "mixed crops",
+        "combo crops",
+        "build a combo farm",
+        "make a mixed farm"
       ],
       "schematic": "wheat_farm_small.schem",
       "footprint": [
-        13,
+        11,
         3,
-        13
+        11
       ],
       "max_blocks": 507,
       "distance_default": 4,
@@ -4707,13 +6780,27 @@
       ],
       "aliases": [
         "windmill",
-        "windmill",
         "wind mill",
         "little windmill",
         "farm windmill",
         "my windmill",
         "windmill please",
-        "spinning windmill"
+        "spinning windmill",
+        "windmill small",
+        "small windmill",
+        "build a windmill",
+        "make a windmill",
+        "build me a windmill",
+        "make me a windmill",
+        "can you build a windmill",
+        "please build a windmill",
+        "i want a windmill",
+        "i need a windmill",
+        "windmill for me",
+        "windmill over there",
+        "windmill right here",
+        "windmill nearby",
+        "grain mill"
       ],
       "schematic": "windmill_small.schem",
       "footprint": [
@@ -4751,7 +6838,6 @@
         "tower"
       ],
       "aliases": [
-        "wizard tower",
         "wizard tower",
         "magic tower",
         "wizard house",
@@ -4806,7 +6892,22 @@
         "wooden wall fence",
         "wood palisade",
         "my palisade",
-        "my wood wall"
+        "my wood wall",
+        "wooden palisade",
+        "small wood wall",
+        "build a wood wall",
+        "make a wood wall",
+        "build me a wood wall",
+        "make me a wood wall",
+        "can you build a wood wall",
+        "please build a wood wall",
+        "i want a wood wall",
+        "i need a wood wall",
+        "wood wall please",
+        "wood wall for me",
+        "wood wall over there",
+        "wood wall right here",
+        "wood wall nearby"
       ],
       "schematic": "wooden_palisade.schem",
       "footprint": [
@@ -4858,7 +6959,20 @@
         "workshop please",
         "building workshop",
         "craft workshop",
-        "work shed"
+        "work shed",
+        "workshop small",
+        "build a workshop",
+        "make a workshop",
+        "build me a workshop",
+        "make me a workshop",
+        "can you build a workshop",
+        "please build a workshop",
+        "i want a workshop",
+        "i need a workshop",
+        "workshop for me",
+        "workshop over there",
+        "workshop right here",
+        "workshop nearby"
       ],
       "schematic": "workshop_small.schem",
       "footprint": [
@@ -4888,13 +7002,60 @@
       "gold": true
     },
     {
+      "id": "zafar_ali_dragon",
+      "title": "ZAFAR ALI DRAGON",
+      "category": "house",
+      "complexity": "common",
+      "tags": [
+        "building"
+      ],
+      "aliases": [
+        "zafar ali dragon",
+        "zafar ali",
+        "zafar",
+        "little zafar ali",
+        "small zafar ali",
+        "build a zafar ali",
+        "make a zafar ali",
+        "build me a zafar ali",
+        "zafar ali please"
+      ],
+      "schematic": "zafar_ali_dragon.schem",
+      "footprint": [
+        80,
+        128,
+        112
+      ],
+      "max_blocks": 7709,
+      "distance_default": 4,
+      "follow_up": [],
+      "fallback": {
+        "tool": "build_house_at_player",
+        "args": {
+          "width": 78,
+          "depth": 110,
+          "height": 126
+        }
+      },
+      "deterministic_seed_version": "1",
+      "gold": true,
+      "source_url": "https://bloxelizer.com/schematics/zafar-ali-dragon",
+      "source_id": "bloxelizer_eb1d2742-5bd7-470f-977f-6734fa6ca7a6",
+      "source_ref": "bloxelizer:zafar-ali-dragon",
+      "license": "CC-BY-4.0",
+      "author": "SolarKnight476",
+      "attribution": "ZAFAR ALI DRAGON by SolarKnight476 (CC-BY-4.0) — via Bloxelizer"
+    },
+    {
       "id": "zen_garden",
       "title": "Zen garden",
       "category": "decoration",
       "complexity": "basic",
       "tags": [
+        "garden",
         "decoration",
-        "village"
+        "village",
+        "moss"
       ],
       "aliases": [
         "zen garden",
@@ -4905,12 +7066,28 @@
         "my zen garden",
         "quiet garden",
         "japanese garden",
-        "rock garden zen"
+        "rock garden zen",
+        "small zen garden",
+        "build a zen garden",
+        "make a zen garden",
+        "build me a zen garden",
+        "make me a zen garden",
+        "can you build a zen garden",
+        "please build a zen garden",
+        "i want a zen garden",
+        "i need a zen garden",
+        "zen garden please",
+        "zen garden for me",
+        "zen garden over there",
+        "zen garden right here",
+        "zen garden nearby",
+        "meditation garden",
+        "moss garden"
       ],
       "schematic": "zen_garden.schem",
       "footprint": [
         11,
-        2,
+        3,
         11
       ],
       "max_blocks": 500,

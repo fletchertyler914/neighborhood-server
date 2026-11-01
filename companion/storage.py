@@ -98,6 +98,23 @@ class JobStore:
                         payload_json TEXT NOT NULL,
                         created_ms INTEGER NOT NULL
                     );
+                    CREATE TABLE IF NOT EXISTS request_gaps (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        created_ms INTEGER NOT NULL,
+                        player_uuid TEXT NOT NULL DEFAULT '',
+                        player_name TEXT NOT NULL DEFAULT '',
+                        prompt TEXT NOT NULL DEFAULT '',
+                        route TEXT NOT NULL DEFAULT '',
+                        tier TEXT NOT NULL DEFAULT '',
+                        reason TEXT NOT NULL,
+                        message TEXT NOT NULL DEFAULT '',
+                        candidates_json TEXT NOT NULL DEFAULT '[]',
+                        job_id TEXT
+                    );
+                    CREATE INDEX IF NOT EXISTS request_gaps_created_idx
+                        ON request_gaps(created_ms DESC);
+                    CREATE INDEX IF NOT EXISTS request_gaps_reason_idx
+                        ON request_gaps(reason, created_ms DESC);
                     """
                 )
                 columns = {
@@ -139,6 +156,19 @@ class JobStore:
                 )
 
         self._with_retry(_run)
+
+    def job_prompt(self, job_id: str) -> str | None:
+        def _run() -> str | None:
+            with self._lock:
+                row = self._db.execute(
+                    "SELECT prompt FROM jobs WHERE job_id = ?",
+                    (job_id,),
+                ).fetchone()
+            if row is None:
+                return None
+            return str(row[0] or "")
+
+        return self._with_retry(_run)
 
     def set_route(
         self,
@@ -279,6 +309,85 @@ class JobStore:
     def feedback_count(self) -> int:
         with self._lock:
             return int(self._db.execute("SELECT COUNT(*) FROM feedback").fetchone()[0])
+
+    def record_gap(
+        self,
+        *,
+        reason: str,
+        message: str = "",
+        job_id: str = "",
+        player_uuid: str = "",
+        player_name: str = "",
+        prompt: str = "",
+        route: str = "",
+        tier: str = "",
+        candidates: list[str] | None = None,
+    ) -> None:
+        """Append an unfulfilled-request gap row (coverage demand signal)."""
+        if reason not in {"clarify", "unresolved", "refuse", "failed", "ingest"}:
+            raise ValueError(f"invalid gap reason: {reason}")
+
+        resolved_prompt = prompt
+        resolved_route = route
+        resolved_tier = tier
+        resolved_player = player_uuid
+        if job_id and (not resolved_prompt or not resolved_route or not resolved_tier):
+            with self._lock:
+                row = self._db.execute(
+                    """
+                    SELECT prompt, route, tier, player_uuid
+                    FROM jobs WHERE job_id = ?
+                    """,
+                    (job_id,),
+                ).fetchone()
+            if row is not None:
+                if not resolved_prompt:
+                    resolved_prompt = str(row["prompt"] or "")
+                if not resolved_route:
+                    resolved_route = str(row["route"] or "")
+                if not resolved_tier:
+                    resolved_tier = str(row["tier"] or "")
+                if not resolved_player:
+                    resolved_player = str(row["player_uuid"] or "")
+
+        clean_candidates: list[str] = []
+        for item in candidates or []:
+            text = str(item).strip()
+            if text and text not in clean_candidates:
+                clean_candidates.append(text)
+            if len(clean_candidates) >= 8:
+                break
+
+        def _run() -> None:
+            with self._lock, self._db:
+                self._db.execute(
+                    """
+                    INSERT INTO request_gaps (
+                        created_ms, player_uuid, player_name, prompt, route, tier,
+                        reason, message, candidates_json, job_id
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        int(time.time() * 1000),
+                        resolved_player[:80],
+                        (player_name or "")[:80],
+                        (resolved_prompt or "")[:500],
+                        (resolved_route or "")[:120],
+                        (resolved_tier or "")[:16],
+                        reason,
+                        (message or "")[:300],
+                        json.dumps(clean_candidates, separators=(",", ":")),
+                        job_id or None,
+                    ),
+                )
+
+        self._with_retry(_run)
+
+    def gap_count(self) -> int:
+        with self._lock:
+            return int(
+                self._db.execute("SELECT COUNT(*) FROM request_gaps").fetchone()[0]
+            )
 
     def save_job_snapshot(self, job_id: str, payload: dict[str, Any]) -> None:
         def _run() -> None:

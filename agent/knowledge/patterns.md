@@ -104,7 +104,7 @@ include explicit dimensions (`21x21`, `radius 12`, `exactly N blocks wide`).
 - For "spawn 4 chickens here", "summon a villager next to me", "drop a
   cow at 100 64 200", use `summon_entity(entity, x, y, z, count)`. The
   tool runs `/summon` per copy.
-- Refuses hostile bosses (wither, ender_dragon, warden, elder_guardian).
+- Any summonable mob is allowed (creeper, wither, ender_dragon, …).
 - For a fenced area WITH animals, prefer `build_animal_pen_at_player`
   instead — `summon_entity` is just the raw mob spawner.
 

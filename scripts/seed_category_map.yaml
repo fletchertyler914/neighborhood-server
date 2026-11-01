@@ -1,0 +1,83 @@
+# Maps schem_scraper `matched_category` → catalog template `id`.
+# Used by scripts/import_seed_csv.py. Keep keys lowercase / snake_case.
+#
+# Scraper categories are free-form tags; add aliases here rather than
+# changing catalog ids. See docs/SCHEM_INGEST_SCHEMA.md.
+
+categories:
+  # --- P0 basics ---
+  windmill: windmill_small
+  wind_mill: windmill_small
+  sheep_pen: sheep_pen_medium
+  sheep_farm: sheep_pen_medium
+  pig_pen: pig_pen_small
+  pig_sty: pig_pen_small
+  chicken_coop: chicken_coop_small
+  coop: chicken_coop_small
+  hen_house: chicken_coop_small
+  henhouse: chicken_coop_small
+  flower_garden: garden_plot
+  garden: garden_plot
+  garden_plot: garden_plot
+  carrot_garden: carrot_farm_small
+  carrot_farm: carrot_farm_small
+  potato_garden: potato_farm_small
+  potato_farm: potato_farm_small
+  wheat_farm: wheat_farm_small
+  berry_farm: berry_farm_small
+  melon_farm: melon_farm_small
+  pumpkin_farm: pumpkin_farm_small
+  beehive: bee_apiary_small
+  bee_hive: bee_apiary_small
+  bee_house: bee_apiary_small
+  apiary: bee_apiary_small
+  bee_farm: bee_apiary_small
+  market_stall: market_stall
+  stall: market_stall
+  shop_stall: market_stall
+  well: well_village
+  village_well: well_village
+  wishing_well: well_village
+  workshop: workshop_small
+  lighthouse: lighthouse_short
+  watchtower: watchtower_tall
+  guard_tower: watchtower_tall
+  barn: barn_red_large
+  red_barn: barn_red_large
+
+  # --- houses / landmarks ---
+  hut: cabin_log
+  cabin: cabin_log
+  log_cabin: cabin_log
+  house: house_cottage_small
+  cottage: house_cottage_small
+  small_house: house_cottage_small
+  treehouse: treehouse_oak
+  tree_house: treehouse_oak
+  castle: castle_small_keep
+  tavern: tavern_small
+  blacksmith: blacksmith_shop
+  bakery: bakery_small
+  library: library_small
+  wizard_tower: wizard_tower
+  fishing_hut: fishing_hut
+  fisherman: fishing_hut
+
+  # --- trees / misc ---
+  tree: tree_oak_large
+  oak_tree: tree_oak_large
+  large_oak: tree_oak_large
+  bridge: bridge_oak_short
+  dock: dock_small
+  pier: pier_long
+  shed: storage_shed
+  storage_shed: storage_shed
+  greenhouse: greenhouse_small
+  fountain: fountain_small
+  gazebo: gazebo_oak
+  igloo: igloo_small
+  church: church_small
+  inn: inn_small
+
+# If matched_category is already a catalog id, accept as-is (no map needed).
+accept_catalog_ids: true

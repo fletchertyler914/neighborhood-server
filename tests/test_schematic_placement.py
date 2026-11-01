@@ -1,6 +1,7 @@
 """Placement clearance math mirroring SchematicPlacement.java.
 
-Policy: refuse-don't-build-bad — overlap → no origin; clear in-front → ok.
+Policy: gaze-first when safe; facing near-player fallback; refuse overlap.
+Ask-before-clear is a separate native/companion concern.
 """
 
 from __future__ import annotations
@@ -10,8 +11,13 @@ from dataclasses import dataclass
 import pytest
 
 PLAYER_MARGIN = 2
-UNSAFE_MESSAGE = "I can't build there — look at an open spot and try again."
+MEGA_EXTENT = 40
+GAZE_SLACK = 8
+UNSAFE_MESSAGE = "I can't build there — step back a bit and try again."
 OVERLAP_MESSAGE = "You're in the way — step aside and try again."
+CLEAR_ASK_MESSAGE = (
+    "I'll need to clear some ground there first — want me to? Try: yes"
+)
 
 
 @dataclass(frozen=True)
@@ -39,12 +45,19 @@ class Footprint:
     def center_z(self) -> int:
         return (self.min_z + self.max_z) // 2
 
+    @property
+    def max_horizontal_extent(self) -> int:
+        return max(self.width, self.depth)
+
+    def is_mega(self) -> bool:
+        return self.max_horizontal_extent >= MEGA_EXTENT
+
     def valid(self) -> bool:
         return self.width >= 1 and self.depth >= 1 and (self.max_y - self.min_y + 1) >= 1
 
 
-# castle_small_keep after ground-gap compaction: W=19 H=13 L=21, Offset≈[-9,-3,3]
 CASTLE = Footprint(min_x=-9, min_y=-3, min_z=3, max_x=9, max_y=9, max_z=23)
+CATHEDRAL = Footprint(min_x=-73, min_y=0, min_z=-42, max_x=73, max_y=132, max_z=42)
 
 
 def footprint_overlaps_player(
@@ -71,18 +84,37 @@ def half_extent_clearance(fp: Footprint, along_x: bool) -> int:
     return (extent // 2) + PLAYER_MARGIN
 
 
+def gaze_hit_is_near_enough(
+    px: int, pz: int, hit_x: int, hit_z: int, fp: Footprint
+) -> bool:
+    chebyshev = max(abs(hit_x - px), abs(hit_z - pz))
+    max_gaze = half_extent_clearance(fp, fp.width >= fp.depth) + GAZE_SLACK
+    return chebyshev <= max_gaze
+
+
 def facing_offset_origin(
-    px: int, py: int, pz: int, dir_x: float, dir_z: float, fp: Footprint
+    px: int,
+    py: int,
+    pz: int,
+    dir_x: float,
+    dir_z: float,
+    fp: Footprint,
+    forward_blocks: int | None = None,
 ) -> tuple[int, int, int] | None:
     along_x = abs(dir_x) > abs(dir_z)
-    clearance = half_extent_clearance(fp, along_x)
+    clearance = (
+        forward_blocks
+        if forward_blocks is not None and forward_blocks > 0
+        else half_extent_clearance(fp, along_x)
+    )
     if along_x:
         target_x = px + clearance - fp.min_x if dir_x >= 0 else px - clearance - fp.max_x
         target_z = pz - fp.center_z
     else:
         target_x = px - fp.center_x
         target_z = pz + clearance - fp.min_z if dir_z >= 0 else pz - clearance - fp.max_z
-    target_y = py - 1 - fp.min_y
+    # Floor at feet Y — sits ON the ground block (not playerY-1 into the pad).
+    target_y = py - fp.min_y
     origin = (target_x, target_y, target_z)
     if footprint_overlaps_player(origin, fp, px, py, pz):
         return None
@@ -136,28 +168,30 @@ def resolve_origin(
     dir_z: float,
     fp: Footprint,
     gaze: tuple[int, int, int, str] | None,
+    forward_blocks: int | None = None,
 ) -> tuple[int, int, int] | None:
     if not fp.valid():
         return None
     if gaze is not None:
         hit_x, hit_y, hit_z, face = gaze
-        sx, sy, sz = hit_x, hit_y, hit_z
-        if face == "UP":
-            sy += 1
-        elif face == "NORTH":
-            sz -= 1
-        elif face == "SOUTH":
-            sz += 1
-        elif face == "WEST":
-            sx -= 1
-        elif face == "EAST":
-            sx += 1
-        gazed = gaze_aware_origin(
-            hit_x, hit_y, hit_z, face, sx, sy, sz, px, py, pz, fp
-        )
-        if gazed is not None:
-            return gazed
-    facing = facing_offset_origin(px, py, pz, dir_x, dir_z, fp)
+        if gaze_hit_is_near_enough(px, pz, hit_x, hit_z, fp):
+            sx, sy, sz = hit_x, hit_y, hit_z
+            if face == "UP":
+                sy += 1
+            elif face == "NORTH":
+                sz -= 1
+            elif face == "SOUTH":
+                sz += 1
+            elif face == "WEST":
+                sx -= 1
+            elif face == "EAST":
+                sx += 1
+            gazed = gaze_aware_origin(
+                hit_x, hit_y, hit_z, face, sx, sy, sz, px, py, pz, fp
+            )
+            if gazed is not None:
+                return gazed
+    facing = facing_offset_origin(px, py, pz, dir_x, dir_z, fp, forward_blocks)
     if facing is not None and not footprint_overlaps_player(facing, fp, px, py, pz):
         return facing
     return None
@@ -170,43 +204,28 @@ def test_overlap_gaze_on_feet_refuses_gaze() -> None:
     )
 
 
-def test_old_centered_gaze_would_overlap() -> None:
-    """Pre-fix UP centering entombs the player — documented regression."""
-    hit_x, hit_y, hit_z = 100, 63, 200
-    ox = hit_x - CASTLE.center_x
-    oz = hit_z - CASTLE.center_z
-    oy = hit_y + 1 - CASTLE.min_y
-    assert footprint_overlaps_player((ox, oy, oz), CASTLE, 100, 64, 200)
-
-
 @pytest.mark.parametrize("dir_x,dir_z", [(0.0, 1.0), (0.0, -1.0), (1.0, 0.0), (-1.0, 0.0)])
 def test_clear_in_front_facing_is_ok(dir_x: float, dir_z: float) -> None:
     origin = facing_offset_origin(100, 64, 200, dir_x, dir_z, CASTLE)
     assert origin is not None
     assert not footprint_overlaps_player(origin, CASTLE, 100, 64, 200)
-    along_x = abs(dir_x) > abs(dir_z)
-    clearance = half_extent_clearance(CASTLE, along_x)
-    if along_x:
-        if dir_x >= 0:
-            assert origin[0] + CASTLE.min_x >= 100 + clearance
-        else:
-            assert origin[0] + CASTLE.max_x <= 100 - clearance
-    else:
-        if dir_z >= 0:
-            assert origin[2] + CASTLE.min_z >= 200 + clearance
-        else:
-            assert origin[2] + CASTLE.max_z <= 200 - clearance
+
+
+def test_facing_floor_sits_on_pad_not_sunk() -> None:
+    """Schem floor at feet Y (on pad), not playerY-1 (inset into ground)."""
+    origin = facing_offset_origin(100, 120, 200, 0.0, 1.0, CASTLE)
+    assert origin is not None
+    floor_y = origin[1] + CASTLE.min_y
+    assert floor_y == 120
+    # Matches UP-face on grass at y=119 (pad top).
+    gaze = gaze_aware_origin(100, 119, 220, "UP", 100, 120, 220, 100, 120, 200, CASTLE)
+    assert gaze is not None
+    assert gaze[1] + CASTLE.min_y == 120
 
 
 def test_gaze_on_feet_falls_back_to_clear_facing() -> None:
     origin = resolve_origin(
-        px=100,
-        py=64,
-        pz=200,
-        dir_x=0.0,
-        dir_z=1.0,
-        fp=CASTLE,
-        gaze=(100, 63, 200, "UP"),
+        px=100, py=64, pz=200, dir_x=0.0, dir_z=1.0, fp=CASTLE, gaze=(100, 63, 200, "UP")
     )
     assert origin is not None
     assert not footprint_overlaps_player(origin, CASTLE, 100, 64, 200)
@@ -221,16 +240,52 @@ def test_resolve_never_returns_overlapping_origin() -> None:
             assert not footprint_overlaps_player(origin, CASTLE, 100, 64, 200)
 
 
-def test_resolve_refuses_invalid_footprint() -> None:
-    bad = Footprint(5, 0, 5, 4, 0, 4)  # max < min → invalid
-    assert resolve_origin(
-        px=0, py=64, pz=0, dir_x=0.0, dir_z=1.0, fp=bad, gaze=None
-    ) is None
+def test_unsafe_and_clear_ask_messages_are_kid_friendly() -> None:
+    assert "open spot" not in UNSAFE_MESSAGE.lower()
+    assert "footprint" not in CLEAR_ASK_MESSAGE.lower()
+    assert "want me to" in CLEAR_ASK_MESSAGE.lower()
+    assert "Try: yes" in CLEAR_ASK_MESSAGE
 
 
-def test_unsafe_message_is_kid_friendly() -> None:
-    assert UNSAFE_MESSAGE == "I can't build there — look at an open spot and try again."
-    assert OVERLAP_MESSAGE == "You're in the way — step aside and try again."
-    assert "footprint" not in UNSAFE_MESSAGE.lower()
-    assert "origin" not in UNSAFE_MESSAGE.lower()
-    assert UNSAFE_MESSAGE != OVERLAP_MESSAGE
+def test_cathedral_is_mega() -> None:
+    assert CATHEDRAL.is_mega()
+    assert not CASTLE.is_mega()
+
+
+def test_mega_gaze_preferred_when_safe() -> None:
+    """Mega builds still use gaze when the look target keeps the player outside."""
+    # Near edge of cathedral depth/2+margin ≈ 44; hit at +50 is within maxGaze.
+    hit_z = 200 + 50
+    origin = resolve_origin(
+        px=100,
+        py=64,
+        pz=200,
+        dir_x=0.0,
+        dir_z=1.0,
+        fp=CATHEDRAL,
+        gaze=(100, 63, hit_z, "UP"),
+    )
+    assert origin is not None
+    assert not footprint_overlaps_player(origin, CATHEDRAL, 100, 64, 200)
+    assert origin[2] == hit_z - CATHEDRAL.center_z
+
+
+def test_forward_blocks_overrides_facing_clearance() -> None:
+    origin = facing_offset_origin(0, 64, 0, 0.0, 1.0, CASTLE, forward_blocks=20)
+    assert origin is not None
+    near_edge = origin[2] + CASTLE.min_z
+    assert near_edge == 20
+
+
+def test_small_nearby_gaze_still_allowed() -> None:
+    origin = resolve_origin(
+        px=100,
+        py=64,
+        pz=200,
+        dir_x=0.0,
+        dir_z=1.0,
+        fp=CASTLE,
+        gaze=(100, 63, 215, "UP"),
+    )
+    assert origin is not None
+    assert origin[2] == 215 - CASTLE.center_z

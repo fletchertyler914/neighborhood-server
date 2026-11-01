@@ -333,10 +333,20 @@ def test_summon_entity_runs_n_summons_clamped_to_32():
     assert calls[0] == "summon chicken 10 64 20"
 
 
-def test_summon_entity_refuses_bosses():
-    r = summon_entity("wither", 0, 64, 0)
-    assert not r.ok
-    assert "wither" in (r.error or "")
+def test_summon_entity_allows_bosses():
+    calls, fake = _captured_rcon(["OK"])
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
+        r = summon_entity("wither", 0, 64, 0)
+    assert r.ok, r.error
+    assert calls == ["summon wither 0 64 0"]
+
+
+def test_summon_entity_normalizes_ender_dragon():
+    calls, fake = _captured_rcon(["OK"])
+    with patch("agent.tools._monolith._rcon", side_effect=fake):
+        r = summon_entity("ender dragon", 1, 70, 2)
+    assert r.ok, r.error
+    assert calls == ["summon ender_dragon 1 70 2"]
 
 
 def test_summon_entity_appends_nbt_when_provided():

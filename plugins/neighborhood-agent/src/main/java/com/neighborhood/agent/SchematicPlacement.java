@@ -6,20 +6,38 @@ package com.neighborhood.agent;
  * <p>WorldEdit pastes so clipboard origin lands at {@code targetOrigin}. Relative
  * footprint bounds are {@code regionMin/Max - clipboardOrigin}.
  *
- * <p>Policy: refuse-don't-build-bad. Never shift a bad origin and hope; callers
- * must skip the paste when {@link #resolveOrigin} returns null.
+ * <p>Policy: place where the player is looking (gaze) when safe; else facing
+ * offset near them. Never search distant wilderness. Refuse player overlap.
  */
 final class SchematicPlacement {
     /** Extra blocks beyond half-footprint so the player stands clearly outside. */
     static final int PLAYER_MARGIN = 2;
 
+    /**
+     * Footprints at or above this horizontal extent are "mega" (cathedral /
+     * mansion class) for sampling / messaging — not for skipping gaze.
+     */
+    static final int MEGA_EXTENT = 40;
+
+    /**
+     * Gaze hits farther than half-extent + this slack fall back to facing so
+     * we don't center a build on a far skyline hit.
+     */
+    static final int GAZE_SLACK = 8;
+
     /** Gaze/facing could not find a clear paste origin. */
     static final String UNSAFE_MESSAGE =
-            "I can't build there — look at an open spot and try again.";
+            "I can't build there — step back a bit and try again.";
 
     /** Footprint would cover the requesting player. */
     static final String OVERLAP_MESSAGE =
             "You're in the way — step aside and try again.";
+
+    /**
+     * Paste would wipe/flatten ground — ask before clearing (companion pending).
+     */
+    static final String CLEAR_ASK_MESSAGE =
+            "I'll need to clear some ground there first — want me to? Try: yes";
 
     private SchematicPlacement() {
     }
@@ -45,15 +63,66 @@ final class SchematicPlacement {
             return Math.floorDiv(minZ + maxZ, 2);
         }
 
+        int maxHorizontalExtent() {
+            return Math.max(width(), depth());
+        }
+
+        boolean isMega() {
+            return maxHorizontalExtent() >= MEGA_EXTENT;
+        }
+
         boolean valid() {
             return width() >= 1 && depth() >= 1 && height() >= 1;
         }
     }
 
     /**
-     * Pick a paste origin: safe gaze first, else facing-offset with
-     * half-footprint + margin clearance. Returns null when neither is safe.
+     * Pick a paste origin: safe gaze first (where they're looking), else
+     * facing-offset. Optional {@code forwardBlocks} overrides facing clearance
+     * when the player said e.g. "20 blocks in front".
      */
+    static int[] resolveOrigin(
+            int playerX,
+            int playerY,
+            int playerZ,
+            double dirX,
+            double dirZ,
+            Footprint fp,
+            Integer hitX,
+            Integer hitY,
+            Integer hitZ,
+            String face,
+            Integer supportX,
+            Integer supportY,
+            Integer supportZ,
+            Integer forwardBlocks
+    ) {
+        if (!fp.valid()) {
+            return null;
+        }
+        if (hitX != null && hitY != null && hitZ != null && face != null
+                && supportX != null && supportY != null && supportZ != null
+                && gazeHitIsNearEnough(playerX, playerZ, hitX, hitZ, fp)) {
+            int[] gaze = gazeAwareOrigin(
+                    hitX, hitY, hitZ, face,
+                    supportX, supportY, supportZ,
+                    playerX, playerY, playerZ,
+                    fp
+            );
+            if (gaze != null) {
+                return gaze;
+            }
+        }
+        int[] facing = facingOffsetOrigin(
+                playerX, playerY, playerZ, dirX, dirZ, fp, forwardBlocks
+        );
+        if (facing != null && !footprintOverlapsPlayer(facing, fp, playerX, playerY, playerZ)) {
+            return facing;
+        }
+        return null;
+    }
+
+    /** Back-compat overload without forward override. */
     static int[] resolveOrigin(
             int playerX,
             int playerY,
@@ -69,31 +138,31 @@ final class SchematicPlacement {
             Integer supportY,
             Integer supportZ
     ) {
-        if (!fp.valid()) {
-            return null;
-        }
-        if (hitX != null && hitY != null && hitZ != null && face != null
-                && supportX != null && supportY != null && supportZ != null) {
-            int[] gaze = gazeAwareOrigin(
-                    hitX, hitY, hitZ, face,
-                    supportX, supportY, supportZ,
-                    playerX, playerY, playerZ,
-                    fp
-            );
-            if (gaze != null) {
-                return gaze;
-            }
-        }
-        int[] facing = facingOffsetOrigin(playerX, playerY, playerZ, dirX, dirZ, fp);
-        if (facing != null && !footprintOverlapsPlayer(facing, fp, playerX, playerY, playerZ)) {
-            return facing;
-        }
-        return null;
+        return resolveOrigin(
+                playerX, playerY, playerZ, dirX, dirZ, fp,
+                hitX, hitY, hitZ, face, supportX, supportY, supportZ, null
+        );
+    }
+
+    /**
+     * Accept gaze when the hit is within half-extent + slack of the player
+     * (gaze ray is already capped ~48). Reject under/beside separately.
+     */
+    static boolean gazeHitIsNearEnough(
+            int playerX,
+            int playerZ,
+            int hitX,
+            int hitZ,
+            Footprint fp
+    ) {
+        int chebyshev = Math.max(Math.abs(hitX - playerX), Math.abs(hitZ - playerZ));
+        int maxGaze = halfExtentClearance(fp, fp.width() >= fp.depth()) + GAZE_SLACK;
+        return chebyshev <= maxGaze;
     }
 
     /**
      * Near footprint edge is half-extent + {@link #PLAYER_MARGIN} in front of
-     * the player (cardinal facing). Returns null if that still overlaps them.
+     * the player (or an explicit forward distance). Returns null if overlap.
      */
     static int[] facingOffsetOrigin(
             int playerX,
@@ -101,10 +170,13 @@ final class SchematicPlacement {
             int playerZ,
             double dirX,
             double dirZ,
-            Footprint fp
+            Footprint fp,
+            Integer forwardBlocks
     ) {
         boolean alongX = Math.abs(dirX) > Math.abs(dirZ);
-        int clearance = halfExtentClearance(fp, alongX);
+        int clearance = forwardBlocks != null && forwardBlocks > 0
+                ? forwardBlocks
+                : halfExtentClearance(fp, alongX);
         int targetX;
         int targetZ;
         if (alongX) {
@@ -118,12 +190,25 @@ final class SchematicPlacement {
                     ? playerZ + clearance - fp.minZ()
                     : playerZ - clearance - fp.maxZ();
         }
-        int targetY = playerY - 1 - fp.minY();
+        // Floor at feet Y so the schem sits ON the block the player stands on
+        // (same as UP-face: hitY+1). playerY-1 sank builds one block into the pad.
+        int targetY = playerY - fp.minY();
         int[] origin = {targetX, targetY, targetZ};
         if (footprintOverlapsPlayer(origin, fp, playerX, playerY, playerZ)) {
             return null;
         }
         return origin;
+    }
+
+    static int[] facingOffsetOrigin(
+            int playerX,
+            int playerY,
+            int playerZ,
+            double dirX,
+            double dirZ,
+            Footprint fp
+    ) {
+        return facingOffsetOrigin(playerX, playerY, playerZ, dirX, dirZ, fp, null);
     }
 
     /** Half footprint along the facing axis, plus margin. */

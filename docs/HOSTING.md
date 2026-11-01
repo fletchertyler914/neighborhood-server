@@ -24,11 +24,11 @@ Internals: [ARCHITECTURE.md](ARCHITECTURE.md).
 | Will | Won’t |
 | --- | --- |
 | Day/night, clear rain | Dig / clear huge areas |
-| Give safe items (ask “how many?”) | Hostile mobs, dangerous items |
-| Friendly animals | Bypass GriefPrevention claims |
+| Give items (ask “how many?”) | Admin blocks (command/structure/jigsaw) |
+| Summon any mob (incl. bosses) | Bypass GriefPrevention claims |
 | Paste curated builds (coop, cottage, …) | Arbitrary WorldEdit / raw commands |
 | Finish a wall between two posts | Cloud AI — inference stays local |
-| Undo the last sidekick action | |
+| Undo the last sidekick action | Exceed edit budgets / crash-size builds |
 
 ### Bedrock names
 

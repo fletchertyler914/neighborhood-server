@@ -8,7 +8,69 @@ from typing import Any
 from companion.dimensions import looks_like_material_token, strip_politeness
 from companion.models import Action
 from companion.provider import CompiledIntent
-from companion.templates import match_template
+from companion.templates import clarify_message, match_template
+
+# "build X and clear everything in the way" / flatten / make room.
+_CLEAR_SITE_RX = re.compile(
+    r"\b(?:clear(?:ing)?|flatten|leve[l]?|bulldoze|terraform)\b.{"
+    r"0,40}\b(?:way|path|space|spot|area|ground|terrain|everything|stuff|trees?|land)\b"
+    r"|\b(?:clear|flatten|leve[l]?)\s+(?:everything|the\s+ground|the\s+land|a\s+pad|the\s+area)\b"
+    r"|\b(?:make\s+room|clear\s+a\s+(?:spot|space|pad)|clear\s+out)\b"
+    r"|\bclear\s+everything\s+in\s+the\s+way\b",
+    re.I,
+)
+_FORWARD_BLOCKS_RX = re.compile(
+    r"\b(\d{1,3})\s*blocks?\s+(?:in\s+front|ahead|forward)(?:\s+of\s+me)?\b",
+    re.I,
+)
+
+# Must match SchematicPlacement.CLEAR_ASK_MESSAGE in the Paper plugin.
+CLEAR_ASK_MESSAGE = (
+    "I'll need to clear some ground there first — want me to? Try: yes"
+)
+
+
+def wants_clear_site(text: str) -> bool:
+    """True when the player asks to clear/flatten terrain before a paste."""
+    raw = text or ""
+    # "clear a path/trail/road" is a corridor build, not paste site-clear.
+    if re.search(
+        r"\bclear\s+(?:a\s+)?(?:path|trail|road|footpath|walkway)\b",
+        raw,
+        re.I,
+    ):
+        return False
+    return bool(_CLEAR_SITE_RX.search(raw))
+
+
+def extract_forward_blocks(text: str) -> int | None:
+    """Optional 'N blocks in front' distance for near-edge placement."""
+    match = _FORWARD_BLOCKS_RX.search(text or "")
+    if match is None:
+        return None
+    value = int(match.group(1))
+    if 1 <= value <= 128:
+        return value
+    return None
+
+
+def is_clear_ask_message(message: str) -> bool:
+    text = (message or "").strip()
+    return text.startswith("I'll need to clear some ground") or CLEAR_ASK_MESSAGE in text
+
+
+def _paste_template_args(template_id: str, prompt: str = "") -> dict[str, Any]:
+    """Args for curated paste_template.
+
+    Always opt into ``clear_site``: saying “build X” / picking from the Build Book
+    already means place it here. The old ask-every-time “Try: yes” loop was too
+    heavy for kids (and broke mega pastes on the follow-up job budget).
+    """
+    args: dict[str, Any] = {"template_id": template_id, "clear_site": True}
+    forward = extract_forward_blocks(prompt)
+    if forward is not None:
+        args["forward_blocks"] = forward
+    return args
 
 
 @dataclass(frozen=True)
@@ -70,32 +132,36 @@ _ENTITY_ALIASES = {
     "horses": "horse",
     "wolf": "wolf",
     "wolves": "wolf",
+    "creeper": "creeper",
+    "creepers": "creeper",
+    "zombie": "zombie",
+    "zombies": "zombie",
+    "skeleton": "skeleton",
+    "skeletons": "skeleton",
+    "blaze": "blaze",
+    "blazes": "blaze",
+    "enderman": "enderman",
+    "endermen": "enderman",
+    "wither": "wither",
+    "withers": "wither",
+    "warden": "warden",
+    "wardens": "warden",
+    "ghast": "ghast",
+    "ghasts": "ghast",
+    "phantom": "phantom",
+    "phantoms": "phantom",
+    "ravager": "ravager",
+    "ravagers": "ravager",
+    "ender dragon": "ender_dragon",
+    "enderdragon": "ender_dragon",
+    "ender_dragon": "ender_dragon",
+    "dragon": "ender_dragon",
+    "elder guardian": "elder_guardian",
+    "elder_guardian": "elder_guardian",
 }
 
-_REFUSED_ENTITIES = {
-    "warden",
-    "creeper",
-    "creepers",
-    "zombie",
-    "zombies",
-    "skeleton",
-    "skeletons",
-    "blaze",
-    "blazes",
-    "enderman",
-    "endermen",
-    "wither",
-    "ghast",
-    "ghasts",
-    "phantom",
-    "phantoms",
-    "ravager",
-    "ravagers",
-}
-
+# Admin / server-integrity items only — not "scary" gameplay items like TNT.
 _REFUSED_ITEMS = {
-    "tnt",
-    "bedrock",
     "command block",
     "command_block",
     "chain command block",
@@ -105,9 +171,8 @@ _REFUSED_ITEMS = {
     "structure block",
     "structure_block",
     "jigsaw",
-    "barrier",
-    "end crystal",
-    "end_crystal",
+    "debug stick",
+    "debug_stick",
 }
 
 _NUMBER_WORDS = {
@@ -126,6 +191,22 @@ _NUMBER_WORDS = {
     "ten": 10,
 }
 
+# Deictic give: "give me these/those/that/this (blocks)" — native gaze, not named items.
+_GAZE_GIVE_RX = re.compile(
+    r"(?:please\s+)?"
+    r"(?:give\s+me|gimme|can i (?:have|get)|i want)"
+    r"\s+"
+    r"(?:"
+    r"(?:a\s+)?stack\s+of\s+"
+    r"|(\d+|a|an|one|two|three|tree|four|five|six|seven|eight|nine|ten|some)\s+"
+    r")?"
+    r"(?:of\s+)?"
+    r"(?:these|those|that|this)"
+    r"(?:\s+blocks?)?"
+    r"[.!]?",
+    re.I,
+)
+
 
 _MATERIAL_ALIASES = {
     "quartz": "quartz_block",
@@ -134,12 +215,29 @@ _MATERIAL_ALIASES = {
     "smooth quartz": "smooth_quartz",
     "oak": "oak_planks",
     "oak planks": "oak_planks",
+    "wood": "oak_planks",
+    "wooden": "oak_planks",
     "stone": "stone",
     "cobble": "cobblestone",
     "cobblestone": "cobblestone",
+    # NL "rock wall" → solid masonry (cobble matches seed/catalog convention).
+    "rock": "cobblestone",
+    "rocks": "cobblestone",
+    "rocky": "cobblestone",
     "glass": "glass",
     "brick": "bricks",
     "bricks": "bricks",
+    "fence": "oak_fence",
+    "fencing": "oak_fence",
+    "oak fence": "oak_fence",
+    "wooden fence": "oak_fence",
+    "dirt path": "dirt_path",
+    "dirt_path": "dirt_path",
+    "grass path": "dirt_path",
+    "grass_path": "dirt_path",
+    "path block": "dirt_path",
+    "gravel": "gravel",
+    "dirt": "dirt",
 }
 
 # Story adjectives — never treat these as block materials.
@@ -173,6 +271,15 @@ _MATERIAL_SHAPE_SUFFIXES = (
     "_floors",
     "_radius",
     "_height",
+    "_enclosure",
+    "_pen",
+    "_yard",
+    "_courtyard",
+    "_arena",
+    "_compound",
+    "_fence",
+    "_square",
+    "_rectangle",
 )
 
 
@@ -479,37 +586,39 @@ def route(
     *,
     capabilities: set[str] | None = None,
     has_finishable_wall: bool = False,
+    can_ingest: bool = False,
 ) -> RouteDecision:
     text = strip_politeness(" ".join(prompt.strip().split()))
+    from companion.help import route_help
+    from companion.ingest_routing import route_ingest
     from companion.place_routing import route_place_shape
 
+    help_decision = route_help(text)
+    if help_decision is not None:
+        return help_decision
+
+    ingest_decision = route_ingest(text, can_ingest=can_ingest)
+    if ingest_decision is not None:
+        return ingest_decision
+
     has_place_shape = capabilities is None or "place_shape" in capabilities
+    has_mark_route = capabilities is None or "mark_route" in capabilities
     place_decision = route_place_shape(
         text,
         job_id,
         has_place_shape=has_place_shape,
         has_finishable_wall=has_finishable_wall,
+        has_mark_route=has_mark_route,
     )
     if place_decision is not None:
         return place_decision
-    hostile = re.search(
-        r"\b(" + "|".join(sorted(_REFUSED_ENTITIES, key=len, reverse=True)) + r")\b",
-        text,
-        re.I,
-    )
-    if hostile and re.search(r"\b(?:spawn|summon|make|give)\b", text, re.I):
-        return RouteDecision(
-            route="policy.refuse_hostile",
-            tier="S",
-            message="I only summon friendly animals. Try: spawn three chickens",
-        )
     if re.search(r"\b(?:give|can i have|i want)\b", text, re.I) and any(
         re.search(rf"\b{re.escape(item)}\b", text, re.I) for item in _REFUSED_ITEMS
     ):
         return RouteDecision(
             route="policy.refuse_restricted_item",
             tier="S",
-            message="I can't give out that item safely. Try: stone, glass, or oak planks.",
+            message="I can't give out admin blocks. Try: stone, glass, or oak planks.",
         )
     if re.fullmatch(
         r"(?:please\s+)?(?:undo(?:\s+that)?|put\s+it\s+back|take\s+that\s+back)[.!]?",
@@ -540,7 +649,7 @@ def route(
     if wall_decision is not None:
         return wall_decision
     vague_build = re.fullmatch(
-        r"(?:please\s+)?(?:build|make)\s+me\s+(?:a\s+)?(?:house|home|building|place)[.!]?",
+        r"(?:please\s+)?(?:build|make)(?:\s+me)?\s+(?:a\s+)?(?:house|home|building|place)[.!]?",
         text,
         re.I,
     )
@@ -548,7 +657,7 @@ def route(
         return RouteDecision(
             route="grammar.clarify_build",
             tier="S",
-            message="What kind of place? Try chicken coop, cottage, or bridge.",
+            message="What kind of place? Try chicken coop, cottage, market stall, or bridge.",
             pending_kind="template",
             pending_slots={
                 "default_tool": "paste_template",
@@ -556,17 +665,63 @@ def route(
             },
         )
 
-    if re.search(r"\b(?:build|make|create|construct|place|put)\b", text, re.I) or (
-        not re.search(
-            r"\b(?:spawn|summon|give|set|change|clear|undo|cancel)\b", text, re.I
-        )
-        and re.search(
-            r"\b(?:house|home|coop|pen|castle|bridge|watchtower|cottage|barn|"
-            r"tower|well|apiary)\b",
+    build_verb = bool(
+        re.search(
+            r"\b(?:build|make|create|construct|place|put|plant|grow|sow)\b",
             text,
             re.I,
         )
-        and match_template(text, gold_only=True) is not None
+    )
+    structure_noun = bool(
+        re.search(
+            r"\b(?:house|home|coop|pen|castle|bridge|watchtower|cottage|barn|"
+            r"tower|well|apiary|garden|farm|greenhouse|orchard|crop|crops|"
+            r"farmland|allotment|flower|flowers|flowerbed|patch|bed|"
+            r"carrot|potato|berry|berries|wheat|pumpkin|melon|herb|herbs|"
+            r"veggie|vegetable|combo|mixed|market|stall|shop|store|vendor|"
+            r"booth|stand|bakery|blacksmith|igloo|lighthouse|windmill|"
+            r"gazebo|pier|dock|plaza|cabin|tavern|inn|library|church|"
+            r"cathedral|gothic|mansion|manor|spruce|"
+            r"apartment|treehouse|stable|hutch|silo|workshop|warehouse)\b",
+            text,
+            re.I,
+        )
+    )
+    # Hybrid ranker may recognize bare noun phrases ("market stall") even
+    # when the keyword list is incomplete — try whenever this is not a
+    # clear give/summon/world command.
+    # "clear" alone is often finish_floor / refuse — but "build X and clear
+    # everything" is still a paste. Exclude clear-site phrasing here.
+    non_build_command = bool(
+        re.search(
+            r"\b(?:spawn|summon|give|set|change|undo|cancel)\b",
+            text,
+            re.I,
+        )
+    ) or (
+        bool(re.search(r"\bclear\b", text, re.I))
+        and not build_verb
+        and not wants_clear_site(text)
+    )
+    template_candidate = None
+    if build_verb or (structure_noun and not non_build_command) or (
+        not non_build_command and len(text.split()) <= 6
+    ):
+        template_candidate = match_template(text, gold_only=True)
+
+    if build_verb or (
+        structure_noun and not non_build_command and template_candidate is not None
+    ) or (
+        not non_build_command
+        and template_candidate is not None
+        and (
+            template_candidate.confidence == "high"
+            or (
+                template_candidate.gold
+                and not template_candidate.needs_clarify
+                and template_candidate.score >= 0.72
+            )
+        )
     ):
         if re.search(r"\b(?:move|shift|rotate)\b", text, re.I) and re.search(
             r"\b(?:add|change|paint|replace)\b", text, re.I
@@ -596,7 +751,7 @@ def route(
                     job_id, "finish_floor", {"mode": "fill"}, risk="bounded"
                 ),
             )
-        template = match_template(text, gold_only=True)
+        template = template_candidate or match_template(text, gold_only=True)
         if template is not None and str(template.template_id).startswith("wall_segment"):
             return RouteDecision(
                 route="grammar.clarify_wall",
@@ -612,14 +767,31 @@ def route(
                     "Try: little castle, chicken house, or bridge."
                 ),
             )
-        if template is not None and template.gold:
+        if (
+            template is not None
+            and template.needs_clarify
+            and (structure_noun or template.confidence in {"high", "medium"})
+            and template.score >= 0.45
+        ):
+            return RouteDecision(
+                route="grammar.clarify_template",
+                tier="S",
+                message=clarify_message(template),
+                pending_kind="template",
+                pending_slots={
+                    "default_tool": "paste_template",
+                    "default_arguments": {"template_id": template.template_id},
+                    "candidates": list(template.alternatives),
+                },
+            )
+        if template is not None and template.gold and not template.needs_clarify:
             return RouteDecision(
                 route="ranker.paste_template",
                 tier="A",
                 action=_action(
                     job_id,
                     "paste_template",
-                    {"template_id": template.template_id},
+                    _paste_template_args(template.template_id, text),
                     risk="bounded",
                 ),
             )
@@ -655,6 +827,28 @@ def route(
                     {"entity": entity, "count": 3},
                     risk="bounded",
                 ),
+            )
+
+    gaze_give = _GAZE_GIVE_RX.fullmatch(text)
+    if gaze_give:
+        count_token = (gaze_give.group(1) or "").lower()
+        if count_token == "some" or not count_token:
+            amount = 64
+        elif count_token.isdigit():
+            amount = int(count_token)
+        else:
+            amount = _NUMBER_WORDS.get(count_token, 64)
+        # "a/an/one of these" → 1; bare "these blocks" / "some" → a stack.
+        if "stack" in text.lower():
+            amount = 64
+        if 1 <= amount <= 64:
+            args: dict[str, Any] = {}
+            if amount != 64:
+                args["amount"] = amount
+            return RouteDecision(
+                route="grammar.give_looked_item",
+                tier="S",
+                action=_action(job_id, "give_looked_item", args),
             )
 
     give_match = re.fullmatch(
@@ -700,15 +894,24 @@ def route(
             )
 
     summon_match = re.fullmatch(
-        r"(?:please\s+)?(?:summon|spawn|make)\s+(?:(\d+|a|an|one|two|three|tree|four|five|six|seven|eight|nine|ten)\s+)?(.+?)(?:\s+(?:here|near me|by me))?[.!]?",
+        r"(?:please\s+)?(summon|spawn|make)\s+(?:(\d+|a|an|one|two|three|tree|four|five|six|seven|eight|nine|ten)\s+)?(.+?)(?:\s+(?:here|near me|by me))?[.!]?",
         text,
         re.I,
     )
     if summon_match:
-        count_token = (summon_match.group(1) or "one").lower()
+        verb = summon_match.group(1).lower()
+        count_token = (summon_match.group(2) or "one").lower()
         count = int(count_token) if count_token.isdigit() else _NUMBER_WORDS[count_token]
-        raw_entity = summon_match.group(2).lower().strip()
+        raw_entity = summon_match.group(3).lower().strip()
         entity = _ENTITY_ALIASES.get(raw_entity)
+        # Free-form mob ids only for explicit summon/spawn — "make it bigger"
+        # must not become summon_entity("it_bigger").
+        if entity is None and verb in {"summon", "spawn"}:
+            candidate = raw_entity.replace("-", "_")
+            if " " not in raw_entity and re.fullmatch(
+                r"[a-z][a-z0-9_]{1,62}", candidate
+            ):
+                entity = candidate
         if entity and 1 <= count <= 20:
             return RouteDecision(
                 route="grammar.summon_entity",
@@ -728,6 +931,26 @@ def route(
     )
     if want_give:
         raw_item = want_give.group(1).lower().strip()
+        raw_item = re.sub(r"^(?:a|an)\s+", "", raw_item)
+        # "can i get a market stall" is a build ask, not an item give.
+        build_ask = match_template(raw_item, gold_only=True)
+        if (
+            build_ask is not None
+            and build_ask.gold
+            and not build_ask.needs_clarify
+            and build_ask.confidence == "high"
+            and build_ask.score >= 0.9
+        ):
+            return RouteDecision(
+                route="ranker.paste_template",
+                tier="A",
+                action=_action(
+                    job_id,
+                    "paste_template",
+                    _paste_template_args(build_ask.template_id, text),
+                    risk="bounded",
+                ),
+            )
         material = _ITEM_ALIASES.get(raw_item, raw_item.replace(" ", "_"))
         if re.fullmatch(r"[a-z0-9_]+", material):
             readable = material.replace("_", " ")
@@ -748,7 +971,9 @@ def route(
     )
 
 
-def compiled_route(intent: CompiledIntent, job_id: str) -> RouteDecision:
+def compiled_route(
+    intent: CompiledIntent, job_id: str, prompt: str = ""
+) -> RouteDecision:
     if intent.kind != "action" or intent.tool is None:
         message = intent.message.strip()[:160]
         return RouteDecision(
@@ -774,11 +999,29 @@ def compiled_route(intent: CompiledIntent, job_id: str) -> RouteDecision:
             or not 1 <= amount <= 64
         ):
             return _invalid_model_route()
+    elif intent.tool == "give_looked_item":
+        cleaned_gaze: dict[str, Any] = {}
+        if "amount" in arguments and arguments.get("amount") is not None:
+            amount = arguments.get("amount")
+            if (
+                not isinstance(amount, int)
+                or isinstance(amount, bool)
+                or not 1 <= amount <= 64
+            ):
+                return _invalid_model_route()
+            cleaned_gaze["amount"] = amount
+        arguments = cleaned_gaze
     elif intent.tool == "summon_entity":
         entity = arguments.get("entity")
         count = arguments.get("count")
+        if isinstance(entity, str):
+            entity = _ENTITY_ALIASES.get(
+                entity.lower(), entity.lower().replace(" ", "_").replace("-", "_")
+            )
+            arguments = {**arguments, "entity": entity}
         if (
-            entity not in set(_ENTITY_ALIASES.values())
+            not isinstance(entity, str)
+            or re.fullmatch(r"[a-z0-9_]+", entity) is None
             or not isinstance(count, int)
             or isinstance(count, bool)
             or not 1 <= count <= 20
@@ -791,10 +1034,28 @@ def compiled_route(intent: CompiledIntent, job_id: str) -> RouteDecision:
             or re.fullmatch(r"[a-z][a-z0-9_]{0,63}", template_id) is None
         ):
             return _invalid_model_route()
-        # Prefer ranker resolution when the model invents a weak id.
-        ranked = match_template(template_id.replace("_", " "), gold_only=True)
-        if ranked is not None and ranked.gold:
+        clear_site = arguments.get("clear_site") is True or wants_clear_site(prompt)
+        # Prefer NL ranker on the player prompt over a model-invented id
+        # (stops cmapground→carrot_farm style category steals).
+        ranked = match_template(prompt, gold_only=True)
+        if ranked is None:
+            ranked = match_template(template_id.replace("_", " "), gold_only=True)
+        if ranked is not None and ranked.gold and not ranked.needs_clarify:
             arguments = {"template_id": ranked.template_id}
+            if clear_site:
+                arguments["clear_site"] = True
+        elif ranked is not None and ranked.needs_clarify:
+            return RouteDecision(
+                route="model.clarify",
+                tier="B",
+                message=clarify_message(ranked),
+                pending_kind="template",
+                pending_slots={
+                    "default_tool": "paste_template",
+                    "default_arguments": {"template_id": ranked.template_id},
+                    "candidates": list(ranked.alternatives),
+                },
+            )
         elif ranked is not None and not ranked.gold:
             return RouteDecision(
                 route="model.clarify",
@@ -815,6 +1076,19 @@ def compiled_route(intent: CompiledIntent, job_id: str) -> RouteDecision:
                     "Try: little castle, chicken house, or bridge."
                 ),
             )
+        cleaned_paste: dict[str, Any] = {
+            "template_id": str(arguments.get("template_id"))
+        }
+        if clear_site:
+            cleaned_paste["clear_site"] = True
+        forward = arguments.get("forward_blocks")
+        if isinstance(forward, int) and not isinstance(forward, bool) and 1 <= forward <= 128:
+            cleaned_paste["forward_blocks"] = forward
+        else:
+            extracted = extract_forward_blocks(prompt)
+            if extracted is not None:
+                cleaned_paste["forward_blocks"] = extracted
+        arguments = cleaned_paste
     elif intent.tool == "place_shape":
         kind = arguments.get("kind")
         if kind not in {"wall", "platform", "box_shell", "solid_box", "cylinder"}:
@@ -839,6 +1113,8 @@ def compiled_route(intent: CompiledIntent, job_id: str) -> RouteDecision:
             if not isinstance(arguments.get("roof"), bool):
                 return _invalid_model_route()
             cleaned_place["roof"] = bool(arguments.get("roof"))
+        if arguments.get("clear_site") is True or wants_clear_site(prompt):
+            cleaned_place["clear_site"] = True
         if "material" in arguments and arguments.get("material") is not None:
             material = arguments.get("material")
             if not isinstance(material, str):

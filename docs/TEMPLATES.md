@@ -17,6 +17,10 @@ parametric shapes.
 | `agent/templates/publish.py` | CC-BY outbound pack bundles |
 | Container: `/data/plugins/FastAsyncWorldEdit/schematics/neighborhood/` | Runtime paste target (compose volume) |
 
+**Paste volume cap:** Paper plugin `max-paste-volume` defaults to **2,000,000**
+(bounding-box cells). Mega curated gold (gothic cathedral ~155k non-air /
+~1.66M bbox) pastes under that cap; raise only with care.
+
 Catalog: **100+** templates (gold + corpus sprint entries). Natural-language
 selection uses the hybrid ranker — see `docs/TEMPLATE_RANKING.md`. See also
 `docs/TEMPLATE_INGESTION_POLICY.md` and `docs/COMMUNITY_PUBLISHING.md`.
@@ -35,6 +39,37 @@ selection uses the hybrid ranker — see `docs/TEMPLATE_RANKING.md`. See also
 2. Drop `.schem` files under `agent/templates/schematics/`.
 3. `docker compose up -d mc` remounts schematics; `paste_template_at_player`
    calls `ensure_schematic_on_server` if the file is missing in-container.
+
+## Curated gold refill (post-demote)
+
+After QA demotions, refill high-frequency kid cores with legitimate community
+`.schem` files (not seed-junk twins). Shopping list, sources (Bloxelizer,
+SchemCraft, Shulkr, Abfielder, …), and drop-folder workflow:
+
+→ [`docs/CURATED_REFILL.md`](CURATED_REFILL.md)
+
+```bash
+python3 scripts/list_gold_gaps.py --prio P0
+```
+
+## Manual QA grid (keep / demote)
+
+Paste **all** catalog schematics on a remote pad far from spawn, then fly the
+grid and mark junk for demote. Community scrape should wait until QA flags
+bad assets — do not mass-ingest replacements first.
+
+```bash
+# Console-only — does not teleport or require any online player.
+make qa-grid
+```
+
+- Pad origin: `(20000, 120, 20000)` — footprint-aware shelf packing (schem
+  width×depth + aisle; no cell overlap; megas get exclusive rects)
+- Populate uses `agent-paste-at` (FAWE at fixed coords); **never moves players**
+- Overview / ground TP: see [`docs/QA_GRID.md`](QA_GRID.md) (optional viewing only)
+- Index: [`docs/QA_GRID.md`](QA_GRID.md) (row/col → id/title/gold + stand + reserved)
+- Demote: wooden hoe in-game, then `make qa-apply-demotions` (see `agent/templates/gold/README.md`)
+- Full world check (templates + mobs): `make full-validation`
 
 ## Seed missing schematics
 

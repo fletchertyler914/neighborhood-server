@@ -1,19 +1,19 @@
 # Neighborhood Minecraft Server
 
-> **Self-hosted, free, crossplay Minecraft with a local AI sidekick.**
-> Kids and friends type plain English in chat — `/agent build me a small
-> chicken coop` — and the Paper plugin does it natively. Inference stays on
-> your machine (Ollama). No cloud required.
+> **Self-hosted, free, crossplay Minecraft with a local AI helper (Crafter).**
+> Kids and friends type plain English in chat — `/ai` or `/agent`,
+> e.g. `/ai build me a small chicken coop` — and the Paper plugin does it
+> natively. Inference stays on your machine (Ollama). No cloud required.
 >
 > Status: supervised family / home-server beta. License: MIT.
 
 ## What you get
 
 - A Paper Minecraft server (Java + Bedrock crossplay via Geyser + Floodgate)
-- An in-game `/agent <prompt>` **sidekick** (local LLM + deterministic fast paths)
+- An in-game `/ai` or `/agent` **helper** (chat name `Crafter`; local LLM + deterministic fast paths)
 - Native typed actions over a private WebSocket (`mc-agent` ↔ Paper plugin) —
   **RCON is not used for `/agent`**
-- 101 curated `.schem` templates with lexical ranking for natural build asks
+- 101 curated `.schem` templates with hybrid lexical + local BoW semantic ranking for natural build asks
 - Companion gates: `make companion-gate` (offline) and `make companion-live`
   (world e2e with a player online)
 - Sidekick triage: `make companion-feedback-export` / `make companion-triage`
@@ -23,13 +23,15 @@
 
 ### What `/agent` can do today
 
-Time/weather, give safe items, summon friendly animals, paste gold-curated
-templates, finish a visible wall opening, and make bounded player-relative
-shapes: walls, platforms, hollow/solid boxes, and cylinders. “Watchtower”
-uses a gold template; “tower 10 tall” makes a simple shape. Every build uses
-a bounded FAWE changeset, is claim-checked, verified, undoable, and supports short revisions such as
-“make it taller” or “use oak.” It does **not** dig, clear large areas, use
-FAVS/heightmaps, or run arbitrary WorldEdit.
+Kid-friendly phrase catalog: [docs/AGENT_PLAYBOOK.md](docs/AGENT_PLAYBOOK.md).
+
+Time/weather, give ordinary items (not admin blocks), summon spawnable mobs,
+paste gold-curated templates, finish a visible wall opening, and make bounded
+player-relative shapes: walls, platforms, hollow/solid boxes, and cylinders.
+“Watchtower” uses a gold template; “tower 10 tall” makes a simple shape. Every
+build uses a bounded FAWE changeset, is claim-checked, verified, undoable, and
+supports short revisions such as “make it taller” or “use oak.” It does **not**
+dig, clear large areas, use FAVS/heightmaps, or run arbitrary WorldEdit.
 
 ## 30-second start
 
@@ -41,8 +43,8 @@ make bootstrap            # secrets, .env + AGENT_API_TOKEN, Ollama path choice
 make up                   # boots Paper + companion (+ bundled Ollama if chosen)
 make plugin && make seed  # in-game plugin + schematic corpus
 ./mc.sh cmd "whitelist add <yourname>"
-./mc.sh op <yourname>     # optional; kids do not need op for /agent
-# /agent build me a small chicken coop
+./mc.sh op <yourname>     # optional; kids do not need op for /agent or /ai
+# /ai build me a small chicken coop
 ```
 
 `make help` lists every target. Condensed path:
@@ -291,31 +293,33 @@ The repo ships project-scoped Cursor rules at `.cursor/rules/`:
 All four are `alwaysApply: true`, so any new Cursor chat in this workspace
 already has the context.
 
-## 10. In-game `/agent` sidekick
+## 10. In-game `/ai` / `/agent` helper (Crafter)
 
-Players talk to the sidekick only through Minecraft chat (no cheats required;
-family defaults grant `/agent` to all players). The Paper plugin maintains an
-authenticated outbound WebSocket to the private `mc-agent` runtime. Common
-requests use deterministic routing; ambiguous requests use one bounded
-local-model compile. The plugin revalidates and executes every action through
-Bukkit or FAWE APIs and honors GriefPrevention claims.
+Players talk to Crafter only through Minecraft chat (no cheats required;
+family defaults grant `/agent` and its `/ai` alias to all players). The Paper
+plugin maintains an authenticated outbound WebSocket to the private `mc-agent`
+runtime. Common requests use deterministic routing; ambiguous requests use one
+bounded local-model compile. The plugin revalidates and executes every action
+through Bukkit or FAWE APIs and honors GriefPrevention claims.
 
 ```text
-/agent make it daytime
+/ai make it daytime
 /agent give me three dirt blocks
-/agent spawn three chickens here
+/ai spawn three chickens here
 /agent build me a small chicken coop
-/agent finish this wall in front of me 8 blocks high
+/ai finish this wall in front of me 8 blocks high
 /agent undo that
 ```
 
 The plugin config (auto-generated in `data/plugins/NeighborhoodAgent/config.yml`)
-points at the Compose service:
+points at the Compose service. Chat label / boss-bar name is `display-name`
+(default `Crafter` — change that one string to rename):
 
 ```yaml
 gateway-url: ws://mc-agent:8787/v1/gateway
 api-token: env:AGENT_API_TOKEN
 server-id: neighborhood
+display-name: Crafter
 ```
 
 **Model**: `gemma4:12b-mlx` through Ollama (Metal/MLX on Apple Silicon).

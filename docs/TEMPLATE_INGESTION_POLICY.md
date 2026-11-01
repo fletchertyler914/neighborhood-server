@@ -7,9 +7,16 @@ Inbound community templates must pass strict license and provenance checks befor
 - `CC0-1.0`
 - `CC-BY-4.0`
 - `CC-BY-SA-4.0`
+- `CC-BY-NC-4.0` / `CC-BY-NC-SA-4.0` (and 3.0 variants)
 - `MIT`
 
-**Rejected:** NC, ND, proprietary, or unknown licenses. See `agent/templates/license_policy.yaml`.
+**CC-BY-NC is OK** for this private non-commercial neighborhood server when
+`source_url`, `author`, `license`, and `attribution` are persisted on the
+catalog entry. Prefer CC-BY when bulk-scraping.
+
+**Rejected:** ND, proprietary, or unknown licenses. See
+`agent/templates/license_policy.yaml`. Friends Shulkr ARR needs an explicit
+`--allow-arr` override.
 
 ## Source allowlist
 

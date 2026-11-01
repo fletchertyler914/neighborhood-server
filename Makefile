@@ -15,14 +15,17 @@ COLOR_RESET := \033[0m
 endif
 
 .PHONY: help bootstrap up down logs status restart \
-        seed smoke eval test live-tools live-core metal-check bakeoff agent-gate full-validation \
+        seed smoke eval test live-tools live-core metal-check bakeoff agent-gate full-validation qa-grid \
+        qa-grid-gold qa-resign-signs qa-apply-demotions \
         companion-gate companion-corpus companion-live companion-live-core \
         companion-live-templates companion-live-templates-all \
-        companion-live-safety companion-live-dialogue companion-deploy \
+        companion-live-safety companion-live-dialogue companion-deploy companion-reload \
+        ingest-schem ingest-shopping import-seed-csv gold-gaps schem-pipeline-sample \
+        qa-refill \
         perception-fast perception-replay perception-live perception-report \
         perception-promote elite-gate \
         corpus corpus-quick triage feedback-report feedback-export \
-        companion-feedback-export companion-triage training-data \
+        companion-feedback-export companion-gaps-export companion-triage training-data \
         train train-full deploy-model compare-models \
         plugin metrics health invite tunnels \
         format clean generate-corpus corpus-export
@@ -66,8 +69,20 @@ help:
 	@echo "  $(COLOR_GREEN)make companion-live-dialogue$(COLOR_RESET) Compound + multi-turn clarify flows"
 	@echo "  $(COLOR_GREEN)make companion-deploy$(COLOR_RESET) Build runtime + native plugin and restart Paper"
 	@echo "  $(COLOR_GREEN)make companion-feedback-export$(COLOR_RESET) Export SQLite feedback → JSONL buckets"
-	@echo "  $(COLOR_GREEN)make companion-triage$(COLOR_RESET)  Weekly feedback bucket summary + next steps"
-	@echo "  $(COLOR_GREEN)make full-validation$(COLOR_RESET)  Paste every template + summon every mob"
+	@echo "  $(COLOR_GREEN)make companion-gaps-export$(COLOR_RESET) Export unfulfilled asks (request_gaps) → JSONL"
+	@echo "  $(COLOR_GREEN)make companion-triage$(COLOR_RESET)  Weekly feedback + gaps summary + next steps"
+	@echo "  $(COLOR_GREEN)make qa-grid$(COLOR_RESET)         Paste every template on remote QA pad + docs/QA_GRID.md"
+	@echo "  $(COLOR_GREEN)make qa-grid-gold$(COLOR_RESET)    Wipe pad + paste catalog gold:true only (hoe-QA)"
+	@echo "  $(COLOR_GREEN)make qa-resign-signs$(COLOR_RESET)  Re-label QA campus oak signs (no re-paste)"
+	@echo "  $(COLOR_GREEN)make qa-apply-demotions$(COLOR_RESET) Apply in-game QA demotes → catalog gold:false"
+	@echo "  $(COLOR_GREEN)make full-validation$(COLOR_RESET)  QA grid + summon every mob"
+	@echo "  $(COLOR_GREEN)make gold-gaps$(COLOR_RESET)        High-priority demoted basics shopping list"
+	@echo "  $(COLOR_GREEN)make ingest-schem$(COLOR_RESET)     Ingest one URL/file → schem + gold catalog (URL= ID= TITLE=)"
+	@echo "  $(COLOR_GREEN)make schem-pipeline-sample$(COLOR_RESET)  SchemCraft-first P0 gap scrape sample (~20)"
+	@echo "  $(COLOR_GREEN)make qa-refill$(COLOR_RESET)       Selective QA strip for ONLY=id1,id2 (no campus wipe)"
+	@echo "  $(COLOR_GREEN)make ingest-shopping$(COLOR_RESET)  Batch ingest scripts/ingest_shopping_list.yaml"
+	@echo "  $(COLOR_GREEN)make import-seed-csv$(COLOR_RESET)  Import schem_scraper CSV (CSV= path, DRY_RUN=1)"
+	@echo "  $(COLOR_GREEN)make companion-reload$(COLOR_RESET) Restart mc-agent only (reload catalog)"
 	@echo ""
 	@echo "Elite perception"
 	@echo "  $(COLOR_GREEN)make perception-fast$(COLOR_RESET)   Schema + synthetic geometry + routing (<30s)"
@@ -218,6 +233,72 @@ perception-promote:
 elite-gate:
 	PYTHONPATH=. python3 -m evals.run_elite_gate
 
+qa-grid:
+	PYTHONPATH=. python3 scripts/full_validation.py --skip-mobs
+
+# Gold-only campus: wipe prior pad + paste catalog gold:true (hoe-QA after refill).
+qa-grid-gold:
+	PYTHONPATH=. python3 scripts/full_validation.py --skip-mobs --gold-only
+
+# Selective refill strip — paste only listed ids south of campus; merge QA_GRID.json.
+# Example: make qa-refill ONLY=house_cottage_small,cabin_log,treehouse_oak
+qa-refill:
+	@test -n "$(ONLY)" || (echo 'usage: make qa-refill ONLY=id1,id2,...'; exit 1)
+	PYTHONPATH=. python3 scripts/full_validation.py --skip-mobs --refill-strip --only "$(ONLY)"
+
+qa-resign-signs:
+	PYTHONPATH=. python3 scripts/full_validation.py --resign-signs
+
+qa-apply-demotions:
+	PYTHONPATH=. python3 scripts/apply_qa_demotions.py
+
+# Restart companion runtime only (catalog / ranker). Does not bounce Paper.
+companion-reload:
+	docker compose restart mc-agent
+
+# Curated gold refill helpers (see docs/CURATED_REFILL.md).
+# Example: make ingest-schem URL='https://www.schemcraft.com/schematics/…' ID=house_cottage_small
+gold-gaps:
+	PYTHONPATH=. python3 scripts/list_gold_gaps.py $(if $(PRIO),--prio $(PRIO),)
+
+ingest-schem:
+	@test -n "$(URL)" || (echo 'usage: make ingest-schem URL="https://…" [ID=…] [TITLE=…] [SOURCE_URL=…] [ALLOW_ARR=1] [DRY_RUN=1]'; exit 1)
+	PYTHONPATH=. python3 scripts/ingest_schem_url.py --url "$(URL)" \
+	  $(if $(ID),--id "$(ID)") \
+	  $(if $(TITLE),--title "$(TITLE)") \
+	  $(if $(SOURCE_URL),--source-url "$(SOURCE_URL)") \
+	  $(if $(AUTHOR),--author "$(AUTHOR)") \
+	  $(if $(LICENSE),--license "$(LICENSE)") \
+	  $(if $(ALLOW_ARR),--allow-arr) \
+	  $(if $(DRY_RUN),--dry-run)
+
+ingest-shopping:
+	PYTHONPATH=. python3 scripts/ingest_shopping_list.py \
+	  $(if $(DRY_RUN),--dry-run) \
+	  $(if $(RELOAD),--reload) \
+	  $(if $(ONLY),--only "$(ONLY)") \
+	  $(if $(CONTINUE),--continue-on-error)
+
+# Import schem_scraper output/seed_schematics.csv → companion.ingest_schem.
+# See docs/SCHEM_INGEST_SCHEMA.md. Example:
+#   make import-seed-csv CSV=/path/to/seed_schematics.csv DRY_RUN=1
+import-seed-csv:
+	@test -n "$(CSV)" || (echo 'usage: make import-seed-csv CSV=/path/to/seed_schematics.csv [DRY_RUN=1] [ONLY=id] [CONTINUE=1]'; exit 1)
+	PYTHONPATH=. python3 scripts/import_seed_csv.py --csv "$(CSV)" \
+	  $(if $(DRY_RUN),--dry-run) \
+	  $(if $(ONLY),--only "$(ONLY)") \
+	  $(if $(CONTINUE),--continue-on-error) \
+	  $(if $(ALLOW_ARR),--allow-arr) \
+	  $(if $(LIMIT),--limit $(LIMIT))
+
+# SchemCraft-primary scrape sample for open P0 gaps (rate-limited, SQLite idempotent).
+# Add PROMOTE=1 to upsert best candidates into catalog gold.
+schem-pipeline-sample:
+	PYTHONPATH=. python3 scripts/schem_pipeline/pipeline.py --sample --prio P0 \
+	  $(if $(PROMOTE),--promote) \
+	  $(if $(LIMIT),--limit $(LIMIT)) \
+	  $(if $(SOURCES),--sources "$(SOURCES)")
+
 full-validation:
 	PYTHONPATH=. python3 scripts/full_validation.py
 
@@ -257,10 +338,21 @@ feedback-export:
 	  --dpo-out datasets/preferences/from-feedback.jsonl
 
 companion-feedback-export:
+	@mkdir -p data
+	@docker compose exec -T mc-agent python -c "import sqlite3; c=sqlite3.connect('/var/lib/companion/companion.sqlite3'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()" 2>/dev/null || true
+	@docker cp mc-agent:/var/lib/companion/companion.sqlite3 data/companion.sqlite3 2>/dev/null || true
 	PYTHONPATH=. python3 scripts/export_companion_feedback.py
 
+companion-gaps-export:
+	@mkdir -p data
+	@docker compose exec -T mc-agent python -c "import sqlite3; c=sqlite3.connect('/var/lib/companion/companion.sqlite3'); c.execute('PRAGMA wal_checkpoint(TRUNCATE)'); c.close()" 2>/dev/null || true
+	@docker cp mc-agent:/var/lib/companion/companion.sqlite3 data/companion.sqlite3 2>/dev/null || true
+	PYTHONPATH=. python3 scripts/export_companion_gaps.py
+
 companion-triage:
-	PYTHONPATH=. python3 scripts/companion_triage.py
+	@$(MAKE) companion-feedback-export || true
+	PYTHONPATH=. python3 scripts/companion_triage.py --skip-export || true
+	@$(MAKE) companion-gaps-export || true
 
 training-data: corpus-export feedback-export
 	PYTHONPATH=. python3 -m agent.training merge-datasets \

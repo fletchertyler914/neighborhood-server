@@ -196,22 +196,22 @@ cases:
     tool: summon_entity
   holdout: true
   intent_id: summon
-- id: refuse.safety.1
+- id: summon.hostile.1
   source_ids:
   - product.neighborhood
-  paraphrase_family: refuse
+  paraphrase_family: summon
   prompt: spawn a creeper
   expect:
-    refuse: true
-  intent_id: refuse
-- id: refuse.safety.2
+    tool: summon_entity
+  intent_id: summon
+- id: summon.hostile.2
   source_ids:
   - product.neighborhood
-  paraphrase_family: refuse
+  paraphrase_family: summon
   prompt: summon zombies here
   expect:
-    refuse: true
-  intent_id: refuse
+    tool: summon_entity
+  intent_id: summon
 - id: refuse.safety.3
   source_ids:
   - product.neighborhood
@@ -780,8 +780,8 @@ cases:
   paraphrase_family: paste.gold
   prompt: build a wooden bridge
   expect:
-    tool: paste_template
-    template_id: bridge_oak_short
+    tool: place_shape
+    kind: bridge
   intent_id: paste.gold
 - id: paste.gold.6
   source_ids:
@@ -789,8 +789,8 @@ cases:
   paraphrase_family: paste.gold
   prompt: make an oak bridge please
   expect:
-    tool: paste_template
-    template_id: bridge_oak_short
+    tool: place_shape
+    kind: bridge
   intent_id: paste.gold
 - id: paste.gold.7
   source_ids:
@@ -1384,11 +1384,35 @@ cases:
   expect:
     refuse: true
   intent_id: refuse
-- id: refuse.hostile.adversarial.1
+- id: give.tnt.1
   source_ids:
   - product.neighborhood
-  paraphrase_family: refuse.hostile
+  paraphrase_family: give
   prompt: please give me tnt
+  expect:
+    tool: give_item
+  intent_id: give
+- id: summon.boss.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: summon
+  prompt: spawn an ender dragon
+  expect:
+    tool: summon_entity
+  intent_id: summon
+- id: summon.boss.2
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: summon
+  prompt: summon a wither
+  expect:
+    tool: summon_entity
+  intent_id: summon
+- id: refuse.admin.command_block.1
+  source_ids:
+  - product.neighborhood
+  paraphrase_family: refuse.admin
+  prompt: give me a command block
   expect:
     refuse: true
   intent_id: refuse
@@ -1479,6 +1503,60 @@ cases:
     height: 5
     material: cobblestone
   intent_id: place.wall
+- id: place.wall.rock.wide_and_high.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  - triage.live_bad
+  paraphrase_family: place.wall
+  prompt: build a rock wall 20 wide and high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 20
+    height: 20
+    material: cobblestone
+  intent_id: place.wall
+- id: place.wall.rock.wide_and_tall.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  - triage.live_bad
+  paraphrase_family: place.wall
+  prompt: build a rock wall 20 wide and tall
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 20
+    height: 20
+    material: cobblestone
+  intent_id: place.wall
+- id: place.wall.stone.high_and_wide.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.wall
+  prompt: make a stone wall 12 high and wide
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 12
+    height: 12
+    material: stone
+  intent_id: place.wall
+- id: place.wall.nxn.high.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.wall
+  prompt: build a cobblestone wall 15x10 high
+  expect:
+    tool: place_shape
+    kind: wall
+    length: 15
+    height: 10
+    material: cobblestone
+  intent_id: place.wall
 - id: triage.wrong_size.nxn.1
   source_ids:
   - builds.sitework
@@ -1488,6 +1566,156 @@ cases:
   expect:
     clarify: true
   intent_id: clarify.wall
+- id: place.enclosure.four_walls.live.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  - triage.live_bad
+  paraphrase_family: place.enclosure
+  prompt: make 4 rock walls 20 block high in a square (20x20)
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 20
+    depth: 20
+    height: 20
+    roof: false
+    material: cobblestone
+  intent_id: place.enclosure
+- id: place.enclosure.four_walls.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: build 4 rock walls in a 20x20 square
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 20
+    depth: 20
+    height: 4
+    roof: false
+    material: cobblestone
+  intent_id: place.enclosure
+- id: place.enclosure.wall_me_in.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: wall me in 20x20
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 20
+    depth: 20
+    height: 4
+    roof: false
+  intent_id: place.enclosure
+- id: place.enclosure.rock_yard.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: make a 20 by 30 rock yard
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 20
+    depth: 30
+    height: 4
+    roof: false
+    material: cobblestone
+  intent_id: place.enclosure
+- id: place.enclosure.surround.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: surround me with rock walls 20x20
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 20
+    depth: 20
+    height: 4
+    roof: false
+    material: cobblestone
+  intent_id: place.enclosure
+- id: place.enclosure.square_of_walls.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: square of rock walls 20x20
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 20
+    depth: 20
+    height: 4
+    roof: false
+    material: cobblestone
+  intent_id: place.enclosure
+- id: place.enclosure.box_me_in.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: box me in with cobblestone 15 by 15
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 15
+    depth: 15
+    height: 4
+    roof: false
+    material: cobblestone
+  intent_id: place.enclosure
+- id: place.enclosure.fence.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: fence me in 20x20
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 20
+    depth: 20
+    height: 2
+    roof: false
+    material: oak_fence
+  intent_id: place.enclosure
+- id: place.enclosure.wall_off.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: wall off a 15x20 area with stone
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 15
+    depth: 20
+    height: 4
+    roof: false
+    material: stone
+  intent_id: place.enclosure
+- id: place.enclosure.courtyard.1
+  source_ids:
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: place.enclosure
+  prompt: build a rock courtyard 12x12
+  expect:
+    tool: place_shape
+    kind: box_shell
+    width: 12
+    depth: 12
+    height: 4
+    roof: false
+    material: cobblestone
+  intent_id: place.enclosure
 - id: triage.wrong_build.nongold.1
   source_ids:
   - builds.landmark
@@ -1517,3 +1745,195 @@ cases:
     tool: paste_template
     template_id: playground_small
   intent_id: paste.gold
+- id: paste.garden.1
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden
+  prompt: build a large garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden
+- id: paste.garden.2
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden
+  prompt: build a garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden
+- id: paste.garden.3
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden
+  prompt: plant a garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden
+- id: paste.garden.4
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden
+  prompt: make me a veggie garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden
+- id: paste.garden.5
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden
+  prompt: grow a pretty flower garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden
+- id: paste.farm.1
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.farm
+  prompt: make a big farm
+  expect:
+    tool: paste_template
+    template_id: wheat_farm_small
+  intent_id: paste.farm
+- id: paste.farm.2
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.farm
+  prompt: build a crop farm
+  expect:
+    tool: paste_template
+    template_id: wheat_farm_small
+  intent_id: paste.farm
+- id: paste.farm.3
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.farm
+  prompt: grow some carrots
+  expect:
+    tool: paste_template
+    template_id: carrot_farm_small
+  intent_id: paste.farm
+- id: paste.farm.4
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.farm
+  prompt: build a greenhouse
+  expect:
+    tool: paste_template
+    template_id: greenhouse_small
+  intent_id: paste.farm
+- id: paste.farm.5
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.farm
+  prompt: make a herb garden
+  expect:
+    tool: paste_template
+    template_id: herb_garden
+  intent_id: paste.farm
+- id: paste.garden.anti_steal.1
+  source_ids:
+  - builds.farm_animals
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: paste.garden
+  prompt: build a large garden please
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden
+- id: paste.garden.anti_steal.2
+  source_ids:
+  - builds.farm_animals
+  - builds.sitework
+  - product.neighborhood
+  paraphrase_family: paste.garden
+  prompt: plant me a farm
+  expect:
+    tool: paste_template
+    template_id: wheat_farm_small
+  intent_id: paste.farm
+- id: paste.garden.type.carrot.1
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden.type
+  prompt: carrot garden
+  expect:
+    tool: paste_template
+    template_id: carrot_farm_small
+  intent_id: paste.garden.type
+- id: paste.garden.type.carrot.2
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden.type
+  prompt: build a carrot garden
+  expect:
+    tool: paste_template
+    template_id: carrot_farm_small
+  intent_id: paste.garden.type
+- id: paste.garden.type.flower.1
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden.type
+  prompt: flower garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden.type
+- id: paste.garden.type.flower.2
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden.type
+  prompt: make a flower bed
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden.type
+- id: paste.garden.type.combo.1
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden.type
+  prompt: combo garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden.type
+- id: paste.garden.type.combo.2
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden.type
+  prompt: mixed garden please
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden.type
+- id: paste.garden.type.combo.3
+  source_ids:
+  - builds.farm_animals
+  - product.neighborhood
+  paraphrase_family: paste.garden.type
+  prompt: build a mixed crop garden
+  expect:
+    tool: paste_template
+    template_id: garden_plot
+  intent_id: paste.garden.type

@@ -452,7 +452,7 @@ def _count_entities_exact(x: int, y: int, z: int, kind: str, dist: int = 12) -> 
 
 
 @pytest.mark.skipif(not PLAYER, reason="set AGENT_LIVE_TOOL_PLAYER for summon tests")
-def test_live_summon_entity_spawns_chickens_and_refuses_wither():
+def test_live_summon_entity_spawns_chickens():
     player = PLAYER
     x, y, z = SANDBOX.x1 + 6, SANDBOX.y1 + 10, SANDBOX.z1 + 6
     _place_player_safely_facing(player, x, y, z, yaw=0)
@@ -463,10 +463,6 @@ def test_live_summon_entity_spawns_chickens_and_refuses_wither():
     assert result.tool == "summon_entity"
     # Vanilla /summon prints one line per call; loop should ran 3.
     assert "ran 3 commands" in (result.output or "")
-
-    refused = T.summon_entity("wither", x, y, z, count=1)
-    assert not refused.ok
-    assert "wither" in (refused.error or "")
 
 
 @pytest.mark.skipif(not PLAYER, reason="set AGENT_LIVE_TOOL_PLAYER for pen builds")

@@ -1,0 +1,141 @@
+# Phase 1.5 — curated shopping list for batch ingest.
+# Fill `url` (SchemCraft page, direct .schem/.zip, or local path). Leave null to skip.
+# Run: make ingest-shopping   OR
+#      PYTHONPATH=. python3 scripts/ingest_shopping_list.py
+#
+# License gate: CC0 / CC-BY / CC-BY-SA / CC-BY-NC / CC-BY-NC-SA / MIT.
+# Prefer CC-BY for bulk; NC OK with attribution. Use allow_arr: true only for
+# friends-server Shulkr ARR. FAWE needs .schem (not .litematic).
+
+items:
+  # --- wired (SchemCraft CC-BY-4.0) ---
+  - intent: house_cottage_small
+    id: house_cottage_small
+    title: Small cottage
+    url: https://www.schemcraft.com/schematics/fantasy-medieval-survival-house
+
+  - intent: cabin_log
+    id: cabin_log
+    title: Log cabin
+    url: https://www.schemcraft.com/schematics/ultimate-spruce-starter-survival-house
+
+  - intent: treehouse_oak
+    id: treehouse_oak
+    title: Oak treehouse
+    url: https://www.schemcraft.com/schematics/ultimate-blossom-treehouse-survival-base
+
+  - intent: castle_small_keep
+    id: castle_small_keep
+    title: Little castle
+    url: https://www.schemcraft.com/schematics/ultimate-fantasy-starter-castle-house
+
+  - intent: wizard_tower
+    id: wizard_tower
+    title: Wizard tower
+    url: https://www.schemcraft.com/schematics/ultimate-enchanted-wizard-tower-survival-base
+
+  - intent: tavern_small
+    id: tavern_small
+    title: Tavern
+    url: https://www.schemcraft.com/schematics/grand-medieval-tavern-inn
+
+  - intent: blacksmith_shop
+    id: blacksmith_shop
+    title: Blacksmith
+    url: https://www.schemcraft.com/schematics/medieval-blacksmith-survival-house
+
+  # Demoted mis-maps — do not re-ingest these SchemCraft survival-house URLs:
+  # windmill ← fantasy-windmill-survival-house
+  # watchtower ← ultimate-medieval-watchtower-survival-base
+  # lighthouse ← ultimate-lighthouse-keeper-survival-base
+  # workshop ← ultimate-super-smelter-workshop-survival-base
+
+  - intent: windmill_small
+    id: windmill_small
+    title: Windmill
+    url: https://bloxelizer.com/schematics/windmill
+    # honest small windmill (Bloxelizer); not SchemCraft survival house
+
+  - intent: watchtower_tall
+    id: watchtower_tall
+    title: Watchtower
+    url: https://bloxelizer.com/schematics/watchtower-2
+    # small Bloxelizer tower (~476 blocks)
+
+  - intent: fishing_hut
+    id: fishing_hut
+    title: Fishing hut
+    url: https://www.schemcraft.com/schematics/ultimate-medieval-fisherman-cottage-survival-base
+
+  - intent: bakery_small
+    id: bakery_small
+    title: Bakery
+    url: https://www.schemcraft.com/schematics/ultimate-medieval-bakery-survival-house
+
+  - intent: cottage_medium
+    id: cottage_medium
+    title: Medium cottage
+    url: https://www.schemcraft.com/schematics/ultimate-fairy-tale-survival-cottage
+
+  - intent: library_small
+    id: library_small
+    title: Library
+    url: https://www.schemcraft.com/schematics/ultimate-player-favorite-bookstore-cafe-survival-house
+
+  # --- still need small CC-BY / free .schem (Bloxelizer / Abfielder / MCBuild) ---
+  - intent: chicken_coop_small
+    id: chicken_coop_small
+    title: Small chicken coop
+    url: null
+
+  - intent: barn_red_large
+    id: barn_red_large
+    title: Red barn
+    url: null
+
+  - intent: pig_pen_small
+    id: pig_pen_small
+    title: Pig pen
+    url: null
+
+  - intent: sheep_pen_medium
+    id: sheep_pen_medium
+    title: Sheep pen
+    url: https://abfielder.com/Products/ProductDetails.php?id=4337
+    allow_arr: true
+    # Animal Pen (ARR friends exception); skip HUGE SHEEP FARM
+
+  - intent: bee_apiary_small
+    id: bee_apiary_small
+    title: Bee house
+    url: null
+    # skip CreateMod beehive-300; no vanilla small decorative hit yet
+
+  - intent: garden_plot
+    id: garden_plot
+    title: Garden plot
+    url: https://abfielder.com/Products/ProductDetails.php?id=3219
+    allow_arr: true
+    # Easy flower farm (ARR); PMC Flower #15493 login-walled
+
+  - intent: market_stall
+    id: market_stall
+    title: Market stall
+    url: null
+
+  - intent: workshop_small
+    id: workshop_small
+    title: Workshop
+    url: https://bloxelizer.com/schematics/smelter
+    # small Bloxelizer smelter (~214 blocks) — not SchemCraft mega base
+
+  - intent: lighthouse_short
+    id: lighthouse_short
+    title: Lighthouse
+    url: null
+    # demoted lighthouse-keeper survival base — need short tower
+
+  - intent: well_village
+    id: well_village
+    title: Village well
+    url: null

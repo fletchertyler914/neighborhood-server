@@ -198,7 +198,7 @@ def gold_template_entries() -> list[dict[str, Any]]:
     decor_specs = [
         ("lamp_post_iron", "Lamp post", "lamp post", [2, 5, 2]),
         ("fountain_small", "Fountain", "fountain", [7, 5, 7]),
-        ("garden_plot", "Garden plot", "garden", [9, 2, 9]),
+        ("garden_plot", "Garden plot", "garden", [9, 3, 9]),
         ("gazebo_oak", "Gazebo", "gazebo", [7, 6, 7]),
         ("statue_pillar", "Statue pillar", "statue", [3, 8, 3]),
         ("flag_pole", "Flag pole", "flag pole", [2, 12, 2]),
@@ -206,6 +206,28 @@ def gold_template_entries() -> list[dict[str, Any]]:
         ("bench_row", "Bench row", "benches", [8, 2, 3]),
     ]
     for tid, title, alias, fp in decor_specs:
+        if tid == "garden_plot":
+            entries.append(
+                _entry(
+                    tid,
+                    title=title,
+                    category="farm",
+                    complexity="basic",
+                    tags=["garden", "farm", "crop", "plants", "decoration"],
+                    aliases=[alias, "large garden", "big garden", "flower garden", "veggie garden"],
+                    footprint=fp,
+                    fallback_tool="build_platform",
+                    fallback_args={
+                        "center_x": "${ax}",
+                        "y": "${ay}",
+                        "center_z": "${az}",
+                        "width": fp[0],
+                        "depth": fp[2],
+                        "block": "grass_block",
+                    },
+                )
+            )
+            continue
         entries.append(
             _entry(
                 tid,

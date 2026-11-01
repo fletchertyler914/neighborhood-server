@@ -108,8 +108,8 @@ still respect GriefPrevention claims.
 /agent undo that
 ```
 
-What it **won't** do: dig/clear large areas, hostile mobs, dangerous items,
-or bypass someone else's claim.
+What it **won't** do: dig/clear large areas, admin blocks (command/structure),
+bypass someone else's claim, or exceed edit budgets.
 
 ## 7. Validate
 

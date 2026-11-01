@@ -18,6 +18,12 @@ dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:2.15.3") {
         isTransitive = false
     }
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testImplementation("com.google.code.gson:gson:2.11.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 java {

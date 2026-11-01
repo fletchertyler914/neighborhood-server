@@ -2,3 +2,23 @@
 gateway-url: ws://mc-agent:8787/v1/gateway
 api-token: env:AGENT_API_TOKEN
 server-id: neighborhood
+
+# Kid-facing name in chat prefixes, boss bar, and short status lines.
+# Change this string anytime — no code rebuild needed after a Paper restart.
+display-name: Crafter
+
+# Waypoint block for /ai start marking a path|bridge (Flow A).
+# Kids place these in order; finish connects them. Also used for nearby scan.
+path-marker-block: GOLD_BLOCK
+
+# Curated FAWE paste safety cap (bounding-box volume, including air).
+# Raised for friends-server mega pastes (e.g. Bloxelizer mega-castle ~56M bbox).
+# Claims/overlap/undo still apply; GriefPrevention probes are sampled (≤2048).
+max-paste-volume: 60000000
+
+# QA campus demote (docs/QA_GRID.md). Any op (neighborhood.agent.qa, default: op).
+# /qa-hoe or /agent qa-hoe gives the item. Left-click demote, right-click undo.
+# Each row in qa-demotions.jsonl records player. Apply later: make qa-apply-demotions
+qa-demote-item: WOODEN_HOE
+qa-promote-item: WOODEN_HOE
+qa-grid-file: qa-grid.json

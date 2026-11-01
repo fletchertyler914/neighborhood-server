@@ -2,38 +2,70 @@ name: NeighborhoodAgent
 version: ${version}
 main: com.neighborhood.agent.NeighborhoodAgentPlugin
 api-version: '1.21'
-description: Local-first in-game Minecraft sidekick
+description: Local-first in-game Minecraft helper (/agent or /ai)
 author: neighborhood-server
 depend: [FastAsyncWorldEdit]
 softdepend: [GriefPrevention]
 commands:
   agent:
-    description: Ask your Minecraft sidekick for help
+    description: Ask Crafter for help in Minecraft
     usage: /agent <what you want>
+    aliases: [ai]
+    permission: neighborhood.agent
+  builds:
+    description: Open Crafter's Build Book
+    usage: /builds [book]
+    aliases: [buildbook, menu]
     permission: neighborhood.agent
   agent-as:
-    description: Console/RCON live-validation hook that runs a sidekick job as a player
+    description: Console/RCON live-validation hook that runs a Crafter job as a player
     usage: /agent-as <player> <prompt...>
     permission: neighborhood.agent.eval
+  agent-paste:
+    description: Legacy console force-paste as an online player (prefer agent-paste-at)
+    usage: /agent-paste <player> <template_id>
+    permission: neighborhood.agent.eval
+  agent-paste-at:
+    description: Console/RCON force-paste at fixed coords — no player, no teleport (QA grid)
+    usage: /agent-paste-at <world> <x> <y> <z> <template_id>
+    permission: neighborhood.agent.eval
+  agent-clear-box:
+    description: Console/RCON FAWE air-clear a cuboid (ops cleanup)
+    usage: /agent-clear-box <world> <x1> <y1> <z1> <x2> <y2> <z2>
+    permission: neighborhood.agent.eval
+  qa-hoe:
+    description: Give yourself the QA demote wooden hoe (any op)
+    usage: /qa-hoe
+    aliases: [qahoe]
+    permission: neighborhood.agent.qa
 permissions:
   neighborhood.agent.eval:
     description: Run agent-as live validation from console/RCON
     default: op
   neighborhood.agent:
-    description: Use /agent
+    description: Use /agent or /ai
     default: true
   neighborhood.agent.world:
-    description: Let the sidekick change time and weather
+    description: Let Crafter change time and weather
     default: true
   neighborhood.agent.inventory:
-    description: Let the sidekick give the player items
+    description: Let Crafter give the player items
     default: true
   neighborhood.agent.mobs:
-    description: Let the sidekick summon bounded friendly mobs
+    description: Let Crafter summon bounded friendly mobs
     default: true
   neighborhood.agent.undo:
-    description: Undo the player's most recent sidekick action
+    description: Undo the player's most recent Crafter action
     default: true
   neighborhood.agent.build:
-    description: Let the sidekick build and paste curated templates where the player may edit
+    description: Let Crafter build and paste curated templates where the player may edit
     default: true
+  neighborhood.lava.place:
+    description: Allow placing lava blocks and emptying lava buckets
+    default: op
+  neighborhood.agent.qa:
+    description: Demote / re-promote templates on the QA grid with the QA hoe
+    default: op
+  neighborhood.agent.ingest:
+    description: Ingest schematics from allowlisted URLs via /ai ingest (ops)
+    default: op

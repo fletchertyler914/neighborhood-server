@@ -28,6 +28,7 @@ plugins/neighborhood-agent/.gradle/
 # --- agent transient indexes / audits ----------------------------------
 agent/templates/.rank_index/
 agent/templates/.seed_manifest.json
+agent/templates/schematics/_seed_bak/
 datasets/
 models/
 
@@ -45,3 +46,11 @@ models/
 *.log
 tmp_*.py
 scratch/
+
+# --- schem scrape pipeline runtime -------------------------------------
+scripts/schem_pipeline/db/*.sqlite3
+scripts/schem_pipeline/downloads/
+scripts/schem_pipeline/logs/
+!scripts/schem_pipeline/db/.gitkeep
+!scripts/schem_pipeline/downloads/.gitkeep
+!scripts/schem_pipeline/logs/.gitkeep

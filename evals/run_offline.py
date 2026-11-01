@@ -170,6 +170,18 @@ def _extra_match(
             return False
         needle = expect.get("route_contains", "refuse")
         return needle in decision.route
+    if expect.get("help"):
+        if decision.action is not None:
+            return False
+        if not decision.route.startswith("help."):
+            return False
+        needle = expect.get("route_contains")
+        if needle and needle not in decision.route:
+            return False
+        needle_msg = expect.get("message_contains")
+        if needle_msg and needle_msg.lower() not in decision.message.lower():
+            return False
+        return bool(decision.message)
     tool = expect.get("tool")
     if tool:
         if decision.action is None or decision.action.tool != tool:
@@ -188,6 +200,7 @@ def _extra_match(
             "width",
             "depth",
             "height",
+            "roof",
         ):
             if key in expect:
                 expected_arguments[key] = expect[key]

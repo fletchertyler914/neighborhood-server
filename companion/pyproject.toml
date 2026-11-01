@@ -9,6 +9,8 @@ dependencies = [
   "httpx>=0.27.0",
   "pydantic>=2.9.0",
   "pyyaml>=6.0.2",
+  "nbtlib>=2.0.4",
+  "litemapy>=0.10.0b0",
 ]
 
 [project.optional-dependencies]

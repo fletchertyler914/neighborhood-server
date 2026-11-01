@@ -387,20 +387,28 @@ def resolve_followup(
         return None
 
     revise = resolve_revise(prompt=text, session=session, job_id=job_id)
-    if revise is not None and (pending is None or pending.kind in {"wall", "floor", "general"}):
-        # Prefer revise when there is no give/template pending to finish.
-        if pending is None or pending.kind not in {"give", "template"}:
+    if revise is not None and (
+        pending is None or pending.kind in {"wall", "floor", "general"}
+    ):
+        # Prefer revise when there is no give/template/clear pending to finish.
+        if pending is None or pending.kind not in {"give", "template", "clear_site"}:
             return revise
 
     # Affirmations reuse a default action if we stored one.
-    if pending and re.fullmatch(r"(?:yes|yeah|yep|ok|okay|sure|please)[.!]?", text, re.I):
+    # clear_site pending: "yes" → retry paste/shape with clear_site=true.
+    if pending and re.fullmatch(
+        r"(?:yes|yeah|yep|ok|okay|sure|please|y)[.!]?", text, re.I
+    ):
         default = pending.slots.get("default_tool")
         default_args = pending.slots.get("default_arguments")
         if isinstance(default, str) and isinstance(default_args, dict):
+            args = dict(default_args)
+            if pending.kind == "clear_site":
+                args["clear_site"] = True
             return RouteDecision(
                 route="session.affirm",
                 tier="A",
-                action=_action(job_id, default, default_args, risk="bounded"),
+                action=_action(job_id, default, args, risk="bounded"),
             )
 
     # Fresh vague builds ("build me a house") must clarify — never let
@@ -436,18 +444,23 @@ def resolve_followup(
             match = match_template(candidate, gold_only=True)
             if match is None or not match.gold:
                 continue
+            if match.needs_clarify and pending is None:
+                continue
             if pending is not None or re.search(
-                r"\b(small|big|large|coop|house|barn|bridge|that|one|cottage)\b",
+                r"\b(small|big|large|coop|house|barn|bridge|that|one|cottage|"
+                r"market|stall|shop|garden|farm)\b",
                 text,
                 re.I,
             ):
+                from companion.routing import _paste_template_args
+
                 return RouteDecision(
                     route="session.paste_template",
                     tier="A",
                     action=_action(
                         job_id,
                         "paste_template",
-                        {"template_id": match.template_id},
+                        _paste_template_args(match.template_id, text),
                         risk="bounded",
                     ),
                 )

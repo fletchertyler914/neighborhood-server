@@ -52,6 +52,27 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
         return perception;
     }
 
+    PathMarkerSessions pathMarkerSessions() {
+        return tools.pathMarkerSessions();
+    }
+
+    TemplateCatalog templateCatalog() {
+        return tools.templateCatalog();
+    }
+
+    void replaceTemplateCatalog(TemplateCatalog next) {
+        tools.replaceTemplateCatalog(next);
+    }
+
+    /** Kid Build Book paste — same path as companion {@code paste_template}. */
+    public CompletableFuture<NativeToolRegistry.ToolResult> pasteFromBrowser(
+            Player player,
+            String templateId,
+            boolean clearSite
+    ) {
+        return tools.pasteTemplate(player, templateId, clearSite);
+    }
+
     public void start() {
         connect();
         plugin.getServer().getScheduler().runTaskTimerAsynchronously(
@@ -71,6 +92,35 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
 
     public boolean isReady() {
         return ready && socket != null;
+    }
+
+    /**
+     * Operator/QA force-paste: native schematic path, no companion gold gate.
+     * Prefer {@link #forcePasteTemplateAt} — this path still needs an online player.
+     */
+    public CompletableFuture<NativeToolRegistry.ToolResult> forcePasteTemplate(
+            Player player,
+            String templateId
+    ) {
+        JsonObject arguments = new JsonObject();
+        arguments.addProperty("template_id", templateId);
+        // QA /agent-paste must opt into site clear — mega footprints always
+        // report obstructed/unsupported on a flat pad without this.
+        arguments.addProperty("clear_site", true);
+        return tools.executeAsync(player, "paste_template", arguments);
+    }
+
+    /**
+     * Console QA paste at fixed stand coords. No player, no teleport.
+     */
+    public CompletableFuture<NativeToolRegistry.ToolResult> forcePasteTemplateAt(
+            String worldName,
+            int standX,
+            int standY,
+            int standZ,
+            String templateId
+    ) {
+        return tools.pasteTemplateAt(worldName, standX, standY, standZ, templateId, true);
     }
 
     private String getApiToken() {
@@ -122,7 +172,10 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
     public CompletableFuture<JobResult> submitJob(JobPayload payload) {
         if (!isReady()) {
             return CompletableFuture.completedFuture(
-                    JobResult.fail("Your sidekick is waking up. Try again in a moment.")
+                    JobResult.fail(
+                            "Your " + plugin.getDisplayName()
+                                    + " is waking up. Try again in a moment."
+                    )
             );
         }
         String jobId = UUID.randomUUID().toString();
@@ -140,6 +193,7 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
         player.addProperty("yaw", payload.yaw());
         player.addProperty("pitch", payload.pitch());
         player.addProperty("gamemode", payload.gamemode());
+        player.addProperty("can_ingest", payload.canIngest());
 
         JsonObject body = new JsonObject();
         body.addProperty("prompt", payload.prompt());
@@ -147,11 +201,17 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
         if (payload.observation() != null) {
             body.add("observation", payload.observation());
         }
+        // Heavy jobs (ingest convert + mega FAWE pastes) need minutes, not 10s.
+        // Client wait must match (or slightly exceed) the job deadline — a short
+        // orTimeout cancels the chat wait, drops the PendingJob, and orphans the paste.
+        boolean heavy = looksLikeHeavyJob(payload.prompt());
+        long waitMs = heavy ? 1_200_000L : 10_000L; // 20 min for mega castle-class pastes
+        long deadlineMs = System.currentTimeMillis() + waitMs;
         send(envelope(
                 "job.submit",
                 traceId,
                 jobId,
-                System.currentTimeMillis() + 10_000L,
+                deadlineMs,
                 body
         )).exceptionally(error -> {
             PendingJob removed = jobs.remove(jobId);
@@ -160,10 +220,14 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
             }
             return null;
         });
-        return future.orTimeout(12, java.util.concurrent.TimeUnit.SECONDS)
+        long clientTimeoutSec = heavy ? 1210L : 12L;
+        return future.orTimeout(clientTimeoutSec, java.util.concurrent.TimeUnit.SECONDS)
                 .exceptionally(error -> {
                     jobs.remove(jobId);
-                    return JobResult.fail("That took too long, so I stopped safely.");
+                    String msg = heavy
+                            ? "That build is taking too long. Try again in a clearer spot, or ask an op."
+                            : "That took too long, so I stopped safely.";
+                    return JobResult.fail(msg);
                 });
     }
 
@@ -202,7 +266,7 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
     public CompletionStage<?> onClose(WebSocket webSocket, int statusCode, String reason) {
         socket = null;
         ready = false;
-        failPending("Your sidekick disconnected. Please try again.");
+        failPending("Your " + plugin.getDisplayName() + " disconnected. Please try again.");
         if (!closing.get()) {
             plugin.getLogger().warning("Companion disconnected (" + statusCode + "): " + reason);
             scheduleReconnect();
@@ -214,7 +278,7 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
     public void onError(WebSocket webSocket, Throwable error) {
         socket = null;
         ready = false;
-        failPending("Your sidekick disconnected. Please try again.");
+        failPending("Your " + plugin.getDisplayName() + " disconnected. Please try again.");
         if (!closing.get()) {
             plugin.getLogger().warning("Companion gateway error: " + rootMessage(error));
             scheduleReconnect();
@@ -343,8 +407,13 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
             ));
             return;
         }
+        String toolName = payload.get("tool").getAsString();
         Long deadline = optionalLong(message, "deadline_ms");
-        if (deadline != null && System.currentTimeMillis() > deadline) {
+        // Mega paste_template can outlive the job budget once FAWE is running —
+        // never cancel an in-flight / just-dispatched schematic paste on deadline.
+        if (deadline != null
+                && System.currentTimeMillis() > deadline
+                && !"paste_template".equals(toolName)) {
             sendActionResult(message, resultPayload(
                     actionId,
                     NativeToolRegistry.ToolResult.fail("That request expired before changing the world.", 0)
@@ -364,7 +433,7 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
             }
             tools.executeAsync(
                     player,
-                    payload.get("tool").getAsString(),
+                    toolName,
                     payload.getAsJsonObject("arguments")
             ).whenComplete((result, error) -> {
                 NativeToolRegistry.ToolResult completed = error == null
@@ -493,7 +562,7 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
     public void close() {
         closing.set(true);
         ready = false;
-        failPending("Your sidekick is restarting.");
+        failPending("Your " + plugin.getDisplayName() + " is restarting.");
         WebSocket current = socket;
         socket = null;
         if (current != null) {
@@ -512,12 +581,15 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
             float pitch,
             String gamemode,
             String prompt,
-            JsonObject observation
+            JsonObject observation,
+            boolean canIngest
     ) {
         static JobPayload from(Player player, String prompt, PerceptionEngine perception) {
             var location = player.getLocation();
             GameMode mode = player.getGameMode();
             JsonObject observation = perception.captureFast(player);
+            boolean canIngest = player.hasPermission("neighborhood.agent.ingest")
+                    || player.hasPermission("neighborhood.agent.qa");
             return new JobPayload(
                     player.getName(),
                     player.getUniqueId().toString(),
@@ -529,9 +601,64 @@ public final class CompanionGateway implements AutoCloseable, WebSocket.Listener
                     location.getPitch(),
                     mode.name().toLowerCase(),
                     prompt,
-                    observation
+                    observation,
+                    canIngest
             );
         }
+    }
+
+    private static boolean looksLikeIngest(String prompt) {
+        if (prompt == null) {
+            return false;
+        }
+        String p = prompt.toLowerCase();
+        return p.contains("ingest ")
+                || p.contains("add schem")
+                || p.contains("add template")
+                || p.contains("add schematic")
+                || p.contains("import schem")
+                || p.contains("import template");
+    }
+
+    /**
+     * Ingest converts + curated mega pastes — minutes, not the 10s grammar budget.
+     * Includes clear-site affirmations ({@code /ai yes}): the paste runs on that
+     * follow-up job, not the original "build …" prompt.
+     */
+    private static boolean looksLikeHeavyJob(String prompt) {
+        if (looksLikeIngest(prompt)) {
+            return true;
+        }
+        if (prompt == null || prompt.isBlank()) {
+            return false;
+        }
+        String p = prompt.toLowerCase(java.util.Locale.ROOT).trim();
+        // Clear-site / confirm retries — mega FAWE paste actually starts here.
+        if (p.equals("yes")
+                || p.equals("y")
+                || p.equals("yeah")
+                || p.equals("yep")
+                || p.equals("yup")
+                || p.equals("ok")
+                || p.equals("okay")
+                || p.equals("sure")
+                || p.equals("do it")
+                || p.equals("go ahead")
+                || p.equals("clear")
+                || p.equals("clear it")
+                || p.equals("clear the way")
+                || p.startsWith("yes ")
+                || p.startsWith("ok ")) {
+            return true;
+        }
+        return p.contains("build")
+                || p.contains("paste")
+                || p.contains("place a ")
+                || p.contains("place the ")
+                || p.startsWith("make me ")
+                || p.startsWith("make a ")
+                || p.contains("castle")
+                || p.contains("schematic");
     }
 
     public record JobResult(boolean ok, String message, boolean verified, int totalMs) {

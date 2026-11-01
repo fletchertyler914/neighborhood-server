@@ -19,7 +19,7 @@ Player /agent
 
 The Python runtime is not trusted to mutate the world. The Paper plugin checks
 the protocol schema, player identity, permissions, GriefPrevention claims,
-deadlines, edit limits, restricted items/entities, and idempotency before each
+deadlines, edit limits, admin-item restrictions, and idempotency before each
 action. It journals action results so reconnects cannot repeat mutations.
 
 RCON remains private for operator scripts and backups. It is never an agent
@@ -44,6 +44,14 @@ framework is required.
 `plugins/neighborhood-agent/` maintains the outbound connection and executes
 typed actions. Direct FAWE API calls paste schematics without player
 teleportation, selections, or text commands.
+
+### Build Book (in-game explorer)
+
+Kids browse the gold catalog with a chest GUI (`/builds`, `/menu`, or
+Crafter’s Build Book item). The plugin reads the same mounted
+`catalog.json` locally (categories, search, confirm), then pastes via the
+existing native `paste_template` executor (claims, volume caps, verify,
+undo). No companion WebSocket catalog API and no 3D preview.
 
 ## Perception (eyes)
 

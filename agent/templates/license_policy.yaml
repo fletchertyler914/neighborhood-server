@@ -1,11 +1,17 @@
 schema_version: 1
+# Private non-commercial neighborhood server: CC-BY-NC (+ SA) allowed
+# when source_url / author / attribution are stored on the catalog entry.
+# Prefer CC-BY / CC0 / MIT when choosing bulk scrapes for redistribution hygiene.
 inbound_allowed_spdx:
   - CC0-1.0
   - CC-BY-4.0
   - CC-BY-SA-4.0
+  - CC-BY-NC-4.0
+  - CC-BY-NC-SA-4.0
+  - CC-BY-NC-3.0
+  - CC-BY-NC-SA-3.0
   - MIT
 inbound_rejected_patterns:
-  - NC
   - ND
   - NOASSERTION
   - proprietary

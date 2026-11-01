@@ -91,9 +91,10 @@ def main() -> int:
     print()
     print("Next steps:")
     print("  1. Bucket each bad row: wrong_build / wrong_place / wrong_size")
-    print("  2. Add eighty_seed case(s) or gold/alias fix for the cluster")
-    print("  3. make companion-corpus && make companion-gate")
-    print("  4. Optional live: AGENT_LIVE_PLAYER=firecrab93 make companion-live-core")
+    print("  2. Also run: make companion-gaps-export  # real unfulfilled asks")
+    print("  3. Add eighty_seed case(s) or gold/alias fix for the cluster")
+    print("  4. make companion-corpus && make companion-gate")
+    print("  5. Optional live: AGENT_LIVE_PLAYER=firecrab93 make companion-live-core")
     if by_tag.get("wrong_build") or by_tag.get("wrong_place"):
         print("  hint: finish-vs-place / gold paste mismatches often land here")
     if by_tag.get("wrong_size"):

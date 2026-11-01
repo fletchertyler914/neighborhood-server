@@ -23,7 +23,7 @@ def test_protocol_envelope_schema_and_model_agree() -> None:
     assert envelope.type in schema["properties"]["type"]["enum"]
     tools = json.loads((ROOT / "protocol/tools.schema.json").read_text())
     names = {tool["name"] for tool in tools["tools"]}
-    assert {"set_time", "undo_last", "finish_wall"} <= names
+    assert {"set_time", "undo_last", "finish_wall", "give_looked_item"} <= names
 
 
 def test_release_gates_meet_product_contract() -> None:
@@ -134,11 +134,12 @@ def test_model_output_is_revalidated_before_execution() -> None:
     assert safe.action is not None
     assert safe.action.risk == "bounded"
 
+    # Count over the hard cap — still rejected after summon loosen.
     invalid = compiled_route(
         CompiledIntent(
             kind="action",
             tool="summon_entity",
-            arguments={"entity": "warden", "count": 20},
+            arguments={"entity": "chicken", "count": 21},
         ),
         "job-unsafe",
     )
@@ -170,6 +171,88 @@ def test_high_confidence_template_ranker_skips_model() -> None:
     assert decision.action.tool == "paste_template"
 
 
+def test_mega_cathedral_routes_near_player_paste() -> None:
+    decision = route("build a gothic cathedral", "job-cathedral")
+    assert decision.action is not None
+    assert decision.action.tool == "paste_template"
+    assert decision.action.arguments["template_id"] == "gothic_cathedral"
+    assert decision.action.arguments.get("clear_site") is True
+
+
+def test_clear_everything_in_the_way_sets_clear_site() -> None:
+    from companion.routing import (
+        CLEAR_ASK_MESSAGE,
+        extract_forward_blocks,
+        is_clear_ask_message,
+        wants_clear_site,
+    )
+
+    assert wants_clear_site(
+        "build a gothic cathedral and clear everything in the way"
+    )
+    assert wants_clear_site("make a spruce mansion and flatten the ground")
+    assert not wants_clear_site("build a gothic cathedral")
+    assert extract_forward_blocks("build a coop 20 blocks in front of me") == 20
+    assert is_clear_ask_message(CLEAR_ASK_MESSAGE)
+
+    decision = route(
+        "build a gothic cathedral and clear everything in the way",
+        "job-cathedral-clear",
+    )
+    assert decision.action is not None
+    assert decision.action.tool == "paste_template"
+    assert decision.action.arguments == {
+        "template_id": "gothic_cathedral",
+        "clear_site": True,
+    }
+
+
+def test_forward_blocks_parsed_into_paste_args() -> None:
+    decision = route(
+        "build a gothic cathedral 20 blocks in front of me",
+        "job-cathedral-forward",
+    )
+    assert decision.action is not None
+    assert decision.action.arguments["template_id"] == "gothic_cathedral"
+    assert decision.action.arguments["forward_blocks"] == 20
+    assert decision.action.arguments.get("clear_site") is True
+
+
+def test_clear_ask_affirm_retries_with_clear_site() -> None:
+    from companion.session import PlayerSession, resolve_followup
+
+    session = PlayerSession()
+    session.set_pending(
+        original_prompt="build a gothic cathedral",
+        question="I'll need to clear some ground there first — want me to?",
+        kind="clear_site",
+        slots={
+            "default_tool": "paste_template",
+            "default_arguments": {"template_id": "gothic_cathedral"},
+        },
+    )
+    decision = resolve_followup(
+        prompt="yes", session=session, job_id="job-clear-yes"
+    )
+    assert decision is not None
+    assert decision.action is not None
+    assert decision.action.tool == "paste_template"
+    assert decision.action.arguments == {
+        "template_id": "gothic_cathedral",
+        "clear_site": True,
+    }
+
+
+def test_curated_paste_auto_clears_site() -> None:
+    """Saying build X opts into clear — no chat “yes” loop."""
+    decision = route("build me a small chicken coop", "job-coop-clear")
+    assert decision.action is not None
+    assert decision.action.arguments == {
+        "template_id": "chicken_coop_small",
+        "clear_site": True,
+    }
+
+
 def test_kid_voice_catalog_aliases_resolve() -> None:
     """Natural kid phrases should hit the right template without model help."""
     cases = [
@@ -188,6 +271,11 @@ def test_kid_voice_catalog_aliases_resolve() -> None:
         ("bunny house", "rabbit_hutch_small"),
         ("christmas tree", "tree_spruce_pine"),
         ("wishing well", "well_village"),
+        ("large garden", "garden_plot"),
+        ("veggie garden", "garden_plot"),
+        ("big farm", "wheat_farm_small"),
+        ("crop farm", "wheat_farm_small"),
+        ("greenhouse", "greenhouse_small"),
     ]
     for prompt, expected in cases:
         # Alias ranking covers the full curation set; live auto-paste only

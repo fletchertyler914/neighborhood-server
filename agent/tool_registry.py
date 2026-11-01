@@ -728,10 +728,10 @@ TOOL_DEFINITIONS: tuple[ToolDefinition, ...] = (
         description=(
             "Summon vanilla mobs at absolute coordinates using /summon. "
             "Use this for prompts like 'spawn 4 chickens here', 'summon a "
-            "villager next to me', or 'drop a cow at 100 64 200'. For a "
+            "villager next to me', or 'spawn an ender dragon'. For a "
             "fenced area with animals (chicken coop, pig pen, etc.), use "
-            "build_animal_pen_at_player instead. Boss entities (wither, "
-            "ender_dragon, warden, elder_guardian) are refused."
+            "build_animal_pen_at_player instead. Any summonable entity is "
+            "allowed within count limits."
         ),
         parameters=_obj(
             {
@@ -739,7 +739,7 @@ TOOL_DEFINITIONS: tuple[ToolDefinition, ...] = (
                     "type": "string",
                     "minLength": 1,
                     "description": (
-                        "Mob id (chicken, cow, villager, axolotl, …). "
+                        "Mob id (chicken, creeper, ender_dragon, …). "
                         "Plurals like 'chickens' are normalized."
                     ),
                 },

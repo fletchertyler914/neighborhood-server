@@ -1,10 +1,32 @@
 # Hybrid Template Ranking
 
 Natural-language build requests such as `/agent build a small chicken coop`
-resolve through a **deterministic ranker**
-so small local models do not need to memorize snake_case template ids.
+resolve through a **deterministic hybrid ranker** (lexical + local bag-of-words
+embeddings) so small local models do not need to memorize snake_case template ids.
 
-## Flow
+> **Honest scope:** alias/lexical matching alone is not ~80% gameplay-usable for
+> open-ended build intent. The live companion path now uses the same hybrid
+> semantics layer; residual failures remain on novel phrasing, missing schematics,
+> and weak-margin ties that correctly clarify instead of pasting a default house.
+
+## Live `/agent` path (mc-agent)
+
+```text
+prompt → companion.templates.match_template() → confidence gate
+       → ranker.paste_template  |  grammar.clarify_template (top-3)
+```
+
+- **Strong exact/phrase alias** still short-circuits to auto-paste (gold only).
+- **Hybrid fusion** = lexical + BoW cosine + category priors (market/stall/shop,
+  garden/farm, fort, bridge). Default cottages are penalized on non-house asks.
+- **Typo fold** (`markket` → `market`) before ranking; embeddings warmed at startup.
+- **Weak / low-margin** → kid-friendly top-3 clarify, not a wrong house paste.
+- **Non-gold** → clarify (never auto-paste).
+
+Implementation: `companion/templates.py` + `companion/semantic.py` (self-contained
+in the `mc-agent` image; catalog mounted at `/app/assets/catalog.json`).
+
+## Offline / agent tooling path
 
 ```text
 prompt → resolve_template() → confidence gate → paste_template_at_player / disambiguation
@@ -16,7 +38,7 @@ prompt → resolve_template() → confidence gate → paste_template_at_player /
 4. **Policy reranker** — intent/size/schematic boosts with stable tie-breaks.
 5. **Confidence gate** — `high` auto-select, `medium` select + disambiguation note, `low` suggestions.
 
-Single entrypoint: `agent/templates/ranking.py` → `resolve_template(query, context)`.
+Entrypoint: `agent/templates/ranking.py` → `resolve_template(query, context)`.
 
 ## Runtime / gateway portability
 
@@ -25,8 +47,7 @@ Single entrypoint: `agent/templates/ranking.py` → `resolve_template(query, con
 | `search_templates` | Inspect top candidates + confidence without building |
 | `paste_template_at_player` | Build; `template_id` accepts NL or catalog id |
 | `list_templates` | Browse catalog by category/tags |
-
-All player requests share the same deterministic ranker and native gateway path.
+| live `/agent` paste | `companion.templates.match_template` (hybrid, gold-gated) |
 
 ## Configuration
 
@@ -34,16 +55,19 @@ Set in `.env` (see `.env.example`). Applied to `mc-agent` in `docker-compose.yml
 
 | Variable | Default | Description |
 | --- | --- | --- |
-| `TEMPLATE_RANKER_MODE` | `hybrid` | `hybrid` or `lexical_only` |
-| `TEMPLATE_EMBEDDING_BACKEND` | `local` | `local` or `disabled` (lexical-only semantic seed) |
+| `TEMPLATE_RANKER_MODE` | `hybrid` | `hybrid` or `lexical_only` (live + offline) |
+| `TEMPLATE_EMBEDDING_BACKEND` | `local` | `local` or `disabled` (falls back to lexical + category priors) |
 | `TEMPLATE_RANK_TOP_K` | `8` | Candidate pool size |
 | `TEMPLATE_CONFIDENCE_HIGH` | `0.72` | Auto-select threshold |
-| `TEMPLATE_CONFIDENCE_MEDIUM` | `0.45` | Select with disambiguation note |
+| `TEMPLATE_CONFIDENCE_MEDIUM` | `0.45` | Select with disambiguation / medium paste |
+| `TEMPLATE_RANK_MARGIN` | `0.12` | Min winner−runner-up gap for high confidence (live) |
 | `TEMPLATE_RANK_W_*` | 0.55 / 0.30 / 0.15 | Lexical / semantic / policy weights |
-| `TEMPLATE_RANKING_AUDIT` | `true` | Append `data/template-ranking-audit.jsonl` |
+| `TEMPLATE_RANKING_AUDIT` | `true` | Append `data/template-ranking-audit.jsonl` (offline path) |
 
-**Local MacBook** and **VPS**: same env vars; CPU-only embeddings. Use
-`TEMPLATE_EMBEDDING_BACKEND=disabled` on very small instances.
+Defaults are **ON** (`hybrid` + `local`). BoW embeddings are CPU-only and warm at
+`mc-agent` startup — no GPU cloud required. Use
+`TEMPLATE_EMBEDDING_BACKEND=disabled` on very small instances; category priors and
+typo folds still improve over bare alias overlap.
 
 ## Corpus growth
 
@@ -59,7 +83,8 @@ python3 -m agent.templates.ingest --pack-dir agent/templates/packs/my_pack --sou
 python3 -m agent.templates.ingest --ingest-packs
 ```
 
-Licenses: inbound CC0 / CC-BY / CC-BY-SA / MIT only (`license_policy.yaml`).
+Licenses: inbound CC0 / CC-BY / CC-BY-SA / CC-BY-NC / CC-BY-NC-SA / MIT
+(`license_policy.yaml`; NC OK private-server with attribution stored).
 
 ## Observability
 

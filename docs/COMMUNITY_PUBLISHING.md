@@ -40,7 +40,8 @@ Each catalog row should include:
 
 | Direction | License |
 |-----------|---------|
-| Inbound community packs | CC0, CC-BY, CC-BY-SA, MIT only |
+| Inbound `/ai ingest` (private server) | CC0, CC-BY, CC-BY-SA, CC-BY-NC, CC-BY-NC-SA, MIT |
+| Inbound community packs (redistributable) | CC0, CC-BY, CC-BY-SA, MIT only |
 | Outbound neighborhood packs | CC-BY-4.0 |
 
 Do not publish NC/ND/restricted derivatives.

@@ -26,12 +26,14 @@ final class NativeToolRegistry {
             "set_time",
             "set_weather",
             "give_item",
+            "give_looked_item",
             "summon_entity",
             "undo_last",
             "finish_wall",
             "finish_floor",
             "paste_template",
-            "place_shape"
+            "place_shape",
+            "mark_route"
     );
 
     @FunctionalInterface
@@ -39,6 +41,7 @@ final class NativeToolRegistry {
         ToolResult finish(Player player, JsonObject arguments, long started);
     }
     private static final int MAX_FLOOR_CELLS = 2_500;
+    /** Template follow-up pens stay peaceful; player summons use isSpawnable. */
     private static final Set<EntityType> FRIENDLY_ENTITIES = Set.of(
             EntityType.CHICKEN,
             EntityType.COW,
@@ -56,20 +59,14 @@ final class NativeToolRegistry {
             EntityType.CAMEL,
             EntityType.ARMADILLO
     );
+    /** Admin / world-integrity only — TNT, bedrock, lava, etc. are allowed. */
     private static final Set<Material> RESTRICTED_ITEMS = Set.of(
             Material.COMMAND_BLOCK,
             Material.CHAIN_COMMAND_BLOCK,
             Material.REPEATING_COMMAND_BLOCK,
             Material.STRUCTURE_BLOCK,
             Material.JIGSAW,
-            Material.DEBUG_STICK,
-            Material.BARRIER,
-            Material.BEDROCK,
-            Material.TNT,
-            Material.LAVA_BUCKET,
-            Material.FIRE_CHARGE,
-            Material.FLINT_AND_STEEL,
-            Material.END_CRYSTAL
+            Material.DEBUG_STICK
     );
     private static final long UNDO_TTL_MS = 600_000L;
     private static final int MAX_WALL_HEIGHT = 128;
@@ -79,8 +76,10 @@ final class NativeToolRegistry {
     private final BuildPolicy buildPolicy;
     private final NativeSchematicPaster schematicPaster;
     private final PerceptionEngine perception;
-    private final TemplateCatalog catalog;
+    private volatile TemplateCatalog catalog;
     private final PlaceShapeExecutor placeShapeExecutor;
+    private final MarkRouteExecutor markRouteExecutor;
+    private final PathMarkerSessions pathMarkerSessions;
 
     NativeToolRegistry(
             NeighborhoodAgentPlugin plugin,
@@ -94,13 +93,60 @@ final class NativeToolRegistry {
                 plugin.getDataFolder().toPath().resolve("catalog.json"),
                 plugin.getLogger()
         );
-        this.schematicPaster = new NativeSchematicPaster(plugin, buildPolicy, catalog);
+        this.schematicPaster = new NativeSchematicPaster(plugin, buildPolicy, () -> catalog);
         this.placeShapeExecutor = new PlaceShapeExecutor(
                 buildPolicy,
                 perception,
                 this::rememberUndo,
                 this::finishWall
         );
+        Material markerBlock = materialOr(
+                plugin.getConfig().getString("path-marker-block", "GOLD_BLOCK"),
+                Material.GOLD_BLOCK
+        );
+        this.pathMarkerSessions = new PathMarkerSessions(markerBlock, plugin);
+        this.placeShapeExecutor.setMarkerSessions(pathMarkerSessions);
+        this.markRouteExecutor = new MarkRouteExecutor(
+                pathMarkerSessions,
+                placeShapeExecutor,
+                plugin.getDisplayName()
+        );
+    }
+
+    PathMarkerSessions pathMarkerSessions() {
+        return pathMarkerSessions;
+    }
+
+    TemplateCatalog templateCatalog() {
+        return catalog;
+    }
+
+    void replaceTemplateCatalog(TemplateCatalog next) {
+        if (next != null) {
+            this.catalog = next;
+        }
+    }
+
+    /** Browser / local GUI paste — same executor path as gateway {@code paste_template}. */
+    CompletableFuture<ToolResult> pasteTemplate(
+            Player player,
+            String templateId,
+            boolean clearSite
+    ) {
+        JsonObject arguments = new JsonObject();
+        arguments.addProperty("template_id", templateId);
+        if (clearSite) {
+            arguments.addProperty("clear_site", true);
+        }
+        return executeAsync(player, "paste_template", arguments);
+    }
+
+    private static Material materialOr(String raw, Material fallback) {
+        if (raw == null || raw.isBlank()) {
+            return fallback;
+        }
+        Material matched = Material.matchMaterial(raw.trim());
+        return matched != null ? matched : fallback;
     }
 
     List<String> capabilities() {
@@ -114,11 +160,13 @@ final class NativeToolRegistry {
                 case "set_time" -> setTime(player, arguments, started);
                 case "set_weather" -> setWeather(player, arguments, started);
                 case "give_item" -> giveItem(player, arguments, started);
+                case "give_looked_item" -> giveLookedItem(player, arguments, started);
                 case "summon_entity" -> summonEntity(player, arguments, started);
                 case "undo_last" -> undoLast(player, started);
                 case "finish_wall" -> finishWall(player, arguments, started);
                 case "finish_floor" -> finishFloor(player, arguments, started);
                 case "place_shape" -> placeShapeExecutor.execute(player, arguments, started);
+                case "mark_route" -> markRouteExecutor.execute(player, arguments, started);
                 default -> ToolResult.fail("That ability is not installed.", elapsedMs(started));
             };
         } catch (IllegalArgumentException exception) {
@@ -128,14 +176,60 @@ final class NativeToolRegistry {
         }
     }
 
+    /**
+     * Console QA paste at fixed stand coords — no player, no teleport, no follow-ups.
+     */
+    CompletableFuture<ToolResult> pasteTemplateAt(
+            String worldName,
+            int standX,
+            int standY,
+            int standZ,
+            String templateId,
+            boolean clearSite
+    ) {
+        long started = System.nanoTime();
+        World world = plugin.getServer().getWorld(worldName);
+        if (world == null) {
+            return CompletableFuture.completedFuture(
+                    ToolResult.fail("Unknown world: " + worldName, elapsedMs(started))
+            );
+        }
+        final String tid = templateId == null ? "" : templateId.trim().toLowerCase();
+        if (tid.isBlank()) {
+            return CompletableFuture.completedFuture(
+                    ToolResult.fail("I couldn't understand that template name.", elapsedMs(started))
+            );
+        }
+        return CompletableFuture
+                .supplyAsync(() -> {
+                    try {
+                        return schematicPaster.load(tid);
+                    } catch (Exception error) {
+                        throw new CompletionException(error);
+                    }
+                })
+                .thenCompose(loaded -> onMainThread(
+                        () -> schematicPaster.prepareAt(
+                                world, standX, standY, standZ, loaded, clearSite
+                        )
+                ))
+                .thenApplyAsync(prepared -> schematicPaster.execute(prepared, started))
+                .thenApply(outcome -> outcome.result())
+                .exceptionally(error -> pasteFailure(error, started));
+    }
+
     CompletableFuture<ToolResult> executeAsync(Player player, String tool, JsonObject arguments) {
         if (!"paste_template".equals(tool)) {
             return CompletableFuture.completedFuture(execute(player, tool, arguments));
         }
         long started = System.nanoTime();
         final String templateId;
+        final boolean clearSite;
+        final Integer forwardBlocks;
         try {
             templateId = requiredString(arguments, "template_id");
+            clearSite = optionalBoolean(arguments, "clear_site");
+            forwardBlocks = optionalInt(arguments, "forward_blocks", 1, 128);
         } catch (IllegalArgumentException error) {
             return CompletableFuture.completedFuture(
                     ToolResult.fail("I couldn't understand that template name.", elapsedMs(started))
@@ -150,7 +244,9 @@ final class NativeToolRegistry {
                         throw new CompletionException(error);
                     }
                 })
-                .thenCompose(loaded -> onMainThread(() -> schematicPaster.prepare(player, loaded)))
+                .thenCompose(loaded -> onMainThread(
+                        () -> schematicPaster.prepare(player, loaded, clearSite, forwardBlocks)
+                ))
                 .thenApplyAsync(prepared -> schematicPaster.execute(prepared, started))
                 .thenCompose(outcome -> onMainThreadResult(() -> finalizePaste(player, outcome, started)))
                 .exceptionally(error -> pasteFailure(error, started));
@@ -259,6 +355,9 @@ final class NativeToolRegistry {
                 && cause.getCause() != null) {
             cause = cause.getCause();
         }
+        if (cause instanceof NativeSchematicPaster.NeedsClearException) {
+            return ToolResult.fail(cause.getMessage(), elapsedMs(started));
+        }
         if (cause instanceof NativeSchematicPaster.PolicyDeniedException) {
             return ToolResult.fail(cause.getMessage(), elapsedMs(started));
         }
@@ -358,8 +457,44 @@ final class NativeToolRegistry {
             return ToolResult.fail("I don't know that Minecraft item.", elapsedMs(started));
         }
         if (RESTRICTED_ITEMS.contains(material)) {
-            return ToolResult.fail("I can’t give out that item safely.", elapsedMs(started));
+            return ToolResult.fail("I can’t give out admin blocks.", elapsedMs(started));
         }
+        return deliverItem(player, material, amount, started);
+    }
+
+    /**
+     * Give the block the player is looking at (gaze). Used for "give me these blocks".
+     */
+    private ToolResult giveLookedItem(Player player, JsonObject arguments, long started) {
+        if (!player.hasPermission("neighborhood.agent.inventory")) {
+            return ToolResult.fail(
+                    "I can't give items here. Try: ask a grown-up for help.",
+                    elapsedMs(started)
+            );
+        }
+        Integer requested = optionalInt(arguments, "amount", 1, 64);
+        int amount = requested != null ? requested : 64;
+        GazeHit gaze = GazeSensor.capture(player);
+        if (!gaze.hit() || gaze.block() == null || gaze.block().getType().isAir()) {
+            return ToolResult.fail(
+                    "Look at a block and ask again.",
+                    elapsedMs(started)
+            );
+        }
+        Material material = gaze.block().getType();
+        if (!material.isItem() || material.isAir()) {
+            return ToolResult.fail(
+                    "I can't put that in your inventory. Try looking at a solid block.",
+                    elapsedMs(started)
+            );
+        }
+        if (RESTRICTED_ITEMS.contains(material)) {
+            return ToolResult.fail("I can’t give out admin blocks.", elapsedMs(started));
+        }
+        return deliverItem(player, material, amount, started);
+    }
+
+    private ToolResult deliverItem(Player player, Material material, int amount, long started) {
         var leftovers = player.getInventory().addItem(new ItemStack(material, amount));
         if (!leftovers.isEmpty()) {
             return ToolResult.fail("Your inventory is too full for all of that.", elapsedMs(started));
@@ -372,15 +507,33 @@ final class NativeToolRegistry {
     private ToolResult summonEntity(Player player, JsonObject arguments, long started) {
         if (!player.hasPermission("neighborhood.agent.mobs")) {
             return ToolResult.fail(
-                    "I can't summon animals here. Try: ask a grown-up for help.",
+                    "I can't summon mobs here. Try: ask a grown-up for help.",
                     elapsedMs(started)
             );
         }
-        String entityName = requiredString(arguments, "entity").toUpperCase(Locale.ROOT);
+        String entityName = requiredString(arguments, "entity")
+                .trim()
+                .toLowerCase(Locale.ROOT)
+                .replace('-', '_')
+                .replace(' ', '_');
+        if (entityName.startsWith("minecraft:")) {
+            entityName = entityName.substring("minecraft:".length());
+        }
+        // Common aliases the grammar may pass through.
+        entityName = switch (entityName) {
+            case "enderdragon", "dragon" -> "ender_dragon";
+            case "elderguardian" -> "elder_guardian";
+            default -> entityName;
+        };
         int count = requiredInt(arguments, "count", 1, 20);
-        EntityType type = EntityType.valueOf(entityName);
-        if (!type.isSpawnable() || !type.isAlive() || !FRIENDLY_ENTITIES.contains(type)) {
-            return ToolResult.fail("I can only summon friendly animals.", elapsedMs(started));
+        EntityType type;
+        try {
+            type = EntityType.valueOf(entityName.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException error) {
+            return ToolResult.fail("I don't know that Minecraft mob.", elapsedMs(started));
+        }
+        if (!type.isSpawnable() || !type.isAlive()) {
+            return ToolResult.fail("That can't be summoned here.", elapsedMs(started));
         }
         List<UUID> spawned = new ArrayList<>();
         for (int i = 0; i < count; i++) {
@@ -406,11 +559,19 @@ final class NativeToolRegistry {
         UUID playerId = player.getUniqueId();
         UndoAction action = undo.get(playerId);
         if (action == null) {
-            return ToolResult.fail("There isn’t a recent sidekick action to undo.", elapsedMs(started));
+            return ToolResult.fail(
+                    "There isn’t a recent " + plugin.getDisplayName()
+                            + " action to undo.",
+                    elapsedMs(started)
+            );
         }
         if (System.currentTimeMillis() - action.createdAtMs() > UNDO_TTL_MS) {
             undo.remove(playerId, action);
-            return ToolResult.fail("That sidekick action is more than 10 minutes old, so I can’t undo it safely.", elapsedMs(started));
+            return ToolResult.fail(
+                    "That " + plugin.getDisplayName()
+                            + " action is more than 10 minutes old, so I can’t undo it safely.",
+                    elapsedMs(started)
+            );
         }
         action.rollback().run();
         undo.remove(playerId, action);
@@ -450,7 +611,7 @@ final class NativeToolRegistry {
             );
         }
         if (RESTRICTED_ITEMS.contains(material)) {
-            return ToolResult.fail("I can’t use that block safely.", elapsedMs(started));
+            return ToolResult.fail("I can’t use admin blocks for that.", elapsedMs(started));
         }
 
         int height = requestedHeight != null && requestedHeight >= 2
@@ -720,7 +881,7 @@ final class NativeToolRegistry {
                 );
             }
             if (RESTRICTED_ITEMS.contains(material)) {
-                return ToolResult.fail("I can’t use that block safely.", elapsedMs(started));
+                return ToolResult.fail("I can’t use admin blocks for that.", elapsedMs(started));
             }
         }
         World world = player.getWorld();
@@ -959,6 +1120,23 @@ final class NativeToolRegistry {
         );
     }
 
+    private static boolean optionalBoolean(JsonObject arguments, String key) {
+        if (!arguments.has(key) || arguments.get(key).isJsonNull()) {
+            return false;
+        }
+        if (!arguments.get(key).isJsonPrimitive()) {
+            return false;
+        }
+        var primitive = arguments.get(key).getAsJsonPrimitive();
+        if (primitive.isBoolean()) {
+            return primitive.getAsBoolean();
+        }
+        if (primitive.isString()) {
+            return "true".equalsIgnoreCase(primitive.getAsString());
+        }
+        return false;
+    }
+
     private static String requiredString(JsonObject arguments, String key) {
         if (!arguments.has(key) || !arguments.get(key).isJsonPrimitive()) {
             throw new IllegalArgumentException("missing " + key);
@@ -989,7 +1167,8 @@ final class NativeToolRegistry {
             int executionMs
     ) {
         static ToolResult ok(String message, boolean verified, int executionMs) {
-            return new ToolResult(verified, true, verified, message, executionMs);
+            // ok stays true even when verified is false (informational successes).
+            return new ToolResult(true, true, verified, message, executionMs);
         }
 
         static ToolResult fail(String message, int executionMs) {

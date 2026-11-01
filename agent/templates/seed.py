@@ -137,8 +137,8 @@ def seed_one(template_id: str, player: str, *, keep_build: bool = False, dry_run
     wx1, wy1, wz1 = x1 - work_pad, y1, z1 - work_pad
     wx2, wy2, wz2 = x2 + work_pad, y2 + 4, z2 + work_pad
     volume = (wx2 - wx1 + 1) * (wy2 - wy1 + 1) * (wz2 - wz1 + 1)
-    if volume > 200_000:
-        return {"template_id": template_id, "ok": False, "error": f"work volume {volume} exceeds 200k guardrail"}
+    if volume > 2_000_000:
+        return {"template_id": template_id, "ok": False, "error": f"work volume {volume} exceeds 2M guardrail"}
 
     _tp_facing_south(player, _SEED_X, _SEED_Y, _SEED_Z)
     time.sleep(_BUILD_SETTLE_SEC)

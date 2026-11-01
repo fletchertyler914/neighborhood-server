@@ -148,18 +148,90 @@ cases:
       pending_kind: template
       tier: S
 
-  - id: extra.refuse.hostile.01
+  - id: extra.summon.hostile.01
     prompt: spawn a creeper
+    expect:
+      tool: summon_entity
+      tier: A
+
+  - id: extra.summon.hostile.02
+    prompt: summon zombies here
+    expect:
+      tool: summon_entity
+      tier: A
+
+  - id: extra.summon.boss.01
+    prompt: spawn an ender dragon
+    expect:
+      tool: summon_entity
+      tier: A
+
+  - id: extra.refuse.admin.01
+    prompt: give me a command block
     expect:
       refuse: true
       route_contains: refuse
       tier: S
 
-  - id: extra.refuse.hostile.02
-    prompt: summon zombies here
+  - id: extra.help.01
+    prompt: help
     expect:
-      refuse: true
-      route_contains: refuse
+      help: true
+      route_contains: menu
+      message_contains: help builds
+      tier: S
+
+  - id: extra.help.02
+    prompt: what can you do
+    expect:
+      help: true
+      route_contains: menu
+      tier: S
+
+  - id: extra.help.03
+    prompt: commands
+    expect:
+      help: true
+      route_contains: menu
+      tier: S
+
+  - id: extra.help.04
+    prompt: help builds
+    expect:
+      help: true
+      route_contains: builds
+      message_contains: help houses
+      tier: S
+
+  - id: extra.help.05
+    prompt: help shapes
+    expect:
+      help: true
+      route_contains: shapes
+      message_contains: platform
+      tier: S
+
+  - id: extra.help.06
+    prompt: help spawn
+    expect:
+      help: true
+      route_contains: spawn
+      message_contains: chickens
+      tier: S
+
+  - id: extra.help.07
+    prompt: help farms
+    expect:
+      help: true
+      route_contains: farms
+      message_contains: Garden
+      tier: S
+
+  - id: extra.help.08
+    prompt: ideas
+    expect:
+      help: true
+      route_contains: builds
       tier: S
 
   - id: extra.template.01
@@ -177,5 +249,48 @@ cases:
   - id: extra.template.03
     prompt: build a bridge please
     expect:
+      tool: place_shape
+      kind: bridge
+      tier: A
+
+  - id: extra.template.market_stall
+    prompt: build a market stall
+    expect:
       tool: paste_template
+      template_id: market_stall
+      tier: A
+
+  - id: extra.template.markket_stall
+    prompt: markket stall
+    expect:
+      tool: paste_template
+      template_id: market_stall
+      tier: A
+
+  - id: extra.template.shop_stall
+    prompt: shop stall
+    expect:
+      tool: paste_template
+      template_id: market_stall
+      tier: A
+
+  - id: extra.template.campground
+    prompt: campground
+    expect:
+      tool: paste_template
+      template_id: campground
+      tier: A
+
+  - id: extra.template.cmapground_typo
+    prompt: cmapground
+    expect:
+      tool: paste_template
+      template_id: campground
+      tier: A
+
+  - id: extra.template.cow_barn
+    prompt: cow barn
+    expect:
+      tool: paste_template
+      template_id: cow_barn_medium
       tier: A

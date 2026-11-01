@@ -16,6 +16,7 @@ from fastapi.responses import PlainTextResponse
 
 from companion import PROTOCOL_VERSION, RUNTIME_VERSION
 from companion.compound import route_compound
+from companion.gaps import classify_gap_reason
 from companion.models import Action, ActionResult, Envelope, JobSubmission
 from companion.perception import (
     best_opening,
@@ -28,10 +29,11 @@ from companion.place_routing import (
     rewrite_wall_place_to_finish,
 )
 from companion.provider import OllamaCompiler
-from companion.routing import compiled_route, route
+from companion.routing import CLEAR_ASK_MESSAGE, compiled_route, is_clear_ask_message, route
 from companion.session import SessionStore, infer_clarify_kind, resolve_followup
 from companion.skills import load_skills
 from companion.storage import JobStore
+from companion.templates import warm_template_ranker
 
 try:
     from evals.failure_bundles import write_bundle
@@ -98,6 +100,7 @@ action_jobs: dict[str, tuple[str, str, int]] = {}
 compound_queues: dict[str, list[Action]] = {}
 compound_messages: dict[str, list[str]] = {}
 job_players: dict[str, str] = {}
+job_player_names: dict[str, str] = {}
 observation_waiters: dict[str, asyncio.Future[dict[str, Any]]] = {}
 model_status_cache: dict[str, Any] = {
     "reachable": False,
@@ -176,6 +179,11 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     skills = load_skills()
     core_skill = skills.get("neighborhood.core")
     compiler = OllamaCompiler(core_skill.prompt if core_skill else "")
+    try:
+        warm_template_ranker()
+        logger.info("template ranker embeddings warmed")
+    except Exception as error:  # pragma: no cover - startup best-effort
+        logger.warning("template ranker warmup failed: %s", error)
     monitor = asyncio.create_task(_monitor_model())
     try:
         yield
@@ -211,6 +219,23 @@ def _spoken_text(message: str) -> str:
     return text
 
 
+def _gap_candidates_from_session(player_uuid: str | None) -> list[str]:
+    if not player_uuid:
+        return []
+    pending = sessions.get(player_uuid).pending_alive()
+    if pending is None or not pending.slots:
+        return []
+    raw = pending.slots.get("candidates")
+    if not isinstance(raw, list):
+        return []
+    out: list[str] = []
+    for item in raw:
+        text = str(item).strip()
+        if text and text not in out:
+            out.append(text)
+    return out[:8]
+
+
 async def _complete(
     *,
     job_id: str,
@@ -224,12 +249,16 @@ async def _complete(
     player_uuid: str | None = None,
     clarify: bool = False,
     original_prompt: str = "",
+    gap_reason: str | None = None,
+    candidates: list[str] | None = None,
 ) -> None:
     final_message = message
     if (not ok or clarify) and _TRY_HINT not in message and "Try:" not in message:
         final_message = (message.rstrip() + _TRY_HINT)[:160]
     store.complete_job(job_id, ok=ok, message=final_message, total_ms=total_ms)
-    player = player_uuid or job_players.pop(job_id, None)
+    stored_player = job_players.pop(job_id, None)
+    player = player_uuid or stored_player
+    player_name = job_player_names.pop(job_id, "")
     if player:
         session = sessions.get(player)
         session.remember_sidekick(
@@ -260,6 +289,22 @@ async def _complete(
         elif ok:
             session.clear_pending()
         sessions.persist(player)
+    reason = classify_gap_reason(route_name, ok=ok, explicit=gap_reason)
+    if reason:
+        gap_candidates = list(candidates or []) or _gap_candidates_from_session(player)
+        try:
+            store.record_gap(
+                reason=reason,
+                message=final_message,
+                job_id=job_id,
+                player_uuid=player or "",
+                player_name=player_name,
+                prompt=original_prompt or (store.job_prompt(job_id) or ""),
+                route=route_name,
+                candidates=gap_candidates,
+            )
+        except Exception:
+            logger.exception("failed to persist request gap job_id=%s", job_id)
     compound_queues.pop(job_id, None)
     compound_messages.pop(job_id, None)
     await gateway.send(
@@ -298,12 +343,19 @@ async def _dispatch_action(
         envelope.trace_id,
         started_ms,
     )
+    # Mega FAWE pastes can run many minutes; never inherit a 10s job budget
+    # from a short "/ai yes" clear-site follow-up.
+    deadline_ms = envelope.deadline_ms
+    if action.tool == "paste_template":
+        paste_budget_ms = int(time.time() * 1000) + 1_200_000  # 20 min
+        if deadline_ms is None or deadline_ms < paste_budget_ms:
+            deadline_ms = paste_budget_ms
     await gateway.send(
         Envelope(
             type="action.execute",
             trace_id=envelope.trace_id,
             job_id=envelope.job_id,
-            deadline_ms=envelope.deadline_ms,
+            deadline_ms=deadline_ms,
             payload=action.model_dump(),
         )
     )
@@ -323,6 +375,7 @@ async def _handle_job(envelope: Envelope) -> None:
         prompt=submission.prompt,
     )
     job_players[envelope.job_id] = submission.player.uuid
+    job_player_names[envelope.job_id] = submission.player.name
     session = sessions.get(submission.player.uuid)
     session.remember_player(submission.prompt)
 
@@ -396,6 +449,8 @@ async def _handle_job(envelope: Envelope) -> None:
                 route_name="compound.unsupported",
                 total_ms=int((time.perf_counter() - started) * 1000),
                 player_uuid=submission.player.uuid,
+                original_prompt=submission.prompt,
+                gap_reason="refuse",
             )
             return
         await _dispatch_action(
@@ -440,18 +495,76 @@ async def _handle_job(envelope: Envelope) -> None:
             set(gateway.capabilities) if gateway.socket is not None else None
         ),
         has_finishable_wall=has_finishable_wall,
+        can_ingest=bool(submission.player.can_ingest),
     )
 
-    if decision.route == "grammar.cancel":
-        session.clear_pending()
-        sessions.persist(submission.player.uuid)
-        store.set_route(envelope.job_id, decision.route, tier="S")
+    if (
+        decision.route == "grammar.cancel"
+        or decision.route.startswith("help.")
+        or decision.route.startswith("ops.ingest.")
+    ):
+        if decision.route == "grammar.cancel":
+            session.clear_pending()
+            sessions.persist(submission.player.uuid)
+        store.set_route(envelope.job_id, decision.route, tier=decision.tier or "S")
+        await _complete(
+            job_id=envelope.job_id,
+            trace_id=envelope.trace_id,
+            ok=decision.route
+            not in {"ops.ingest.denied", "ops.ingest.bad_url"},
+            message=decision.message
+            or ("Okay, never mind." if decision.route == "grammar.cancel" else "Ask: help"),
+            route_name=decision.route,
+            total_ms=int((time.perf_counter() - started) * 1000),
+            player_uuid=submission.player.uuid,
+            original_prompt=submission.prompt,
+        )
+        return
+
+    # 2b) Ops schematic ingest — in-process shared library (no shell).
+    if decision.route == "ops.ingest":
+        from companion.ingest_routing import format_ingest_reply
+        from companion.ingest_schem import ingest_url
+        from companion.templates import reload_catalog
+
+        slots = decision.pending_slots or {}
+        url = str(slots.get("url") or "")
+        tid = str(slots.get("template_id") or "").strip() or None
+        title = str(slots.get("title") or "").strip() or None
+        store.set_route(envelope.job_id, "ops.ingest", tier="S")
+        result = await asyncio.to_thread(
+            ingest_url,
+            url,
+            template_id=tid,
+            title=title,
+            gold=True,
+            require_allowlist=True,
+        )
+        if not result.ok:
+            await _complete(
+                job_id=envelope.job_id,
+                trace_id=envelope.trace_id,
+                ok=False,
+                message=f"Couldn't ingest that: {result.error}"[:220],
+                route_name="ops.ingest.fail",
+                total_ms=int((time.perf_counter() - started) * 1000),
+                player_uuid=submission.player.uuid,
+                original_prompt=submission.prompt,
+                gap_reason="ingest",
+            )
+            return
+        reload_catalog()
         await _complete(
             job_id=envelope.job_id,
             trace_id=envelope.trace_id,
             ok=True,
-            message=decision.message or "Okay, never mind.",
-            route_name=decision.route,
+            message=format_ingest_reply(
+                template_id=result.template_id,
+                title=result.title,
+                aliases=result.aliases,
+                gold=result.gold,
+            ),
+            route_name="ops.ingest",
             total_ms=int((time.perf_counter() - started) * 1000),
             player_uuid=submission.player.uuid,
         )
@@ -527,7 +640,9 @@ async def _handle_job(envelope: Envelope) -> None:
                 },
             )
             model_ms = int((time.perf_counter() - model_started) * 1000)
-            decision = compiled_route(intent, envelope.job_id)
+            decision = compiled_route(
+                intent, envelope.job_id, prompt=submission.prompt
+            )
         except Exception:
             model_ms = int((time.perf_counter() - model_started) * 1000)
             decision = type(decision)(
@@ -602,6 +717,13 @@ async def _handle_job(envelope: Envelope) -> None:
                     scene=scene_payload,
                     reason="clarify_or_refuse",
                 )
+        slots = decision.pending_slots or {}
+        slot_candidates = slots.get("candidates")
+        gap_candidates = (
+            [str(x) for x in slot_candidates]
+            if isinstance(slot_candidates, list)
+            else None
+        )
         await _complete(
             job_id=envelope.job_id,
             trace_id=envelope.trace_id,
@@ -612,6 +734,7 @@ async def _handle_job(envelope: Envelope) -> None:
             player_uuid=submission.player.uuid,
             clarify=False,  # already set pending above with richer slots
             original_prompt=submission.prompt,
+            candidates=gap_candidates,
         )
         return
     if decision.action.tool not in gateway.capabilities:
@@ -623,6 +746,8 @@ async def _handle_job(envelope: Envelope) -> None:
             route_name=decision.route,
             total_ms=int((time.perf_counter() - started) * 1000),
             player_uuid=submission.player.uuid,
+            original_prompt=submission.prompt,
+            gap_reason="refuse",
         )
         return
     await _dispatch_action(
@@ -671,6 +796,43 @@ async def _handle_action_result(envelope: Envelope) -> None:
     combined = " ".join(messages) if messages else result.message
     player_uuid = job_players.get(job_id)
     tool_args = store.action_tool_arguments(result.action_id)
+    # Native ask-before-clear: keep the same tool args and wait for "yes".
+    if (
+        not ok
+        and player_uuid
+        and tool_args is not None
+        and is_clear_ask_message(combined or "")
+    ):
+        tool_name, arguments = tool_args
+        retry_args = dict(arguments)
+        retry_args["clear_site"] = True
+        session = sessions.get(player_uuid)
+        ask = CLEAR_ASK_MESSAGE
+        session.set_pending(
+            original_prompt=store.job_prompt(job_id) or "",
+            question=ask,
+            kind="clear_site",
+            slots={
+                "default_tool": tool_name,
+                "default_arguments": retry_args,
+            },
+        )
+        sessions.persist(player_uuid)
+        await _complete(
+            job_id=job_id,
+            trace_id=trace_id,
+            ok=False,
+            verified=False,
+            message=ask,
+            total_ms=total_ms,
+            tool=tool_name,
+            route_name="native.clear_ask",
+            player_uuid=player_uuid,
+            clarify=False,  # pending already set with clear_site slots
+            original_prompt=store.job_prompt(job_id) or "",
+            gap_reason="",  # interactive clear confirm — not a coverage gap
+        )
+        return
     if ok and player_uuid and tool_args is not None:
         tool_name, arguments = tool_args
         sessions.get(player_uuid).remember_action(
@@ -689,6 +851,8 @@ async def _handle_action_result(envelope: Envelope) -> None:
         tool=tool_args[0] if tool_args else "",
         route_name=store.job_route(job_id),
         player_uuid=player_uuid,
+        original_prompt=store.job_prompt(job_id) or "",
+        gap_reason="failed" if not ok else None,
     )
 
 

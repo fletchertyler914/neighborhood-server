@@ -23,7 +23,8 @@ RCON_HOST = os.environ.get("RCON_HOST", "mc")
 RCON_PORT = int(os.environ.get("RCON_PORT", "25575"))
 RCON_PASSWORD = os.environ.get("RCON_PASSWORD", "")
 RCON_PASSWORD_FILE = os.environ.get("RCON_PASSWORD_FILE", "")
-MAX_BLOCKS = int(os.environ.get("MINECRAFT_MCP_MAX_BLOCKS", "200000"))
+# Align with plugin max-paste-volume (2M bbox) for mega curated schems.
+MAX_BLOCKS = int(os.environ.get("MINECRAFT_MCP_MAX_BLOCKS", "2000000"))
 MAX_COMMANDS = int(os.environ.get("MINECRAFT_MCP_MAX_COMMANDS", "20000"))
 REPO_ROOT = os.environ.get(
     "NEIGHBORHOOD_REPO",
@@ -444,19 +445,17 @@ _ITEM_ALIASES: dict[str, str] = {
     "torches": "torch",
 }
 
+# Admin / server-integrity only — TNT, bedrock, spawners, etc. are allowed.
 _ITEM_DENYLIST: frozenset[str] = frozenset(
     {
         "command_block",
         "minecart_with_command_block",
         "chain_command_block",
         "repeating_command_block",
-        "barrier",
         "structure_block",
         "structure_void",
         "jigsaw",
         "debug_stick",
-        "spawner",
-        "bedrock",
     }
 )
 
@@ -477,9 +476,7 @@ def _normalize_item_id(item: str) -> str:
     return cleaned
 
 
-# Vanilla peaceful / neutral mobs the agent is allowed to summon without
-# needing a destructive-style confirm token. Hostile and boss entities are
-# omitted so a player can't /agent "summon 20 withers" by accident.
+# Peaceful mobs used by animal-pen builders (not a summon denylist).
 _ANIMAL_ALLOWLIST: frozenset[str] = frozenset(
     {
         "allay",
@@ -546,20 +543,23 @@ _ANIMAL_ALIASES: dict[str, str] = {
     "turtles": "turtle",
     "foxes": "fox",
     "axolotls": "axolotl",
+    "ender dragon": "ender_dragon",
+    "enderdragon": "ender_dragon",
+    "dragon": "ender_dragon",
+    "creepers": "creeper",
+    "zombies": "zombie",
+    "skeletons": "skeleton",
+    "withers": "wither",
+    "wardens": "warden",
+    "elder guardian": "elder_guardian",
 }
-
-_ENTITY_DENYLIST: frozenset[str] = frozenset(
-    {
-        "wither",
-        "ender_dragon",
-        "warden",
-        "elder_guardian",
-    }
-)
 
 
 def _normalize_entity_id(entity: str) -> str:
     raw = (entity or "").strip().removeprefix("minecraft:").lower().replace(" ", "_")
+    spaced = (entity or "").strip().removeprefix("minecraft:").lower()
+    if spaced in _ANIMAL_ALIASES:
+        return _ANIMAL_ALIASES[spaced]
     return _ANIMAL_ALIASES.get(raw, raw)
 
 
@@ -573,19 +573,16 @@ def summon_entity(
 ) -> ToolResult:
     """Summon vanilla entities at absolute coordinates.
 
-    ``entity`` is a Mojang id (``chicken``, ``villager``, ``axolotl``).
-    Aliases like ``chickens`` → ``chicken`` are normalized. Boss entities
-    (``wither``, ``ender_dragon``, ``warden``, ``elder_guardian``) are
-    refused. ``nbt`` is optional NBT to append to every summon, e.g.
-    ``{NoAI:1b}``.
+    ``entity`` is a Mojang id (``chicken``, ``villager``, ``ender_dragon``).
+    Aliases like ``chickens`` → ``chicken`` are normalized. Any summonable
+    entity is allowed; count is clamped. ``nbt`` is optional NBT to append
+    to every summon, e.g. ``{NoAI:1b}``.
     """
 
     try:
         ent = _normalize_entity_id(entity)
         if not ent:
             raise ValueError("entity is required")
-        if ent in _ENTITY_DENYLIST:
-            raise PermissionError(f"entity not allowed: {ent}")
         n = max(1, min(int(count), 32))
         commands: list[str] = []
         tail = f" {nbt}" if nbt else ""

@@ -16,6 +16,7 @@ tools:
   - set_time
   - set_weather
   - give_item
+  - give_looked_item
   - summon_entity
   - paste_template
   - finish_wall

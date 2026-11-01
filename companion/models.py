@@ -47,6 +47,9 @@ class PlayerContext(BaseModel):
     yaw: float = 0
     pitch: float = 0
     gamemode: str
+    # Ops-gated schematic ingest (/ai ingest <url>). Plugin sets from
+    # neighborhood.agent.ingest or neighborhood.agent.qa.
+    can_ingest: bool = False
 
 
 class JobSubmission(BaseModel):

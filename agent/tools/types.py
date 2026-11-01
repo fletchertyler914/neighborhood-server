@@ -8,7 +8,8 @@ from typing import Any
 
 CONTAINER = os.environ.get("MC_CONTAINER", "mc-lan")
 RCON_MODE = os.environ.get("RCON_MODE", "exec").lower()
-MAX_BLOCKS = int(os.environ.get("MINECRAFT_MCP_MAX_BLOCKS", "200000"))
+# Align with plugin max-paste-volume (2M bbox) for mega curated schems.
+MAX_BLOCKS = int(os.environ.get("MINECRAFT_MCP_MAX_BLOCKS", "2000000"))
 MAX_COMMANDS = int(os.environ.get("MINECRAFT_MCP_MAX_COMMANDS", "20000"))
 
 

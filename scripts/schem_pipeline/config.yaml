@@ -1,0 +1,80 @@
+# Curated schematic scrape → catalog gold refill.
+# Maps external listings onto catalog intent ids (docs/CURATED_REFILL.md).
+# Prefer FAWE Sponge .schem; convert .litematic; skip .mcstructure by default.
+#
+# Sourcing rule (see CURATED_REFILL):
+#   SchemCraft / Shulkr → landmarks, showpieces, furnished bases
+#   Basics (windmill, well, coop, pens, stall, cabin, …) → Bloxelizer /
+#   Abfielder / MCBuild / PhantomMarket with small block-count filters
+# taxonomy.py rejects "Ultimate … Survival Base/House" for BASIC intents.
+# Shulkr = manual mega ARR only (not scraped here).
+
+user_agent: "NeighborhoodSchemPipeline/1.0 (+https://github.com/neighborhood-server; curated gap fill; respects robots.txt)"
+
+rate_limit_seconds: 1.5
+request_timeout_seconds: 45
+respect_robots: true
+
+# Basics: keep small. Landmarks may be larger showpieces.
+max_blocks_basic: 40000
+max_blocks_landmark: 200000
+min_blocks: 40
+skip_mcstructure: true
+# Private server: CC-BY-NC OK with attribution. Prefer CC-BY for bulk scrapes.
+skip_nc_license: false
+
+sample_limit: 20
+promote: false
+
+# Bloxelizer first for honest small basics; SchemCraft still useful for
+# landmark / furnished-house intents (matcher enforces the split).
+sources:
+  - bloxelizer
+  - schemcraft
+  # stubs — enable when selectors filled:
+  # - schematio
+  # - abfielder
+  # - mcbuild
+  # - phantommarket
+
+paths:
+  db: db/pipeline.sqlite3
+  downloads: downloads
+  logs: logs
+  converted: downloads/converted
+
+schemcraft:
+  site_base: "https://www.schemcraft.com"
+  max_sitemap_urls: 200
+
+bloxelizer:
+  api_base: "https://api.bloxelizer.com/api"
+  site_base: "https://bloxelizer.com"
+  cdn_schematic: "https://bloxelizer.com/cdn/schematics/{id}?t={token}"
+  search_path: "/schematics/search"
+  slug_path: "/schematics/slug/{slug}"
+  page_size: 15
+  max_pages_per_query: 2
+
+intent_queries:
+  chicken_coop_small: ["chicken coop", "hen house", "chicken pen", "coop"]
+  barn_red_large: ["barn", "red barn", "farm barn", "barn silo"]
+  pig_pen_small: ["pig pen", "pig sty", "pig enclosure"]
+  sheep_pen_medium: ["sheep pen", "sheep enclosure"]
+  bee_apiary_small: ["bee house", "apiary", "beehive house", "bee farm"]
+  garden_plot: ["flower garden", "garden plot", "cottage garden"]
+  market_stall: ["market stall", "shop stall", "vendor stall", "market booth"]
+  workshop_small: ["workshop", "carpenter shop", "tool shed"]
+  lighthouse_short: ["lighthouse", "lighthouse tower"]
+  well_village: ["village well", "wishing well", "well"]
+  storage_shed: ["storage shed", "garden shed", "shed"]
+  mill_water: ["water mill", "watermill"]
+  greenhouse_small: ["greenhouse", "glass garden"]
+  fountain_small: ["fountain", "plaza fountain"]
+  gazebo_oak: ["gazebo"]
+  playground_small: ["playground", "swing set"]
+  igloo_small: ["igloo", "snow house"]
+  bridge_rope: ["rope bridge"]
+  bridge_stone_long: ["stone bridge", "arch bridge"]
+  pier_long: ["pier", "boardwalk"]
+  campground: ["campground", "camp"]

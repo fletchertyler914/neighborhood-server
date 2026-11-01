@@ -15,6 +15,7 @@ class CompiledIntent(BaseModel):
             "set_time",
             "set_weather",
             "give_item",
+            "give_looked_item",
             "summon_entity",
             "paste_template",
             "finish_wall",
@@ -39,6 +40,7 @@ _FORMAT_SCHEMA = {
                 "set_time",
                 "set_weather",
                 "give_item",
+                "give_looked_item",
                 "summon_entity",
                 "paste_template",
                 "finish_wall",
@@ -64,16 +66,27 @@ Tools:
 - set_time: {"time":"day|noon|night|midnight"}
 - set_weather: {"weather":"clear|rain|thunder"}
 - give_item: {"material":"minecraft material id","amount":1..64}
-- summon_entity: {"entity":"friendly passive mob id","count":1..20}
-- paste_template: {"template_id":"snake_case curated gold id"}
+- give_looked_item: {"amount":1..64?} — give the block the player is looking at
+  (these/those/that/this blocks). Omit amount for a stack of 64.
+- summon_entity: {"entity":"any summonable mob id","count":1..20}
+- paste_template: {"template_id":"snake_case curated gold id","clear_site":true?,"forward_blocks":1..128?}
+  Use clear_site when they ask to clear/flatten/make room before building.
+  Use forward_blocks when they say e.g. "20 blocks in front".
 - finish_wall: {"height":2..128,"material":"optional block id"}
 - finish_floor: {"mode":"fill|replace|clear","material":"optional block id"}
-- place_shape: {"kind":"wall|platform|box_shell|solid_box|cylinder", dims, "material"?}
+- place_shape: {"kind":"wall|platform|box_shell|solid_box|cylinder|bridge|road|path|stairs_to", dims, "material"?}
+  For bridge/path across water or a gap, omit length so the native span finds the far shore.
+  Prefers gold-block markers when the player placed them.
+  For stairs to a door/entrance use kind stairs_to (player should look at or stand near the door).
+- mark_route: {"action":"start|finish|cancel|status","kind":"path|bridge","material"?}
+  Start marking → player places gold blocks in order → finish connects them.
 - undo_last: {}
 
 Rules:
 - Only target the requesting player and their current world.
-- Refuse hostile/dangerous mobs and requests unrelated to Minecraft.
+- Players may summon any mob and build/give ordinary Minecraft content.
+  Refuse only admin blocks (command/structure/jigsaw/debug stick),
+  other-player targeting, and requests unrelated to Minecraft.
 - Clarify if the item, amount, mob, time, weather, or build is ambiguous.
 - Prefer one clear action. If the child asked for two things, pick the first
   and mention the second in a short clarify message only when needed.

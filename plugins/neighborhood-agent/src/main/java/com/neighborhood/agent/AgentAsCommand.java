@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * <pre>agent-as &lt;player&gt; &lt;prompt...&gt;</pre>
  *
  * Runs the real companion job path as the named online player so harnesses
- * can drive /agent without typing in chat.
+ * can drive /agent (or /ai) without typing in chat.
  */
 public final class AgentAsCommand implements CommandExecutor {
     private final NeighborhoodAgentPlugin plugin;
@@ -35,7 +35,7 @@ public final class AgentAsCommand implements CommandExecutor {
     ) {
         if (sender instanceof Player) {
             sender.sendMessage(Component.text(
-                    "agent-as is console/RCON only. Players should use /agent.",
+                    "agent-as is console/RCON only. Players should use /agent or /ai.",
                     NamedTextColor.RED
             ));
             return true;
@@ -94,7 +94,8 @@ public final class AgentAsCommand implements CommandExecutor {
                     Bukkit.getConsoleSender().sendMessage(line);
                     if (target.isOnline()) {
                         NamedTextColor color = ok ? NamedTextColor.GREEN : NamedTextColor.RED;
-                        target.sendMessage(Component.text("[Sidekick] ", NamedTextColor.DARK_AQUA)
+                        String name = plugin.getDisplayName();
+                        target.sendMessage(Component.text("[" + name + "] ", NamedTextColor.DARK_AQUA)
                                 .append(Component.text(message == null ? "" : message, color)));
                     }
                 }));
