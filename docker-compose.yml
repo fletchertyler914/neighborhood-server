@@ -13,20 +13,22 @@ services:
     ports:
       - '25565:25565/tcp'
       - '19132:19132/udp'
-      # BlueMap web UI — localhost only. Open http://127.0.0.1:8100 in a
-      # browser after the next `docker compose restart mc`. To share with
-      # the home LAN, change the left side to '0.0.0.0:8100'. To share
-      # publicly, add a third playit TCP tunnel pointing at 127.0.0.1:8100.
-      - '127.0.0.1:8100:8100/tcp'
+      # BlueMap web UI — LAN-reachable. Open http://<this-machine-ip>:8100
+      # from any device on the home network. To lock back to this machine
+      # only, change the left side to '127.0.0.1:8100'. To share publicly,
+      # add a third playit TCP tunnel pointing at 127.0.0.1:8100.
+      - '0.0.0.0:8100:8100/tcp'
 
     environment:
       EULA: 'TRUE'
       TYPE: PAPER
-      # Paper stable release for this stack. Use "26.2" + PAPER_CHANNEL: experimental
-      # only after Modrinth ships FAWE/BlueMap/GriefPrevention for 26.2.
+      # Temporary play-only bump for 26.3 biomes/content. Paper 26.3 is still
+      # BETA; FAWE + /agent are parked until a 26.3 FAWE adapter ships.
+      # New Wilderness Bound biomes only appear in newly generated chunks —
+      # set MC_LEVEL to a fresh world name in .env if you want them everywhere.
       # Omit PAPER_BUILD to auto-fetch the newest Paper build for VERSION on start.
-      VERSION: '26.1.2'
-      PAPER_CHANNEL: default
+      VERSION: '26.3'
+      PAPER_CHANNEL: experimental
 
       INIT_MEMORY: 2G
       MAX_MEMORY: 8G
@@ -49,25 +51,22 @@ services:
       # listing it anywhere either fails the mc container or loads a dead jar.
       # Re-add it (MODRINTH_PROJECTS, or a direct CDN jar URL here) once a
       # 26.1.x-compatible CoreProtect build is published.
+      # Geyser stable still targets Java 26.2 and crashes on Paper 26.3
+      # (CraftItemStack asBukkitCopy). Use the official 26.3 preview channel
+      # from GeyserMC/Geyser#6712 until that lands in versions/latest.
       PLUGINS: |
-        https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+        https://download.geysermc.org/v2/projects/geyserpreview/versions/pr.6712/builds/latest/downloads/spigot
         https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot
 
       # Modrinth-managed plugins (auto-update on container restart).
-      # FastAsyncWorldEdit gives /set, /sphere, /cyl, /pyramid, schematic
-      # loading, and copy/paste - the foundation for AI-driven building.
-      # BlueMap renders a 3D web map of all worlds and live player markers,
-      # served by its bundled webserver on port 8100. Exposed to 127.0.0.1
-      # only (see ports: below) and pre-configured in data/plugins/BlueMap/.
-      # GriefPrevention lets players protect their own creative builds.
-      # (CoreProtect block-logging is unavailable on 26.1.2 — see the PLUGINS
-      # note above.)
-      # ViaVersion lets Geyser's emulated 26.2 Java client join this 26.1.2
-      # server, which unblocks Bedrock 26.2 (iPad) players without waiting for
-      # FAWE/GriefPrevention to ship 26.2 builds.
+      # ViaVersion + ViaBackwards: Geyser still emulates a Java 26.2 client, so
+      # ViaBackwards lets that client join this 26.3 server (Bedrock crossplay).
+      # BlueMap / GriefPrevention ship 26.3 builds. FAWE is omitted — no 26.3
+      # release yet; without it NeighborhoodAgent will not load (intentional).
+      # (CoreProtect still unavailable — see the PLUGINS note above.)
       MODRINTH_PROJECTS: |
         viaversion
-        fastasyncworldedit
+        viabackwards
         bluemap
         griefprevention
 
@@ -134,10 +133,6 @@ services:
 
     volumes:
       - ./data:/data
-      # Curated agent templates → FAWE schematics (namespace: neighborhood/)
-      - ./agent/templates/schematics:/data/plugins/FastAsyncWorldEdit/schematics/neighborhood
-      # Kid-facing titles + follow_up summons for native paste
-      - ./agent/templates/catalog.json:/data/plugins/NeighborhoodAgent/catalog.json:ro
       # itzg PATCH_DEFINITIONS — applied on every boot (see above)
       - ./config/patches:/patches:ro
       # BlueMap config (only the keys we care about — accept-download, the
@@ -160,13 +155,17 @@ services:
       interval: 15s
       retries: 10
 
+  # Parked while the Paper world runs 26.3 without FAWE. Bring back with
+  # `docker compose --profile agent up -d` once FAWE ships a 26.3 build.
   mc-agent:
+    profiles: ['agent']
     build:
       context: .
       dockerfile: companion/Dockerfile
     container_name: mc-agent
     restart: unless-stopped
-    mem_limit: 512m
+    # litematic → schem conversion is memory-heavy (multi‑M block builds).
+    mem_limit: 6g
     depends_on:
       mc:
         condition: service_healthy
@@ -197,6 +196,7 @@ services:
       TEMPLATE_RANK_TOP_K: ${TEMPLATE_RANK_TOP_K:-8}
       TEMPLATE_CONFIDENCE_HIGH: ${TEMPLATE_CONFIDENCE_HIGH:-0.72}
       TEMPLATE_CONFIDENCE_MEDIUM: ${TEMPLATE_CONFIDENCE_MEDIUM:-0.45}
+      TEMPLATE_RANK_MARGIN: ${TEMPLATE_RANK_MARGIN:-0.12}
       TEMPLATE_RANK_W_LEX: ${TEMPLATE_RANK_W_LEX:-0.55}
       TEMPLATE_RANK_W_SEM: ${TEMPLATE_RANK_W_SEM:-0.30}
       TEMPLATE_RANK_W_POL: ${TEMPLATE_RANK_W_POL:-0.15}
@@ -206,11 +206,16 @@ services:
       AGENT_SEED_SANDBOX_X: ${AGENT_SEED_SANDBOX_X:-9500}
       AGENT_SEED_SANDBOX_Y: ${AGENT_SEED_SANDBOX_Y:--60}
       AGENT_SEED_SANDBOX_Z: ${AGENT_SEED_SANDBOX_Z:-9500}
+      # Ops `/ai ingest` writes through these bind mounts.
+      AGENT_CATALOG_PATH: /app/assets/catalog.json
+      AGENT_SCHEM_DIR: /app/assets/schematics
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
       - companion-db:/var/lib/companion
-      - ./agent/templates/catalog.json:/app/assets/catalog.json:ro
+      # Writable for ops `/ai ingest` (shared companion.ingest_schem) + catalog reload.
+      - ./agent/templates/catalog.json:/app/assets/catalog.json
+      - ./agent/templates/schematics:/app/assets/schematics
     healthcheck:
       test:
         [
